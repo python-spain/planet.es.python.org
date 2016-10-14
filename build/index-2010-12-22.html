@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>mi&#233;rcoles, 22 diciembre</h2>
+<div class="time">
+<h3>20:27</h3>
+<div class="item feed-08cadf41 feed-{feed_id}" id="item-35324d0f">
+<p class="itemheader">
+<span class="itemtitle">
+    El viaje del navegante:
+<a href="http://elviajedelnavegante.blogspot.com/2010/12/wxpython-herencia-parametros-y-otras.html">wxPython: herencia, par&#225;metros y otras hierbas con wxFormBuilder, en espa&#241;ol</a></span>
+</p>
+    <div class="itemdescription">
+    <div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Hola. Continuando con la serie de posts sobre&nbsp;<b>wxPython</b>&nbsp;y&nbsp;<b>wxFormBuilder</b>&nbsp;vamos a ver ahora c&#243;mo pasar informaci&#243;n entre&nbsp;<b>widgets</b>, as&#237; como la utilizaci&#243;n de la herencia entre objetos y otras cosas. El ejemplo completo (muy comentado) est&#225; en el&nbsp;<a href="https://sites.google.com/site/elviajedelnavegante/">repositorio de El viaje del navegante</a>:</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="text-align: center;"><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><a href="https://sites.google.com/site/elviajedelnavegante/codigo">https://sites.google.com/site/elviajedelnavegante/codigo</a></div></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">El fichero es&nbsp;<b><u><i>Gesti&#243;n de almac&#233;n.zip</i></u></b>.</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Lo que vamos a construir es una peque&#241;a aplicaci&#243;n que va a simular un gestor de almac&#233;n espec&#237;fico, con familias, modelos y submodelos de productos. Adem&#225;s se incluye un sistema de reports (informes) en&nbsp;<i>HTML</i>. La aplicaci&#243;n es muy sencilla, lo que da mucho juego a la hora de completarla. Es m&#225;s, incluso para guardar los datos en disco se utiliza la persistencia de datos, para ser lo m&#225;s as&#233;ptico posible, y que el propio lector pueda comprender y asimilar lo verdaderamente importante, el uso de los&nbsp;<b>widgets</b>&nbsp;en&nbsp;<b>wxPython</b>&nbsp;y el paso de informaci&#243;n entre los mismos. Para ello, hay que tener muy claro el concepto de herencia, ya que para utilizar&nbsp;<b>wxPython</b>&nbsp;es indispensable.</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Esta aplicaci&#243;n es para aprender, ya que le faltan muchas cosas, pero lo b&#225;sico lo tiene. Faltar&#237;a por ejemplo estad&#237;sticas, control de stock, relaci&#243;n de lotes con sus correspondientes albaranes de entrada, y un sin fin m&#225;s. La b&#250;squeda de informaci&#243;n se podr&#237;a hacer implementando reports para tal uso, parametrizando la llamada de los mismos. Se deja al lector esta tarea. Aqu&#237; &#250;nicamente se muestra el camino.</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><i><span class="Apple-style-span" style="color: #274e13;"><b>IMPORTANTE</b></span></i>: Decir que el ejemplo est&#225; muy comentado, por lo que es muy conveniente descargarse el c&#243;digo, para leer los comentarios y poder saber el porqu&#233; hago lo que hago.</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">&#191;Qu&#233; compone el proyecto? De las siguientes partes:</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><b><span class="Apple-style-span" style="color: #990000;">MODELO DE DATOS</span></b></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">-&nbsp;<b>clases_gestion_almacen.py</b>: C&#243;digo generado con&nbsp;<b>pyLorca</b>, una aplicaci&#243;n (escrita por m&#237;) para crear a partir de ficheros&nbsp;<b>Yaml</b>, m&#243;dulos de clases bases, con propiedades, m&#233;todos y atributos.</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div class="separator" style="clear: both; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TRJH98lcPAI/AAAAAAAABKc/CuOJKypalOc/s1600/gestion_almacen0.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="454" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TRJH98lcPAI/AAAAAAAABKc/CuOJKypalOc/s640/gestion_almacen0.JPG" style="cursor: move;" width="640" /></a></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">-&nbsp;<b>gestion_almacen_modelo.py</b>: Este m&#243;dulo contiene las clases que contendr&#225;n la informaci&#243;n que se guardar&#225; en disco y algunas funciones m&#225;s que nos ser&#225;n de ayuda. Este modelo importa&nbsp;<b>clases_gestion_almacen.py</b>.</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><b><span class="Apple-style-span" style="color: #990000;">VISTA</span></b></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">-&nbsp;<b>gestion_almacen_vista.py</b>: C&#243;digo generado autom&#225;ticamente por&nbsp;<b>wxFormBuilder</b>&nbsp;(a trav&#233;s del fichero de proyecto&nbsp;<b>gestion_almacen.fbp</b>), en donde se dise&#241;a por completo todo el&nbsp;<i>frontend</i>&nbsp;gr&#225;fico de la aplicaci&#243;n.&nbsp;</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><b><span class="Apple-style-span" style="color: #990000;">APLICACI&#211;N</span></b></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">-&nbsp;<b>gestion_almacen.py</b>: Este m&#243;dulo importa clases de los dem&#225;s m&#243;dulos y es la aplicaci&#243;n principal. Junta el modelo de datos con la vista.</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><b><span class="Apple-style-span" style="font-size: large;">&#191;C&#243;mo funciona?</span></b></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Se ejecuta con:&nbsp;<b>python gestion_almacen.py</b>.</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div class="separator" style="clear: both; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TRJJUhfe1GI/AAAAAAAABKg/qfsNCS4g_Oo/s1600/gestion_almacen1.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TRJJUhfe1GI/AAAAAAAABKg/qfsNCS4g_Oo/s1600/gestion_almacen1.JPG" style="cursor: move;" /></a></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Lo primero es crear familias, modelos y submodelos. Nos vamos al men&#250;&nbsp;<span class="Apple-style-span" style="color: #274e13;">Clasificaci&#243;n</span>&nbsp;y a insertar datos...</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div class="separator" style="clear: both; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TRJJ2vt_cXI/AAAAAAAABKk/FPqznepHkj4/s1600/gestion_almacen2.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TRJJ2vt_cXI/AAAAAAAABKk/FPqznepHkj4/s1600/gestion_almacen2.JPG" style="cursor: move;" /></a></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Podemos incluir tantos elementos como queramos. El &#250;nico requisito es que no pueden repetirse, ya que el sistema no lo permite (un requisito para no tener problemas de duplicidades...). &nbsp;</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Importante: Siempre dar al bot&#243;n&nbsp;<span class="Apple-style-span" style="color: #274e13;">Guardar</span>.</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Podemos ver los datos incluidos en el&nbsp;<b>wx.Choice</b>...</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div class="separator" style="clear: both; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TRJKm_CBpoI/AAAAAAAABKo/GuKxvuTFC-c/s1600/gestion_almacen3.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TRJKm_CBpoI/AAAAAAAABKo/GuKxvuTFC-c/s1600/gestion_almacen3.JPG" style="cursor: move;" /></a></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Mediante la referencia entre&nbsp;<b>widgets</b>, dichos elementos pasan al&nbsp;<b>frame</b>&nbsp;principal...</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div class="separator" style="clear: both; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TRJK5gIdveI/AAAAAAAABKs/T24Y70RFKMM/s1600/gestion_almacen4.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TRJK5gIdveI/AAAAAAAABKs/T24Y70RFKMM/s1600/gestion_almacen4.JPG" style="cursor: move;" /></a></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Tambi&#233;n hay que crear los almacenes...&nbsp;Si queremos crear un producto hay que dar valores a todos los campos, y a continuaci&#243;n darle al bot&#243;n&nbsp;<span class="Apple-style-span" style="color: #274e13;">Guardar</span>...</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div class="separator" style="clear: both; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TRJLfdWE8CI/AAAAAAAABKw/puYUXdNNzzA/s1600/gestion_almacen5.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TRJLfdWE8CI/AAAAAAAABKw/puYUXdNNzzA/s1600/gestion_almacen5.JPG" style="cursor: move;" /></a></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Podemos ver lo que hemos hecho en los informes...</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div class="separator" style="clear: both; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TRJMpmi7ASI/AAAAAAAABK0/0bQm--se1jA/s1600/gestion_almacen36.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TRJMpmi7ASI/AAAAAAAABK0/0bQm--se1jA/s1600/gestion_almacen36.JPG" style="cursor: move;" /></a></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Este tipo de informe es una p&#225;gina&nbsp;<b>html</b>...</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div class="separator" style="clear: both; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_y_bGxMwbE9g/TRJNGDbOVxI/AAAAAAAABK4/03ELRbjGA9E/s1600/gestion_almacen7.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="379" src="http://3.bp.blogspot.com/_y_bGxMwbE9g/TRJNGDbOVxI/AAAAAAAABK4/03ELRbjGA9E/s640/gestion_almacen7.JPG" style="cursor: move;" width="640" /></a></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">&#191;D&#243;nde se guardan los datos? He utilizado persistencia de datos con&nbsp;<b>cPickle</b>. Se nos generar&#225;n los siguientes ficheros...</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div class="separator" style="clear: both; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_y_bGxMwbE9g/TRJNobFNihI/AAAAAAAABK8/CA86o7bAh7g/s1600/gestion_almacen8.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_y_bGxMwbE9g/TRJNobFNihI/AAAAAAAABK8/CA86o7bAh7g/s1600/gestion_almacen8.JPG" style="cursor: move;" /></a></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span class="Apple-style-span" style="color: #990000; font-size: large;"><b><br /></b></span></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span class="Apple-style-span" style="color: #990000; font-size: large;"><b>CONCLUSIONES</b></span></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><b><br /></b></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">En este post se ha presentado un ejemplo para ver c&#243;mo se pasan par&#225;metros (informaci&#243;n) entre&nbsp;<b>widgets</b>&nbsp;(<b>wx.Choice</b>, etc.). Se ha utilizado&nbsp;<b>pyLorca</b>&nbsp;para la generaci&#243;n de las clases bases, as&#237; como&nbsp;<b>wxFormBuilder</b>&nbsp;para la generaci&#243;n &#237;ntegra del entorno gr&#225;fico. Si no disponemos de un sistema de reports siempre podemos utilizar p&#225;ginas web para lanzar informes. Se deja al lector la parametrizaci&#243;n de los mismos para implementar un sistema de b&#250;squeda. Por &#250;ltimo decir que se ha utilizado el m&#243;dulo&nbsp;<b>cPickle</b>&nbsp;para la persistencia de datos.</div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Saludos.</div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2010-11-20.html">&lt;</a></td>
+<td class="cal-month" colspan="5">diciembre 2010</td>
+<td class="cal-next"><a href="index-2011-01-04.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2010-12-05.html">05</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day"><a class="cal-link" href="index-2010-12-10.html">10</a></td><td class="cal-day"><a class="cal-link" href="index-2010-12-11.html">11</a></td><td class="cal-day">12</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2010-12-13.html">13</a></td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day"><a class="cal-link" href="index-2010-12-18.html">18</a></td><td class="cal-day">19</td></tr>
+<tr class="cal-week">
+<td class="cal-day">20</td><td class="cal-day"><a class="cal-link" href="index-2010-12-21.html">21</a></td><td class="cal-day"><strong class="cal-current">22</strong></td><td class="cal-day"><a class="cal-link" href="index-2010-12-23.html">23</a></td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td></tr>
+<tr class="cal-week">
+<td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

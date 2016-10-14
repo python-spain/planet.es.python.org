@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>viernes, 10 diciembre</h2>
+<div class="time">
+<h3>12:50</h3>
+<div class="item feed-08cadf41 feed-{feed_id}" id="item-1e5f8ff8">
+<p class="itemheader">
+<span class="itemtitle">
+    El viaje del navegante:
+<a href="http://elviajedelnavegante.blogspot.com/2010/12/herencia-multiple-en-python-el-orden.html">Herencia m&#250;ltiple en Python, &#161;el orden importa!</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Hola. En este art&#237;culo vamos a ver la importancia de definir bien la <b>herencia m&#250;ltiple</b>, esto es, el orden en el cual se llama a los constructores (<b>__init__</b>, que no es el constructor, aunque s&#237; es el sitio donde escribiremos el c&#243;digo que ejecutar&#237;a el constructor) de las clases heredadas, ya que es fundamental, as&#237; como la importancia de nombrar bien a los atributos, para que no se sobreescriban (<b>override</b>); en <b>Python</b> no hay polimorfismo entendido como sobrecarga de m&#233;todos, aunque hay maneras de emularlo.<br /><br />NOTA: Si se quiere entender con m&#225;s profundidad como <b>Python</b> resuelve el tema de la <b>herencia m&#250;ltiple</b> aconsejo que mir&#233;is el tema de <b>MRO</b> en&nbsp;<a href="http://www.python.org/download/releases/2.3/mro/">http://www.python.org/download/releases/2.3/mro/</a>.<br /><br />Comenzamos...<br /><br />Imaginemos que declaramos dos clases que heredan de <b>object</b>: <span class="Apple-style-span" style="color: #990000;">clase1</span> y <span class="Apple-style-span" style="color: #990000;">clase2</span>. Creamos una tercera clase, <span class="Apple-style-span" style="color: #38761d;"><b>clase3</b></span>, que hereda de <span class="Apple-style-span" style="color: #990000;">clase1</span> y <span class="Apple-style-span" style="color: #990000;">clase2</span>. Tal como aparece en la imagen de abajo:<br /><br /><div style="text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQIErU7fcjI/AAAAAAAABHU/wLov540LfXs/s1600/herencia_multiple_python.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="400" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQIErU7fcjI/AAAAAAAABHU/wLov540LfXs/s400/herencia_multiple_python.JPG" width="377" /></a></div><div style="text-align: center;"><br /></div><div style="text-align: left;">Al instanciar la <b><span class="Apple-style-span" style="color: #38761d;">clase3 </span></b>vemos que ha heredado los m&#233;todos de las clases<span class="Apple-style-span" style="color: #990000;"> clase1</span> y <span class="Apple-style-span" style="color: #990000;">clase2 </span>pero &#250;nicamente el atributo de la <span class="Apple-style-span" style="color: #990000;">clase1</span>. &#191;Por qu&#233;? Si nos damos cuenta en la <b><span class="Apple-style-span" style="color: #38761d;">clase3</span></b> no hemos llamado a ning&#250;n constructor, esto es, hacemos <b>pass</b>, por tanto <b>Python</b> resuelve por el orden en el que se ha declarado la herencia m&#250;ltiple en <b><span class="Apple-style-span" style="color: #38761d;">clase3</span></b>, es decir <b>class clase3(clase1, clase2)</b>. Obtiene el atributo de la primera clase que se encuentra de izquierda a derecha, esto es, <span class="Apple-style-span" style="color: #990000;">clase1</span>.</div><div style="text-align: left;"><br /></div><div style="text-align: left;">Ahora si en el constructor de la <span class="Apple-style-span" style="color: #38761d;"><b>clase3</b></span> llamamos a los constructores de las clases <span class="Apple-style-span" style="color: #990000;">clase1</span> y <span class="Apple-style-span" style="color: #990000;">clase2</span> tenemos que:</div><div class="separator" style="clear: both; text-align: center;"></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQIEsJcwPcI/AAAAAAAABHY/BBDH98ooz1A/s1600/herencia_multiple_python2.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="400" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQIEsJcwPcI/AAAAAAAABHY/BBDH98ooz1A/s400/herencia_multiple_python2.JPG" width="377" /></a></div><div style="text-align: left;"><br /></div><div style="text-align: left;"><b><span class="Apple-style-span" style="color: #38761d;">clase3</span></b> hereda tanto los m&#233;todos como los atributos de las clases <span class="Apple-style-span" style="color: #990000;">clase1</span> y <span class="Apple-style-span" style="color: #990000;">clase2</span>. Esto es lo que esper&#225;bamos.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div style="text-align: left;">Ahora lo que vamos a hacer es renombrar los atributos de la <span class="Apple-style-span" style="color: #990000;">clase1</span> y <span class="Apple-style-span" style="color: #990000;">clase2</span> con el mismo nombre, es decir, van a tener un atributo cada una de las dos clases, que se va a llamar "<span class="Apple-style-span" style="color: #0b5394;">atributo</span>". Mira lo que pasa ahora:</div><div style="text-align: left;"><br /></div><div style="text-align: center;"><a href="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQIEs3baCTI/AAAAAAAABHc/_I6yXOmRnzk/s1600/herencia_multiple_python3.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="400" src="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQIEs3baCTI/AAAAAAAABHc/_I6yXOmRnzk/s400/herencia_multiple_python3.JPG" width="377" /></a></div><div style="text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: center;"></div><div style="text-align: justify;">&nbsp;&#161;Vaya! &#191;<b>Python</b> no sabe distinguir entre dos atributos con el mismo nombre? La respuesta es que no sabe. &#191;Y cual elige? Pues el atributo que sea el &#250;ltimo en inicializarse. Como <b><span class="Apple-style-span" style="color: #38761d;">clase3</span></b>&nbsp;la hemos inicializado primero con el &nbsp;constructor de la <span class="Apple-style-span" style="color: #990000;">clase1</span> y por &#250;ltimo con el de la <span class="Apple-style-span" style="color: #990000;">clase2</span>, ser&#225; el atributo de la <span class="Apple-style-span" style="color: #990000;">clase2</span> el que existir&#225; (esto es, hace un override al atributo de la <span class="Apple-style-span" style="color: #990000;">clase1</span>). Hacemos la prueba llamando a los m&#233;todos que nos devuelvan el valor de los atributos de las clases:</div><div style="text-align: justify;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQIEqqR7kXI/AAAAAAAABHQ/8KLe17NckT0/s1600/herencia_multiple_python4.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="400" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQIEqqR7kXI/AAAAAAAABHQ/8KLe17NckT0/s400/herencia_multiple_python4.JPG" width="391" /></a></div><div style="text-align: justify;"><br /></div><div style="text-align: justify;">Y tenemos:</div><div style="text-align: justify;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQIMJWZRRKI/AAAAAAAABHg/4pJK47xfnx0/s1600/herencia_multiple_python5.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="52" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQIMJWZRRKI/AAAAAAAABHg/4pJK47xfnx0/s400/herencia_multiple_python5.JPG" width="400" /></a></div><div class="separator" style="clear: both; text-align: center;"><br /></div><div style="text-align: justify;">Es decir, el m&#233;todo <span class="Apple-style-span" style="color: #0b5394;">devolver_atributo2()</span> hace lo correcto, pero el m&#233;todo <span class="Apple-style-span" style="color: #0b5394;">devolver_atributo1()</span> lo que hace es devolver el atributo que est&#225; inicializado, esto es, el que se inicializ&#243; el &#250;ltimo, es decir, el de la clase <span class="Apple-style-span" style="color: #990000;">clase2</span>. &#161;Vaya! &#161;Parece un l&#237;o, pero no lo es! Si lo piensas bien tiene su l&#243;gica (aunque no tanto su gracia).</div><div style="text-align: justify;"><br /></div><div style="text-align: justify;">&#191;No me crees? Vamos a hacerlo al rev&#233;s. Ahora vamos a llamar a los constructores de la <b><span class="Apple-style-span" style="color: #38761d;">clase3</span></b> cambiando el orden, de manera que ahora llamamos primero al constructor de la <span class="Apple-style-span" style="color: #990000;">clase2</span> y por &#250;ltimo al constructor de la <span class="Apple-style-span" style="color: #990000;">clase1</span>. Mira lo que pasa:</div><div class="separator" style="clear: both; text-align: justify;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQINV91Ze3I/AAAAAAAABHo/m1_iYPiZkqw/s1600/herencia_multiple_python6.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="400" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQINV91Ze3I/AAAAAAAABHo/m1_iYPiZkqw/s400/herencia_multiple_python6.JPG" width="391" /></a></div><div style="text-align: justify;"><br /></div><div style="text-align: justify;">Y tenemos que:</div><div style="text-align: justify;"><br /></div><div style="text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQINVImpwqI/AAAAAAAABHk/1KTeRia8A3U/s1600/herencia_multiple_python7.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="68" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQINVImpwqI/AAAAAAAABHk/1KTeRia8A3U/s640/herencia_multiple_python7.JPG" width="640" /></a></div><div style="text-align: justify;"><br /></div><div style="text-align: justify;">...como cabr&#237;a esperar.</div><div style="text-align: justify;"><br /></div><div style="text-align: justify;">Tan solo con nombrar bien a los atributos de las clases heredadas todo funciona a las mil maravillas:</div><div class="separator" style="clear: both; text-align: justify;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQIOIvodDsI/AAAAAAAABHw/42Mc421551Q/s1600/herencia_multiple_python8.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="400" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQIOIvodDsI/AAAAAAAABHw/42Mc421551Q/s400/herencia_multiple_python8.JPG" width="391" /></a></div><div class="separator" style="clear: both; text-align: center;"><br /></div><div class="separator" style="clear: both; text-align: left;">Y el resultado es:</div><div style="text-align: justify;"><br /></div><div style="text-align: justify;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQIOHwktmfI/AAAAAAAABHs/fwGL9NDYQ6A/s1600/herencia_multiple_python9.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="70" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQIOHwktmfI/AAAAAAAABHs/fwGL9NDYQ6A/s640/herencia_multiple_python9.JPG" width="640" /></a></div><div style="text-align: justify;"><br /></div><div style="text-align: justify;">Vamos a ver un &#250;ltimo caso. Creamos una tercera clase, llamada <span class="Apple-style-span" style="color: #990000;">clase25</span>, que tambi&#233;n hereda de <b>object</b>, y vamos a modificar <b><span class="Apple-style-span" style="color: #38761d;">clase3</span></b>, que ahora va a heredar de <span class="Apple-style-span" style="color: #990000;">clase25</span>, <span class="Apple-style-span" style="color: #990000;">clase1</span> y <span class="Apple-style-span" style="color: #990000;">clase2</span>. Todo queda como sigue:</div><div style="text-align: justify;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQIPaRpdaNI/AAAAAAAABH0/l26a0RhghoM/s1600/herencia_multiple_python10.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="400" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQIPaRpdaNI/AAAAAAAABH0/l26a0RhghoM/s400/herencia_multiple_python10.JPG" width="378" /></a></div><div style="text-align: justify;"><br /></div><div style="text-align: justify;">Como vemos todo es normal; <b><span class="Apple-style-span" style="color: #38761d;">clase3</span></b> hereda tanto m&#233;todos como atributos. Pero... &#191;y si cambiamos la forma en la que heredan las clases? Vamos a declarar que ahora <span class="Apple-style-span" style="color: #990000;">clase25</span> hereda de <span class="Apple-style-span" style="color: #990000;">clase2</span> y que <span class="Apple-style-span" style="color: #38761d;"><b>clase3</b></span> ahora solo hereda de <span class="Apple-style-span" style="color: #990000;">clase25</span> y <span class="Apple-style-span" style="color: #990000;">clase1</span>. &#161;PUFF! &#161;Vaya comida de cabeza!. Mira la siguiente imagen:</div><div style="text-align: justify;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQIQs1IaapI/AAAAAAAABH4/CBIrTHDkDdM/s1600/herencia_multiple_python11.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="400" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQIQs1IaapI/AAAAAAAABH4/CBIrTHDkDdM/s400/herencia_multiple_python11.JPG" width="373" /></a></div><div style="text-align: justify;"><br /></div><div style="text-align: justify;"><b><i><u>&#191;Ein?</u></i></b> El lector, si ha entendido (que seguro que s&#237;) lo expuesto en este post debe saber porqu&#233; no aparece el <span class="Apple-style-span" style="color: #0b5394;">atributo2</span> si la clase <span class="Apple-style-span" style="color: #990000;">clase25</span> hereda de<span class="Apple-style-span" style="color: #990000;"> clase2</span>, que contiene dicho atributo. Evidentemente, porque en el constructor de la clase <span class="Apple-style-span" style="color: #990000;">clase25</span> no se ha llamado al constructor de la clase <span class="Apple-style-span" style="color: #990000;">clase2</span>. Si hacemos la llamada entonces <b><span class="Apple-style-span" style="color: #38761d;">clase3</span></b> tiene todos los atributos que se esperaba heredar:</div><div style="text-align: justify;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQIRri64e6I/AAAAAAAABH8/aeKhiQ3YfZ0/s1600/herencia_multiple_python12.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="400" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQIRri64e6I/AAAAAAAABH8/aeKhiQ3YfZ0/s400/herencia_multiple_python12.JPG" width="375" /></a></div><div style="text-align: justify;"><br /></div><div style="text-align: justify;"><br /></div><div style="text-align: justify;">Bueno, espero que este art&#237;culo os sirva de ayuda a la hora de utilizar la herencia m&#250;ltiple, con cuidado.</div><div style="text-align: justify;"><br /></div><div style="text-align: justify;">Saludos.</div><div class="separator" style="clear: both; text-align: center;"><br /></div><br /><div class="separator" style="clear: both; text-align: center;"></div><br /><div class="separator" style="clear: both; text-align: center;"></div>
+    </div>
+</div></div>
+<div class="time">
+<h3>11:10</h3>
+<div class="item feed-08cadf41 feed-{feed_id}" id="item-8a2b8015">
+<p class="itemheader">
+<span class="itemtitle">
+    El viaje del navegante:
+<a href="http://elviajedelnavegante.blogspot.com/2010/12/python-en-murcia-la-primera-y-no-la.html">Python en Murcia, la primera y no la &#250;ltima...</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Hola. En este post os dejo el enlace para que os descargu&#233;is la presentaci&#243;n (lo he convertido a PDF) que realic&#233; en la <b>Murcia Lan Party 2010</b>, el pasado martes. Siento los que no pod&#225;is haber ido, ya que me hubiera gustado conoceros en persona, cambiar impresiones y plantearnos nuevas "quedadas", con m&#225;s tiempo, para hablar de <b>Python</b>, hacer talleres sobre tecnolog&#237;as adyacentes (<b>wxPython</b>, <b>Django</b>, <b>m&#243;viles</b>), es decir, aprender los unos de los otros. Ser&#237;a una buena idea, creo yo.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQH7lQPmHTI/AAAAAAAABHI/qD2vIe5nTBg/s1600/IMG_1380.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="240" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQH7lQPmHTI/AAAAAAAABHI/qD2vIe5nTBg/s320/IMG_1380.JPG" width="320" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><br /></div><br />La <b><span class="Apple-style-span" style="color: #990000;">gente</span></b> que fue a la presentaci&#243;n estuvo genial, ya que permanecieron sentados y a excepci&#243;n de una persona, <b><span class="Apple-style-span" style="color: #990000;">&#161;&#161;&#161;no se fue nadie!!!!</span></b>. Tengo que decir que me alargu&#233; en exceso intentando explicar c&#243;digo <b>Python</b>, algo que no volver&#225; a suceder, ya que en vez de una hora me alargu&#233; a hora y media, algo que no puede ser, ya que me hice "algo pesado" en alg&#250;n momento. Pero como de los errores se aprende, en la siguiente exposici&#243;n (espero que esta sea la primera de muchas) ser&#233; mucho m&#225;s conciso, para que todo sea m&#225;s liviano.<br /><br /><div style="text-align: center;"><a href="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQH72QXJLXI/AAAAAAAABHM/C9vMQ1w3438/s1600/IMG_1412.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="240" src="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQH72QXJLXI/AAAAAAAABHM/C9vMQ1w3438/s320/IMG_1412.JPG" width="320" /></a></div><br />De todas formas estoy contento de haber ido, e incluso nos di&#243; tiempo a una "mini" rueda de ruegos y preguntas sobre <b>Python</b> y <b>wxPython</b>.<br /><br />El enlace donde pod&#233;is descargar la presentaci&#243;n es:<br /><br /><a href="https://sites.google.com/site/elviajedelnavegante/documentacion">https://sites.google.com/site/elviajedelnavegante/documentacion</a><br /><br />Saludos.
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2010-11-20.html">&lt;</a></td>
+<td class="cal-month" colspan="5">diciembre 2010</td>
+<td class="cal-next"><a href="index-2011-01-04.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2010-12-05.html">05</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day"><strong class="cal-current">10</strong></td><td class="cal-day"><a class="cal-link" href="index-2010-12-11.html">11</a></td><td class="cal-day">12</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2010-12-13.html">13</a></td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day"><a class="cal-link" href="index-2010-12-18.html">18</a></td><td class="cal-day">19</td></tr>
+<tr class="cal-week">
+<td class="cal-day">20</td><td class="cal-day"><a class="cal-link" href="index-2010-12-21.html">21</a></td><td class="cal-day"><a class="cal-link" href="index-2010-12-22.html">22</a></td><td class="cal-day"><a class="cal-link" href="index-2010-12-23.html">23</a></td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td></tr>
+<tr class="cal-week">
+<td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

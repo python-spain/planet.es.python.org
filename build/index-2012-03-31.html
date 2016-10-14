@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>s&#225;bado, 31 marzo</h2>
+<div class="time">
+<h3>22:20</h3>
+<div class="item feed-5fd98f4c feed-{feed_id}" id="item-e10bfbb2">
+<p class="itemheader">
+<span class="itemtitle">
+    Uno y uno = diez:
+<a href="https://unoyunodiez.com/2012/03/31/metaprogramacion-en-python/">Metaprogramaci&#243;n en Python</a></span>
+</p>
+    <div class="itemdescription">
+    <p style="text-align: justify;">Hace unos d&#237;as os contaba en la <a href="https://unoyunodiez.com/2012/03/26/codemotion-madrid-2012/" title="Codemotion Madrid&#160;2012">entrada sobre la Codemotion</a> que una de las charlas m&#225;s interesantes fue la propuesta por Sergio Gil sobre <a href="http://speakerdeck.com/u/porras/p/ruby-metaprogramming" target="_blank" title="Transparencias de la charla Metaprogramaci&#243;n en Ruby por Sergio Gil para la Codemotion Madrid 2012">metaprogramaci&#243;n en Ruby</a> en la que se nos introduc&#237;a esta t&#233;cnica de programaci&#243;n de forma amena y coloquial. Como os promet&#237;, aqu&#237; ten&#233;is la adaptaci&#243;n a Python y en breve tendr&#233;is tambi&#233;n su versi&#243;n enfocada en JavaScript.</p>
+<p style="text-align: justify;">La charla de Sergio en la Codemotion estaba etiquetada con nivel intermedio no por requerir conocimientos avanzados de Ruby (yo soy un absoluto novato en este lenguaje) sino por precisar de comprender conceptos avanzados de los lenguajes din&#225;micos. Quiz&#225;, lo m&#225;s importante sea el <strong>modelo de datos</strong>.</p>
+<p style="text-align: justify;">Aunque en realidad la memoria es una secuencia de celdas direccionables que guardan datos o referencias a otras celdas (lenguages como C lo hacen patente), <strong>Ruby, JavaScript o Python</strong> no se ejecutan directamente sobre nuestra m&#225;quina sino sobre un int&#233;rprete o m&#225;quina virtual que recubre la m&#225;quina real. El int&#233;rprete ofrece una visi&#243;n de la memoria &#8220;en alto nivel&#8221; al programador llena de variables, m&#233;todos, objetos, clases, m&#243;dulos y otras entidades que, junto con la forma en la que tales entidades se relacionan entre s&#237;, forman lo que se llama el <strong>modelo de datos</strong> del lenguaje. Lo interesante de los lenguajes din&#225;micos y por lo que se llaman as&#237; es porque en tiempo de ejecuci&#243;n, no se limitan a ofrecer una descripci&#243;n est&#225;tica del modelo sino que permiten manipularlo. Por ejemplo:</p>
+<pre class="brush: plain; title: ; notranslate">
+&gt;&gt;&gt; class Simple(object):
+...&#160;&#160; '''Simply a class'''
+...
+&gt;&gt;&gt; o = Simple()
+&gt;&gt;&gt; dir(o)
+['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__']
+&gt;&gt;&gt; o.__class__
+&lt;class '__main__.Simple'&gt;
+&gt;&gt;&gt; o.__doc__
+'Simply a class'
+&gt;&gt;&gt; o.__init__
+&lt;method-wrapper '__init__' of Simple object at 0x7f8a016fabd0&gt;
+&gt;&gt;&gt; def f(): print 'Hello!'
+...
+&gt;&gt;&gt; f
+&lt;function f at 0x7f8a016fc668&gt;
+&gt;&gt;&gt; o.say_hello = f
+&gt;&gt;&gt; o.say_hello()
+Hello!
+&gt;&gt;&gt; p = Simple()
+&gt;&gt;&gt; p.say_hello()
+Traceback (most recent call last):
+File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+AttributeError: 'Simple' object has no attribute 'say_hello'
+</pre>
+<p style="text-align: justify;">Fijaos en la interacci&#243;n anterior, la consola de Python proporciona un entorno de ejecuci&#243;n. En &#233;l creamos una clase nueva, <strong>Simple</strong>, e instanciamos un objeto <strong>o</strong>, mostramos sus atributos con <strong>dir</strong>, comprobamos el tipo de algunos de ellos y a continuaci&#243;n creamos una nueva funci&#243;n que asignamos s&#243;lo al objeto <strong>o</strong>. El objeto <strong>p</strong> no tiene esta funci&#243;n por lo que el int&#233;rprete falla al intentar encontrarla.</p>
+<p style="text-align: justify;">Ahora que tenemos la idea intuitiva de por qu&#233; Python es un lenguaje din&#225;mico, indaguemos en la metaprogramaci&#243;n al fin. Metaprogramaci&#243;n es una palabra que se asocia comunmente a la idea de &#8220;programas que escriben programas&#8221;; yo prefiero concebir la metaprogramaci&#243;n como una t&#233;cnica para automatizar la descripci&#243;n de modelos. &#191;Suena muy t&#233;cnico? Ve&#225;moslo con un ejemplo:</p>
+<p style="text-align: justify;">Supongamos que queremos una clase que nos permita obtener informaci&#243;n de una hipot&#233;tica compa&#241;&#237;a <strong>mycompany.com</strong> Tal sitio web expone informaci&#243;n de sus proyectos, empleados, compradores, etc a traves de las p&#225;ginas /projects, /employees, /customers&#8230; Una posible implementaci&#243;n es la siguiente:</p>
+<pre class="brush: python; title: ; notranslate">
+class MyCompany(object):
+    url = 'mycompany.com'
+
+    def projects(self):
+        return self._get('/projects')
+
+    def employees(self):
+        return self._get('/employees')
+
+    def customers(self):
+        return self._get('/customers')
+
+    def _get(self, url):
+        return 'GET ' + self.url + url
+</pre>
+<p style="text-align: justify;">Evidentemente, en un entorno real, la funci&#243;n <strong>_get()</strong> deber&#237;a hacer algo m&#225;s que devolver una cadena pero, para nuestros prop&#243;sitos, nos sirve tal y como est&#225;.</p>
+<p style="text-align: justify;">La clase MyCompany es bastante clara y expresiva. Si quisiera acceder ahora a /products partir&#237;a de uno de los m&#233;todos existentes y cambiar&#237;a su nombre y la ruta de la URL. Cuando la clase tenga 15 m&#233;todos, y a la compa&#241;&#237;a le de por mover sus p&#225;ginas a /items/projects, /items/employees, /items/customers&#8230; pues tendremos que revisar los 15 m&#233;todos. Las desventajas son evidentes pero, &#191;podemos hacerlo mejor? Por supuesto:</p>
+<pre class="brush: python; title: ; notranslate">
+class MyCompany(object):
+    url = 'mycompany.com'
+
+def make_get(path):
+    def actual_get(self):
+        return 'GET ' + self.url + '/' + path
+
+    return actual_get
+
+for name in ['projects', 'employees', 'customers']:
+    setattr(MyCompany, name, make_get(name))
+</pre>
+<p style="text-align: justify;">Ahora, a&#241;adir un nuevo m&#233;todo es tan sencillo como a&#241;adirlo a la lista de m&#233;todos, y modificar la funcionalidad es tan f&#225;cil como cambiar el m&#233;todo <strong>actual_get()</strong>.</p>
+<p style="text-align: justify;">Como yo no tengo una limitaci&#243;n de 45 minutos (como ocurr&#237;a en la presentaci&#243;n), podemos entrar en detalle: lo &#250;nico que estamos haciendo es usar <strong>setattr()</strong> para a&#241;adir atributos a un objeto (s&#237;, en Python las clases son objetos; en Python TODO son objetos). El primer par&#225;metro es el objeto al que queremos a&#241;adir el atributo, el segundo es el nombre del atributo y el tercero es el valor del atributo. El valor lo produce la funci&#243;n <strong>make_get()</strong> que devuelve otra funci&#243;n <strong>actual_get()</strong> con el comportamiento deseado.</p>
+<p style="text-align: justify;">Ahora podemos hacer:</p>
+<pre class="brush: plain; title: ; notranslate">
+&gt;&gt;&gt; company = MyCompany()
+&gt;&gt;&gt; company.projects()
+'GET mycompany.com/projects'
+&gt;&gt;&gt; company.employees()
+'GET mycompany.com/employees'
+&gt;&gt;&gt; company.customers()
+'GET mycompany.com/customers'
+</pre>
+<p style="text-align: justify;">De nuevo parafraseando a Sergio en su charla de la Codemotion, al final todo se reduce a:</p>
+<p style="text-align: center;"><strong>DRY<br />
+D</strong>on&#8217;t<strong> R</strong>epeat<strong> Y</strong>ourself<strong></strong></p>
+<p style="text-align: justify;">El segundo listado resulta muy compacto pero adolece de algunos problemas de dise&#241;o: demasiado acoplamiento. Si ahora quiero crear otra compa&#241;&#237;a, pongamos <strong>yourcompany.com</strong>, &#191;qu&#233; hago? &#191;Otro m&#243;dulo con casi el mismo c&#243;digo? &#161;No! De nuevo &#161;DRY!</p>
+<p style="text-align: justify;">Vamos a mejorar el dise&#241;o:</p>
+<pre class="brush: python; title: ; notranslate">
+class HTTP(object):
+    @classmethod
+    def get(cls, *names):
+        def make_get(path):
+            def actual_get(self):
+                return 'GET ' + self.url + '/' + path
+
+            return actual_get
+
+        for name in names:
+            setattr(cls, name, make_get(name))
+
+class MyCompany(HTTP):
+    url = 'mycompany.com'
+MyCompany.get('projects', 'employees', 'customers')
+
+class YourCompany(HTTP):
+    url = 'yourcompany.com'
+YourCompany.get('projects', 'employees')
+</pre>
+<p style="text-align: justify;">Ahora podemos coger la clase <strong>HTTP</strong> y meterla en un m&#243;dulo aparte (por ejemplo <strong>http.py</strong>). Nuestras compa&#241;&#237;as pueden estar en otro m&#243;dulo (tal vez <strong>companies.py</strong>) e importar y heredar de <strong>HTTP</strong> para a continuaci&#243;n llamar al m&#233;todo de clase&#160;<strong>get()</strong> que crear&#225; los m&#233;todos indicados.</p>
+<p style="text-align: justify;">El m&#233;todo de clase <strong>get()</strong> tiene algo de chicha: est&#225; decorado con el decorador classmethod que hace que, al ser llamado, reciba como primer par&#225;metro la clase donde ha sido definido. Luego recibe una lista con los argumentos pasados a la funci&#243;n, en este caso, los nombres de los m&#233;todos. Por cada uno de ellos, crea una nueva funci&#243;n de la forma que vimos anteriormente.</p>
+<p style="text-align: justify;">El siguiente listado prueba las clases <strong>MyCompany</strong> y <strong>YourCompany</strong>:</p>
+<pre class="brush: plain; title: ; notranslate">
+&gt;&gt;&gt; mine = MyCompany()
+&gt;&gt;&gt; mine.projects()
+'GET mycompany.com/projects'
+&gt;&gt;&gt; mine.customers()
+'GET mycompany.com/customers'
+&gt;&gt;&gt; yours = YourCompany()
+&gt;&gt;&gt; yours.projects()
+'GET yourcompany.com/projects'
+&gt;&gt;&gt; yours.customers()
+Traceback (most recent call last):
+File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+AttributeError: 'YourCompany' object has no attribute 'customers'
+</pre>
+<p style="text-align: justify;">Comprender el <a href="http://docs.python.org/reference/datamodel.html" title="Sobre m&#237; / About&#160;me">modelo de datos de Python</a> resulta de vital importancia para explotar la metaprogramaci&#243;n, baste por el momento comprender c&#243;mo Python recupera un attributo de un objeto. Cuando en Python escribimos <strong>objeto.atributo</strong>, internamente se llama a la funci&#243;n <strong>__getattribute__</strong> con el objeto y el nombre del atributo como par&#225;metros. La implementaci&#243;n por defecto mira (no pregunt&#233;is c&#243;mo, que no acabamos nunca) en el objeto por un atributo con ese nombre y si no lo encuentra trata de encontrarlo en la clase del objeto. Si ah&#237; tampoco est&#225;, mira en las superclases y de ah&#237; hacia arriba por la jerarqu&#237;a de clases. En caso de no encontrarlo se llama al m&#233;todo <strong>__getattr__</strong> de la instancia el cual, por defecto, lanza una excepci&#243;n del tipo <strong>AttributeError</strong>.</p>
+<p style="text-align: justify;">&#191;Y qu&#233; queremos decir con esto? Pues que podemos explotar m&#225;s la metaprogramaci&#243;n hasta el punto de ni siquiera tener que crear los m&#233;todos de la clase expl&#237;citamente. La generaci&#243;n en s&#237; puede ser din&#225;mica, creados conforme se necesitan. Veamos c&#243;mo:</p>
+<pre class="brush: python; title: ; notranslate">
+class HTTP(object):
+    @classmethod
+    def get(cls, *names):
+        def make_get(path):
+            def actual_get(self):
+                return 'GET ' + self.url + '/' + path
+
+            return actual_get
+
+        for name in names:
+            setattr(cls, name, make_get(name))
+
+    def __getattr__(self, name):
+        HTTP.get(name)
+        return getattr(self, name)
+
+class MyCompany(HTTP):
+    url = 'mycompany.com'
+MyCompany.get('projects', 'employees', 'customers')
+
+class YourCompany(HTTP):
+    url = 'yourcompany.com'
+YourCompany.get('projects', 'employees')
+</pre>
+<p style="text-align: justify;">Hemos reescrito <strong>__getattr__()</strong> para que <strong></strong>en caso de que el m&#233;todo no exista, le pidamos a la clase que lo genere por nosotros. Luego lo recuperamos y devolvemos.</p>
+<p style="text-align: justify;">La misma interacci&#243;n que antes fallaba con la excepci&#243;n <strong>AttributeError</strong> ahora no fracasar&#225;:</p>
+<pre class="brush: plain; title: ; notranslate">
+&gt;&gt;&gt; mine = MyCompany()
+&gt;&gt;&gt; mine.projects()
+'GET mycompany.com/projects'
+&gt;&gt;&gt; mine.customers()
+'GET mycompany.com/customers'
+&gt;&gt;&gt; yours = YourCompany()
+&gt;&gt;&gt; yours.projects()
+'GET yourcompany.com/projects'
+&gt;&gt;&gt; yours.customers()
+'GET yourcompany.com/customers'
+</pre>
+<p style="text-align: justify;">&#191;Bastante impresionante, no? Ahora bien, &#191;cu&#225;ndo debemos usar metaprogramaci&#243;n? La respuesta no es sencilla pero yo tirar&#237;a por &#8220;siempre que sea expresivo y la alternativa sea peor&#8221; o quiz&#225; &#8220;siempre que se ajuste a la naturaleza del problema&#8221; La metaprogramaci&#243;n tiene mucho que ver con el dise&#241;o de interfaces, la interfaz de una utilidad tiene que ser agradable para sus usuarios pero mantenerla no puede resultar en una pesadilla para el programador: debemos llegar a un acuerdo entre usabilidad y mantenimiento.</p>
+<p style="text-align: justify;">La metaprogramaci&#243;n no es m&#225;s que programaci&#243;n as&#237; que no pierdas las buenas costumbres. Documenta tus m&#233;todos y expl&#237;cate qu&#233; est&#225;s haciendo en todo momento. As&#237;, cuando recuperes tu proyecto 3 meses m&#225;s tarde no invertiras horas y horas tratando de ver qu&#233; escribiste.</p>
+<p style="text-align: justify;">Vale la pena terminar con una comparaci&#243;n con Ruby. &#191;Es c&#243;modo metaprogramar en Python? En mi opini&#243;n: no tanto como en Ruby. Ruby est&#225; m&#225;s orientado a manipular fragmentos de c&#243;digo, el hecho de que lo que existe entre un bloque <strong>do &#8211; end</strong> sea un dato simplifica considerablemente las cosas. En Python, el modelo de datos es poco regular y dif&#237;cil con muchos casos y excepciones. Adem&#225;s, los decoradores, el anidamientos de funciones, los nombres especiales de funci&#243;n y el modelo de acceso a los atributos contribuyen a disminuir la claridad y limpieza de la implementaci&#243;n.</p>
+<p style="text-align: justify;">En la pr&#243;xima entrada, exploraremos exactamente el mismo ejemplo pero en JavaScript. Ser&#225; una entrada mucho m&#225;s corta dado que no ser&#225; necesaria la introducci&#243;n ni las explicaciones previas, pero os aseguro que volver&#225; a ser &#250;til e interesante.</p>
+<p style="text-align: justify;">Ten&#233;is todo el c&#243;digo de los ejemplos en:<br />
+<a href="https://github.com/lodr/metaprogramming" target="_blank" title="Metaprogramaci&#243;n">https://github.com/lodr/metaprogramming</a></p><br />  <a href="http://feeds.wordpress.com/1.0/gocomments/unoyunodiez.wordpress.com/902/" rel="nofollow"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/unoyunodiez.wordpress.com/902/" /></a> <img alt="" border="0" height="1" src="https://pixel.wp.com/b.gif?host=unoyunodiez.com&#038;blog=15323300&#038;post=902&#038;subd=unoyunodiez&#038;ref=&#038;feed=1" width="1" />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2012-01-31.html">&lt;</a></td>
+<td class="cal-month" colspan="5">marzo 2012</td>
+<td class="cal-next"><a href="index-2012-04-26.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td></tr>
+<tr class="cal-week">
+<td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td></tr>
+<tr class="cal-week">
+<td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td></tr>
+<tr class="cal-week">
+<td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td></tr>
+<tr class="cal-week">
+<td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day"><strong class="cal-current">31</strong></td><td class="cal-day"><em class="cal-othermonth">01</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

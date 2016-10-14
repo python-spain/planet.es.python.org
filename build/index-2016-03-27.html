@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>domingo, 27 marzo</h2>
+<div class="time">
+<h3>01:38</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-914c10ef">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2016/03/usar-jupyter-notebook-desde-un.html">Usar Jupyter Notebook desde un contenedor de Docker</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Jupyter Notebook es una aplicaci&#243;n web que permite crear y compartir documentos que &nbsp;contienen c&#243;digo, gr&#225;ficos y texto. Sus usos incluyen limpieza y transformaci&#243;n de datos, simulaci&#243;n num&#233;rica, modelado estadistico, machine learning y mucho m&#225;s. M&#225;s informaci&#243;n lo pueden ver en este <a href="http://jupyter.org/" target="_blank">enlace</a>.<br /><br />La idea es ejecutar jupyter notebook desde un contenedor docker donde se guardar&#225; los archivos generados en el directorio definido por medio de volumen.<br /><br />Los art&#237;culos anteriores sobre docker son:<br /><ol><li><a href="http://blog.crespo.org.ve/2015/12/instalar-docker-en-debian-jessie.html" target="_blank">Instalar Docker en Debian Jessie</a></li><li><a href="http://blog.crespo.org.ve/2015/12/uso-de-docker-en-debian-jessie-parte-1.html" target="_blank">Uso de Docker en Debian Jessie (parte 1)</a></li><li><a href="http://blog.crespo.org.ve/2015/12/uso-de-docker-en-debian-jessie-parte-2.html" target="_blank">Uso de Docker en Debian Jessie (parte 2)</a></li><li><a href="http://blog.crespo.org.ve/2016/01/crear-una-imagen-docker-partir-de-un.html" target="_blank">Crear una imagen Docker a partir de un archivo Dockerfile</a></li><li><a href="http://blog.crespo.org.ve/2016/01/iniciando-django-usando-docker.html" target="_blank">Iniciando Django usando Docker</a></li><li><a href="http://blog.crespo.org.ve/2016/01/instalar-gitlab-por-medio-de-docker.html" target="_blank">Instalar Gitlab por medio de Docker</a></li><li><a href="http://blog.crespo.org.ve/2016/01/ejecutando-microsservicios-con-docker.html" target="_blank">Ejecutando microservicios con docker usando docker-compose</a></li><li><a href="http://blog.crespo.org.ve/2016/01/docker-en-docker-dind.html" target="_blank">Docker en Docker (DinD)</a></li><li><a href="http://blog.crespo.org.ve/2016/02/iniciando-django-con-docker-usando.html" target="_blank">Iniciando Django con docker usando docker-compose con postgresql como microservicio.</a></li><li><a href="http://blog.crespo.org.ve/2016/02/importar-un-contenedor-docker-en-python.html" target="_blank">Importar un contenedor Docker en Python</a>.</li><li><a href="http://blog.crespo.org.ve/2016/02/compartir-imagenes-docker-por-medio-de.html" target="_blank">Compartir imagenes Docker por medio de archivos tar</a>.</li><li><a href="http://blog.crespo.org.ve/2016/02/crear-un-registro-de-imagenes-docker.html" target="_blank">Crear un registro de imagenes Docker privado</a>.</li><li><a href="http://blog.crespo.org.ve/2016/03/usar-anaconda-desde-un-contenedor-docker.html" target="_blank">Usar Anaconda desde un contenedor Docker</a>.</li><li><a href="http://blog.crespo.org.ve/2016/03/crear-un-entorno-de-integracion-y.html" target="_blank">Crear un entorno de Integraci&#243;n y Despligue continue con Docker para node.js</a>.</li></ol><br /><div>Existe varias imagenes de Docker de la gente de jupyter, la que se va a usar es la de <a href="https://hub.docker.com/r/jupyter/notebook/" target="_blank">jupyter notebook</a>.</div><div><br /></div><div>Para ejecutar el contenedor ejecutamos lo siguientes:</div><div><br /></div><div><span style="color: red;"><b>$docker run --rm -it -p 8888:8888 -v "$(pwd):/notebooks" jupyter/notebook</b></span></div><div><br /></div><div>Al ejecutar el comando se tiene lo que muestra la siguiente imagen:</div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-8yBLwIfTm7E/Vvco9Zw3sxI/AAAAAAAAMC4/tMu4W90B2Ho8-_wZy6t2R1Pfc7RZFU1Xg/s1600/Captura%2Bde%2Bpantalla%2B-%2B260316%2B-%2B19%253A55%253A01.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="123" src="https://4.bp.blogspot.com/-8yBLwIfTm7E/Vvco9Zw3sxI/AAAAAAAAMC4/tMu4W90B2Ho8-_wZy6t2R1Pfc7RZFU1Xg/s320/Captura%2Bde%2Bpantalla%2B-%2B260316%2B-%2B19%253A55%253A01.png" width="320" /></a></div><div><br /></div><div>El puerto externo al contenedor ser&#225; el 8888, igual que el interno, el volumen se maneja desde el directorio donde se ejecuta el comando anterior.&nbsp;</div><div><br /></div><div>Desde un navegador se abre el siguiente enlace:&nbsp;http://localhost:8888/ .</div><div><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-tZcYiVIl2OU/Vvcp-DxJy5I/AAAAAAAAMDE/nBSUUd3flFIa_U7xzEnNCal6ho3mPoZ0g/s1600/Captura%2Bde%2Bpantalla%2B-%2B260316%2B-%2B20%253A01%253A06.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="98" src="https://2.bp.blogspot.com/-tZcYiVIl2OU/Vvcp-DxJy5I/AAAAAAAAMDE/nBSUUd3flFIa_U7xzEnNCal6ho3mPoZ0g/s320/Captura%2Bde%2Bpantalla%2B-%2B260316%2B-%2B20%253A01%253A06.png" width="320" /></a></div><div><br /></div><div>Se crea un documento donde se realiza una serie de instrucciones de python y se salva con nombre prueba-python:</div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-e9FECOFsL2Q/Vvcq2RbNkbI/AAAAAAAAMDQ/absyzZQmyhU426JWFXdVMfZJarE8NsT6Q/s1600/Captura%2Bde%2Bpantalla%2B-%2B260316%2B-%2B20%253A03%253A46.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="124" src="https://2.bp.blogspot.com/-e9FECOFsL2Q/Vvcq2RbNkbI/AAAAAAAAMDQ/absyzZQmyhU426JWFXdVMfZJarE8NsT6Q/s320/Captura%2Bde%2Bpantalla%2B-%2B260316%2B-%2B20%253A03%253A46.png" width="320" /></a></div><div><br /></div><div><br /></div><div>Al ejecutar un ls -l en el directorio donde se inicio el contenedor se tiene el archivo prueba-python.ipynb:</div><div><br /></div><div><div><b><span style="color: red;">&nbsp;ls -l notebooks/</span></b></div><div><b><span style="color: red;">total 4</span></b></div><div><b><span style="color: red;">-rw-r--r-- 1 root root 1390 mar 26 20:04 prueba-python.ipynb</span></b></div></div><div><br /></div><div>Por medio de la opci&#243;n de volumen se est&#225; compartiendo el directorio notebooks del contenedor en el equipo anfitrion.</div><div><br /></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2016-02-24.html">&lt;</a></td>
+<td class="cal-month" colspan="5">marzo 2016</td>
+<td class="cal-next"><a href="index-2016-06-13.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td></tr>
+<tr class="cal-week">
+<td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td></tr>
+<tr class="cal-week">
+<td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td></tr>
+<tr class="cal-week">
+<td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day"><a class="cal-link" href="index-2016-03-26.html">26</a></td><td class="cal-day"><strong class="cal-current">27</strong></td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2016-03-28.html">28</a></td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

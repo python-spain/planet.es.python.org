@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<%def name="title()">
+    planet.es.python.org
+</%def>
+
+<%def name="xmls()">
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+</%def>
+<%def name="log()">
+    <a href="log.html">Estado de fuentes</a>
+</%def>
+<%def name="validrss()">
+</%def>
+<%def name="opmlfile()">
+    <% return 'build/opml.xml' %>
+</%def>
+<%def name="readopml(opml)">
+<%
+    from xml.dom.minidom import parse, parseString
+    import urllib2
+
+    dom1 = parseString(open(opml).read())
+    links = dom1.getElementsByTagName('outline')
+    feedlist=''
+    links_dict = []
+    for link in links:
+        links_dict.append({'text':link.getAttribute('text'),
+                            'htmlUrl':link.getAttribute('htmlUrl'),
+                             'xmlUrl':link.getAttribute('xmlUrl')})
+
+    for link in sorted(links_dict, key=lambda links_dict : links_dict['text'].lower()):
+        linktext = '<a href="%s">%s</a>\n'%(link['htmlUrl'],
+                                            link['text'])
+        flinktext= '<a href="%s"><img src="feed-icon.png" alt=""/></a>\n'%link['xmlUrl']
+
+        feedlist+=linktext
+        feedlist+=flinktext
+        feedlist+='<br />\n'
+    return feedlist
+%>
+</%def>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="${self.title()}" href="/rss.xml" />
+    <title>${self.title()}</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+${items}
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        ${self.xmls()}
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        ${self.log()}
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        ${dated_output_calendar}
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        ${self.readopml(self.opmlfile())}
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version ${version}
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+${self.validrss()}
+</p>
+</div>
+</body>
+</html>

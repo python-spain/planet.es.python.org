@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>jueves, 19 mayo</h2>
+<div class="time">
+<h3>23:08</h3>
+<div class="item feed-08cadf41 feed-{feed_id}" id="item-c1a243b0">
+<p class="itemheader">
+<span class="itemtitle">
+    El viaje del navegante:
+<a href="http://elviajedelnavegante.blogspot.com/2011/05/wxpython-obtener-datos-de-las-hojas-de.html">wxPython: Obtener datos de las hojas de un AUI_Notebook</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Hola. En este post vamos a ver el componente de <b>wxPython AUI Notebook</b>, y en especial su instanciaci&#243;n, creaci&#243;n de hojas y forma de recorrerlas para obtener la informaci&#243;n que pudiera haber sido introducida por el usuario.<br /><br />Hay un ejemplo muy completo en la <b>Demo de wxPython</b>. Aqu&#237; se ver&#225; lo mismo, m&#225;s simplificado y con el plus del recorrido de las hojas del <b>AUI Notebook</b>.<br /><br />El c&#243;digo fuente de esta aplicaci&#243;n se puede encontrar en el repositorio de este blog, en:<br /><br /><a href="https://sites.google.com/site/elviajedelnavegante/">https://sites.google.com/site/elviajedelnavegante/</a><br /><br />Para poder entender bien como funciona un <b>AUI_Notebook</b> es necesario realizar un ejemplo, ya que es la mejor manera posible. De lo que se trata es de crear un m&#243;dulo (fichero) que contendr&#225; 2 clases. Una de ellas ser&#225; el dise&#241;o de una hoja (que hereda de <b>wx.Panel</b>), y la segunda clase ser&#225; un frame que heredar&#225; de <b>wx.Frame</b>. Cada hoja del <b>AUI_Notebook</b> ser&#225; una instanciaci&#243;n de la clase hoja.<br /><br /><div style="color: blue;"><span style="font-size: large;"><b>Comenzamos...</b></span></div><br />Lo primero de todo es importar los m&#243;dulos necesarios:<br /><br />import wx<br />import wx.aui<br /><br />A continuaci&#243;n dise&#241;amos la clase que representar&#225; cada hoja de nuestro <b>AUI_Notebook</b>:<br /><br />class <b><span style="color: orange;">hoja_notebook</span></b>(<span style="color: #38761d;">wx.Panel</span>):<br />&nbsp;&nbsp;&nbsp; def __init__(self, parent, <span style="color: magenta;">nombre_hoja</span>):<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Constructor.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wx.Panel.__init__(self, parent)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Sizer.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer = wx.BoxSizer(wx.VERTICAL)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Etiqueta.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.c0 = wx.StaticText(self, -1, <span style="color: magenta;">nombre_hoja</span>)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Cajas de texto.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.c1 = wx.TextCtrl(self, -1)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.c2 = wx.TextCtrl(self, -1)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Posicionamos las cajas de texto y la etiqueta en el sizer.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer.Add(self.c0, 0, wx.EXPAND|wx.ALL,5)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer.Add(self.c1, 0, wx.EXPAND|wx.ALL,5)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer.Add(self.c2, 0, wx.EXPAND|wx.ALL,5)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># A&#241;adimos el sizer al frame.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.SetSizer(sizer)<br /><br />Esta clase hereda de un <b>wx.Panel</b>, por lo que es un panel. Vemos que dentro tiene un <i>sizer</i> vertical que posiciona una etiqueta y dos cajas de texto. En la instanciaci&#243;n de la clase pasamos el texto que se presentar&#225; en la etiqueta.<br /><br />Bien, ahora crearemos el dise&#241;o de la clase frame que contendr&#225; el <b>AUI_Notebook</b> y que contendr&#225; hojas a trav&#233;s de la instanciaci&#243;n de la clase anterior.<br /><br />class <b style="color: #45818e;">frame_principal</b>(<span style="color: #38761d;">wx.Frame</span>):<br />&nbsp;&nbsp;&nbsp; def __init__(self, parent):<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Constructor.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wx.Frame.__init__(self, parent, title = "Trabajando con el AUI NoteBook")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Sizer.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer = wx.BoxSizer(wx.VERTICAL)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Bot&#243;n para obtener datos.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton = wx.Button(self, -1, "Devolver datos")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Incluimos el bot&#243;n en el sizer.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer.Add(self.boton, 0, wx.EXPAND|wx.ALL, 5)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Panel de NoteBook.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.panel = <b><span style="color: blue;">wx.aui.AuiNotebook</span></b>(self, -1)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Hojas.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hoja1 = <b><span style="color: orange;">hoja_notebook</span></b>(self.panel, "Primera hoja")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hoja2 = <b><span style="color: orange;">hoja_notebook</span></b>(self.panel, "Segunda hoja")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hoja3 = <b style="color: orange;">hoja_notebook</b>(self.panel, "Tercera hoja")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># A&#241;adimos las hojas al NoteBook.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.panel.AddPage(hoja1, "Hoja 0")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.panel.AddPage(hoja2, "Hoja 1")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.panel.AddPage(hoja3, "Hoja 2")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #990000;"> # Incluimos el panel en el sizer.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer.Add(self.panel, 1, wx.EXPAND|wx.ALL, 5)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Y a&#241;adimos el sizer al frame.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.SetSizer(sizer)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Binding.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton.Bind(wx.EVT_BUTTON, self.OnClickBoton)<br /><br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Manejador de eventos.</span> &nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp; def OnClickBoton(self, event):<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Hoja actual.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hoja_actual = self.panel.<b><span style="color: #741b47;">GetSelection()</span></b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># N&#250;mero total de hojas.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; total_hojas = self.panel.<b><span style="color: #741b47;">GetPageCount()</span></b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Algo de informaci&#243;n antes de buscar datos.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cadena = "Este AUI NoteBook tiene %s hojas. Est&#225;s en la %s" % \<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (total_hojas,hoja_actual)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wx.MessageBox(cadena,"Info",wx.OK)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Recorremos las hojas, obteniendo la informaci&#243;n requerida.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; texto = ""<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for i in range(0,total_hojas):<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Texto en la etiqueta de la hoja.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; texto_etiqueta = self.panel.<b><span style="color: #741b47;">GetPageText(i)</span></b>&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Datos de las cajas de texto de la hoja i.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dato1 = <b style="color: #741b47;">self.panel.GetPage(i).c1.GetValue()</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dato2 = <b style="color: #741b47;">self.panel.GetPage(i).c2.GetValue()</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Info.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; texto += u'''<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; La hoja n&#250;mero %s, con etiqueta "%s" <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contiene los datos:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Caja de texto: %s <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Caja de texto: %s<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ''' % (i, texto_etiqueta, dato1, dato2)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Mostramos los datos por pantalla.</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wx.MessageBox(texto, "Datos", wx.OK)<br /><br />Puff!. Vaya, esta clase es algo m&#225;s larga. Pero no hay problema, la comentamos poco a poco, que es muy f&#225;cil de entender. Se puede decir que esta clase implementa la creaci&#243;n de hojas por una parte y el recorrido de dichas hojas a partir de la generaci&#243;n de un evento por hacer click en un bot&#243;n. Bien, ve&#225;moslo por partes.<br /><br />Esta clase hereda de <b>wx.Frame</b>, por lo que es un <i>frame</i> (una ventana t&#237;pica de <i>Windows</i>).&nbsp; En dicho <i>frame</i> se ha utilizado un <i>sizer</i> vertical para posicionar un bot&#243;n (<b>wx.Button</b>) y un componente <b>AUI_Notebook</b>. Si vemos el c&#243;digo, justo despu&#233;s de instanciar el <b>AUI_Notebook</b>, instanciamos tres hojas del modo:<br /><br /><div style="color: black;">hoja<b><span style="color: red;">i</span></b> = <b>hoja_notebook</b>(self.panel, "<b><span style="color: red;">XXX</span></b> hoja")</div><div style="color: black;"><br /></div><div style="color: black;">Esto es, hemos utilizado la clase <b><span style="color: orange;">hoja_notebook</span></b> para crear 3 hojas. Darse cuenta que el padre de las hojas es el propio <b>AUI_Notebook</b>. Mediante el m&#233;todo <b>AddPage</b> se a&#241;aden las hojas. Adem&#225;s, se ha creado un <i>binding</i> para cuando se genere el evento de hacer click en el bot&#243;n.</div><div style="color: black;"><br /></div><div style="color: black;">Dicho evento&nbsp; (<b>wx.EVT_BUTTON</b>) lanza el manejador de eventos <b>OnClickBoton</b>, que se encargar&#225; de realizar el recorrido entre todas las hojas, as&#237; como mostrar informaci&#243;n sobre el posicionamiento de las mismas. Mediante los m&#233;todos <b>GetSelection()</b> y <b>GetPageText(</b><span style="color: red;">i</span><b>)</b> se obtiene la hoja actual, as&#237; como el texto de la etiqueta.</div><div style="color: black;"><br /></div><div style="color: black;">Lo que se hace en realidad es recorrer todas las hojas y buscar la informaci&#243;n entre los objetos de cajas de texto, mediante:</div><div style="color: black;"><br /></div><div style="color: black;"><b style="color: #741b47;"><span style="color: blue;">self.panel.GetPage(<span style="color: red;">i</span>)</span><span style="color: #274e13;">.c1.GetValue()</span></b></div><div style="color: black;"><br /></div><div style="color: black;">Como el lector puede observar con <b>GetPage</b> se obtiene el objeto <b>hoja_notebook</b>. &#218;nicamente hay que acceder a sus atributos (<span style="color: purple;">c1</span>, <span style="color: purple;">c2</span>) y con el m&#233;todo <b>GetValue()</b> (de <b>wx.TextCtrl</b>) se obtiene el texto que recoge.</div><div style="color: black;"><br /></div><div style="color: black;">El c&#243;digo para hacer funcionar este programa podr&#237;a ser tal que as&#237;:</div><div style="color: black;"></div><div style="color: black;">app = wx.PySimpleApp()<br />frame = frame_principal(None)<br />frame.Show()<br />app.MainLoop()</div><div style="color: black;"><br /></div><div style="color: black;">Veamos capturas del ejemplo para ver que efectivamente funciona...</div><div style="color: black;"><br /></div><div style="color: black;">Ejecutamos. </div><div style="color: black;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-kOleaMxg2ck/TdWD3ONLepI/AAAAAAAABQ0/8fZ85vClIKg/s1600/a1.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="459" src="http://4.bp.blogspot.com/-kOleaMxg2ck/TdWD3ONLepI/AAAAAAAABQ0/8fZ85vClIKg/s640/a1.png" width="640" /></a></div><br />Incluimos datos.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-q6mhyQTOq4k/TdWD3n0M5bI/AAAAAAAABQ4/9lz39yDFZYg/s1600/a2.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="457" src="http://2.bp.blogspot.com/-q6mhyQTOq4k/TdWD3n0M5bI/AAAAAAAABQ4/9lz39yDFZYg/s640/a2.png" width="640" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-IxI0Pj2ilfo/TdWD5RkQnfI/AAAAAAAABQ8/bcQQx6N1aZ4/s1600/a3.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="456" src="http://4.bp.blogspot.com/-IxI0Pj2ilfo/TdWD5RkQnfI/AAAAAAAABQ8/bcQQx6N1aZ4/s640/a3.png" width="640" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-LkaDOde113c/TdWD6hV_ByI/AAAAAAAABRA/cXY5Uq0iH9Q/s1600/a4.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="464" src="http://3.bp.blogspot.com/-LkaDOde113c/TdWD6hV_ByI/AAAAAAAABRA/cXY5Uq0iH9Q/s640/a4.png" width="640" /></a></div><br />Al hacer click en el bot&#243;n "Devolver datos", teniendo en cuenta que estamos en la &#250;ltima hoja, tenemos...<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-FuuczNZxzc0/TdWD6x6Hy5I/AAAAAAAABRE/IoIsWf6Q7Po/s1600/a5.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/-FuuczNZxzc0/TdWD6x6Hy5I/AAAAAAAABRE/IoIsWf6Q7Po/s1600/a5.png" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-63kTjX2l2f8/TdWD7suf4nI/AAAAAAAABRI/6dU02Dv6mSc/s1600/a6.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-63kTjX2l2f8/TdWD7suf4nI/AAAAAAAABRI/6dU02Dv6mSc/s1600/a6.png" /></a></div><div style="color: black;"><br /></div><div style="color: blue;"><span style="font-size: large;"><b>&nbsp;CONCLUSIONES</b></span></div><div style="color: black;"><br /></div><div style="color: black;">En este art&#237;culo hemos visto de una manera muy sencilla el componente <b>AUI_Notebook</b>, que podemos ver en m&#225;s profundidad en la <b>Demo de wxPython</b>. Se ha creado una aplicaci&#243;n muy sencilla, que se compone de una clase de tipo <b>wx.Panel</b> que define una hoja y una clase <b>wx.Frame</b> que incluye un componente <b>AUI_Notebook</b>. Las hojas del <b>AUI_Notebook</b> son instanciaciones de la clase hoja que hemos creado. Adem&#225;s se han visto algunos m&#233;todos para acceder a las hojas, as&#237; como la manera de obtener los datos que un posible usuario hubiera incluido en las hojas.</div><div style="color: black;"><br /></div><div style="color: black;"></div><div style="color: black;">Saludos.</div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-04-18.html">&lt;</a></td>
+<td class="cal-month" colspan="5">mayo 2011</td>
+<td class="cal-next"><a href="index-2011-06-04.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">25</em></td><td class="cal-day"><em class="cal-othermonth">26</em></td><td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td></tr>
+<tr class="cal-week">
+<td class="cal-day">02</td><td class="cal-day"><a class="cal-link" href="index-2011-05-03.html">03</a></td><td class="cal-day"><a class="cal-link" href="index-2011-05-04.html">04</a></td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td></tr>
+<tr class="cal-week">
+<td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td></tr>
+<tr class="cal-week">
+<td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day"><strong class="cal-current">19</strong></td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td></tr>
+<tr class="cal-week">
+<td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day"><a class="cal-link" href="index-2011-05-25.html">25</a></td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td></tr>
+<tr class="cal-week">
+<td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

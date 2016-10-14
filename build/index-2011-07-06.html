@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>mi&#233;rcoles, 06 julio</h2>
+<div class="time">
+<h3>22:02</h3>
+<div class="item feed-3c203c3b feed-{feed_id}" id="item-c31d0579">
+<p class="itemheader">
+<span class="itemtitle">
+    joe di castro:
+<a href="http://joedicastro.com/sincronizar-dos-directorios-con-fabric-y-rsync.html">Sincronizar dos directorios con Fabric y Rsync</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Anteriormente hab&#237;amos visto como <a href="http://joedicastro.com/sincronizar-una-carpeta-local-y-una-remota-a-traves-de-ftp-lftp-mirror.html">sincronizar un directorio remoto y uno local 
+empleando solamente FTP</a>. Ahora vamos a ver la forma de hacerlo empleando 
+<a href="http://es.wikipedia.org/wiki/Ssh">ssh</a> y <a href="http://es.wikipedia.org/wiki/Rsync">rsync</a>. Para ello vamos a utilizar otra vez <strong>Python</strong> y una 
+herramienta muy valiosa para cualquier <a href="http://es.wikipedia.org/wiki/Administrador_de_sistemas">sysadmin</a> que se precie como es 
+<a href="http://fabfile.org/">fabric</a> (que descubr&#237; gracias a Manuel Viera en <a href="http://python.majibu.org/preguntas/11/libreria-para-emplear-con-ssh">esta pregunta en majibu</a>).
+Evidentemente realizar la sincronizaci&#243;n con rsync esta a a&#241;os luz de hacerlo 
+con FTP, la velocidad de sincronizaci&#243;n, el tiempo empleado y la cantidad de 
+datos a mover son mucho menores. FTP es algo que deber&#237;a utilizarse &#250;nicamente 
+cuando no disponemos de acceso via SSH.</p>
+<p>La gran ventaja de <strong>fabric</strong> es que nos permite ahorrarnos el tener que 
+implementar el acceso SSH con <a href="http://www.lag.net/paramiko/">paramiko</a> y la entrada de opciones y 
+argumentos con <em>argparse</em>. Gracias a esto los scripts necesarios son mucho m&#225;s 
+cortos y limpios y su utilizaci&#243;n es bastante m&#225;s sencilla. Fabric ya incorpora 
+una funci&#243;n para emplear rsync, <code>rsync_project</code>, dentro de su modulo de proyectos 
+contribuidos <code>fabric.contrib.project</code></p>
+<p>Una forma de implementar esta sincronizaci&#243;n en ambas direcciones empleando esta 
+funci&#243;n predefinida ser&#237;a esta:</p>
+<div class="codehilite"><pre><span class="kn">from</span> <span class="nn">fabric.api</span> <span class="kn">import</span> <span class="n">env</span><span class="p">,</span> <span class="n">hosts</span><span class="p">,</span> <span class="n">local</span>
+<span class="kn">from</span> <span class="nn">fabric.contrib.project</span> <span class="kn">import</span> <span class="n">rsync_project</span>
+
+<span class="n">env</span><span class="o">.</span><span class="n">host_string</span> <span class="o">=</span> <span class="s">&quot;username@host&quot;</span>
+<span class="n">REMOTE_PATH</span> <span class="o">=</span> <span class="s">&quot;/your/remote/path&quot;</span>
+<span class="n">LOCAL_PATH</span> <span class="o">=</span> <span class="s">&quot;/your/local/path&quot;</span>
+
+<span class="nd">@hosts</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">host_string</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">rsync_up</span><span class="p">(</span><span class="n">dlt</span><span class="o">=</span><span class="s">&quot;yes&quot;</span><span class="p">):</span>
+    <span class="n">rsync_project</span><span class="p">(</span><span class="n">REMOTE_PATH</span><span class="p">,</span> <span class="n">LOCAL_PATH</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span><span class="p">,</span> 
+                  <span class="n">delete</span><span class="o">=</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">dlt</span> <span class="o">==</span> <span class="s">&quot;yes&quot;</span> <span class="k">else</span> <span class="bp">False</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">rsync_down</span><span class="p">(</span><span class="n">dlt</span><span class="o">=</span><span class="s">&quot;yes&quot;</span><span class="p">):</span>
+    <span class="n">local</span><span class="p">(</span><span class="s">&quot;rsync -pthrvz {0}:{1}/ {2} {3}&quot;</span><span class="o">.</span>
+          <span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">host_string</span><span class="p">,</span> <span class="n">REMOTE_PATH</span><span class="p">,</span> <span class="n">LOCAL_PATH</span><span class="p">,</span> 
+          <span class="s">&quot;--delete&quot;</span> <span class="k">if</span> <span class="n">dlt</span> <span class="o">==</span> <span class="s">&quot;yes&quot;</span> <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">))</span>
+</pre></div>
+
+
+<p>Y luego solo tendr&#237;amos que llamar a la funci&#243;n deseada:</p>
+<div class="codehilite"><pre><span class="gp">#</span> <span class="s2">&quot;Para sincronizar de remoto a local&quot;</span>
+<span class="gp">$</span> fab rsync_down
+</pre></div>
+
+
+<blockquote>
+<p>Hay que tener en cuenta un detalle con fabric. Cuando se le pasa un par&#225;metro, 
+este es siempre convertido a una cadena. Luego al pasarle <code>True</code> o <code>False</code> no 
+se convierte en un valor booleano, sino una cadena <code>"True"</code>o <code>"False"</code>. De ah&#237; 
+que compruebe si el par&#225;metro coincide con <code>"yes"</code> en vez de un valor booleano.</p>
+</blockquote>
+<p>El problema con la funci&#243;n rsync predefinida de fabric es que esta pensada 
+&#250;nicamente para subir archivos a un servidor remoto, es decir, es una 
+sincronizaci&#243;n en una sola direcci&#243;n, por eso implemento la sincronizaci&#243;n en 
+sentido contrario sin emplearla y empleando <code>local</code>. La autentificaci&#243;n de la 
+sesi&#243;n SSH puede realizarse especificando la contrase&#241;a dentro del propio fichero, 
+pero va en contra del sentido com&#250;n emplear un m&#233;todo tan inseguro como este. Lo 
+l&#243;gico es emplear autorizaciones de sesiones SSH sin contrase&#241;a por medio de una 
+<a href="http://es.wikipedia.org/wiki/Criptograf%C3%ADa_asim%C3%A9trica">clave p&#250;blica</a>.</p>
+<p>Podr&#237;amos prescindir de la librer&#237;a incorporada dentro de fabric y tendr&#237;amos 
+algo como esto:</p>
+<div class="codehilite"><pre><span class="kn">from</span> <span class="nn">fabric.api</span> <span class="kn">import</span> <span class="n">env</span><span class="p">,</span> <span class="n">local</span>
+
+<span class="n">env</span><span class="o">.</span><span class="n">host_string</span> <span class="o">=</span> <span class="s">&quot;username@host&quot;</span>
+<span class="n">REMOTE_PATH</span> <span class="o">=</span> <span class="s">&quot;/your/remote/path&quot;</span>
+<span class="n">LOCAL_PATH</span> <span class="o">=</span> <span class="s">&quot;/your/local/path&quot;</span>
+
+<span class="k">def</span> <span class="nf">_rsync</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">delete</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Process the _rsync command.&quot;&quot;&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">local</span><span class="p">(</span><span class="s">&quot;rsync -pthrvz {0}/ {1} {2}&quot;</span><span class="o">.</span>
+                   <span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="s">&quot;--delete&quot;</span> <span class="k">if</span> <span class="n">delete</span> <span class="o">==</span> <span class="s">&quot;yes&quot;</span> <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">up</span><span class="p">(</span><span class="n">dlt</span><span class="o">=</span><span class="s">'yes'</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sync from local to remote.&quot;&quot;&quot;</span>
+    <span class="n">_rsync</span><span class="p">(</span><span class="n">LOCAL_PATH</span><span class="p">,</span> <span class="s">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">env</span><span class="o">.</span><span class="n">host_string</span><span class="p">,</span> <span class="n">REMOTE_PATH</span><span class="p">]),</span> <span class="n">dlt</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">down</span><span class="p">(</span><span class="n">dlt</span><span class="o">=</span><span class="s">'yes'</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sync from remote to local.&quot;&quot;&quot;</span>
+    <span class="n">_rsync</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">env</span><span class="o">.</span><span class="n">host_string</span><span class="p">,</span> <span class="n">REMOTE_PATH</span><span class="p">]),</span> <span class="n">LOCAL_PATH</span><span class="p">,</span> <span class="n">dlt</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Pero... un momento, si estamos empleado un comando local, no empleamos 
+<code>rsync_project</code> y empleamos una clave p&#250;blica para el acceso SSH, entonces no 
+estamos empleando <strong>paramiko</strong>, &#191;de que nos sirve emplear fabric?. Bueno, en 
+realidad <code>rsync_project</code> tambi&#233;n emplea <code>local</code>, por lo que no emplea paramiko. 
+Pero las ventajas vienen de que, por ejemplo, este mismo script se podr&#237;a modificar 
+f&#225;cilmente para ejecutar rsync en el servidor en vez de en nuestra maquina local, 
+ empleando <code>run</code> en vez de <code>local</code>. Adem&#225;s podemos emplear el mismo fichero para 
+ a&#241;adir varias tareas m&#225;s a realizar en el servidor, aparte de la sincronizaci&#243;n. 
+Podr&#237;amos prescindir de fabric y hacer esto mismo con un script con un n&#250;mero 
+similar de l&#237;neas, pero esto nos permite centralizar todas las tareas m&#225;s comunes 
+sobre ese servidor en un &#250;nico fichero. Por ejemplo podr&#237;amos a&#241;adir una tarea 
+para hacer un respaldo previo de una base de datos en el servidor, empleando un 
+comando remoto en el servidor, luego hacer la sincronizaci&#243;n separada de la BDD 
+y el resto de ficheros y finalmente eliminar ese respaldo. Puede haber cientos 
+de razones para preferir emplear fabric antes de un script independiente para 
+la sincronizaci&#243;n.</p>
+<h2 id="ejecuci+n_desatendida_de_la_sincronizaci+n">Ejecuci&#243;n desatendida de la sincronizaci&#243;n</h2>
+<p>Si queremos programar esta tarea, no ser&#237;a mala idea que nos avisara de cuando 
+comienza a ejecutarse y del resultado de la misma. Para ello puedo emplear 
+<a href="http://joedicastro.com/logger-informes-legibles-para-tus-scripts-python.html">Logger</a> y <a href="http://joedicastro.com/notificaciones-de-escritorio-en-ubuntu-desde-python.html">notify</a>, para implementar esta funcionalidad.</p>
+<div class="codehilite"><pre><span class="kn">from</span> <span class="nn">logger</span> <span class="kn">import</span> <span class="n">Logger</span> <span class="k">as</span> <span class="n">_logger</span>
+<span class="kn">from</span> <span class="nn">notify</span> <span class="kn">import</span> <span class="n">notify</span> <span class="k">as</span> <span class="n">_notify</span>
+<span class="kn">from</span> <span class="nn">fabric.api</span> <span class="kn">import</span> <span class="n">env</span><span class="p">,</span> <span class="n">local</span>
+
+<span class="n">env</span><span class="o">.</span><span class="n">host_string</span> <span class="o">=</span> <span class="s">&quot;username@host&quot;</span>
+<span class="n">REMOTE_PATH</span> <span class="o">=</span> <span class="s">&quot;/your/remote/path&quot;</span>
+<span class="n">LOCAL_PATH</span> <span class="o">=</span> <span class="s">&quot;/your/local/path&quot;</span>
+
+<span class="k">def</span> <span class="nf">_rsync</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">delete</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Process the _rsync command.&quot;&quot;&quot;</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">_logger</span><span class="p">()</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="s">&quot;Fabric Rsync</span><span class="se">\n</span><span class="s">http://joedicastro.com&quot;</span><span class="p">,</span>
+               <span class="s">&quot;Syncing {0} to {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="s">&quot;Start time&quot;</span><span class="p">)</span>
+    <span class="n">_notify</span><span class="p">(</span><span class="s">&quot;Rsync&quot;</span><span class="p">,</span> <span class="s">&quot;Start syncing {0} to {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">),</span> <span class="s">&quot;info&quot;</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">local</span><span class="p">(</span><span class="s">&quot;rsync -pthrvz {0}/ {1} {2}&quot;</span><span class="o">.</span>
+                   <span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="s">&quot;--delete&quot;</span> <span class="k">if</span> <span class="n">delete</span> <span class="o">==</span> <span class="s">&quot;yes&quot;</span> <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">),</span>
+                   <span class="n">capture</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">_notify</span><span class="p">(</span><span class="s">&quot;Rsync&quot;</span><span class="p">,</span> <span class="s">&quot;Finished&quot;</span><span class="p">,</span> <span class="s">&quot;ok&quot;</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="s">&quot;Output&quot;</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">failed</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="s">&quot;Error&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="s">&quot;End time&quot;</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Fabric Rsync&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">up</span><span class="p">(</span><span class="n">dlt</span><span class="o">=</span><span class="s">'yes'</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sync from local to remote.&quot;&quot;&quot;</span>
+    <span class="n">_rsync</span><span class="p">(</span><span class="n">LOCAL_PATH</span><span class="p">,</span> <span class="s">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">env</span><span class="o">.</span><span class="n">host_string</span><span class="p">,</span> <span class="n">REMOTE_PATH</span><span class="p">]),</span> <span class="n">dlt</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">down</span><span class="p">(</span><span class="n">dlt</span><span class="o">=</span><span class="s">'yes'</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sync from remote to local.&quot;&quot;&quot;</span>
+    <span class="n">_rsync</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">env</span><span class="o">.</span><span class="n">host_string</span><span class="p">,</span> <span class="n">REMOTE_PATH</span><span class="p">]),</span> <span class="n">LOCAL_PATH</span><span class="p">,</span> <span class="n">dlt</span><span class="p">)</span>
+</pre></div>
+
+
+<p>De esta forma, nos avisar&#237;a con una notificaci&#243;n en el escritorio de su inicio y 
+fin, y al acabarse la sincronizaci&#243;n, tendr&#237;amos un informe en nuestro correo 
+parecido a este:</p>
+<div class="codehilite"><pre>SCRIPT =========================================================================
+fab (ver. Unknown)
+Fabric Rsync
+
+Syncing username@host:/your/remote/path to /your/local/path
+================================================================================
+
+START TIME =====================================================================
+                                                   mi&#233;rcoles 06/07/11, 21:50:48
+================================================================================
+
+OUTPUT _________________________________________________________________________
+
+receiving file list ... done
+./
+index.php
+
+sent 48 bytes  received 200 bytes  45.09 bytes/sec
+total size is 99  speedup is 0.40
+
+END TIME =======================================================================
+                                                   mi&#233;rcoles 06/07/11, 21:50:54
+================================================================================
+</pre></div>
+
+
+<p>Este fichero est&#225; disponible en el repositorio <em>Python Recipes</em> alojado en 
+<a href="http://github.com/joedicastro/python-recipes">github</a>.</p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-06-30.html">&lt;</a></td>
+<td class="cal-month" colspan="5">julio 2011</td>
+<td class="cal-next"><a href="index-2011-08-30.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td></tr>
+<tr class="cal-week">
+<td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2011-07-05.html">05</a></td><td class="cal-day"><strong class="cal-current">06</strong></td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
+<tr class="cal-week">
+<td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day"><a class="cal-link" href="index-2011-07-13.html">13</a></td><td class="cal-day">14</td><td class="cal-day"><a class="cal-link" href="index-2011-07-15.html">15</a></td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-07-18.html">18</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-19.html">19</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-20.html">20</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-21.html">21</a></td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td></tr>
+<tr class="cal-week">
+<td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day"><a class="cal-link" href="index-2011-07-27.html">27</a></td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

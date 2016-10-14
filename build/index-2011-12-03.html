@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>s&#225;bado, 03 diciembre</h2>
+<div class="time">
+<h3>00:00</h3>
+<div class="item feed-3c203c3b feed-{feed_id}" id="item-f25d65ba">
+<p class="itemheader">
+<span class="itemtitle">
+    joe di castro:
+<a href="http://joedicastro.com/convertir-ficheros-djvu-a-pdf-en-linux.html">Convertir ficheros djvu a pdf en Linux</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Tengo por costumbre almacenar mis documentos escaneados en el formato 
+<a href="http://es.wikipedia.org/wiki/DjVu">djvu</a>, que fue expresamente creado para esa tarea y que otorga la mejor 
+calidad posible en el menor espacio. Es el formato perfecto para documentos 
+complejos sobre los que no se va a realizar un <a href="http://es.wikipedia.org/wiki/Reconocimiento_%C3%B3ptico_de_caracteres">OCR</a> (aunque tambi&#233;n lo soporta). Adem&#225;s es un formato abierto, por lo que nos garantiza que podr&#225; seguir 
+emple&#225;ndose en un futuro. Pero a veces necesito compartir estos ficheros con 
+otros y para evitarme problemas suelo convertirlos a un formato m&#225;s conocido y 
+difundido como <a href="http://es.wikipedia.org/wiki/Pdf">PDF</a>.</p>
+<p>Para realizar esta conversi&#243;n empleo desde hace a&#241;os (la primera versi&#243;n es del 
+2009) un sencillo script en python. Ahora que he necesitado una conversi&#243;n 
+masiva de documentos de un formato al otro, he modificado el script para hacer 
+esto m&#225;s sencillo y he decidido compartirlo con cualquiera que pueda necesitarlo. </p>
+<h2 id="los_requisitos_previos">Los requisitos previos</h2>
+<p>Est&#225; dise&#241;ado para funcionar en Linux y necesita de la instalaci&#243;n de dos 
+peque&#241;os programas que son los que realmente realizan la conversi&#243;n. Estos dos 
+programas son <code>ddjvu</code> y <code>tiff2pdf</code>. Adem&#225;s de tener instalado <strong>Python</strong> en una 
+versi&#243;n <em>2.7</em> o superior. Estos dos programas vienen en los repositorios de 
+pr&#225;cticamente todas las distribuciones importantes dentro de los paquetes 
+<a href="http://djvu.sourceforge.net/">djvulibre</a> y <a href="http://libtiff.maptools.org">libtiff</a>.</p>
+<p>En el caso de no tenerlos instalados, la instalaci&#243;n de los mismos es muy 
+sencilla, para distribuciones basadas en Debian/Ubuntu:</p>
+<div class="codehilite"><pre><span class="gp">$</span> apt-get install djvulibre-bin libtiff-tools
+</pre></div>
+
+
+<p><code>ddjvu</code> nos extrae las p&#225;ginas que conforman el documento <em>.djvu</em> a un archivo intermedio en formato <em>.tiff</em> y <code>tiff2pdf</code> nos lo convierte en <em>.pdf</em>.</p>
+<h2 id="modo_de_empleo">Modo de empleo</h2>
+<p>Emplearlo es muy sencillo, como se puede ver en la ayuda del mismo:</p>
+<div class="codehilite"><pre><span class="gp">$</span> djvu2pdf -h
+<span class="go">usage: djvu2pdf [-h] [-d | -z] [-v] file [file ...]</span>
+
+<span class="go">Converts a djvu file into a pdf file</span>
+
+<span class="go">positional arguments:</span>
+<span class="go">  file           The djvu file</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help     show this help message and exit</span>
+<span class="go">  -d             no compression. Best quality but big files.</span>
+<span class="go">  -z             zip compression. More quality, more size.</span>
+<span class="go">  -v, --version  show program's version number and exit</span>
+</pre></div>
+
+
+<p>B&#225;sicamente llamandalo desde python y poniendo a continuaci&#243;n el nombre del 
+fichero/s es lo &#250;nico que necesitamos para ejecutarlo, por ejemplo:</p>
+<div class="codehilite"><pre><span class="gp">$</span> ls
+<span class="go">documento.djvu  documento_2.djvu</span>
+<span class="gp">$</span> python djvu2pdf.py documento.djvu documento_2.djvu
+<span class="gp">$</span> ls
+<span class="go">documento.djvu  documento.pdf  documento_2.djvu  documento_2.pdf</span>
+</pre></div>
+
+
+<p>Opcionalmente tenemos las opciones <code>-d</code> y <code>-z</code>, que nos sirven para especificar 
+si queremos no emplear compresi&#243;n en el <em>.pdf</em> (por defecto emplea compresi&#243;n 
+<a href="http://es.wikipedia.org/wiki/Jpeg">jpeg</a>) o emplear compresi&#243;n <a href="http://es.wikipedia.org/wiki/Formato_de_compresi%C3%B3n_ZIP">zip</a>, respectivamente. Si no empleamos compresi&#243;n, la calidad final ser&#225; la mejor posible, pero los archivos ser&#225;n muy grandes. En cambio, empleando <em>zip</em>, tenemos unos ficheros ligeramente mayores a cambio de una calidad muy buena. Aunque la compresi&#243;n <em>zip</em> puede dar problemas 
+con algunos visores y lectores de ebooks.</p>
+<h2 id="el_script_djvu2pdfpy">El script, djvu2pdf.py</h2>
+<p>El contenido del scipt es el que sigue. Este est&#225; disponible como el fichero 
+<code>djvu2pdf.py</code> dentro del repositorio <em>Python Recipes</em>  que est&#225; alojado en
+<a href="http://github.com/joedicastro/python-recipes">github</a> y actualizado siempre a la &#250;ltima versi&#243;n.</p>
+<div class="codehilite"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    djvu2pdf.py: Converts a .djvu file into a .pdf file</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c">#==============================================================================</span>
+<span class="c"># This Script does exactly as the description above says.</span>
+<span class="c">#==============================================================================</span>
+
+<span class="c">#==============================================================================</span>
+<span class="c">#    Copyright 2011 joe di castro &lt;joe@joedicastro.com&gt;</span>
+<span class="c">#</span>
+<span class="c">#    This program is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    This program is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#==============================================================================</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&quot;joe di castro &lt;joe@joedicastro.com&gt;&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s">&quot;GNU General Public License version 3&quot;</span>
+<span class="n">__date__</span> <span class="o">=</span> <span class="s">&quot;03/12/2011&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0.3&quot;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
+    <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c"># Checks the installation of the necessary python modules</span>
+    <span class="k">print</span><span class="p">((</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;An error found importing one module:&quot;</span><span class="p">,</span>
+    <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="s">&quot;You need to install it&quot;</span><span class="p">,</span> <span class="s">&quot;Stopping...&quot;</span><span class="p">]))</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">check_execs</span><span class="p">(</span><span class="o">*</span><span class="n">progs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if the programs are installed, if not exit and report.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">prog</span> <span class="ow">in</span> <span class="n">progs</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Popen</span><span class="p">([</span><span class="n">prog</span><span class="p">,</span> <span class="s">'--help'</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">'The {0} program is necessary to run the script'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prog</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">return</span>
+
+<span class="k">def</span> <span class="nf">arguments</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Defines the command line arguments for the script.&quot;&quot;&quot;</span>
+    <span class="n">main_desc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;Converts a djvu file into a pdf file&quot;&quot;&quot;</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">main_desc</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;The djvu file&quot;</span><span class="p">)</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;qlty&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_const&quot;</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="s">&quot;-d&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;no compression. Best quality but big files.&quot;</span><span class="p">)</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-z&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;qlty&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_const&quot;</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="s">&quot;-z&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;zip compression. More quality, more size.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--version&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;version&quot;</span><span class="p">,</span>
+                        <span class="n">version</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(prog)s</span><span class="s"> {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">__version__</span><span class="p">),</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;show program's version number and exit&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span>
+
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Process the external commands and report the errors.&quot;&quot;&quot;</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;{0}: {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)))</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Main section.&quot;&quot;&quot;</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">arguments</span><span class="p">()</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">djvu_files</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">file</span>
+
+    <span class="k">for</span> <span class="n">djvu</span> <span class="ow">in</span> <span class="n">djvu_files</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">djvu</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;ERROR: cannot open '{0}' (No such file)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">djvu</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">djvu_filename</span> <span class="o">=</span> <span class="n">djvu</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.djvu&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">tiff</span> <span class="o">=</span> <span class="s">'{0}.tif'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">djvu_filename</span><span class="p">)</span>
+            <span class="n">pdf</span> <span class="o">=</span> <span class="s">'{0}.pdf'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">djvu_filename</span><span class="p">)</span>
+            <span class="n">process</span><span class="p">([</span><span class="s">'ddjvu'</span><span class="p">,</span> <span class="s">'-format=tiff'</span><span class="p">,</span> <span class="n">djvu</span><span class="p">,</span> <span class="n">tiff</span><span class="p">],</span> <span class="n">tiff</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tiff</span><span class="p">):</span>
+                <span class="n">quality</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">qlty</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">qlty</span> <span class="k">else</span> <span class="s">&quot;-j&quot;</span>
+                <span class="n">process</span><span class="p">([</span><span class="s">'tiff2pdf'</span><span class="p">,</span> <span class="n">quality</span><span class="p">,</span> <span class="s">'-o'</span><span class="p">,</span> <span class="n">pdf</span><span class="p">,</span> <span class="n">tiff</span><span class="p">],</span> <span class="n">pdf</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tiff</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">check_execs</span><span class="p">(</span><span class="s">'ddjvu'</span><span class="p">,</span> <span class="s">'tiff2pdf'</span><span class="p">)</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-11-18.html">&lt;</a></td>
+<td class="cal-month" colspan="5">diciembre 2011</td>
+<td class="cal-next"><a href="index-2012-01-31.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day"><strong class="cal-current">03</strong></td><td class="cal-day">04</td></tr>
+<tr class="cal-week">
+<td class="cal-day">05</td><td class="cal-day"><a class="cal-link" href="index-2011-12-06.html">06</a></td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day"><a class="cal-link" href="index-2011-12-11.html">11</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td></tr>
+<tr class="cal-week">
+<td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td></tr>
+<tr class="cal-week">
+<td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

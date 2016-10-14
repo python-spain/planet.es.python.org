@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>lunes, 02 junio</h2>
+<div class="time">
+<h3>07:00</h3>
+<div class="item feed-8134caca feed-{feed_id}" id="item-03b026ed">
+<p class="itemheader">
+<span class="itemtitle">
+    Pybonacci:
+<a href="https://pybonacci.wordpress.com/2014/06/02/pandas-ii-2/">Pandas (II)</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Antes de nada, el contexto, para esta serie de entradas se va a usar lo siguiente:</p>
+<pre>Versi&#243;n de Python:      3.3.1 (default, Apr 10 2013, 19:05:32) 
+[GCC 4.6.3]
+Versi&#243;n de Pandas:      0.13.1
+Versi&#243;n de Numpy:       1.8.1
+Versi&#243;n de Matplotlib:  1.3.1
+</pre>
+<p>&nbsp;</p>
+<p>Y sin m&#225;s pre&#225;mbulos seguimos con esta segunda parte de <a href="https://pybonacci.wordpress.com/tag/tutorial-de-pandas/">la serie</a>.</p>
+<p><strong>Leyendo y escribiendo datos (IO)</strong></p>
+<p>Una de las cosas que m&#225;s me gusta de Pandas es la potencia que aporta a lo hora de leer y/o escribir ficheros de datos. Pandas es capaz de leer datos de ficheros csv, excel, HDF5, sql, json, html,&#8230;</p>
+<p>Si trabaj&#225;is con datos de terceros, que pueden provenir de muy diversas fuentes, una de las partes m&#225;s tediosas del trabajo ser&#225; tener los datos listos para empezar a trabajar. Limpiar huecos, poner fechas en formato usable, saltarse cabeceros,&#8230;</p>
+<p>Sin duda, una de las <a href="http://pandas.pydata.org/pandas-docs/stable/io.html#csv-text-files">funciones que usar&#233;is m&#225;s</a> ser&#225; <code>read_csv()</code> que permite una gran flexibilidad a la hora de leer un fichero de texto plano.</p>
+<p>Veamos la documentaci&#243;n:</p>
+<pre><code>Docstring:
+Read CSV (comma-separated) file into DataFrame
+
+Also supports optionally iterating or breaking of the file
+into chunks.
+
+Parameters
+----------
+filepath_or_buffer : string or file handle / StringIO. The string could be
+    a URL. Valid URL schemes include http, ftp, s3, and file. For file URLs, a
+    host is expected. For instance, a local file could be
+    file ://localhost/path/to/table.csv
+sep : string, default ','
+    Delimiter to use. If sep is None, will try to automatically determine
+    this. Regular expressions are accepted.
+
+lineterminator : string (length 1), default None
+    Character to break file into lines. Only valid with C parser
+quotechar : string (length 1)
+    The character used to denote the start and end of a quoted item. Quoted
+    items can include the delimiter and it will be ignored.
+quoting : int or csv.QUOTE_* instance, default None
+    Control field quoting behavior per ``csv.QUOTE_*`` constants. Use one of
+    QUOTE_MINIMAL (0), QUOTE_ALL (1), QUOTE_NONNUMERIC (2) or QUOTE_NONE (3).
+    Default (None) results in QUOTE_MINIMAL behavior.
+skipinitialspace : boolean, default False
+    Skip spaces after delimiter
+escapechar : string
+dtype : Type name or dict of column -&gt; type
+    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
+compression : {'gzip', 'bz2', None}, default None
+    For on-the-fly decompression of on-disk data
+dialect : string or csv.Dialect instance, default None
+    If None defaults to Excel dialect. Ignored if sep longer than 1 char
+    See csv.Dialect documentation for more details
+header : int row number(s) to use as the column names, and the start of the
+    data.  Defaults to 0 if no ``names`` passed, otherwise ``None``. Explicitly
+    pass ``header=0`` to be able to replace existing names. The header can be
+    a list of integers that specify row locations for a multi-index on the
+    columns E.g. [0,1,3]. Intervening rows that are not specified will be
+    skipped. (E.g. 2 in this example are skipped)
+skiprows : list-like or integer
+    Row numbers to skip (0-indexed) or number of rows to skip (int)
+    at the start of the file
+index_col : int or sequence or False, default None
+    Column to use as the row labels of the DataFrame. If a sequence is given, a
+    MultiIndex is used. If you have a malformed file with delimiters at the end
+    of each line, you might consider index_col=False to force pandas to _not_
+    use the first column as the index (row names)
+names : array-like
+    List of column names to use. If file contains no header row, then you
+    should explicitly pass header=None
+prefix : string or None (default)
+    Prefix to add to column numbers when no header, e.g 'X' for X0, X1, ...
+na_values : list-like or dict, default None
+    Additional strings to recognize as NA/NaN. If dict passed, specific
+    per-column NA values
+true_values : list
+    Values to consider as True
+false_values : list
+    Values to consider as False
+keep_default_na : bool, default True
+    If na_values are specified and keep_default_na is False the default NaN
+    values are overridden, otherwise they're appended to
+parse_dates : boolean, list of ints or names, list of lists, or dict
+    If True -&gt; try parsing the index.
+    If [1, 2, 3] -&gt; try parsing columns 1, 2, 3 each as a separate date column.
+    If [[1, 3]] -&gt; combine columns 1 and 3 and parse as a single date column.
+    {'foo' : [1, 3]} -&gt; parse columns 1, 3 as date and call result 'foo'
+    A fast-path exists for iso8601-formatted dates.
+keep_date_col : boolean, default False
+    If True and parse_dates specifies combining multiple columns then
+    keep the original columns.
+date_parser : function
+    Function to use for converting a sequence of string columns to an
+    array of datetime instances. The default uses dateutil.parser.parser
+    to do the conversion.
+dayfirst : boolean, default False
+    DD/MM format dates, international and European format
+thousands : str, default None
+    Thousands separator
+comment : str, default None
+    Indicates remainder of line should not be parsed
+    Does not support line commenting (will return empty line)
+decimal : str, default '.'
+    Character to recognize as decimal point. E.g. use ',' for European data
+nrows : int, default None
+    Number of rows of file to read. Useful for reading pieces of large files
+iterator : boolean, default False
+    Return TextFileReader object
+chunksize : int, default None
+    Return TextFileReader object for iteration
+skipfooter : int, default 0
+    Number of line at bottom of file to skip
+converters : dict. optional
+    Dict of functions for converting values in certain columns. Keys can either
+    be integers or column labels
+verbose : boolean, default False
+    Indicate number of NA values placed in non-numeric columns
+delimiter : string, default None
+    Alternative argument name for sep. Regular expressions are accepted.
+encoding : string, default None
+    Encoding to use for UTF when reading/writing (ex. 'utf-8')
+squeeze : boolean, default False
+    If the parsed data only contains one column then return a Series
+na_filter: boolean, default True
+    Detect missing value markers (empty strings and the value of na_values). In
+    data without any NAs, passing na_filter=False can improve the performance
+    of reading a large file
+usecols : array-like
+    Return a subset of the columns.
+    Results in much faster parsing time and lower memory usage.
+mangle_dupe_cols: boolean, default True
+    Duplicate columns will be specified as 'X.0'...'X.N', rather than 'X'...'X'
+tupleize_cols: boolean, default False
+    Leave a list of tuples on columns as is (default is to convert to
+    a Multi Index on the columns)
+error_bad_lines: boolean, default True
+    Lines with too many fields (e.g. a csv line with too many commas) will by
+    default cause an exception to be raised, and no DataFrame will be returned.
+    If False, then these "bad lines" will dropped from the DataFrame that is
+    returned. (Only valid with C parser).
+warn_bad_lines: boolean, default True
+    If error_bad_lines is False, and warn_bad_lines is True, a warning for each
+    "bad line" will be output. (Only valid with C parser).
+infer_datetime_format : boolean, default False
+    If True and parse_dates is enabled for a column, attempt to infer
+    the datetime format to speed up the processing
+
+Returns
+-------
+result : DataFrame or TextParser</code></pre>
+<p>&nbsp;</p>
+<p>Vamos a inventarnos un fichero de datos&#8230; (la siguiente pieza de c&#243;digo es espec&#237;fica de IPython y, por tanto, funciona solo en IPython)</p>
+<pre class="brush: python; title: ; notranslate">
+
+%%writefile dummy.data
+cabecero est&#250;pido
+901001 0000  7.54 -11.67  1.07  4.27
+901001 0600 19.61 -2.74 27.87 -8.96
+901001 1200 -4.34  0.73 -6.58  0.17
+901001 1800 -4.99  3.24 10.62 -6.13
+901002 0000 -3.54 10.39 -12.05 -13.35
+901002 0600 12.55  3.80  4.92 -8.18
+901002 1200 1.06 23.75 -8.03 -8.67
+901002 1800 -1.12  1.82  7.09 -6.06
+901003 0600 -5.90  2.38 19.33  6.84
+901003 1200 -9.51 -2.72 -7.13 -0.35
+901003 1800  6.49 -12.01 -13.62 -0.93
+
+</pre>
+<p>&nbsp;</p>
+<p>Vamos a leer con Pandas el fichero que acabamos de crear:</p>
+<pre class="brush: python; title: ; notranslate">
+
+data = pd.read_csv('dummy.data', sep = '\s*',
+                   names = ['fecha', 'hora', 'rec1', 'rec2', 'rec3', 'rec4'],
+                   skiprows = 1, parse_dates = [[0, 1]], index_col = 0)
+
+</pre>
+<p>&nbsp;</p>
+<p>Veamos lo que acabamos de leer:</p>
+<pre class="brush: python; title: ; notranslate">
+
+print(data)
+
+</pre>
+<p>Y lo que nos mostrar&#225; ser&#225;:</p>
+<pre>                      rec1   rec2   rec3   rec4
+fecha_hora                                     
+1990-10-01 00:00:00   7.54 -11.67   1.07   4.27
+1990-10-01 06:00:00  19.61  -2.74  27.87  -8.96
+1990-10-01 12:00:00  -4.34   0.73  -6.58   0.17
+1990-10-01 18:00:00  -4.99   3.24  10.62  -6.13
+1990-10-02 00:00:00  -3.54  10.39 -12.05 -13.35
+1990-10-02 06:00:00  12.55   3.80   4.92  -8.18
+1990-10-02 12:00:00   1.06  23.75  -8.03  -8.67
+1990-10-02 18:00:00  -1.12   1.82   7.09  -6.06
+1990-10-03 06:00:00  -5.90   2.38  19.33   6.84
+1990-10-03 12:00:00  -9.51  -2.72  -7.13  -0.35
+1990-10-03 18:00:00   6.49 -12.01 -13.62  -0.93
+
+[11 rows x 4 columns]</pre>
+<p>&nbsp;</p>
+<p>Como veis, hemos usado:</p>
+<ul>
+<li>una expresi&#243;n regular en <code>sep</code> permiti&#233;ndonos mucha libertad a la hora de definir como est&#225;n separados los datos. Si los delimitadores de los datos en cada fila son espacios o tabulaciones podr&#237;amos usar <code><a href="http://pandas.pydata.org/pandas-docs/stable/io.html#io-read-csv-table">delim_whitespace</a></code>, que es much&#237;simo m&#225;s eficiente que usar expresiones regulares (AVISO: esto no aparece en la ayuda de la funci&#243;n <code>read_csv</code>).</li>
+<li><code>names</code> sirve para indicar qu&#233; nombres hay que poner a cada una de las columnas. Si no ponemos ning&#250;n nombre las nombrar&#225; con n&#250;meros empezando con el <code>0</code>.</li>
+<li><code>parse_dates</code> es otra de las cosas realmente &#250;tiles cuando trabajamos con registros temporales. Ah&#237; le indicamos qu&#233; columnas tiene que considerar como fechas y las &#8216;parsea&#8217; para convertirlo en un tipo interno de fechas. Si os fij&#225;is, he puesto las columnas <code>0</code> y <code>1</code> dentro de una lista, de esa forma las unir&#225; en una sola columna de fechas con la que ser&#225; m&#225;s c&#243;modo trabajar. Si autom&#225;gicamente no es capaz de leer los formatos de las fechas le podemos indicar como las debe parsear (ver <code>date_parser</code>).</li>
+<li>El &#250;ltimo par&#225;metro que le hemos pasado es <code>index_col</code>, le indicamos que la columna de &#237;ndices ser&#225; la <code>0</code>, que ser&#225; la uni&#243;n de las columnas <code>0</code> y <code>1</code> de fechas.</li>
+</ul>
+<p>Muy poderoso, &#191;eh?</p>
+<p>Escribir el resultado final en un fichero csv, por ejemplo, es algo tan sencillo como:</p>
+<pre class="brush: python; title: ; notranslate">
+
+data.to_csv('dummy.csv')
+
+</pre>
+<p>Si quer&#233;is ver el resultado del fichero final creado y est&#225;is en IPython pod&#233;is escribir lo siguiente:</p>
+<pre class="brush: python; title: ; notranslate">
+
+%load dummy.csv
+
+</pre>
+<p>Y en pantalla ver&#233;is el siguiente texto:</p>
+<pre><span class="n">fecha_hora</span><span class="p">,</span><span class="n">rec1</span><span class="p">,</span><span class="n">rec2</span><span class="p">,</span><span class="n">rec3</span><span class="p">,</span><span class="n">rec4</span>
+<span class="mi">1990</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mo">01</span> <span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">,</span><span class="mf">7.54</span><span class="p">,</span><span class="o">-</span><span class="mf">11.67</span><span class="p">,</span><span class="mf">1.07</span><span class="p">,</span><span class="mf">4.27</span>
+<span class="mi">1990</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mo">01</span> <span class="mo">06</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">,</span><span class="mf">19.61</span><span class="p">,</span><span class="o">-</span><span class="mf">2.74</span><span class="p">,</span><span class="mf">27.87</span><span class="p">,</span><span class="o">-</span><span class="mf">8.96</span>
+<span class="mi">1990</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mo">01</span> <span class="mi">12</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">,</span><span class="o">-</span><span class="mf">4.34</span><span class="p">,</span><span class="mf">0.73</span><span class="p">,</span><span class="o">-</span><span class="mf">6.58</span><span class="p">,</span><span class="mf">0.17</span>
+<span class="mi">1990</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mo">01</span> <span class="mi">18</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">,</span><span class="o">-</span><span class="mf">4.99</span><span class="p">,</span><span class="mf">3.24</span><span class="p">,</span><span class="mf">10.62</span><span class="p">,</span><span class="o">-</span><span class="mf">6.13</span>
+<span class="mi">1990</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mo">02</span> <span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">,</span><span class="o">-</span><span class="mf">3.54</span><span class="p">,</span><span class="mf">10.39</span><span class="p">,</span><span class="o">-</span><span class="mf">12.05</span><span class="p">,</span><span class="o">-</span><span class="mf">13.35</span>
+<span class="mi">1990</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mo">02</span> <span class="mo">06</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">,</span><span class="mf">12.55</span><span class="p">,</span><span class="mf">3.8</span><span class="p">,</span><span class="mf">4.92</span><span class="p">,</span><span class="o">-</span><span class="mf">8.18</span>
+<span class="mi">1990</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mo">02</span> <span class="mi">12</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">,</span><span class="mf">1.06</span><span class="p">,</span><span class="mf">23.75</span><span class="p">,</span><span class="o">-</span><span class="mf">8.03</span><span class="p">,</span><span class="o">-</span><span class="mf">8.67</span>
+<span class="mi">1990</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mo">02</span> <span class="mi">18</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">,</span><span class="o">-</span><span class="mf">1.12</span><span class="p">,</span><span class="mf">1.82</span><span class="p">,</span><span class="mf">7.09</span><span class="p">,</span><span class="o">-</span><span class="mf">6.06</span>
+<span class="mi">1990</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mo">03</span> <span class="mo">06</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">,</span><span class="o">-</span><span class="mf">5.9</span><span class="p">,</span><span class="mf">2.38</span><span class="p">,</span><span class="mf">19.33</span><span class="p">,</span><span class="mf">6.84</span>
+<span class="mi">1990</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mo">03</span> <span class="mi">12</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">,</span><span class="o">-</span><span class="mf">9.51</span><span class="p">,</span><span class="o">-</span><span class="mf">2.72</span><span class="p">,</span><span class="o">-</span><span class="mf">7.13</span><span class="p">,</span><span class="o">-</span><span class="mf">0.35</span>
+<span class="mi">1990</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mo">03</span> <span class="mi">18</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">,</span><span class="mf">6.49</span><span class="p">,</span><span class="o">-</span><span class="mf">12.01</span><span class="p">,</span><span class="o">-</span><span class="mf">13.62</span><span class="p">,</span><span class="o">-</span><span class="mf">0.93</span></pre>
+<p>&nbsp;</p>
+<p>Otra tarea que se realiza habitualmente ser&#237;a la de trabajar con informaci&#243;n de una base de datos SQL. No lo vamos a ver aqu&#237; pero <a href="http://nbviewer.ipython.org/github/jvns/pandas-cookbook/blob/master/cookbook/Chapter%209%20-%20Loading%20data%20from%20SQL%20databases.ipynb">pod&#233;is ver este notebook donde se explica como leer y/o escribir datos de una BBDD SQL</a> (SQLite, PostgreSQL o MySQL). Una vez que se han le&#237;do, el tratamiento es el mismo que si los hubi&#233;semos le&#237;do de otro origen.</p>
+<p>Es suficiente por hoy.&#160;Esta entrada ha sido cortita pero en breve dejaremos una tercera parte con m&#225;s enjundia&#8230; &#161;&#161;Estad atentos!!</p><br />Archivado en: <a href="https://pybonacci.wordpress.com/category/articulos/">Art&#237;culos</a>, <a href="https://pybonacci.wordpress.com/category/tutoriales/">Tutoriales</a> Tagged: <a href="https://pybonacci.wordpress.com/tag/big-data/">big data</a>, <a href="https://pybonacci.wordpress.com/tag/bigdata/">bigdata</a>, <a href="https://pybonacci.wordpress.com/tag/datos/">datos</a>, <a href="https://pybonacci.wordpress.com/tag/excel/">excel</a>, <a href="https://pybonacci.wordpress.com/tag/hdf5/">hdf5</a>, <a href="https://pybonacci.wordpress.com/tag/pandas/">pandas</a>, <a href="https://pybonacci.wordpress.com/tag/python3/">python3</a>, <a href="https://pybonacci.wordpress.com/tag/sql/">sql</a>, <a href="https://pybonacci.wordpress.com/tag/tutorial-de-pandas/">Tutorial de pandas</a> <a href="http://feeds.wordpress.com/1.0/gocomments/pybonacci.wordpress.com/2301/" rel="nofollow"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/pybonacci.wordpress.com/2301/" /></a> <img alt="" border="0" height="1" src="https://pixel.wp.com/b.gif?host=pybonacci.wordpress.com&#038;blog=33759577&#038;post=2301&#038;subd=pybonacci&#038;ref=&#038;feed=1" width="1" />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2014-04-15.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2014</td>
+<td class="cal-next"><a href="index-2014-07-09.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">26</em></td><td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><strong class="cal-current">02</strong></td><td class="cal-day">03</td><td class="cal-day"><a class="cal-link" href="index-2014-06-04.html">04</a></td><td class="cal-day">05</td><td class="cal-day"><a class="cal-link" href="index-2014-06-06.html">06</a></td><td class="cal-day">07</td><td class="cal-day"><a class="cal-link" href="index-2014-06-08.html">08</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">09</td><td class="cal-day"><a class="cal-link" href="index-2014-06-10.html">10</a></td><td class="cal-day"><a class="cal-link" href="index-2014-06-11.html">11</a></td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td></tr>
+<tr class="cal-week">
+<td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td></tr>
+<tr class="cal-week">
+<td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td></tr>
+<tr class="cal-week">
+<td class="cal-day">30</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td><td class="cal-day"><em class="cal-othermonth">06</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

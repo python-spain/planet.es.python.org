@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>jueves, 11 febrero</h2>
+<div class="time">
+<h3>14:04</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-29bb8542">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2016/02/iniciando-django-con-docker-usando.html">Iniciando Django con docker usando docker-compose con postgresql como microservicio.</a></span>
+</p>
+    <div class="itemdescription">
+    <p>En este art&#237;culo se tomar&#225; lo visto en el art&#237;culo de microservicios con docker donde se uso flask y redis, en este caso ser&#225; con postgresql y Django.<br /><br />Dejo a continuaci&#243;n la lista de art&#237;culos sobre docker que se ha tocado en el blog:<br /><br /><ol><li><a href="http://blog.crespo.org.ve/2015/12/instalar-docker-en-debian-jessie.html" target="_blank">Instalar Docker en Debian Jessie</a></li><li><a href="http://blog.crespo.org.ve/2015/12/uso-de-docker-en-debian-jessie-parte-1.html" target="_blank">Uso de Docker en Debian Jessie (parte 1)</a></li><li><a href="http://blog.crespo.org.ve/2015/12/uso-de-docker-en-debian-jessie-parte-2.html" target="_blank">Uso de Docker en Debian Jessie (parte 2)</a></li><li><a href="http://blog.crespo.org.ve/2016/01/crear-una-imagen-docker-partir-de-un.html" target="_blank">Crear una imagen Docker a partir de un archivo Dockerfile</a></li><li><a href="http://blog.crespo.org.ve/2016/01/iniciando-django-usando-docker.html" target="_blank">Iniciando Django usando Docker</a></li><li><a href="http://blog.crespo.org.ve/2016/01/instalar-gitlab-por-medio-de-docker.html" target="_blank">Instalar Gitlab por medio de Docker</a></li><li><a href="http://blog.crespo.org.ve/2016/01/ejecutando-microsservicios-con-docker.html" target="_blank">Ejecutando microservicios con docker usando docker-compose</a></li><li><a href="http://blog.crespo.org.ve/2016/01/docker-en-docker-dind.html" target="_blank">Docker en Docker (DinD)</a></li></ol><br /><br />El art&#237;culo se basa en un art&#237;culo en ingl&#233;s sobre <a href="https://docs.docker.com/compose/django/" target="_blank">docker-compose y django</a>.<br /><br /><br />La idea es tener dos contenedores uno ejecutando postgresql y otro Django.<br /><br />En un directorio se crea el archivo Dockerfile con el siguiente contenido:<br /><br /><i><span style="color: blue;">FROM python:2.7</span></i><br /><i><span style="color: blue;">ENV PYTHONUNBUFFERED 1</span></i><br /><i><span style="color: blue;">RUN mkdir /codigo</span></i><br /><i><span style="color: blue;">WORKDIR /codigo</span></i><br /><i><span style="color: blue;">ADD requerimientos.txt /codigo/</span></i><br /><i><span style="color: blue;">RUN pip install --upgrade pip</span></i><br /><i><span style="color: blue;">RUN pip install -r requermientos.txt</span></i><br /><i><span style="color: blue;">ADD . /codigo/</span></i><br /><br />El archivo requerimientos.txt contendr&#225; la instalaci&#243;n de Django y de la librer&#237;a psycopg2 para conectarse a postgresql desde &nbsp;django:<br /><br /><span style="color: blue;"><i>Django</i></span><br /><span style="color: blue;"><i>psycopg2</i></span><br /><br />El &#250;ltimo archivo a crear es el que usar&#225; docker-compose con el nombre de docker-compose.yml y su contenido iniciar&#225; la base de datos postgresql y luego a Django:<br /><br /><i><span style="color: blue;">bd:</span></i><br /><i><span style="color: blue;">&nbsp; image: postgres</span></i><br /><i><span style="color: blue;">web:</span></i><br /><i><span style="color: blue;">&nbsp; build: .</span></i><br /><i><span style="color: blue;">&nbsp; command: python manage.py runserver 0.0.0.0:8000</span></i><br /><i><span style="color: blue;">&nbsp; volumes:</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; - .:/codigo</span></i><br /><i><span style="color: blue;">&nbsp; ports:</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; - "8000:8000"</span></i><br /><i><span style="color: blue;">&nbsp; links:</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; - bd</span></i><br /><br /><br />Se tendr&#225;n dos contenedores uno llamado bd y otro web. El comando a iniciar DJango es el que se conoce y usa el puerto 8000 que ser&#225; visto de manera p&#250;blica.<br /><br /><br />A continuaci&#243;n se crea el proyecto Django con el siguiente comando:<br /><br />docker-compose run web django-admin.py startproject djangoapp .<br /><b><span style="color: red;">Building web</span></b><br /><b><span style="color: red;">Step 1 : FROM python:2.7</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 19ab33b86bc6</span></b><br /><b><span style="color: red;">Step 2 : ENV PYTHONUNBUFFERED 1</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Running in eb54e8bab43f</span></b><br /><b><span style="color: red;">&nbsp;---&gt; a4206823aac3</span></b><br /><b><span style="color: red;">Removing intermediate container eb54e8bab43f</span></b><br /><b><span style="color: red;">Step 3 : RUN mkdir /app</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Running in bf221dbca163</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 44eb31969545</span></b><br /><b><span style="color: red;">Removing intermediate container bf221dbca163</span></b><br /><b><span style="color: red;">Step 4 : WORKDIR /app</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Running in 6209e18e7e87</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 6f7d50fc9b12</span></b><br /><b><span style="color: red;">Removing intermediate container 6209e18e7e87</span></b><br /><b><span style="color: red;">Step 5 : ADD requerimientos.txt /app/</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 293c5424f664</span></b><br /><b><span style="color: red;">Removing intermediate container c072ad8ca2ae</span></b><br /><b><span style="color: red;">Step 6 : RUN pip install --upgrade pip</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Running in 48f862804290</span></b><br /><b><span style="color: red;">Collecting pip</span></b><br /><b><span style="color: red;">&nbsp; Downloading pip-8.0.2-py2.py3-none-any.whl (1.2MB)</span></b><br /><b><span style="color: red;">Installing collected packages: pip</span></b><br /><b><span style="color: red;">&nbsp; Found existing installation: pip 7.1.2</span></b><br /><b><span style="color: red;">&nbsp; &nbsp; Uninstalling pip-7.1.2:</span></b><br /><b><span style="color: red;">&nbsp; &nbsp; &nbsp; Successfully uninstalled pip-7.1.2</span></b><br /><b><span style="color: red;">Successfully installed pip-8.0.2</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 6126a41cd55b</span></b><br /><b><span style="color: red;">Removing intermediate container 48f862804290</span></b><br /><b><span style="color: red;">Step 7 : RUN pip install -r requerimientos.txt</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Running in 7e6c9ff9fefa</span></b><br /><b><span style="color: red;">Collecting Django (from -r requerimientos.txt (line 1))</span></b><br /><b><span style="color: red;">&nbsp; Downloading Django-1.9.2-py2.py3-none-any.whl (6.6MB)</span></b><br /><b><span style="color: red;">Collecting psycopg2 (from -r requerimientos.txt (line 2))</span></b><br /><b><span style="color: red;">&nbsp; Downloading psycopg2-2.6.1.tar.gz (371kB)</span></b><br /><b><span style="color: red;">Building wheels for collected packages: psycopg2</span></b><br /><b><span style="color: red;">&nbsp; Running setup.py bdist_wheel for psycopg2: started</span></b><br /><b><span style="color: red;">&nbsp; Running setup.py bdist_wheel for psycopg2: finished with status 'done'</span></b><br /><b><span style="color: red;">&nbsp; Stored in directory: /root/.cache/pip/wheels/e2/9a/5e/7b620848bbc7cfb9084aafea077be11618c2b5067bd532f329</span></b><br /><b><span style="color: red;">Successfully built psycopg2</span></b><br /><b><span style="color: red;">Installing collected packages: Django, psycopg2</span></b><br /><b><span style="color: red;">Successfully installed Django-1.9.2 psycopg2-2.6.1</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 971bcfbe34ec</span></b><br /><b><span style="color: red;">Removing intermediate container 7e6c9ff9fefa</span></b><br /><b><span style="color: red;">Step 8 : ADD . /app/</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 7a7faf87cf21</span></b><br /><b><span style="color: red;">Removing intermediate container 6c246df080b3</span></b><br /><b><span style="color: red;">Successfully built 7a7faf87cf21</span></b><br /><div><br /></div><div><br /></div><br /><br />Esto generar&#225; un directorio y unos archivos como se muestra a continuaci&#243;n:<br /><b><span style="color: red;">ls -l</span></b><br /><b><span style="color: red;">total 20</span></b><br /><b><span style="color: red;">drwxr-xr-x 2 root &nbsp; &nbsp;root &nbsp; &nbsp;4096 feb 10 21:35 djangoapp</span></b><br /><b><span style="color: red;">-rw-r--r-- 1 ernesto ernesto &nbsp;174 feb 10 21:14 docker-compose.yml</span></b><br /><b><span style="color: red;">-rw-r--r-- 1 ernesto ernesto &nbsp;177 feb 10 21:14 Dockerfile</span></b><br /><b><span style="color: red;">-rwxr-xr-x 1 root &nbsp; &nbsp;root &nbsp; &nbsp; 252 feb 10 21:35 manage.py</span></b><br /><b><span style="color: red;">-rw-r--r-- 1 ernesto ernesto &nbsp; 17 feb 10 20:10 requerimientos.txt</span></b><br /><div><br /></div><br />Es necesario cambiar de usuario al directorio djangoapp y a manage.py.<br /><b><span style="color: red;">sudo chown -R $USER:$USER .</span></b><br /><br />Se revisa las imagenes creadas:<br /><span style="color: red;"><b>docker images</b></span><br /><span style="color: red;"><b>REPOSITORY &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;TAG &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; IMAGE ID &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;CREATED &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; VIRTUAL SIZE</b></span><br /><span style="color: red;"><b>docker5_web &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;latest &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;7a7faf87cf21 &nbsp; &nbsp; &nbsp; &nbsp;4 minutes ago &nbsp; &nbsp; &nbsp; 715.2 MB</b></span><br /><span style="color: red;"><b>postgres &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;latest &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;54fa18d9f3b6 &nbsp; &nbsp; &nbsp; &nbsp;2 weeks ago &nbsp; &nbsp; &nbsp; &nbsp; 263.8 MB</b></span><br /><br /><br />Modificar el archivo djangoapp/settings.py para dar soporte a la conexi&#243;n al contenedor de postgresql:<br /><br />Modificar la secci&#243;n database con el siguiente contenido:<br /><br /><br /><i><span style="color: blue;">DATABASES = {</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; 'default': {</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'ENGINE': 'django.db.backends.postgresql_psycopg2',</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'NAME': 'postgres',</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'USER': 'postgres',</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'HOST': 'db',</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'PORT': 5432,</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; }</span></i><br /><i><span style="color: blue;">}</span></i><br /><div><br /></div><div>El usuario y clave son los que tiene predefinido la imagen de docker para postgresql.<br /><br />Se ejecuta migrate del manage.py para crear las tablas:<br /><b><span style="color: red;">docker-compose run web python manage.py migrate</span></b><br /><b><span style="color: red;"><br /></span></b><b><span style="color: red;">Operations to perform:</span></b><br /><b><span style="color: red;">&nbsp; Apply all migrations: admin, contenttypes, auth, sessions</span></b><br /><b><span style="color: red;">Running migrations:</span></b><br /><b><span style="color: red;">&nbsp; Rendering model states... DONE</span></b><br /><b><span style="color: red;">&nbsp; Applying contenttypes.0001_initial... OK</span></b><br /><b><span style="color: red;">&nbsp; Applying auth.0001_initial... OK</span></b><br /><b><span style="color: red;">&nbsp; Applying admin.0001_initial... OK</span></b><br /><b><span style="color: red;">&nbsp; Applying admin.0002_logentry_remove_auto_add... OK</span></b><br /><b><span style="color: red;">&nbsp; Applying contenttypes.0002_remove_content_type_name... OK</span></b><br /><b><span style="color: red;">&nbsp; Applying auth.0002_alter_permission_name_max_length... OK</span></b><br /><b><span style="color: red;">&nbsp; Applying auth.0003_alter_user_email_max_length... OK</span></b><br /><b><span style="color: red;">&nbsp; Applying auth.0004_alter_user_username_opts... OK</span></b><br /><b><span style="color: red;">&nbsp; Applying auth.0005_alter_user_last_login_null... OK</span></b><br /><b><span style="color: red;">&nbsp; Applying auth.0006_require_contenttypes_0002... OK</span></b><br /><b><span style="color: red;">&nbsp; Applying auth.0007_alter_validators_add_error_messages... OK</span></b><br /><b><span style="color: red;">&nbsp; Applying sessions.0001_initial... OK</span></b></div><div><b><span style="color: red;"><br /></span></b></div><div><br /></div><div>Se crea la cuenta de administrador de django:</div><div><div><span style="color: red;"><b>docker-compose run web python manage.py createsuperuser</b></span></div><div><span style="color: red;"><b>Username (leave blank to use 'root'): admin</b></span></div><div><span style="color: red;"><b>Email address:&nbsp;</b></span></div><div><span style="color: red;"><b>Password:&nbsp;</b></span></div><div><span style="color: red;"><b>Password (again):&nbsp;</b></span></div><div><span style="color: red;"><b>Superuser created successfully.</b></span></div></div><div><br /></div><div><br /></div><div>Para levantar el servidor web de django se inicia docker-compose:</div><div><br /></div><div><div><span style="color: red;"><b>$docker-compose up</b></span></div><div><span style="color: red;"><b>docker5_db_1 is up-to-date</b></span></div><div><span style="color: red;"><b>Creating docker5_web_1</b></span></div><div><span style="color: red;"><b>Attaching to docker5_db_1, docker5_web_1</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| The files belonging to this database system will be owned by user "postgres".</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| This user must also own the server process.</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| The database cluster will be initialized with locale "en_US.utf8".</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| The default database encoding has accordingly been set to "UTF8".</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| The default text search configuration will be set to "english".</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| Data page checksums are disabled.</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| fixing permissions on existing directory /var/lib/postgresql/data ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| creating subdirectories ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| selecting default max_connections ... 100</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| selecting default shared_buffers ... 128MB</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| selecting dynamic shared memory implementation ... posix</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| creating configuration files ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| creating template1 database in /var/lib/postgresql/data/base/1 ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| initializing pg_authid ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| initializing dependencies ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| creating system views ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| loading system objects' descriptions ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| creating collations ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| creating conversions ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| creating dictionaries ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| setting privileges on built-in objects ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| creating information schema ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| loading PL/pgSQL server-side language ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| vacuuming database template1 ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| copying template1 to template0 ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| copying template1 to postgres ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| syncing data to disk ... ok</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| WARNING: enabling "trust" authentication for local connections</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| You can change this by editing pg_hba.conf or using the option -A, or</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| --auth-local and --auth-host, the next time you run initdb.</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| Success. You can now start the database server using:</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| &nbsp; &nbsp; pg_ctl -D /var/lib/postgresql/data -l logfile start</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| ****************************************************</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| WARNING: No password has been set for the database.</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;This will allow anyone with access to the</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Postgres port to access your database. In</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Docker's default configuration, this is</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;effectively any other container on the same</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;system.</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Use "-e POSTGRES_PASSWORD=password" to set</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;it in "docker run".</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| ****************************************************</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| waiting for server to start....LOG: &nbsp;database system was shut down at 2016-02-11 04:34:33 UTC</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;MultiXact member wraparound protections are now enabled</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;database system is ready to accept connections</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;autovacuum launcher started</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| &nbsp;done</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| server started</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| ALTER ROLE</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| /docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;received fast shutdown request</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;aborting any active transactions</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| waiting for server to shut down...LOG: &nbsp;autovacuum launcher shutting down</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| .LOG: &nbsp;shutting down</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;database system is shut down</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| &nbsp;done</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| server stopped</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| PostgreSQL init process complete; ready for start up.</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;|&nbsp;</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;database system was shut down at 2016-02-11 04:34:38 UTC</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;MultiXact member wraparound protections are now enabled</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;database system is ready to accept connections</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;autovacuum launcher started</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;database system was interrupted; last known up at 2016-02-11 04:34:39 UTC</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;database system was not properly shut down; automatic recovery in progress</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;invalid record length at 0/1707848</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;redo is not required</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;MultiXact member wraparound protections are now enabled</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;database system is ready to accept connections</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| LOG: &nbsp;autovacuum launcher started</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| ERROR: &nbsp;relation "auth_user" does not exist at character 280</b></span></div><div><span style="color: red;"><b>db_1 &nbsp;| STATEMENT: &nbsp;SELECT "auth_user"."id", "auth_user"."password", "auth_user"."last_login", "auth_user"."is_superuser", "auth_user"."username", "auth_user"."first_name", "auth_user"."last_name", "auth_user"."email", "auth_user"."is_staff", "auth_user"."is_active", "auth_user"."date_joined" FROM "auth_user" WHERE "auth_user"."username" = 'root'</b></span></div><div><span style="color: red;"><b>web_1 | Performing system checks...</b></span></div><div><span style="color: red;"><b>web_1 |&nbsp;</b></span></div><div><span style="color: red;"><b>web_1 | System check identified no issues (0 silenced).</b></span></div><div><span style="color: red;"><b>web_1 | February 11, 2016 - 12:38:56</b></span></div><div><span style="color: red;"><b>web_1 | Django version 1.9.2, using settings 'djangoapp.settings'</b></span></div><div><span style="color: red;"><b>web_1 | Starting development server at http://0.0.0.0:8000/</b></span></div><div><span style="color: red;"><b>web_1 | Quit the server with CONTROL-C.</b></span></div></div><div><br /></div><div><br /></div><div>S&#243;lo queda abrir el navegador en la siguiente URL http://127.0.0.1:8000/admin.</div><div><br /></div><div>A continuaci&#243;n la imagen de la sesi&#243;n de admin de Django:</div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-9IAfbppY47U/VryB1kDck3I/AAAAAAAAL9k/u8sCHgmLn1U/s1600/Captura%2Bde%2Bpantalla%2B-%2B110216%2B-%2B08%253A10%253A51.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="92" src="https://3.bp.blogspot.com/-9IAfbppY47U/VryB1kDck3I/AAAAAAAAL9k/u8sCHgmLn1U/s320/Captura%2Bde%2Bpantalla%2B-%2B110216%2B-%2B08%253A10%253A51.png" width="320" /></a></div><div><br /></div><div><br /></div><div><br /></div><div>Y la figura de los logs de la ejecuci&#243;n de Django:<br /><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-RPKK5quJK2U/VryB-PV6PiI/AAAAAAAAL9o/O05A83-Dv3k/s1600/Captura%2Bde%2Bpantalla%2B-%2B110216%2B-%2B08%253A11%253A34.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="100" src="https://3.bp.blogspot.com/-RPKK5quJK2U/VryB-PV6PiI/AAAAAAAAL9o/O05A83-Dv3k/s320/Captura%2Bde%2Bpantalla%2B-%2B110216%2B-%2B08%253A11%253A34.png" width="320" /></a></div><br /><br />Como se vi&#243; en el art&#237;culo se puede ejecutar los comandos del manage.py desde fuera del contenedor que estos comandos se ejecutar&#225;n en el contenedor.<br /><br />Ya con esto se pueden realizar configuraciones m&#225;s complejas como incorporar redis o rabbitMQ (con Django Celery, explicado en un <a href="http://blog.crespo.org.ve/search/label/Django-celery" target="_blank">art&#237;culo anterior</a>) y lo mejor es que la configuraci&#243;n es simplemente adaptar lo que existe a las necesidades puntuales del proyecto.<br /><br />Referencias:<br /><br /><ol><li><a href="https://docs.docker.com/compose/django/" target="_blank">Quickstart: Compose and Django</a>.</li><li><a href="http://michal.karzynski.pl/blog/2015/04/19/packaging-django-applications-as-docker-container-images/" target="_blank">Packaging Django applications into Docker container images</a>.</li><li><a href="http://www.cristalab.com/tutoriales/deploy-de-django-sobre-docker-c114082l/" target="_blank">Deploy de Django sobre Docker</a>.</li><li><a href="https://www.digitalocean.com/community/tutorials/docker-explicado-como-crear-contenedores-de-docker-corriendo-en-memcached-es" target="_blank">Docker Explicado: C&#243;mo crear Contenedores de Docker corriendo en Memcached</a>.</li><li><a href="http://abirtone.com/docker/2015/07/28/uso-de-docker-en-aplicacion-de-nodejs/" target="_blank">Docker en la ejecuci&#243;n de test de integraci&#243;n en NodeJS</a>.</li></ol></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2015-11-13.html">&lt;</a></td>
+<td class="cal-month" colspan="5">febrero 2016</td>
+<td class="cal-next"><a href="index-2016-03-26.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day"><a class="cal-link" href="index-2016-02-07.html">07</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2016-02-08.html">08</a></td><td class="cal-day"><a class="cal-link" href="index-2016-02-09.html">09</a></td><td class="cal-day">10</td><td class="cal-day"><strong class="cal-current">11</strong></td><td class="cal-day"><a class="cal-link" href="index-2016-02-12.html">12</a></td><td class="cal-day">13</td><td class="cal-day">14</td></tr>
+<tr class="cal-week">
+<td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day"><a class="cal-link" href="index-2016-02-18.html">18</a></td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td></tr>
+<tr class="cal-week">
+<td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day"><a class="cal-link" href="index-2016-02-24.html">24</a></td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td></tr>
+<tr class="cal-week">
+<td class="cal-day">29</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td><td class="cal-day"><em class="cal-othermonth">06</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

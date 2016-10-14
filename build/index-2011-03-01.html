@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>martes, 01 marzo</h2>
+<div class="time">
+<h3>21:51</h3>
+<div class="item feed-08cadf41 feed-{feed_id}" id="item-cca1349b">
+<p class="itemheader">
+<span class="itemtitle">
+    El viaje del navegante:
+<a href="http://elviajedelnavegante.blogspot.com/2011/03/pasar-parametros-entre-frames-en.html">Pasar par&#225;metros entre frames en wxPython</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Hola. En este art&#237;culo vamos a ver una forma muy sencilla de pasar par&#225;metros entre 2 frames en <b>wxPython</b>, uno padre de otro. El paso de mensajes &#243; par&#225;metros entre objetos se puede hacer de varias formas, siendo la que vamos a ver una de las m&#225;s f&#225;ciles.<br /><br />Aunque lo vamos a ver con un ejemplo (esto es, c&#243;digo), no est&#225; de m&#225;s explicar el funcionamiento. La aplicaci&#243;n es un fichero<b> .py</b> donde tenemos una aplicaci&#243;n <b>wxPython</b>, que instancia una clase <span style="color: blue;">(frame_principal</span>). Dicha clase, al hacer click en un bot&#243;n instancia una segunda clase (<span style="color: blue;">frame_secundario</span>). Cuando se introducen datos en el <span style="color: blue;">frame_secundario</span> (objeto) y se hace click en un bot&#243;n, se devuelve dicha informaci&#243;n al <span style="color: blue;">frame_principal</span>, que lo muestra. Es decir, se introducen datos en un frame y los devuelve al frame maestro desde que fue instanciado (llamado). <br /><br />&#191;C&#243;mo se ha hecho? La cuesti&#243;n es que cuando se instancia el <span style="color: blue;">frame_secundario</span> en el <span style="color: blue;">frame_principal</span>, se le pasa como par&#225;metro una referencia de &#233;l mismo. En <span style="color: blue;">frame_secundario</span> se crea un atributo (<b><span style="color: #274e13;">self.padre</span></b>), que contiene la referencia al frame padre en donde fue creado.<br /><br />Este ejemplo se ha realizado en <b>Linux Ubuntu</b> y el editor <b>joe</b>. El c&#243;digo es el siguiente:<br /><br /><br /><span style="color: #990000;"># -*- coding: utf-8 -*-</span><br /><span style="color: #990000;"># El viaje del navegante.</span><br /><span style="color: #990000;"># Ejemplo de paso de par&#225;metros entre 2 frames en wxPython.</span><br /><br /><span style="color: #990000;"># Importamos las wx</span><br />import wx<br /><br /><span style="color: #990000;"># Creamos una clase frame que pide un dato.</span><br />class <span style="color: blue;">frame_secundario</span>(wx.Frame):<br />&nbsp; def __init__(self, <b style="color: #274e13;">parent</b>):<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Este es el constructor. Darse cuenta que se pasa como </span><br /><span style="color: #990000;">&nbsp;&nbsp;&nbsp; # par&#225;metro parent, esto es, la referencia del frame que instancia</span><br /><span style="color: #990000;">&nbsp;&nbsp;&nbsp; # a esta clase. La guardamos.</span><br />&nbsp;&nbsp;&nbsp; <b><span style="color: #274e13;">self.padre = parent</span></b><br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Llamamos al constructor de la clase de la que hereda.</span><br />&nbsp;&nbsp;&nbsp; wx.Frame.__init__(self, None, -1, title = "Introduce un valor")<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Creamos un sizer horizontal.</span><br />&nbsp;&nbsp;&nbsp; sizer = wx.BoxSizer( wx.HORIZONTAL )<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Creamos una caja de texto.</span><br />&nbsp;&nbsp;&nbsp; self.caja_texto = wx.TextCtrl(self, -1)<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Creamos un bot&#243;n.</span><br />&nbsp;&nbsp;&nbsp; self.boton = wx.Button(self, -1,"ACEPTAR")<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># A&#241;adimos al sizer la caja y el bot&#243;n.</span><br />&nbsp;&nbsp;&nbsp; sizer.Add(self.caja_texto, 0, wx.ALL, 5)<br />&nbsp;&nbsp;&nbsp; sizer.Add(self.boton, 0, wx.ALL, 5)<br />&nbsp;&nbsp;&nbsp;<span style="color: #990000;"> # Incluimos el sizer en el frame.</span><br />&nbsp;&nbsp;&nbsp; self.SetSizer(sizer)<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Creamos el binding. Cuando se haga click en el </span><br /><span style="color: #990000;">&nbsp;&nbsp;&nbsp; # bot&#243;n se lanzar&#225; el manejador de eventos correspondiente.</span><br />&nbsp;&nbsp;&nbsp; self.boton.Bind(wx.EVT_BUTTON, self.OnClickBoton)<br /><br />&nbsp; <span style="color: #990000;"># Manejador de eventos.&nbsp;&nbsp;&nbsp; </span><br />&nbsp; def OnClickBoton(self, event):<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Obtenemos datos de la caja de texto.</span><br />&nbsp;&nbsp;&nbsp; dato = self.caja_texto.GetValue()<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Podr&#237;amos escribir directamente en el objeto</span><br /><span style="color: #990000;">&nbsp;&nbsp;&nbsp; # que se desease.</span><br />&nbsp;&nbsp;&nbsp; <b><span style="color: #274e13;">self.padre.caja_texto.SetValue(dato)</span></b><br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Nos vamos.</span><br />&nbsp;&nbsp;&nbsp; self.Destroy()<br />&nbsp;&nbsp; <br /><span style="color: #990000;"># Creamos la clase de la ventana principal.&nbsp;&nbsp;&nbsp;</span> <br />class <span style="color: blue;">frame_principal</span>(wx.Frame):<br />&nbsp; def __init__(self):<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Constructor. Llamamos al constructor de la clase wx.Frame.</span><br />&nbsp;&nbsp;&nbsp; wx.Frame.__init__(self, None, -1, title = 'Ventana Principal')<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Creamos un sizer horizontal.</span><br />&nbsp;&nbsp;&nbsp; sizer = wx.BoxSizer( wx.HORIZONTAL )<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Creamos un bot&#243;n.</span><br />&nbsp;&nbsp;&nbsp; self.boton = wx.Button(self, -1, "Crear Frame Secundario")<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Creamos una caja de texto de solo lectura.</span><br />&nbsp;&nbsp;&nbsp; self.caja_texto = wx.TextCtrl(self, -1, style = wx.TE_READONLY)<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># A&#241;adimos al sizer la caja y el bot&#243;n.</span><br />&nbsp;&nbsp;&nbsp; sizer.Add(self.boton, 0, wx.ALL, 5)<br />&nbsp;&nbsp;&nbsp; sizer.Add(self.caja_texto, 0, wx.ALL, 5)<br />&nbsp;&nbsp;<span style="color: #990000;">&nbsp; # Asociamos el sizer al frame.</span><br />&nbsp;&nbsp;&nbsp; self.SetSizer(sizer)<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Creamos el binding. Cuando se haga click en el </span><br /><span style="color: #990000;">&nbsp;&nbsp;&nbsp; # bot&#243;n se lanzar&#225; el manejador de eventos correspondiente.</span><br />&nbsp;&nbsp;&nbsp; self.boton.Bind(wx.EVT_BUTTON, self.OnClickBoton)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp; <span style="color: #990000;"># Manejador de eventos.&nbsp;</span>&nbsp;&nbsp; <br />&nbsp; def OnClickBoton(self, event):<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Si se hace click se crea una instancia del frame_secundario.</span><br />&nbsp;&nbsp;&nbsp; frame = frame_secundario<b style="color: #274e13;">(self</b>)<br />&nbsp;&nbsp;&nbsp; <span style="color: #990000;"># Mostramos.</span><br />&nbsp;&nbsp;&nbsp; frame.Show()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br /><span style="color: #990000;"># Creamos una aplicaci&#243;n wxPython.</span><br />aplicacion = wx.PySimpleApp()<br /><span style="color: #990000;"># Instanciamos el frame principal.</span><br />frame = frame_principal()<br /><span style="color: #990000;"># Y por supuesto, no olvidar mostrarlo.</span><br />frame.Show()<br /><span style="color: #990000;"># Esperamos a capturar eventos.</span><br />aplicacion.MainLoop()<br />&nbsp;&nbsp;&nbsp; <br /><br />El c&#243;digo est&#225; muy comentado, pero volvemos a analizarlo. Se crea una aplicaci&#243;n <b>wxPython</b>, que instancia la clase <span style="color: blue;">frame_principal</span>.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://lh3.googleusercontent.com/-0cExaBlaacs/TW1ZQreP4vI/AAAAAAAABPg/lKWBoRxnb5k/s1600/frame_principal.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="196" src="https://lh3.googleusercontent.com/-0cExaBlaacs/TW1ZQreP4vI/AAAAAAAABPg/lKWBoRxnb5k/s320/frame_principal.png" width="320" /></a></div><br />Si hacemos click en el bot&#243;n "Crear Frame Secundario" se instancia la clase <span style="color: blue;">frame_secundario</span>, creando un segundo frame:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://lh3.googleusercontent.com/-XymMKpKV4Rk/TW1ZgiXPhyI/AAAAAAAABPk/VyKY9HRPz_k/s1600/frame_secundario.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="200" src="https://lh3.googleusercontent.com/-XymMKpKV4Rk/TW1ZgiXPhyI/AAAAAAAABPk/VyKY9HRPz_k/s320/frame_secundario.png" width="320" /></a></div><br /><br />Incluimos un texto en la caja de texto, <b style="color: orange;">PYTHON!!!</b><span style="color: black;">, y hacemos click en el bot&#243;n Aceptar.&nbsp;</span><br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://lh5.googleusercontent.com/-jH0hUHjwcfY/TW1aJORX8mI/AAAAAAAABPo/3ZY8IoCHKYw/s1600/FRAME_SECUNDARIO2.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="200" src="https://lh5.googleusercontent.com/-jH0hUHjwcfY/TW1aJORX8mI/AAAAAAAABPo/3ZY8IoCHKYw/s320/FRAME_SECUNDARIO2.png" width="320" /></a></div><br /><span style="color: black;">Tal como se aprecia en el c&#243;digo, se env&#237;a el dato al frame padre y se destruye la instancia del <span style="color: blue;">frame_secundario</span>.Y el resultado es:</span><br /><span style="color: black;"><br /></span><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://lh3.googleusercontent.com/-ZhfLoIhIrhA/TW1aOOB9hNI/AAAAAAAABPs/qU9a7KjD_Tw/s1600/FRAME_PRINCIPAL_2.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="196" src="https://lh3.googleusercontent.com/-ZhfLoIhIrhA/TW1aOOB9hNI/AAAAAAAABPs/qU9a7KjD_Tw/s320/FRAME_PRINCIPAL_2.png" width="320" /></a></div><span style="color: black;"></span><br /><br /><span style="color: black;"><br /></span><br /><span style="color: black;">En el c&#243;digo se ha resaltado <b><span style="color: #274e13;">en verde</span></b> el paso de la referencia del frame padre.&nbsp;</span><br /><span style="color: black;"><br /></span><br /><span style="color: black;">Saludos.</span>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-02-25.html">&lt;</a></td>
+<td class="cal-month" colspan="5">marzo 2011</td>
+<td class="cal-next"><a href="index-2011-04-18.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><strong class="cal-current">01</strong></td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td></tr>
+<tr class="cal-week">
+<td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td></tr>
+<tr class="cal-week">
+<td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day"><a class="cal-link" href="index-2011-03-16.html">16</a></td><td class="cal-day"><a class="cal-link" href="index-2011-03-17.html">17</a></td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td></tr>
+<tr class="cal-week">
+<td class="cal-day">21</td><td class="cal-day"><a class="cal-link" href="index-2011-03-22.html">22</a></td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td></tr>
+<tr class="cal-week">
+<td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

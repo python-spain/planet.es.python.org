@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>s&#225;bado, 01 junio</h2>
+<div class="time">
+<h3>20:03</h3>
+<div class="item feed-5fd98f4c feed-{feed_id}" id="item-09da557e">
+<p class="itemheader">
+<span class="itemtitle">
+    Uno y uno = diez:
+<a href="https://unoyunodiez.com/2013/06/01/the-difference-between-__getattribute__-and-__getattr__/">The difference between __getattribute__ and __getattr__</a></span>
+</p>
+    <div class="itemdescription">
+    <p style="text-align: justify;">The other day I was teaching Python meta-programming to a workmate. I think it&#8217;s a good way to learn about high order functions since meta-programming makes extensive use of closures, function builders, decorators&#8230; I was trying to make a concept probe about a very, very generic REST connector. Here is my first (and wrong) attempt:</p>
+<pre class="brush: python; title: ; notranslate">
+class RESTConn(object):
+
+  def __init__(self, entry_point):
+    self.entry_point = entry_point
+
+  def method_builder(self, method_name):
+    verb, _, collection = method_name.split('_', 2)
+    def do_verb(payload=None, **kwargs):
+      uri = self.make_uri(collection)
+      querystring = self.make_querystring(kwargs)
+      print verb.upper(), self.combine(uri, querystring)
+      if payload:
+        print payload
+
+    return do_verb
+
+  def make_uri(self, collection):
+    return '/'.join([self.entry_point, collection])
+
+  def make_querystring(self, kwargs):
+    return '&amp;'.join(['='.join(pair) for pair in kwargs.iteritems()])
+
+  def combine(self, uri, querystring):
+    if querystring:
+      return '&amp;'.join([uri, querystring])
+
+    return uri
+
+  def __getattribute__(self, name):
+    if not hasattr(self, name):
+      method = self.method_builder(name)
+      setattr(self, name, method)
+
+    return super(RESTConn, self).__getattribute__(name)
+</pre>
+<p>Try this example by instantiating a new connector and trying to call something like:</p>
+<pre>c = RESTConn('unoyunodiez.com')
+c.get_from_articles()</pre>
+<p style="text-align: justify;">The program falls into an infinite recursion and do nothing before crashing. Why?</p>
+<p style="text-align: justify;">There are three problems here. First and most important is using __getattribute__(), second is using hasattr() and third is accessing self.method_builder().</p>
+<p style="text-align: justify;">The object&#8217;s method __getattribute__() is used to retrieve an attribute from an instance. <strong>It captures every attempt</strong> to access an instance attribute by using dot notation or getattr() built-in function. Unless it was overridden, the former expression is translated into object.__getattribute__(self, &#8216;get_from_article&#8217;). The default implementations looks into the instance&#8217;s namespace, then looks into the class namespace, then into each base&#8217;s namespace and so on. Finally, if not found, the default implementation calls the fallback __getattr__() method of the instance and it raises an AttributeError exception as default implementation.</p>
+<p style="text-align: justify;">This is not a problem by itself but if you pay attention enough you&#8217;ll notice we are trying to create the new method only if the object does not have the method yet. It is semantically the same as overriding __getattr__() because <strong>it is called only when the attribute was not found</strong>. So, even if we cannot explain the infinite recursion error yet, we can fix the class by replacing:</p>
+<pre class="brush: python; title: ; notranslate">
+  def __getattribute__(self, name):
+    if not hasattr(self, name):
+      method = self.method_builder(name)
+      setattr(self, name, method)
+
+    return super(RESTConn, self).__getattribute__(name)
+</pre>
+<p>with:</p>
+<pre class="brush: python; title: ; notranslate">
+  def __getattr__(self, name):
+    method = self.method_builder(name)
+    setattr(self, name, method)
+    return getattr(self, name)
+</pre>
+<p style="text-align: justify;">So, the difference between __getattribute__() and __getattr__() is that the first one is called unconditionally when an attribute is being retrieved from an instance while the second is called only when the attribute was not found.</p>
+<p style="text-align: justify;">But, what about the infinite recursion? Why the first example was failing?</p>
+<p style="text-align: justify;"><span id="more-1176"></span></p>
+<p style="text-align: justify;">Ok, I said the problems were using __getattribute__, hasattr() and self.method_builder() but the <strong>real problem is using hasattr() and self.method_builder() inside __getattribute__()</strong>. According to Python documentation <a href="http://docs.python.org/2/library/functions.html#hasattr" target="_blank" title="hasattr() documentation">hasattr(self, name) is implemented by trying getattr(self, name) and catching exceptions</a>. If an exception is caught, then hasattr() returns False. But using getattr() is an attempt to access an instance attribute so __getattribute__() is called again. This leads to another call to hasattr() which use getattr() which is another attempt to find and attribute and it calls __getattribute__() which call hasattr() which use getattr() and on and on and on&#8230; until a RuntimeError exception is raised. So all the hasattr() return False and the program can continue with the next statement.</p>
+<p style="text-align: justify;">The next statement is more dangerous even. It tries to access &#8216;method_builder&#8217; from instance self so __getattribute__() is called again which involves calling hasattr() again and then progressing to the next try to access &#8216;method_builder&#8217;. Can you see what is next? Of course, another call to __getattribute__()!</p>
+<p style="text-align: justify;">So, what is the correct way to implement this by using __getattribute__() instead of __getattr__()? The answer, below:</p>
+<pre class="brush: python; title: ; notranslate">
+  def __getattribute__(self, name):
+    try:
+      method = super(RESTConn, self).__getattribute__(name)
+    except AttributeError:
+      method = super(RESTConn, self).__getattribute__('method_builder')(name)
+      setattr(self, name, method)
+
+    return method
+</pre>
+<p style="text-align: justify;">As you see, we are first trying to retrieve the method by calling the default implementation of __getattribute__(). If it is not found, we build a new method by calling &#8216;method_builder&#8217; <strong>without calling RESTConn&#8217;s __getattribute__()</strong> and avoiding the infinite recursion. Finally we return the method. Simple, once you know what is __getattribute__ actually doing. ,)</p>
+<p style="text-align: justify;">And that&#8217;s all. You can read more about the attribute retrieving process in the <a href="http://docs.python.org/2/reference/datamodel.html" target="_blank" title="Python data model">Python data model</a>. As a result of this little research I updated my <a href="http://lodr.github.io/presentations/js-python-metaprogramming/index.html" target="_blank" title="Metaprogramming in Python and JavaScript">presentations about meta-programming</a> in Python and my <a href="https://unoyunodiez.com/2012/03/31/metaprogramacion-en-python/" title="Metaprogramaci&#243;n en&#160;Python">former articles</a> in Spanish.</p>
+<p style="text-align: justify;">Hope it helps!</p><br />  <a href="http://feeds.wordpress.com/1.0/gocomments/unoyunodiez.wordpress.com/1176/" rel="nofollow"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/unoyunodiez.wordpress.com/1176/" /></a> <img alt="" border="0" height="1" src="https://pixel.wp.com/b.gif?host=unoyunodiez.com&#038;blog=15323300&#038;post=1176&#038;subd=unoyunodiez&#038;ref=&#038;feed=1" width="1" />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2013-05-29.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2013</td>
+<td class="cal-next"><a href="index-2013-07-02.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day"><strong class="cal-current">01</strong></td><td class="cal-day">02</td></tr>
+<tr class="cal-week">
+<td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td></tr>
+<tr class="cal-week">
+<td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td></tr>
+<tr class="cal-week">
+<td class="cal-day">17</td><td class="cal-day"><a class="cal-link" href="index-2013-06-18.html">18</a></td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td></tr>
+<tr class="cal-week">
+<td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day"><a class="cal-link" href="index-2013-06-26.html">26</a></td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

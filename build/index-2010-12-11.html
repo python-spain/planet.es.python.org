@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>s&#225;bado, 11 diciembre</h2>
+<div class="time">
+<h3>21:27</h3>
+<div class="item feed-08cadf41 feed-{feed_id}" id="item-22eb592c">
+<p class="itemheader">
+<span class="itemtitle">
+    El viaje del navegante:
+<a href="http://elviajedelnavegante.blogspot.com/2010/12/wxpython-disenar-un-mantenimiento-con.html">wxPython: Dise&#241;ar un mantenimiento con FoldPanelBar y wxFormBuilder</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Hola. En este art&#237;culo vamos a ver como dise&#241;ar un mantenimiento sofisticado en <b>wxPython</b>, con la ayuda del componente de <b>wxPython</b>, el <b>FoldPanelBar</b>, y el dise&#241;ador <b>wxFormBuilder</b>.<br /><br />&#191;Qu&#233; es un <b>FoldPanelBar</b>? Es un conjunto de paneles colapsables, para presentar la informaci&#243;n en un <b>Frame</b> de manera parcial, activando y desactivando paneles colapsables. Es lo m&#225;s parecido a <b>wx.CollapsiblePane</b>, pero en vez de un panel puede haber varios. Ten&#233;is un ejemplo completo en el <b>wxPython 2.8 Docs Demos and Tools</b>, que se puede obtener de&nbsp;<a href="http://www.wxpython.org/download.php#stable">http://www.wxpython.org/download.php#stable</a>.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQIzASXmfvI/AAAAAAAABIA/DfeQZXiDySI/s1600/wxpython_logo.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="125" src="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQIzASXmfvI/AAAAAAAABIA/DfeQZXiDySI/s200/wxpython_logo.JPG" width="200" /></a></div><br /><div style="text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQIzFF61yBI/AAAAAAAABII/-G72kz3pSP0/s1600/foldpanelbar1.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="287" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQIzFF61yBI/AAAAAAAABII/-G72kz3pSP0/s400/foldpanelbar1.JPG" width="400" /></a></div><br /><div style="text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQIzFsGXPlI/AAAAAAAABIM/L_7_heolIBM/s1600/foldpanelbar2.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="371" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQIzFsGXPlI/AAAAAAAABIM/L_7_heolIBM/s400/foldpanelbar2.JPG" width="400" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQIzEAlojYI/AAAAAAAABIE/j0YeYZURblQ/s1600/foldpanelbar4.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="371" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQIzEAlojYI/AAAAAAAABIE/j0YeYZURblQ/s400/foldpanelbar4.JPG" width="400" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQIzGUepweI/AAAAAAAABIQ/YCztc4eBZzk/s1600/foldpanelbar3.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="371" src="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQIzGUepweI/AAAAAAAABIQ/YCztc4eBZzk/s400/foldpanelbar3.JPG" width="400" /></a></div><br />Como podemos ver este componente est&#225; dentro de un <b>SplitterWindow</b>, que es un <b>Frame </b>que se puede dividir en zonas, tal como se ve en la imagen. La cuesti&#243;n es hacer un mantenimiento de datos, que utilice dicho componente de paneles colapsables. El dise&#241;o del <b>FoldPanelBar</b> se har&#225; en base al c&#243;digo que est&#225; disponible en la documentaci&#243;n de <b>wxPython</b>. Lo &#250;nico que nos falta es dise&#241;ar el contenido de los paneles colapsables. Para ello vamos a utilizar <b>wxFormBuilder</b>. &#191;C&#243;mo? Pues dise&#241;ando cada panel seg&#250;n los datos que queremos que aparezcan. Esto lo podemos resumir en el siguiente gr&#225;fico:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQI4xM42cTI/AAAAAAAABIU/GxOrZh99Zrs/s1600/EXPLICACION_FOLD_PANEL_BAR_Y_WXFORMBUILDER.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="371" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQI4xM42cTI/AAAAAAAABIU/GxOrZh99Zrs/s400/EXPLICACION_FOLD_PANEL_BAR_Y_WXFORMBUILDER.JPG" width="400" /></a></div><br />Con <b>wxFormBuilder</b> vamos a construir gr&#225;ficamente todos los paneles necesarios, cuya sintaxis <b>Python </b>generada se guardar&#225; en el fichero <span class="Apple-style-span" style="color: #990000;">design_vista_usuarios.py</span>. En el fichero <span class="Apple-style-span" style="color: #990000;">vista_usuarios.py</span> crearemos una instancia del componente <b>FoldPanelBar</b> e importaremos los paneles creados que est&#225;n en el fichero <span class="Apple-style-span" style="color: #990000;">design_vista_usuarios.py</span>. Una vez realizado esto, simplemente incluiremos los paneles en su lugar correspondiente dentro del <b>FoldPanelBar</b>, ...y &#161;listo!, ya lo tendremos todo hecho.<br /><br />&#191;Por qu&#233; as&#237;? &#191;Por qu&#233; no crear el <b>FoldPanelBar</b> dentro de <span class="Apple-style-span" style="color: #990000;">design_vista_usuarios.py</span>? Pues por la sencilla raz&#243;n que si queremos cambiar en <b>wxFormBuilder </b>algo y volvemos a generar el c&#243;digo cabe la posibilidad de eliminar las modificaciones pertinentes. Adem&#225;s, trabajar con herencia es algo fundamental en el dise&#241;o de aplicaciones<b> wxPython</b>, ya que nos ahorramos c&#243;digo y tiempo. Es decir, podemos volver a generar el c&#243;digo en el dise&#241;ador, sin tocar otras partes que ya est&#225;n hechas y funcionan.<br /><br /><b>NOTA</b>:&nbsp;<span class="Apple-style-span" style="color: #274e13;">Vamos a crear un mantenimiento de gesti&#243;n de usuarios de una aplicaci&#243;n gen&#233;rica.&nbsp;</span><br /><br /><span class="Apple-style-span" style="color: #990000; font-size: x-large;"><b>wxFormBuilder</b></span><br /><br />Lo primero de todo es crear un proyecto. Despu&#233;s se especifica el fichero que contendr&#225; el c&#243;digo <b>Python</b> generado, y a continuaci&#243;n, &#161;&#161;&#161;a dise&#241;ar!!!.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQI8Mf5gBaI/AAAAAAAABIY/juPiQlhVX80/s1600/wxformbuilder1.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="301" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQI8Mf5gBaI/AAAAAAAABIY/juPiQlhVX80/s400/wxformbuilder1.JPG" width="400" /></a></div><br />Como podemos observar en el &#225;rbol de objetos (<b>Object Tree</b>), nuestro dise&#241;o se basa en un <b>Frame</b>, barra de men&#250;, un men&#250; y una serie de paneles, que contienen cada uno de ellos m&#225;s <b>widgets</b> (botones, cajas de texto, etc.), todos ellos dispuestos posicionalmente mediante <b>Sizers</b>.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQI-VlJEAbI/AAAAAAAABIc/U-6cqy50i0M/s1600/wxformbuilder2.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQI-VlJEAbI/AAAAAAAABIc/U-6cqy50i0M/s1600/wxformbuilder2.JPG" /></a></div><br />A continuaci&#243;n, diversas capturas de pantalla del dise&#241;o de paneles y dem&#225;s widgets:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQJBkOZ3IqI/AAAAAAAABJI/Pthov_n2ED0/s1600/wxformbuilder9.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="288" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQJBkOZ3IqI/AAAAAAAABJI/Pthov_n2ED0/s400/wxformbuilder9.JPG" width="400" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQJAIdLsdvI/AAAAAAAABIg/DRQJd61Jvl8/s1600/wxformbuilder8.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="288" src="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQJAIdLsdvI/AAAAAAAABIg/DRQJd61Jvl8/s400/wxformbuilder8.JPG" width="400" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQJALCpnfQI/AAAAAAAABIo/cvfoww0xU2I/s1600/wxformbuilder3.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="288" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQJALCpnfQI/AAAAAAAABIo/cvfoww0xU2I/s400/wxformbuilder3.JPG" width="400" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQJAMU2VGII/AAAAAAAABIs/i52Yv9aRGQE/s1600/wxformbuilder4.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="305" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQJAMU2VGII/AAAAAAAABIs/i52Yv9aRGQE/s400/wxformbuilder4.JPG" width="400" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQJANS-sfrI/AAAAAAAABIw/ni-5V8li4I8/s1600/wxformbuilder5.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="288" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TQJANS-sfrI/AAAAAAAABIw/ni-5V8li4I8/s400/wxformbuilder5.JPG" width="400" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQJAO9XKQ0I/AAAAAAAABI0/G3u2ytP3qdA/s1600/wxformbuilder6.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="288" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQJAO9XKQ0I/AAAAAAAABI0/G3u2ytP3qdA/s400/wxformbuilder6.JPG" width="400" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQJAQB1DPiI/AAAAAAAABI4/0zGGF41LGJI/s1600/wxformbuilder7.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="287" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQJAQB1DPiI/AAAAAAAABI4/0zGGF41LGJI/s400/wxformbuilder7.JPG" width="400" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"></div><b>NOTA</b>: Los iconos que aparecen en el men&#250; de herramientas los he bajado de&nbsp;<a href="http://www.iconspedia.com/">http://www.iconspedia.com/</a>.<br /><br /><b>NOTA2</b>: Como pod&#233;is observar en la imagen hay un panel llamado <i>PanelUsuario</i>. A este panel no hay que hacerle caso, es una prueba que realic&#233; y se me ha colado ah&#237;. Disculpadme.<br /><br />Una vez realizados todos los dise&#241;os de los paneles, frames y men&#250;s se genera el c&#243;digo <b>Python</b>, guard&#225;ndose en el fichero especificado en el proyecto, <span class="Apple-style-span" style="color: #990000;">design_vista_usuarios.py</span>.<br /><br /><span class="Apple-style-span" style="color: #990000; font-size: x-large;"><b>Heredando el dise&#241;o...</b></span><br /><br />Bien, ya tenemos pr&#225;cticamente terminado nuestro viaje. &#218;nicamente nos falta crear una clase que instancie el componente <b>FoldPanelBar</b> de <b>wxPython</b>, e incluir los paneles generados por <b>wxFormBuilder</b>&nbsp;en su sitio. Aunque al lector le parezca un trabajo en exceso o demasiado enrevesado, en realidad no lo es... es m&#225;s, es la mejor forma de cambiar c&#243;digo con la m&#237;nima repercusi&#243;n. El contenido del fichero <span class="Apple-style-span" style="color: #990000;">vista_usuarios.py</span> es el siguiente:<br /><br />import <span class="Apple-style-span" style="color: blue;">wx</span><br />import <span class="Apple-style-span" style="color: blue;">wx.lib.agw.foldpanelbar</span> as fpb<br />from <span class="Apple-style-span" style="color: #990000;">design_vista_usuarios </span>import FrameGenerico, BarraMenuGenericoPersona<br />from <span class="Apple-style-span" style="color: #990000;">design_vista_usuarios</span> import MenuGenerico, PanelUsuarioNick<br />from <span class="Apple-style-span" style="color: #990000;">design_vista_usuarios</span> import PanelUsuarioLocalizacion, PanelUsuarioExtra<br />from <span class="Apple-style-span" style="color: #990000;">design_vista_usuarios</span> import PanelUsuarioPersona<br /><br />class frame_usuario(FrameGenerico):<br />&nbsp;&nbsp; &nbsp;def __init__(self):<br />&nbsp;&nbsp; &nbsp; &nbsp; <span class="Apple-style-span" style="color: #38761d;">&nbsp;# Llamamos al constructor del FrameGenerico.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;FrameGenerico.__init__(self, None )<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;<span class="Apple-style-span" style="color: #38761d;"># Incluimos t&#237;tulo al frame.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;FrameGenerico.SetTitle(self, u"Gesti&#243;n de usuarios")<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;<span class="Apple-style-span" style="color: #38761d;"># Creamos una barra de herramientas en el frame.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;self.SetToolBar(BarraMenuGenericoPersona(self))<br />&nbsp;&nbsp; &nbsp; &nbsp; <span class="Apple-style-span" style="color: #38761d;">&nbsp;# Creamos men&#250; generico.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;menu = MenuGenerico()<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;<span class="Apple-style-span" style="color: #38761d;"># E incluimos dicho men&#250; en el frame.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;self.SetMenuBar(menu)<br />&nbsp;&nbsp; &nbsp; &nbsp; <span class="Apple-style-span" style="color: blue;">&nbsp;# Creamos un Fold Panel Bar.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;self.panel = fpb.FoldPanelBar(self, wx.ID_ANY, wx.DefaultPosition,<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;wx.DefaultSize, agwStyle=fpb.FPB_VERTICAL)<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;<span class="Apple-style-span" style="color: #38761d;"># Creamos subpanel de datos de identificaci&#243;n del usuario.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;subpanel = self.panel.AddFoldPanel(u"Identificaci&#243;n", collapsed=False)<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;<span class="Apple-style-span" style="color: #38761d;"># Incluimos panel de nick, foto y contrase&#241;a de usuario.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;panel = PanelUsuarioNick(subpanel)<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;self.panel.AddFoldPanelWindow(subpanel, panel, fpb.FPB_ALIGN_WIDTH)<br />&nbsp;&nbsp; &nbsp; &nbsp; <span class="Apple-style-span" style="color: blue;">&nbsp;</span><span class="Apple-style-span" style="color: #38761d;"># Creamos subpanel de datos personales del usuario.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;subpanel = self.panel.AddFoldPanel(u"Datos personales", collapsed=True)<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;<span class="Apple-style-span" style="color: #38761d;"># Incluimos panel de datos personales.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;panel = PanelUsuarioPersona(subpanel)<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;self.panel.AddFoldPanelWindow(subpanel, panel, fpb.FPB_ALIGN_WIDTH)<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;<span class="Apple-style-span" style="color: #38761d;"># Creamos subpanel de datos de localizaci&#243;n del usuario.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;subpanel = self.panel.AddFoldPanel(u"Direcci&#243;n", collapsed=True)<br />&nbsp;&nbsp; &nbsp; &nbsp; <span class="Apple-style-span" style="color: #38761d;">&nbsp;# Incluimos panel de direcci&#243;n personal.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;panel = PanelUsuarioLocalizacion(subpanel)<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;self.panel.AddFoldPanelWindow(subpanel, panel, fpb.FPB_ALIGN_WIDTH)<br />&nbsp;&nbsp; &nbsp; &nbsp; <span class="Apple-style-span" style="color: #38761d;">&nbsp;# Creamos subpanel para datos extra.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;subpanel = self.panel.AddFoldPanel(u"Tel&#233;fono y correo electr&#243;nico",<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;collapsed=True)<br />&nbsp;&nbsp; &nbsp; &nbsp;<span class="Apple-style-span" style="color: #38761d;"> &nbsp;# Incluimos panel de tel&#233;fonos y correos electr&#243;nicos.</span><br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;panel = PanelUsuarioExtra(subpanel)<br />&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;self.panel.AddFoldPanelWindow(subpanel, panel, fpb.FPB_ALIGN_WIDTH)<br /><br /><span class="Apple-style-span" style="color: blue;"># Lanzamos aplicaci&#243;n.</span><br />aplicacion = wx.PySimpleApp()<br />frame_usuario = frame_usuario()<br />frame_usuario.Show()<br />aplicacion.MainLoop()<br /><div><br /></div><div>Y listo!!!! Con solo ejecutar <i><span class="Apple-style-span" style="color: #b45f06;"><b>python vista_usuarios.py</b></span></i> ya tenemos nuestro dise&#241;o de mantenimiento de gesti&#243;n de usuarios gen&#233;rico. Darse cuenta de las pocas l&#237;neas de c&#243;digo que hemos tenido que escribir, ya que la mayor&#237;a del trabajo ha sido dise&#241;ado en <b>wxFormBuilder</b>, gener&#225;ndose el c&#243;digo <b>Python</b> autom&#225;ticamente.</div><div><br /></div><div><b><span class="Apple-style-span" style="color: #990000; font-size: x-large;">wxPython: FoldPanelBar</span></b></div><div><br /></div><div style="text-align: center;"><a href="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQPCis6rKEI/AAAAAAAABJQ/0Plb1GvYZD8/s1600/fpb1.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="261" src="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQPCis6rKEI/AAAAAAAABJQ/0Plb1GvYZD8/s320/fpb1.JPG" width="320" /></a></div><div><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQPCh6fa2tI/AAAAAAAABJM/3KEQCDKJx7U/s1600/fpb6.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="317" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQPCh6fa2tI/AAAAAAAABJM/3KEQCDKJx7U/s320/fpb6.JPG" width="320" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQPCjFL9FeI/AAAAAAAABJU/k6HBgNw-UBo/s1600/fpb2.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="262" src="http://3.bp.blogspot.com/_y_bGxMwbE9g/TQPCjFL9FeI/AAAAAAAABJU/k6HBgNw-UBo/s320/fpb2.JPG" width="320" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQPCjzaiklI/AAAAAAAABJY/Rx5AYM4EYZ4/s1600/fpb3.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="262" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQPCjzaiklI/AAAAAAAABJY/Rx5AYM4EYZ4/s320/fpb3.JPG" width="320" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQPCkV5-D7I/AAAAAAAABJc/-rZveUBFaMw/s1600/fpb4.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="262" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQPCkV5-D7I/AAAAAAAABJc/-rZveUBFaMw/s320/fpb4.JPG" width="320" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQPCkzDIFjI/AAAAAAAABJg/tYXl3E3fS-I/s1600/fpb5.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="262" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TQPCkzDIFjI/AAAAAAAABJg/tYXl3E3fS-I/s320/fpb5.JPG" width="320" /></a></div><div><br /></div><div>Como se puede observar hemos creado un mantenimiento bastante "moderno" con un componente, el <b>FoldPanelBar</b>, que nos da bastante juego en la presentaci&#243;n de datos, ofreciendo <i><u>m&#225;s por menos</u></i>. Los paneles, dise&#241;ados con <b>wxFormBuilder</b>, contienen todos los widgets m&#237;nimos necesarios, dispuestos con <b>sizers </b>(<b>BoxSizer</b> y <b>FlexGridSizer</b>). Trabajar con <b>sizers</b> nos ahorra tiempo... con<b> wxFormBuilder</b> es un juego, os lo aseguro.</div><div><br /></div><div>Todo el c&#243;digo, tanto del proyecto&nbsp;<b>wxFormBuilder</b>&nbsp;(<span class="Apple-style-span" style="color: #990000;">usuarios.fbp</span>), como los ficheros&nbsp;<b>Python</b>&nbsp;<span class="Apple-style-span" style="color: #990000;">design_vista_usuarios.py</span>&nbsp;(c&#243;digo generado por&nbsp;<b>wxFormBuilder</b>) y&nbsp;<span class="Apple-style-span" style="color: #990000;">vista_usuarios.py</span>&nbsp;los pod&#233;is encontrar en un<b>&nbsp;ZIP</b>,&nbsp;<b><span class="Apple-style-span" style="color: blue;">FoldPanelBar.zip</span></b>,en el repositorio de este blog:</div><div><br /><div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><a href="https://sites.google.com/site/elviajedelnavegante/codigo">https://sites.google.com/site/elviajedelnavegante/codigo</a></div></div><div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span class="Apple-style-span" style="color: #990000;"><b>Una peque&#241;a observaci&#243;n... &#243; dos...</b></span></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"></div><ul><li><b>wxFormBuilder</b>&nbsp;est&#225; disponible tanto para&nbsp;<b>Windows</b>,&nbsp;<b>Linux</b>&nbsp;como&nbsp;<b>Mac</b>. La versi&#243;n con la que yo trabajo de&nbsp;<b>wxFormBuilder</b>&nbsp;es&nbsp;<b>3.1.70</b>. Os lo digo por si intent&#225;is abrir el fichero del proyecto y os dice que&nbsp;<i>nada de nada</i>. En&nbsp;<b>Ubuntu Lucid</b>&nbsp;la versi&#243;n disponible es la&nbsp;<b>3.1.59-beta</b>, con lo que necesitar&#233;is instalaros desde su web la m&#225;s reciente.</li></ul><ul><li>No est&#225; mal recordar que el proyecto de&nbsp;<b>wxFormBuilder</b>&nbsp;genera un fichero&nbsp;<b>.py</b>&nbsp;espec&#237;fico en una ruta determinada. Es decir, si quieres volver a generar el c&#243;digo<b>&nbsp;Python</b>&nbsp;del dise&#241;o no estar&#237;a mal cambiar la ruta donde tengas tu fichero .py.</li></ul><div class="separator" style="clear: both; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQPXDwkq6hI/AAAAAAAABJk/nBT_5o1eYvo/s1600/wxformbuilder0.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="100" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TQPXDwkq6hI/AAAAAAAABJk/nBT_5o1eYvo/s400/wxformbuilder0.JPG" style="cursor: move;" width="400" /></a></div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><br /></div></div><div><div style="margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px;">Espero pueda serviros. Saludos.</div></div></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2010-11-20.html">&lt;</a></td>
+<td class="cal-month" colspan="5">diciembre 2010</td>
+<td class="cal-next"><a href="index-2011-01-04.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2010-12-05.html">05</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day"><a class="cal-link" href="index-2010-12-10.html">10</a></td><td class="cal-day"><strong class="cal-current">11</strong></td><td class="cal-day">12</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2010-12-13.html">13</a></td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day"><a class="cal-link" href="index-2010-12-18.html">18</a></td><td class="cal-day">19</td></tr>
+<tr class="cal-week">
+<td class="cal-day">20</td><td class="cal-day"><a class="cal-link" href="index-2010-12-21.html">21</a></td><td class="cal-day"><a class="cal-link" href="index-2010-12-22.html">22</a></td><td class="cal-day"><a class="cal-link" href="index-2010-12-23.html">23</a></td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td></tr>
+<tr class="cal-week">
+<td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

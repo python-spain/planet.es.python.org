@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>mi&#233;rcoles, 13 julio</h2>
+<div class="time">
+<h3>20:21</h3>
+<div class="item feed-3c203c3b feed-{feed_id}" id="item-580db645">
+<p class="itemheader">
+<span class="itemtitle">
+    joe di castro:
+<a href="http://joedicastro.com/fabric-rsync-para-realizar-backups.html">Fabric &amp; Rsync para realizar Backups</a></span>
+</p>
+    <div class="itemdescription">
+    <p>En el <a href="http://joedicastro.com/sincronizar-dos-directorios-con-fabric-y-rsync.html">anterior articulo</a> empleaba <a href="http://fabfile.org/">fabric</a> y <a href="http://es.wikipedia.org/wiki/Rsync">rsync</a> para sincronizar 
+un directorio local y uno remoto en ambas direcciones. Adem&#225;s le a&#241;ad&#237;a las 
+funcionalidades de <a href="http://joedicastro.com/logger-informes-legibles-para-tus-scripts-python.html">logger</a> y <a href="http://joedicastro.com/notificaciones-de-escritorio-en-ubuntu-desde-python.html">notify</a> para proporcionar informaci&#243;n sobre 
+el proceso durante y despu&#233;s de su ejecuci&#243;n. Y comenzaba el articulo recordando 
+a <a href="http://joedicastro.com/sincronizar-una-carpeta-local-y-una-remota-a-traves-de-ftp-lftp-mirror.html">lftp-mirror</a>, el script que hab&#237;a creado para realizar la sincronizaci&#243;n a 
+trav&#233;s de FTP. Pero <strong>lftp-mirror</strong> realiza algo m&#225;s que la sincronizaci&#243;n, pues 
+tambi&#233;n permite realizar el archivado del directorio local en ficheros 
+comprimidos y lanzar varias tareas en una sola ejecuci&#243;n.</p>
+<p>Ahora he a&#241;adido esta funcionalidad al fichero <strong>fabric</strong> creado anteriormente.
+As&#237; empleando este fichero podemos realizar el Backup peri&#243;dico de varios 
+servidores en una sola operaci&#243;n y de forma completamente autom&#225;tica (basta con 
+programar su ejecuci&#243;n). Se sincronizan los dos directorios y se crea un archivo 
+comprimido del directorio local por cada d&#237;a de la semana. De este modo siempre 
+tenemos una copia del estado del directorio remoto de los &#250;ltimos siete d&#237;as. Y 
+al final del proceso en nuestro correo, un email con el informe del resultado por 
+cada una de las tareas ejecutadas.</p>
+<p>En este fichero, <strong>rsync_fabric.py</strong>, disponemos de tres posibles tareas:</p>
+<div class="codehilite"><pre><span class="gp">$</span> fab -l
+
+<span class="go">     A Fabric file for sync two directories (remote &#8644; local) with rsync.</span>
+
+<span class="go">Available commands:</span>
+
+<span class="go">    backup  Sync from remote to local &amp; archive the local directory.</span>
+<span class="go">    down    Sync from remote to local.</span>
+<span class="go">    up      Sync from local to remote.</span>
+</pre></div>
+
+
+<p>Con la primera realizamos el backup (sincronizaci&#243;n + archivado) y 
+con las siguientes solo la sincronizaci&#243;n desde o hacia el servidor. Una de las 
+ventajas de fabric es que nos permite concatenar tareas f&#225;cilmente desde la 
+l&#237;nea de comandos, as&#237; podemos lanzar varias sincronizaciones de forma 
+simultanea. Para poder realizar esto, creo una configuraci&#243;n de sincronizaci&#243;n 
+por defecto y despu&#233;s creo una funci&#243;n para cada una las tareas adicionales que 
+simplemente redefinen los valores de estas variables globales. Por ejemplo:</p>
+<div class="codehilite"><pre><span class="c"># Variables globales de sincronizaci&#243;n predefenidas</span>
+<span class="n">env</span><span class="o">.</span><span class="n">host_string</span> <span class="o">=</span> <span class="s">&quot;username@example.com&quot;</span>
+<span class="n">env</span><span class="o">.</span><span class="n">remote</span> <span class="o">=</span> <span class="s">&quot;/my_directory&quot;</span>
+<span class="n">env</span><span class="o">.</span><span class="n">local</span> <span class="o">=</span> <span class="s">&quot;/home/my_user/backups/my_directory&quot;</span>
+
+<span class="c"># Redefinimos estas variables para otra configuraci&#243;n de sincronizaci&#243;n. Por </span>
+<span class="c"># supuesto, pueden tratarse de servidores distintos.</span>
+<span class="k">def</span> <span class="nf">_databases</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">env</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">host_string</span> <span class="o">=</span> <span class="s">&quot;username@example.com&quot;</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">remote</span> <span class="o">=</span> <span class="s">&quot;/databases&quot;</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">local</span> <span class="o">=</span> <span class="s">&quot;/home/my_user/backups/databases&quot;</span>
+</pre></div>
+
+
+<p>Veamos ejemplos de como podemos utilizar estas tareas:</p>
+<div class="codehilite"><pre><span class="gp">#</span> <span class="s2">&quot;Si queremos sincronizar el contenido local hacia el remoto, por ejemplo </span>
+<span class="gp">#</span><span class="s2"> para subir los ficheros al servidor por primera vez. Empleando los valores </span>
+<span class="gp">#</span><span class="s2"> por defecto. El modificador -w lo empleo para que no se detenga en los </span>
+<span class="gp">#</span><span class="s2"> errores, que de ocurrir, los veremos luego en el informe final.&quot;</span>
+<span class="gp">$</span> fab -w up
+<span class="go">[localhost] local: rsync -pthrvz --delete /home/my_user/backups/my_directory/ </span>
+<span class="go"> username@example.com:my_directory</span>
+
+<span class="go">Done.</span>
+<span class="gp">#</span> <span class="s2">&quot;Pero tambi&#233;n podemos especificar una tarea distinta a la por defecto de </span>
+<span class="gp">#</span><span class="s2"> este modo. Sincronizando desde el servidor a nuestro directorio local las </span>
+<span class="gp">#</span><span class="s2"> bases de datos.&quot;</span>
+<span class="gp">$</span> fab -w down:databases
+<span class="go">[localhost] local: rsync -pthrvz --delete username@example.com:databases/ </span>
+<span class="go">/home/my_user/backups/databases</span>
+
+<span class="go">Done.</span>
+<span class="gp">#</span> <span class="s2">&quot;Y por supuesto, podemos realizar varias tareas a la vez.&quot;</span>
+<span class="gp">$</span>  fab -w down backup:databases
+<span class="go">[localhost] local: rsync -pthrvz --delete username@example.com:my_directory/ </span>
+<span class="go">/home/my_user/backups/my_directory</span>
+<span class="go">[localhost] local: rsync -pthrvz --delete username@example.com:databases/ </span>
+<span class="go">/home/my_user/backups/databases</span>
+
+<span class="go">Done.</span>
+</pre></div>
+
+
+<p>No empleo contrase&#241;a alguna, ni en el fichero ni en la l&#237;nea de comandos, podr&#237;a 
+hacerse perfectamente, pero prefiero emplear una clave <a href="http://es.wikipedia.org/wiki/RSA">RSA</a> <a href="http://es.wikipedia.org/wiki/Criptograf%C3%ADa_asim%C3%A9trica">p&#250;blica</a> 
+autorizada para las sesiones SSH en el servidor. Es bastante m&#225;s seguro y c&#243;modo. 
+En los ejemplos no se ve la salida de <em>rsync</em>, pues es capturada (as&#237; como los 
+erores) para ser mostrada a posteriori en los informes. </p>
+<p>Un ejemplo de informe ser&#237;a el siguiente:</p>
+<div class="codehilite"><pre>START TIME =====================================================================
+                                                    mi&#233;rcoles 13/07/11, 19:48:55
+================================================================================
+
+SCRIPT =========================================================================
+fab (ver. Unknown)
+Fabric Rsync
+http://joedicastro.com
+
+Syncing username@example.com:databases to /home/my_user/backups/databases
+================================================================================
+
+RSYNC OUTPUT ___________________________________________________________________
+
+receiving file list ... done
+
+sent 20 bytes  received 825 bytes  153.64 bytes/sec
+total size is 827.76M  speedup is 979595.42
+
+ROTATE COMPRESSED COPIES _______________________________________________________
+
+Created file:
+
+/home/my_user/backups/databases_13jul2011_19:49_mi&#233;.tar.gz
+
+Deleted old file:
+
+databases_13jul2011_19:37_mi&#233;.tar.gz
+
+DISK SPACE USED ================================================================
+                                                                        1.60 GiB
+================================================================================
+
+END TIME =======================================================================
+                                                    mi&#233;rcoles 13/07/11, 19:50:02
+================================================================================
+</pre></div>
+
+
+<p>Que como podemos ver, ha tardado poco m&#225;s de un minuto en sincronizar 827.56 
+Megabytes y el total de espacio ocupado por el directorio y los siete archivos 
+comprimidos es de 1.60 Gibibytes (1,72 Gigabytes). </p>
+<h2 id="ventajas">Ventajas</h2>
+<p>Las ventajas de sincronizarlo con <strong>rsync + ssh</strong> vs <strong>ftp</strong>, como ya coment&#233; en el 
+anterior articulo son enormes. Se ahorra much&#237;simo tiempo y ancho de banda, lo 
+que ayuda a no saturar la red y no tener que planificar con tanto cuidado las 
+ventanas de backup. Por ejemplo he realizado unas pruebas y para las mismas 
+condiciones: <strong>mismo servidor, mismo directorio, mismo horario y condiciones de 
+red; la sincronizaci&#243;n remoto &#8594; local a trav&#233;s de FTP emplea entre 35 y 45 
+minutos y cuando lo hacemos a trav&#233;s de rsync emplea entre 2 y 4 minutos</strong>. Ah&#237; 
+es nada, estamos hablando de un proceso ~13 veces m&#225;s r&#225;pido. </p>
+<h2 id="c+digo">C&#243;digo</h2>
+<p>El c&#243;digo del fichero fabric es el siguiente:</p>
+<div class="codehilite"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">tarfile</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">get_size</span> <span class="kn">import</span> <span class="n">get_size</span> <span class="k">as</span> <span class="n">_get_size</span>
+<span class="kn">from</span> <span class="nn">get_size</span> <span class="kn">import</span> <span class="n">best_unit_size</span> <span class="k">as</span> <span class="n">_best_unit_size</span>
+<span class="kn">from</span> <span class="nn">logger</span> <span class="kn">import</span> <span class="n">Logger</span> <span class="k">as</span> <span class="n">_logger</span>
+<span class="kn">from</span> <span class="nn">notify</span> <span class="kn">import</span> <span class="n">notify</span> <span class="k">as</span> <span class="n">_notify</span>
+<span class="kn">from</span> <span class="nn">fabric.api</span> <span class="kn">import</span> <span class="n">env</span><span class="p">,</span> <span class="n">local</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">_logger</span><span class="p">()</span>
+
+<span class="c">#===============================================================================</span>
+<span class="c"># RSYNC HOSTS</span>
+<span class="c">#===============================================================================</span>
+
+<span class="c"># Your default host. No need any more if only wants a host.</span>
+<span class="n">env</span><span class="o">.</span><span class="n">host_string</span> <span class="o">=</span> <span class="s">&quot;username@host&quot;</span>
+<span class="n">env</span><span class="o">.</span><span class="n">remote</span> <span class="o">=</span> <span class="s">&quot;/your/remote/path&quot;</span>
+<span class="n">env</span><span class="o">.</span><span class="n">local</span> <span class="o">=</span> <span class="s">&quot;/your/local/path&quot;</span>
+
+<span class="c"># If wants to use various hosts, then define the previous variables like this, </span>
+<span class="c"># one function per host. </span>
+<span class="k">def</span> <span class="nf">_host_1</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Host variables for host_1.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">env</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">host_string</span> <span class="o">=</span> <span class="s">&quot;username@host_1&quot;</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">remote</span> <span class="o">=</span> <span class="s">&quot;/your/remote/path/in/host_1&quot;</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">local</span> <span class="o">=</span> <span class="s">&quot;/your/local/path/for/host_1&quot;</span>
+
+<span class="k">def</span> <span class="nf">_host_2</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Host variables for host_2.&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">env</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">host_string</span> <span class="o">=</span> <span class="s">&quot;username@host_2&quot;</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">remote</span> <span class="o">=</span> <span class="s">&quot;/your/remote/path/in/host_2&quot;</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">local</span> <span class="o">=</span> <span class="s">&quot;/your/local/path/for/host_2&quot;</span>
+
+<span class="c"># ...</span>
+<span class="c">#</span>
+<span class="c"># def _host_n():</span>
+<span class="c">#     &quot;&quot;&quot;Host variables for host_n.&quot;&quot;&quot;</span>
+<span class="c">#     global env</span>
+<span class="c">#     env.host_string = &quot;username@host_n&quot;</span>
+<span class="c">#     env.remote = &quot;/your/remote/path/in/host_n&quot;</span>
+<span class="c">#     env.local = &quot;/your/local/path/for/host_n&quot;</span>
+
+<span class="c">#===============================================================================</span>
+<span class="c"># END RSYNC HOSTS</span>
+<span class="c">#===============================================================================</span>
+
+<span class="k">def</span> <span class="nf">_log_start</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Create the Start time info block for the log.&quot;&quot;&quot;</span>
+    <span class="c"># Init the log for multiple hosts. Do not repeat the previous logs.</span>
+    <span class="k">if</span> <span class="n">LOG</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="s">&quot;Start time&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_log_end</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create the End time info block and send &amp; write the log.&quot;&quot;&quot;</span>
+    <span class="n">_notify</span><span class="p">(</span><span class="s">&quot;Rsync&quot;</span><span class="p">,</span> <span class="s">&quot;Ended&quot;</span> <span class="p">,</span> <span class="s">&quot;ok&quot;</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="s">&quot;End time&quot;</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">free</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Fabric Rsync ({0})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">task</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">_check_local</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Create local directory if no exists.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">local</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">local</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_rsync</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">delete</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Process the _rsync command.&quot;&quot;&quot;</span>
+    <span class="n">_log_start</span><span class="p">()</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="s">&quot;Fabric Rsync</span><span class="se">\n</span><span class="s">http://joedicastro.com&quot;</span><span class="p">,</span>
+               <span class="s">&quot;Syncing {0} to {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+    <span class="n">_notify</span><span class="p">(</span><span class="s">&quot;Rsync&quot;</span><span class="p">,</span> <span class="s">&quot;Start syncing {0} to {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">),</span> <span class="s">&quot;info&quot;</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">local</span><span class="p">(</span><span class="s">&quot;rsync -pthrvz {2} {0}/ {1}&quot;</span><span class="o">.</span>
+                <span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="s">&quot;--delete&quot;</span> <span class="k">if</span> <span class="n">delete</span> <span class="o">==</span> <span class="s">&quot;yes&quot;</span> <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">),</span>
+                <span class="n">capture</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">_notify</span><span class="p">(</span><span class="s">&quot;Rsync&quot;</span><span class="p">,</span> <span class="s">&quot;Finished synchronization&quot;</span><span class="p">,</span> <span class="s">&quot;ok&quot;</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="s">&quot;Rsync Output&quot;</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">failed</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="s">&quot;Rsync Errors&quot;</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_compress</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compress a local directory into a gz file.</span>
+
+<span class="sd">    Creates a file for each weekday, an removes the old files if exists&quot;&quot;&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">))</span>
+    <span class="n">dir2gz</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">old_gzs</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">'{0}*{1}.tar.gz'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dir2gz</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%a'</span><span class="p">)))</span>
+    <span class="n">gz_name</span> <span class="o">=</span> <span class="s">&quot;{0}_{1}.tar.gz&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dir2gz</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'</span><span class="si">%d</span><span class="s">%b%Y_%H:%M_%a'</span><span class="p">))</span>
+    <span class="n">gz_file</span> <span class="o">=</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">gz_name</span><span class="p">,</span> <span class="s">&quot;w:gz&quot;</span><span class="p">)</span>
+    <span class="n">gz_file</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">arcname</span><span class="o">=</span><span class="n">dir2gz</span><span class="p">)</span>
+    <span class="n">gz_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">'Created file:'</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span>
+                                                                <span class="n">gz_name</span><span class="p">)])</span>
+    <span class="k">for</span> <span class="n">old_gz</span> <span class="ow">in</span> <span class="n">old_gzs</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">old_gz</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">+=</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">,</span> <span class="s">'Deleted old file:'</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="n">old_gz</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">output</span>
+
+<span class="k">def</span> <span class="nf">_archive</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Archive the local directory in a gz file for each weekday.&quot;&quot;&quot;</span>
+    <span class="n">_notify</span><span class="p">(</span><span class="s">'Rsync'</span><span class="p">,</span> <span class="s">'Compressing folder...'</span><span class="p">,</span> <span class="s">'info'</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="s">'Rotate compressed copies'</span><span class="p">,</span> <span class="n">_compress</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">local</span><span class="p">))</span>
+    <span class="n">_notify</span><span class="p">(</span><span class="s">&quot;Rsync&quot;</span><span class="p">,</span> <span class="s">&quot;Finished compression&quot;</span><span class="p">,</span> <span class="s">&quot;ok&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_get_diskspace</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get the disk space used by the local directory and archives.&quot;&quot;&quot;</span>
+    <span class="n">gz_size</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">_get_size</span><span class="p">(</span><span class="n">gz</span><span class="p">)</span> <span class="k">for</span> <span class="n">gz</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">'{0}*.gz'</span><span class="o">.</span>
+                                                     <span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">local</span><span class="p">))])</span>
+    <span class="n">log_size</span> <span class="o">=</span> <span class="n">_get_size</span><span class="p">(</span><span class="n">LOG</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">LOG</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">local_size</span> <span class="o">=</span> <span class="n">_get_size</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">local</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">_best_unit_size</span><span class="p">(</span><span class="n">local_size</span> <span class="o">+</span> <span class="n">gz_size</span> <span class="o">+</span> <span class="n">log_size</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">block</span><span class="p">(</span><span class="s">'Disk space used'</span><span class="p">,</span> <span class="s">'{0:&gt;76.2f} {1}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s">'s'</span><span class="p">],</span> <span class="n">size</span><span class="p">[</span><span class="s">'u'</span><span class="p">]))</span>
+
+<span class="k">def</span> <span class="nf">up</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dlt</span><span class="o">=</span><span class="s">'yes'</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sync from local to remote.&quot;&quot;&quot;</span>
+    <span class="nb">globals</span><span class="p">()[</span><span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">server</span><span class="p">]()</span> <span class="k">if</span> <span class="n">server</span> <span class="k">else</span> <span class="bp">None</span>
+    <span class="n">_rsync</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">local</span><span class="p">,</span> <span class="s">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">env</span><span class="o">.</span><span class="n">host_string</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">remote</span><span class="p">]),</span> <span class="n">dlt</span><span class="p">)</span>
+    <span class="n">_log_end</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">down</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dlt</span><span class="o">=</span><span class="s">'yes'</span><span class="p">,</span> <span class="n">archive</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sync from remote to local.&quot;&quot;&quot;</span>
+    <span class="nb">globals</span><span class="p">()[</span><span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">server</span><span class="p">]()</span> <span class="k">if</span> <span class="n">server</span> <span class="k">else</span> <span class="bp">None</span>
+    <span class="n">_check_local</span><span class="p">()</span>
+    <span class="n">_rsync</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">env</span><span class="o">.</span><span class="n">host_string</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">remote</span><span class="p">]),</span> <span class="n">env</span><span class="o">.</span><span class="n">local</span><span class="p">,</span> <span class="n">dlt</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">archive</span><span class="p">:</span>
+        <span class="n">_log_end</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">backup</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sync from remote to local &amp; archive the local directory.&quot;&quot;&quot;</span>
+    <span class="n">down</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">archive</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">_archive</span><span class="p">()</span>
+    <span class="n">_get_diskspace</span><span class="p">()</span>
+    <span class="n">_log_end</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+</pre></div>
+
+
+<p>El fichero siempre actualizado puede ser encontrado en el repositorio <em>Python Recipes</em> que est&#225; alojado en <a href="http://github.com/joedicastro/python-recipes">github</a> con el nombre <code>rsync_fabfile.py</code> </p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-06-30.html">&lt;</a></td>
+<td class="cal-month" colspan="5">julio 2011</td>
+<td class="cal-next"><a href="index-2011-08-30.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td></tr>
+<tr class="cal-week">
+<td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2011-07-05.html">05</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-06.html">06</a></td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
+<tr class="cal-week">
+<td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day"><strong class="cal-current">13</strong></td><td class="cal-day">14</td><td class="cal-day"><a class="cal-link" href="index-2011-07-15.html">15</a></td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-07-18.html">18</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-19.html">19</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-20.html">20</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-21.html">21</a></td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td></tr>
+<tr class="cal-week">
+<td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day"><a class="cal-link" href="index-2011-07-27.html">27</a></td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

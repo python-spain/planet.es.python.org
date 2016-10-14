@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>jueves, 10 mayo</h2>
+<div class="time">
+<h3>06:00</h3>
+<div class="item feed-a1322d23 feed-{feed_id}" id="item-c84a8b51">
+<p class="itemheader">
+<span class="itemtitle">
+    Genbeta:dev:
+<a href="http://www.genbetadev.com/python/cazadores-de-mitos-las-propiedades-privadas-en-python">Cazadores de Mitos: Las propiedades privadas en Python</a></span>
+</p>
+    <div class="itemdescription">
+    <p><p><img alt="Cazadores de Mitos: Python" class="centro_sinmarco" src="https://i.blogs.es/2e17e2/python/650_1200.jpg" /></p></p>
+
+<p>El otro d&#237;a discut&#237;a con un buen amigo en Twitter sobre lo que el llamaba &#8220;<em>falta de private protected y public keywords</em>&#8220; en Python y record&#233; la tremenda confusi&#243;n y desinformaci&#243;n que hay en la red en relaci&#243;n a las propiedades y/o m&#233;todos &#8220;<em>privadas/os</em>&#8220; en el lenguaje creado por <strong>Guido Van Rossum</strong>.</p>
+
+<p>En esta entrada voy a intentar explicar <strong>por qu&#233; no existen propiedades ni m&#233;todos privados en Python</strong> y por qu&#233; no son necesarios, por qu&#233; existe esta confusi&#243;n sobre los m&#233;todos y propiedades (o atributos) que utilizan el underscore (_ y __) y cual es la aut&#233;ntica naturaleza de los mismos.</p>
+
+<p><h2>El origen del Mito</h2><br />
+
+Muy posiblemente el origen del mito comenz&#243; con el <strong>fant&#225;stico libro de Mark Pilgrim</strong> <a href="http://www.diveintopython.net/toc/index.html">Dive into Python</a> que ha sido el primer contacto y libro de referencia por antonomasia para los novicios en Python desde pr&#225;cticamente su lanzamiento el treinta de octubre del 2000. Yo mismo aprend&#237; con &#233;l.</p>
+
+<p>El cap&#237;tulo 5.9. del citado libro, lamentablemente, se titula &#8220;<em>Private Functions</em>&#8220; y en &#233;l se dice lo siguiente:<br />
+
+<blockquote>Como en muchos otros lenguajes, Python tiene el concepto de elementos privados:<ul><li>Funciones privadas, que no pueden ser invocadas desde fuera de su m&#243;dulo</li><li>M&#233;todos de clase privados, que no pueden ser invocados desde fuera de su clase</li><li>Atributos privados, que no pueden ser accedidos desde fuera de su clase</li></ul><br />
+
+Pero a diferencia de la mayor&#237;a de lenguajes, lo que hace a una funci&#243;n, m&#233;todo o atributo de Python privado viene determinado enteramente por su nombre.</p>
+
+<p>Si el nombre de una funci&#243;n, el m&#233;todo de una clase o uno de sus atributos comienza con (pero no termina con) dos guiones bajos (<em>underscores</em>), es privado; todo lo dem&#225;s es p&#250;blico.</blockquote></p>
+
+<p>Para <strong>reforzar esta afirmaci&#243;n</strong> recurre a un sencillo ejemplo que demuestra que no se puede invocar un m&#233;todo llamado &#8220;<em>__parse</em>&#8220; desde fuera de una clase. Yo voy a escribir otro sencillo ejemplo <strong>en el <span class="caps"><span class="caps">REPL</span></span></strong> e ir&#233; explicando sobre la marcha por qu&#233; Mark Pilgrim estaba, sencillamente, <strong>equivocado con respecto a este particular</strong> en espec&#237;fico.</p>
+
+<pre class="prettyprint lang-python">&gt;&gt; class Gato(object):
+&gt;&gt;&gt;    &quot;&quot;&quot;Clase Gato&quot;&quot;&quot;
+&gt;&gt;&gt;    def __init__(self):
+&gt;&gt;&gt;        super(Gato, self).__init__()
+&gt;&gt;&gt;    def __privado(self):
+&gt;&gt;&gt;        &quot;&quot;&quot;Metodo supuestamente privado&quot;&quot;&quot;
+&gt;&gt;&gt;        print &quot;Soy privado como los intereses del Estado&#8230;&quot;
+&gt;&gt;&gt;    def un_metodo(self):
+&gt;&gt;&gt;        &quot;&quot;&quot;Metodo supuestamente publico desde el que se accede a __privado&quot;&quot;&quot;
+&gt;&gt;&gt;        self.__privado()
+&gt;&gt;&gt;
+&gt;&gt;&gt; g1 = Gato()
+&gt;&gt;&gt; g1.__privado()
+&gt;&gt;&gt; Traceback (most recent call last): 
+&gt;&gt;&gt;   File &quot;&lt;interactive input&gt;&quot;, line 1, in ?
+&gt;&gt;&gt; AttributeError: 'Gato' object has no attribute '__privado'
+&gt;&gt;&gt; 
+&gt;&gt;&gt; g1.un_metodo()
+Soy privado como los intereses del Estado&#8230;
+&gt;&gt;&gt;</pre>
+
+<p>Vemos como efectivamente no hemos sido capaces de invocar al m&#233;todo <strong>__privado</strong> de nuestra clase Gato pero sin embargo al invocar al m&#233;todo <strong>un_metodo</strong> que llama internamente al m&#233;todo &#8220;<em>__privado</em>&#8220; si se ha imprimido el mensaje y por lo tanto &#8220;demuestra&#8221; la teor&#237;a explicada por Pilgrim en Dive Into Python.</p>
+
+<p>Pero esto no es m&#225;s que una <strong>desagradable coincidencia</strong>. Que el m&#233;todo no sea accesible desde fuera de la clase no tiene nada que ver con la visibilidad o restricci&#243;n del m&#233;todo sino que es el efecto de un mecanismo de Python conocido como <em><strong>name mangling</strong></em> (presente en otros lenguajes como C++ o Java) y no sirve para lo que <strong>por error</strong> se cree de manera popular. Vamos a explicarlo con otro ejemplo en la <span class="caps"><span class="caps">REPL</span></span>:</p>
+
+<pre class="prettyprint lang-python">&gt;&gt;&gt; class Gatico(Gato):
+&gt;&gt;&gt;    &quot;&quot;&quot;La clase Gatico hereda de la clase Gato&quot;&quot;&quot;
+&gt;&gt;&gt;    def __init__(self):
+&gt;&gt;&gt;        super(Gatico, self).__init__()
+&gt;&gt;&gt;    def __privado(self):
+&gt;&gt;&gt;        &quot;&quot;&quot;Estoy sobreescribiendo el metodo privado?&quot;&quot;&quot;
+&gt;&gt;&gt;        print &quot;Es necesario abrir los datos al publico y dejar de ser privado&#8230;&quot;
+&gt;&gt;&gt;    def otro_metodo(self):
+&gt;&gt;&gt;        &quot;&quot;&quot;Soy otro metodo y me llamo asi a posta para nos sobreescribir a un_metodo de la clase base&quot;&quot;&quot;
+&gt;&gt;&gt;        self.__privado()
+&gt;&gt;&gt;
+&gt;&gt;&gt; g2 = Gatico()
+&gt;&gt;&gt; g2.__privado()
+&gt;&gt;&gt; Traceback (most recent call last): 
+&gt;&gt;&gt;   File &quot;&lt;interactive input&gt;&quot;, line 1, in ?
+&gt;&gt;&gt; AttributeError: 'Gatico' object has no attribute '__privado'
+&gt;&gt;&gt; 
+&gt;&gt;&gt; g2.otro_metodo()
+Es necesario abrir los datos al publico y dejar de ser privado&#8230;
+&gt;&gt;&gt;
+&gt;&gt;&gt; g2.un_metodo()
+Soy privado como los intereses del Estado&#8230;
+&gt;&gt;&gt;</pre>
+
+<p>&#191;Qu&#233; es lo que ha pasado aqu&#237;?. Los programadores de Java y de C++ que est&#225;n leyendo este art&#237;culo (porque lo est&#225;is leyendo verdad, os interesa un mont&#243;n&#8230;) se habr&#225;n percatado r&#225;pidamente de que <strong>algo raro</strong> est&#225; pasando.</p>
+
+<p>En Java no est&#225; permitido sobreescribir m&#233;todos privados, si el programador nombra a un m&#233;todo privado en una clase heredada <strong>exactamente igual</strong> que un m&#233;todo privado de su clase base, sencillamente estar&#225; creando un m&#233;todo completamente nuevo en la subclase y este ocultar&#225; al m&#233;todo de la superclase.</p>
+
+<p>En C++ se puede sobreescribir cualquier m&#233;todo que sea <strong>virtual</strong>, de hecho, es una pr&#225;ctica aceptada y recomendable sobreescribir solo funciones virtuales privadas y nunca p&#250;blicas pero si sobreescribimos un m&#233;todo privado de una clase base en una subclase y lo invocamos desde la subclase, deber&#237;a de llamarse al m&#233;todo adecuado, es decir, al nuevo m&#233;todo que sobreescribe al de la clase base aunque sea invocado por un m&#233;todo de la clase base desde la subclase. Este es uno de los principios del <strong>polimorfismo</strong> en C++.</p>
+
+<p>Por lo tanto es extra&#241;o que en Python hayamos sobreescrito el m&#233;todo &#8220;<em>__privado</em>&#8220; pero sin embargo el m&#233;todo &#8220;<em>un_metodo</em>&#8220; siga pudiendo invocar a la implementaci&#243;n del m&#233;todo &#8220;<em>__privado</em>&#8220; de su propia clase. De hecho, esto ocurre por que <strong>en ning&#250;n momento hemos sobreescrito</strong> el m&#233;todo &#8220;<em>__privado</em>&#8220; de la clase Gato ni es un m&#233;todo privado, ni nunca ha sido intenci&#243;n del lenguaje poder crear m&#233;todos privados ni por &#233;ste <strong>ni por ning&#250;n otro medio</strong>.</p>
+
+<p><h2>Ahora si que estoy perdido, &#191;me lo explica?</h2><br />
+
+Python es un lenguaje potente que permite al programador hacer pr&#225;cticamente lo que quiera, como por ejemplo, definir algo como <code>True = False</code> y <strong>liarla parda</strong> o bien sobreescribir una funci&#243;n<em> builtin</em>. Esto es as&#237; por la particular visi&#243;n de como debe ser el lenguaje por parte de los Pythonistas y del <strong><span class="caps"><span class="caps">BDFL</span></span></strong> (Benevolent Dictator For Life).</p>
+
+<p>Uno de los principales valores de Python es que <strong>trata al programador como mayor de edad</strong> y en lugar de imponer restricciones conf&#237;a en el buen juicio de nosotros, los programadores, para no hacer barbaridades as&#237; que la Comunidad define una serie de <strong>convenciones sobre el lenguaje</strong>.</p>
+
+<p>Entre estas convenciones se encuentra la de nombrar a toda aquella funci&#243;n, todo aquel m&#233;todo o atributo <strong>que no sea parte de la <span class="caps"><span class="caps">API</span></span> p&#250;blica</strong> (que no m&#233;todos ni propiedades) de nuestra clase, librer&#237;a, framework o m&#243;dulo y sea perceptible a cambios, la desaparici&#243;n o el estado obsoleto y olvidado sin previo aviso, con un underscore delante del nombre para informar a los consumidores de dicha <span class="caps"><span class="caps">API</span></span> de que se trata de un m&#233;todo interno que puede <strong>cambiar sin previo aviso</strong> y no est&#225; dise&#241;ado (ni es &#250;til) para el uso normal de la <span class="caps"><span class="caps">API</span></span>.</p>
+
+<p>Si adem&#225;s el nombre de nuestra variable coincide con una clase, m&#233;todo, variable o <em>builtin</em> pero es el &#250;nico que tiene l&#243;gica, por ejemplo, <em>list</em>, <em>sum</em>, <em>rand</em> por convenci&#243;n se a&#241;ade un underscore al nombre antes de hacer algo &#8220;<em>tan guarro</em>&#8220; (para el Zen de Python) como nombrarlo &#8220;<em>lst</em>&#8220;, &#8220;<em>sm</em>&#8220;, &#8220;<em>rnd</em>&#8220; que no aporta valor sem&#225;ntico.</p>
+
+<p>Por otro lado, para posibilitar que las clases que heredan de clases bases puedan sobreescribir m&#233;todos <strong>sin romper las llamadas internas</strong> de sus clases base a dichos m&#233;todos, cualquier m&#233;todo (o funci&#243;n o atributo) que comience con al menos dos underscores (y no acabe en dos underscores, uno si est&#225; permitido) es <strong>renombrado por el int&#233;rprete</strong> en la definici&#243;n de la clase siguiendo la siguiente norma &#8220;<em>_classname__methodname</em>&#8220; as&#237; que para nuestro ejemplo el m&#233;todo quedar&#237;a as&#237; &#8220;<em>_Gato__privado</em>&#8220; y de hecho podr&#237;a seguir siendo invocado desde fuera de la clase si as&#237; lo queremos:<br />
+
+<pre class="prettyprint lang-python"><code>&amp;gt;&amp;gt;&amp;gt; g1._Gato__privado()
+Soy privado como los intereses del Estado...</code></pre></p>
+
+<p>Y puede ser invocado ya que nunca fue la intenci&#243;n del lenguaje que existieran los m&#233;todos privados, ya que en Python, por su propia condici&#243;n de lenguaje din&#225;mico y sus caracter&#237;sticas, no es necesario. Asimismo, los m&#233;todos, funciones o variables que empiezan con un underscore <strong>no son importados</strong> al usar <code>from bleh import *</code> que por otro lado es una sintaxis considerada &#8220;<em>deprectaed</em>&#8220; y mala pr&#225;ctica de programaci&#243;n por el <span class="caps"><span class="caps">PEP</span></span>-8.</p>
+
+<p><h2>Conclusi&#243;n</h2><br />
+
+Ya se que ha sido un <strong>art&#237;culo ladrillazo</strong> pero considero que en vista a la falta total de literatura al respecto era necesario realizar esta aclaraci&#243;n para ayudar as&#237; a comprender mejor este maravilloso lenguaje.</p>
+
+<p>En breve escribir&#233; otro art&#237;culo explicando porque no es necesario el uso de m&#233;todos o propiedades privados. Hasta entonces, happy hacking.</p>
+
+<p>M&#225;s Desinformaci&#243;n | <a href="http://www.diveintopython.net/object_oriented_framework/private_functions.html">Cap&#237;tulo 5.9. de Dive Into Python</a></p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2012-04-26.html">&lt;</a></td>
+<td class="cal-month" colspan="5">mayo 2012</td>
+<td class="cal-next"><a href="index-2012-06-01.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td></tr>
+<tr class="cal-week">
+<td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day"><strong class="cal-current">10</strong></td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td></tr>
+<tr class="cal-week">
+<td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td></tr>
+<tr class="cal-week">
+<td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td></tr>
+<tr class="cal-week">
+<td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

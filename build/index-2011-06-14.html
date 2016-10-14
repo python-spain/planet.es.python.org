@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>martes, 14 junio</h2>
+<div class="time">
+<h3>22:07</h3>
+<div class="item feed-5fd98f4c feed-{feed_id}" id="item-755249d8">
+<p class="itemheader">
+<span class="itemtitle">
+    Uno y uno = diez:
+<a href="https://unoyunodiez.com/2011/06/14/preguntas-de-entrevista-de-google-con-respuestas-ii/">Preguntas de entrevista de Google (con respuestas) II</a></span>
+</p>
+    <div class="itemdescription">
+    <p style="text-align: justify;">Seguimos con otras diez preguntas de entrevista de Google tras la <a href="https://unoyunodiez.wordpress.com/2011/05/30/preguntas-de-entrevista-de-google-con-respuestas/">primera entrega</a> de esta serie. Insisto en que si conoceis mejores respuestas o soluciones las pongais en los comentarios.</p>
+<h2 style="text-align: justify;">#11 &#191;C&#243;mo se pasan las cookies en el protocolo HTTP?</h2>
+<p style="text-align: justify;">Bueno, esta me parece bastante f&#225;cil. Las cookies, que no son m&#225;s que pares clave=valor se pasan como texto plano en las cabeceras de cualquier petici&#243;n o respuesta HTTP. Cuando el explorador realiza una petici&#243;n, pasa las cookies tal cual se las mand&#243; el servidor simulando as&#237; una suerte de &#8220;estado persistente&#8221;.</p>
+<p style="text-align: justify;">Puede encontrarse informaci&#243;n sobre el protocolo <a href="http://es.wikipedia.org/wiki/Cookie">HTTP y las cookies en particular</a> en Wikipedia.</p>
+<h2 style="text-align: justify;">#12 Escribe una expresi&#243;n regular que acepte direcciones de correo</h2>
+<p style="text-align: justify;">Divide y vencer&#225;s: la estructura de un correo electr&#243;nico es <strong>[usuario]@[host]</strong> as&#237; que ya podemos hacer una versi&#243;n inicial de la expresi&#243;n regular:</p>
+<pre>()@()</pre>
+<p style="text-align: justify;">Tenemos que rellenar esos corchetes. Vamos con el host que tiene una forma como <strong>[subdominio].[dominio].</strong> Ese punto final es optativo (se supone que todos los <a href="http://en.wikipedia.org/wiki/Fully_qualified_domain_name" target="_blank">FQDN</a> lo llevan en su normalizaci&#243;n) as&#237; que la expresi&#243;n regular para el host ser&#225; algo como:</p>
+<pre>([a-zA-Z0-9][a-zA-Z0-9-]*\.)+[a-zA-Z]+(\.)?</pre>
+<p style="text-align: justify;">Es m&#225;s o menos correcto. El primer grupo entre corchetes obliga a que el nombre del dominio empiece por un car&#225;cter alfanum&#233;rico. El segundo acepta el resto de caracteres (alfanum&#233;ricos y el gui&#243;n) y hace terminar la cadena en punto. Todo esto podemos repetirlo indefinidamente (en realidad un nombre de dominio s&#243;lo puede tener hasta 253 caracteres). Debemos terminar con una extensi&#243;n que representa un dominio de primer nivel formado por caracteres alfab&#233;ticos (al menos, uno) y el punto optativo final. Los puntos est&#225;n precedidos de la barra para que no sean considerados caracteres especiales.</p>
+<p style="text-align: justify;">Ahora, el nombre de usuario depende. Pongamos algunas reglas. Supongamos que solo permitimos caracteres alfanum&#233;ricos, guiones bajos, puntos y s&#237;mbolos de sumar y restar y que debe comenzar por un car&#225;cter alfanum&#233;rico o gui&#243;n bajo . Su longitud m&#237;nima ser&#225; de 1 caracter. Tenemos pues:</p>
+<pre>[_a-zA-Z0-9][_a-zA-Z0-9-+.]*</pre>
+<p style="text-align: justify;">Ahora, combinando las tres, tenemos:</p>
+<pre>([_a-zA-Z0-9][_a-zA-Z0-9-+.]*)@(([a-zA-Z0-9][a-zA-Z0-9-]*\.)+[a-zA-Z]+(\.)?)</pre>
+<p style="text-align: justify;">Y listo, ese churro valida direcciones email.</p>
+<p style="text-align: justify;">Os invito a probarlo en <a href="http://regexpal.com/" target="_blank">RegexPal</a>.</p>
+<h2 style="text-align: justify;">#13 Escribe una funci&#243;n f(a, b) que toma dos cadenas de caracteres y devuelve otra s&#243;lo con los caracteres comunes en el orden en el que aparecen en a. Escribe una versi&#243;n que ejecute en orden N cuadrado y otra en orden N.</h2>
+<p style="text-align: justify;">Vamos a suponer caracteres alfabeticos y en min&#250;scula:</p>
+<p style="text-align: justify;">La primera soluci&#243;n que se nos puede ocurrir es algo como esto (en Python).</p>
+<pre class="brush: python; title: ; notranslate">
+def f(a,b):
+  r = ''
+  for c in a:
+    if c in b and c not in r:
+    r += c
+
+  return r
+</pre>
+<p style="text-align: justify;">Esta soluci&#243;n es <strong>N cuadrado</strong> pues el hecho de comprobar si el caracter c est&#225; o no en b supone un recorrido por los caracteres de b. As&#237; que tenemos un bucle de longitud(b) dentro de otro de longitud(a) luego <strong>longitud(a)*longitud(b) pertenece a O(N^2)</strong>. Esto es <a href="http://es.wikipedia.org/wiki/Cota_superior_asint%C3%B3tica" target="_blank">notaci&#243;n O</a> que supongo que a cualquier ingeniero le sonar&#225; de algo.</p>
+<p style="text-align: justify;">La soluci&#243;n N es tambi&#233;n muy f&#225;cil. Para ello necesitamos una funci&#243;n auxiliar que haga a=0, b=1, c=2&#8230;</p>
+<pre class="brush: python; title: ; notranslate">
+def alpha_to_index(c):
+  return ord(c)-ord('a')
+
+def f(a,b):
+  l = [0]*26
+ &#160;for c in b:
+    i = alpha_to_index(c)
+    if not l[i]:
+      l[i] = 1 # Indica aparici&#243;n en b
+
+  r = &quot;&quot;
+  for c in a:
+    i = alpha_to_index(c)
+    if l[i] == 1:
+      r += c
+      l[i] = 2 # Indica ya a&#241;adida al resultado
+
+  return r
+</pre>
+<p style="text-align: justify;">Este algoritmo se ejecuta en <strong>longitud(a)+longitud(b) que pertenece a O(n)</strong> Para quitar las restricciones de min&#250;scula y caracteres alfab&#233;ticos, en vez de un array se usa un hashmap (un diccionario en Python) para albergar el estado de los caracteres.</p>
+<p style="text-align: justify;">En breve dedicar&#233; un post a la notaci&#243;n O y a c&#243;mo calcular el coste de un algoritmo.</p>
+<h2 style="text-align: justify;">#14 Te dan un c&#243;digo fuente que se rompe en cada ejecuci&#243;n. Tras ejecutarlo 10 veces en un depurador te das cuenta de que nunca se rompe dos veces por el mismo sitio. El c&#243;digo fuente s&#243;lo usa un hilo y la biblioteca est&#225;ndar de C. &#191;Qu&#233; errores de programaci&#243;n podr&#237;an estar causando los problemas? &#191;C&#243;mo podr&#237;as probar cada uno?</h2>
+<p style="text-align: justify;">A mi se me ocurre que las causas pueden ser principalmente dos:</p>
+<ol style="text-align: justify;">
+<li>Desbordamientos (y son un caso particular del segundo)</li>
+<li>Comportamientos indefinidos</li>
+</ol>
+<p style="text-align: justify;">Para probarlos coger&#237;a un lista de <a href="https://unoyunodiez.wordpress.com/2011/05/25/todo-lo-que-un-programador-de-c-deberia-saber-sobre-el-comportamiento-idefinido/" title="Todo lo que un programador de C deber&#237;a saber sobre el comportamiento&#160;indefinido">comportamientos indefinidos</a> y probar&#237;a que no se est&#225;n ralizando asunciones erroneas. Para los desbordamientos comprobar&#237;a los casos t&#237;picos (desbordamiento de array, de paso de par&#225;metro, copia de arrays&#8230;).</p>
+<h2 style="text-align: justify;">#15 Explica c&#243;mo funciona el control de congesti&#243;n en el protocolo TCP</h2>
+<p style="text-align: justify;">La verdad es que este no es mi fuerte as&#237; que si alguien se sabe otra forma m&#225;s sencilla de explicarlo, estar&#233; encantdo de rectificar la respuesta. Entre lo que recuerdo de redes y lo que he sacado de la Wikipedia, la explicaci&#243;n se parece a esto:</p>
+<p style="text-align: justify;">El t&#237;pico (porque <a href="http://en.wikipedia.org/wiki/TCP_congestion_avoidance_algorithm" target="_blank">hay varios</a>) consiste en variar el tama&#241;o de la llamada <strong>ventana de congesti&#243;n </strong>mediante un algoritmo llamado <a href="http://es.wikipedia.org/wiki/Slow-start" target="_blank">Slow-Start</a>. La necesidad del protocolo surge porque los extremos de una conexi&#243;n TCP no tienen manera de saber a priori la calidad la red. En principio, no pueden saber el tama&#241;o m&#225;ximo del datgrama (los datos enviados en TCP)&#160; que causar&#237;a la mayor tasa de transferencia sin desbordar la capacidad de la ruta seleccionada.</p>
+<p style="text-align: justify;">Encontrar este &#243;ptimo es tarea del algoritmo de control de congesti&#243;n. Para ello, el emisor cuenta con una ventana de congestion que especifica cu&#225;ntos datagramas enviar&#225; de golpe. La ventana comienza al tama&#241;o m&#225;ximo de <strong>un</strong> datagrama y cada vez que se acusa un recibo se dobla. Eventualmente se superar&#225; un umbral llamado sstresh que har&#225; que la ventana aumente linealmente. En el momento en que la cantidad de datagramas satura la red se comienzan a perder paquetes y se produce una de las siguientes situaciones:</p>
+<ul style="text-align: justify;">
+<li>Si se detecta un timeout, la ventana se reestablece al tama&#241;o m&#225;ximo de un datagrama.</li>
+<li>Si en vez de un timeout, se detectan tres acuses iguales, la ventana se reduce a la mitad del m&#237;nimo entre la ventana de congesti&#243;n y la ventana de recepci&#243;n (el tama&#241;o m&#225;ximo del datagrama que el nodo est&#225; dispuesto a aceptar por vez).</li>
+</ul>
+<h2 style="text-align: justify;">#16 En Java, &#191;cu&#225;l es la diferencia entre final, finally y finalize?</h2>
+<p style="text-align: justify;">Yo me sab&#237;a dos (final y finally):</p>
+<ul style="text-align: justify;">
+<li><strong>final</strong> es un modificador de tipo. En variables indica que, una vez inicializada en el constructos, no puede volver a ser modificada. En clases indica que no se puede heredar de ella.</li>
+<li><strong>finally</strong> es una clusula del bloque try / catch que indica qu&#233; se debe hacer finalmente, antes de continuar la ejecuci&#243;n</li>
+<li><strong>finalize</strong> es el m&#233;todo al que invoca el recolector de basura al ir a destruir un objeto</li>
+</ul>
+<p style="text-align: justify;">Fuente: <a href="http://www.janeg.ca/scjp/gc/finalize.html" target="_blank">http://www.janeg.ca/scjp/gc/finalize.html</a></p>
+<h2 style="text-align: justify;">#17 &#191;Qu&#233; es la programaci&#243;n multihilo? &#191;Qu&#233; es un deadlock?</h2>
+<p style="text-align: justify;">La programaci&#243;n multihilo hace referencia a distintas l&#237;neas de ejecuci&#243;n dentro de un programa. Cada l&#237;nea de ejecuci&#243;n es un subprograma que mantiene su propio estado y es independiente de los dem&#225;s. La comunicaci&#243;n se realiza mediante el traspaso de mensajes o a trav&#233;s de recursos compartidos. El acceso a estos recursos compartidos promueve toda una nueva serie de problemas relaccionados con el acceso simult&#225;neo a los m&#237;smos.</p>
+<p style="text-align: justify;">Un deadlock o <a href="http://es.wikipedia.org/wiki/Bloqueo_mutuo" target="_blank"><strong>interbloqueo</strong></a> es un problema de sincronizaci&#243;n que se da cuando el hilo A se encuentra esperando un recurso del hilo B y viceversa. He encontrado <a href="http://geeks.ms/blogs/jalarcon/archive/2011/04/29/191-qu-233-es-un-deadlock-o-interbloqueo.aspx" target="_blank">un ejemplo muy claro de interbloqueo</a> en el blog de <a href="http://www.jasoft.org/Blog/" target="_blank">JASoft.org</a></p>
+<p style="text-align: justify;">En &#233;l se nos invita a pensar en un proceso que transfiere dinero entre dos cuentas. Obviamente el proceso trata de obtener un acceso exclusivo a cada cuenta al comienzo de su ejecuci&#243;n por si ya hay otro proceso manipulando dicha cuenta. Si una cuenta est&#225; en uso, el hilo que la requiere esperar&#225; (haciendo nada) hasta que sea liberada.</p>
+<p style="text-align: justify;">Ahora supongamos que se producen dos transferencias en sentidos contrarios. Ambos procedimientos comenzar&#225;n por bloquear sus cuentas origen pero al tratar de bloquear las cuentas destino se encontraran con que tal cuenta ya se encuentra bloqueada. Y lo que es peor, de esta situaci&#243;n <strong>no saldr&#225;n nunca</strong>.</p>
+<p style="text-align: justify;">Fuente: <a href="http://geeks.ms/blogs/jalarcon/archive/2011/04/29/191-qu-233-es-un-deadlock-o-interbloqueo.aspx" target="_blank">http://geeks.ms/blogs/jalarcon/archive/2011/04/29/191-qu-233-es-un-deadlock-o-interbloqueo.aspx</a></p>
+<h2 style="text-align: justify;">#18 Escribe una funci&#243;n toExcel(v) que coja el valor de una columna excel (A, B, C, &#8230;, AA, AB, &#8230;, AAA) y devuelva su valor entero (A=1, B=2, C=3, &#8230;, AA=27&#8230;)</h2>
+<p style="text-align: justify;">Este ejercicio es muy interesante pero aun lo es m&#225;s el contrario. Para abordarlo, vamosa reducir al conjunto de letras a A, B y C. Ahora tenemos que A=1, B=2 y C=3 y la secuencia es A, B, C, AA, AB, AC, BA, BB, BC, CA, CB, CC&#8230;</p>
+<p style="text-align: justify;">Si recordais el <a href="https://unoyunodiez.wordpress.com/2010/09/20/contando-en-otras-bases-de-numeracion-i/" title="Contando en otras bases de numeraci&#243;n&#160;I">post con el que (casi) abrimos el blog</a>, relacionado con las bases de numeraci&#243;n y con el hecho de que la suma de 1 y 1 sea 10 en binario, vereis que esto se acerca mucho a contar en base 3. El problema es que los d&#237;gitos en base 3 son 0, 1 y 2; y no 1, 2 y 3 (o A, B y C) como ocurre en este caso. Resulta que en este problema no contamos con ning&#250;n d&#237;gito que represente el 0 pero s&#237; con uno que representa la base.</p>
+<p style="text-align: justify;">Bien, vayamos primero con el problema contrario. Transformemos, por ejmplo, <strong>12 en CC.</strong></p>
+<p style="text-align: justify;">El n&#250;mero 12, escrito en base tres tiene la siguiente pinta: <strong>110</strong> dado que puede expresarse como 1*3^2 + 1*3^1 + 0*3^0 Ahora bien, como no contamos con ning&#250;n s&#237;mbolo para representar el 0 pero s&#237; par representar el 3, vamos a ajustar 110 tratando de quitar los 0s. Podemos quitar una &#8220;decena&#8221; y a&#241;adir 3 unidades lo que resulta en <strong>103</strong> cuya descomposici&#243;n ser&#237;a 1*3^2 + 0*3^1 + 3*3^0 que sigue siendo 12. Ahora tenemos un 0 m&#225;s as&#237; que quitamos 1 &#8220;centena&#8221; y ponermos 3 &#8220;decenas&#8221; quedando <strong>033</strong>. Como los 0s a la izquierda no importan pues ya hemos terminado y su descomposici&#243;n es 0*3^2 + 3*3^1 + 3*3^0 que sigue siendo 12. Ahora reemplazamos cada d&#237;gito por su letra quedando <strong>CC</strong>.</p>
+<p style="text-align: justify;">De aqu&#237; puede inferirse f&#225;cilmente el algoritmo de transformaci&#243;n que nos piden y puede resumirse en dos sencillos pasos:</p>
+<ol>
+<li>Reemplazar cada letra por el d&#237;gito correspondiente (A=1, B=2, C=3&#8230;)</li>
+<li>Interpretar en base 3 (o, generalmente, en base la longitud del conjunto de s&#237;mbolos)</li>
+</ol>
+<pre class="brush: python; title: ; notranslate">
+def char_to_index(c):
+  return ord(c) - ord('A') + 1
+
+def toExcel(v):
+  l = len(v)
+  r = 0
+  for i in range(l):
+    c = v[i]
+    r += char_to_index(c) * (26**(l-i))
+
+  return r
+</pre>
+<p style="text-align: justify;">El caso contrario requiere el estudio de un caso m&#225;s. Pongamos que queremos transformar <strong>9 en BC</strong>. 9 en base tres es 100. Empezamos quitando 0 de m&#225;s a la derecha: quitamos 1 &#8220;decena&#8221; y a&#241;adimos 3 unidades resultando en <strong>1-13</strong> cuya descomposici&#243;n ser&#237;a 1*3^2 &#8211; 1*3^1 + 3*3^0 que sigue siendo 9. Como tampoco tenemos s&#237;mbolos para n&#250;meros negativos quitamos 1 &#8220;centena&#8221; y a&#241;adimos 3 &#8220;decenas&#8221; quedando <strong>023</strong> cuya descomposici&#243;n es 0*3^2 + 2*3^1 + 3*3^0 que sigue siendo 9. Ahora reemplazamos cada d&#237;gito por su letra lo que nos lleva a <strong>BC</strong>.</p>
+<p style="text-align: justify;">El algoritmo supone modificar ligeramente el cl&#225;sico de las divisiones y restos utilizado para transformar a una base dada (comprobado que funciona):</p>
+<pre class="brush: python; title: ; notranslate">
+def char_to_index(c):
+  return ord(c) - ord('A') + 1
+
+def index_to_char(i):
+  if not i:
+    return ''
+
+  return chr(ord('A') + i - 1)
+
+def fromExcel(n):
+  res = []
+  d = n
+  fixmode = False # Indica que estamos en modo ajuste (restar 1 al siguiente resto y a&#241;adir 26 al actual)
+  while d &gt;= 26:
+    r = d%26
+
+    # Si estamos ajustando los restos, asumimos que ya hemos a&#241;adido 3 al anterior y le quitamos uno a este
+    if fixmode:
+      r -= 1
+
+    # Si es (o queda) negativo, le sumamos veintiseis y pasamos (o conservamos) el modo de ajuste
+    if r&lt;=0:
+      r += 26
+      fixmode = True
+
+    # Si no lo es, dejamos el modo de ajuste
+    else:
+      fixmode = False
+
+    res.insert(0, r)
+
+    d = int(d/26)
+
+  res.insert(0, d)
+  return ''.join(map(index_to_char, res))
+</pre>
+<h2 style="text-align: justify;">#19 Si tienes 1 millon de enteros. &#191;C&#243;mo los ordenar&#237;as eficientemente? Modifica un algoritmo conocido para hacerlo.</h2>
+<p style="text-align: justify;">Dedicaremos en breve otro post a los <a href="http://en.wikipedia.org/wiki/Sorting_algorithm" target="_blank">algoritmos de ordenaci&#243;n</a>. Baste decir que para tal cantidad de datos se prefieren estrategias <strong>&#8220;divide y vencer&#225;s&#8221;</strong>. Primeramente el milll&#243;n de datos puede separarse en tramos (digamos de 10000 &#243; 100000) enteros y ordenarse separadamente mediante <a href="http://en.wikipedia.org/wiki/Quicksort" target="_blank">qsort</a>. Luego pueden mezclarse con <a href="http://en.wikipedia.org/wiki/Merge_sort" target="_blank">merge sort</a>.</p>
+<p style="text-align: justify;">Tambi&#233;n se podr&#237;a haber aplicado merge sort directamente.</p>
+<p style="text-align: justify;">Ojo, si nos dan l&#237;mites de memoria entonces tendremos que ir poco a poco. Leer unos cuantos, aplicar una t&#233;cnica anterior, escribir el resultados; leer otros pocos, volver a aplicar una t&#233;cnica y volver a escribir el resultado&#8230; Al final, habr&#225; que mezclar los archivos ordenados.</p>
+<p style="text-align: justify;">Fuente: teneis aqu&#237; <a href="http://neopythonic.blogspot.com/2008/10/sorting-million-32-bit-integers-in-2mb.html" target="_blank">una soluci&#243;n por Guido van Rossum</a> con c&#243;digo en Python 3.0</p>
+<h2 style="text-align: justify;">#20 Tienes un flujo continuo e infinito de consultas (las consultas de Google que la gente introduce). Describe como podr&#237;as tomar una buena estimaci&#243;n de 1000 muestras de este conjunto inagotable de datos.</h2>
+<p style="text-align: justify;">Esta pregunta no la entiendo y, sencillamente, preguntar&#237;a por m&#225;s informaci&#243;n. &#191;Qu&#233; caracter&#237;stica tienen que cumplir estas mil muestras? Supongo que se referir&#225; a las 1000 consultas m&#225;s solicitadas. Para ello se puede usar una estructura de datos (que acabo de descubrir) llamada <a href="http://es.wikipedia.org/wiki/%C3%81rbol_biselado" target="_blank">splay-tree o &#225;rbol biselado</a> que no es otra cosa que un &#225;rbol binario con la propiedad de que los elementos m&#225;s recientemente accedidos pueden recuperarse m&#225;s r&#225;pidamente.</p>
+<p style="text-align: justify;">Esta soluci&#243;n del &#225;rbol biselado requiere alguna normalizaci&#243;n que convierta las consultas en n&#250;meros. Se podr&#237;a utilizar alguna funci&#243;n hash.</p>
+<p style="text-align: justify;">Si esta no es la caracter&#237;stica que deben cumplir las muestras, entonces la soluci&#243;n cambia. Por ejemplo si tiene que ser aleatoria se puede dividir el conjunto de consultas en 1000 segmentos y seleccionar un elemento al azar de cada uno.</p>
+<p style="text-align: justify;"><strong>EDIT</strong>: Seg&#250;n un comentario (con el que estoy de acuerdo) de Jisakiel en Facebook, la muestra deber&#237;a cumplir normalidad. Ahora bien, estamos en las mismas, normalidad s&#237; pero &#191;respecto de qu&#233;? Si nos asaltan con esta pregunta, es nuestra obligaci&#243;n fusilar al entrevistador con aclaraciones hast que sepamos exactamente las propiedades de la muestra.</p><br />  <a href="http://feeds.wordpress.com/1.0/gocomments/unoyunodiez.wordpress.com/705/" rel="nofollow"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/unoyunodiez.wordpress.com/705/" /></a> <img alt="" border="0" height="1" src="https://pixel.wp.com/b.gif?host=unoyunodiez.com&#038;blog=15323300&#038;post=705&#038;subd=unoyunodiez&#038;ref=&#038;feed=1" width="1" />
+    </div>
+</div></div>
+<div class="time">
+<h3>17:59</h3>
+<div class="item feed-0e1022a3 feed-{feed_id}" id="item-b0aff9a6">
+<p class="itemheader">
+<span class="itemtitle">
+    Simelo pides...:
+<a href="http://simelo-es.blogspot.com/2011/06/el-misrterio-de-la-variable-controller.html">El misterio de la variable controller en la definici&#243;n de rutas</a></span>
+</p>
+    <div class="itemdescription">
+    <p>En este art&#237;culo les hablar&#233; acerca de una caracter&#237;stica del m&#243;dulo &#160;PyRoutes 
+que al menos yo no encontr&#233; bien documentada. Se trata del manejo de la variable 
+controller dentro de la definici&#243;n de las rutas en una aplicaci&#243;n web. Le invito 
+a continuar leyendo este art&#237;culo si quiere conocer qu&#233; es lo que hace este 
+m&#243;dulo, la naturaleza del problema (si es que se le puede llamar as&#237;) y
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-05-25.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2011</td>
+<td class="cal-next"><a href="index-2011-07-05.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day"><a class="cal-link" href="index-2011-06-04.html">04</a></td><td class="cal-day">05</td></tr>
+<tr class="cal-week">
+<td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-06-13.html">13</a></td><td class="cal-day"><strong class="cal-current">14</strong></td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td></tr>
+<tr class="cal-week">
+<td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-06-27.html">27</a></td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day"><a class="cal-link" href="index-2011-06-30.html">30</a></td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

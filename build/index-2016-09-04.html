@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>domingo, 04 septiembre</h2>
+<div class="time">
+<h3>22:57</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-23b152d6">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2016/09/tutorial-de-flask-parte-1.html">Tutorial de Flask parte 1</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Ya he escrito algunos art&#237;culos sobre flask:<br /><br /><br /><ol><li><a href="http://blog.crespo.org.ve/2014/05/micro-framework-de-desarrollo-web-flask.html" target="_blank">Micro Framework de desarrollo web Flask</a></li><li><a href="http://blog.crespo.org.ve/2014/06/micro-framework-flask-parte-2.html" target="_blank">Micro framework flask (parte 2)</a></li><li><a href="http://blog.crespo.org.ve/2014/06/configurando-un-sitio-estatico-con-flask.html" target="_blank">Configurando un sitio est&#225;tico con flask</a></li><li><a href="http://blog.crespo.org.ve/2016/01/ejecutando-microsservicios-con-docker.html" target="_blank">Ejecutando microsservicios con docker usando docker-compose</a></li><li><a href="http://blog.crespo.org.ve/2016/06/crear-datos-json-partir-de-un.html" target="_blank">Crear datos JSON a partir de un diccionario en Flask (parte 1)</a></li></ol><br /><br />La idea es ir generando una secuencia de art&#237;culos basados en los art&#237;culos de <a href="https://realpython.com/blog/python/flask-by-example-part-1-project-setup/" target="_blank">Flask by Example</a> y los art&#237;culos de <a href="http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world" target="_blank">Flask mega tutorial de Miguel Grinberg</a>. Ambos tutoriales en ingl&#233;s como primer art&#237;culo usan virtualenv con pip, en el caso de esta serie se usar&#225; Docker.<br /><br />El repositorio donde se alojar&#225; el c&#243;digo de la serie de tutoriales sobre flask los alojar&#233; en <a href="https://gitlab.com/ecrespo/tutorial-flask" target="_blank">Gitlab</a>.<br /><br />Se crea el directorio tutorial-flask:<br /><b><span style="color: red;">mkdir tutorial-flask&nbsp;</span></b><br /><b><span style="color: red;">cd tutorial-flask</span></b><br /><br />Ahora se configura el usuario que se usa en git:<br /><br /><b><span style="color: red;">git config --global user.name "Ernesto Crespo"<br />git config --global user.email "ecrespo@gmail.com"</span></b><br /><br /><br />Se inicia el repo y se define el repo remoto:<br /><br /><b><span style="color: red;">git init</span></b><br /><b><span style="color: red;">git remote add origin git@gitlab.com:ecrespo/tutorial-flask.git</span></b><br /><br />Se crea el archivo README.md, se agrega el archivo a ti y se hace commit:<br /><b><span style="color: red;">touch README.md</span></b><br /><b><span style="color: red;">git add README.md</span></b><br /><b><span style="color: red;">git commit -m"Se creo el archivo readme"</span></b><br /><br /><br />Se define el upstream de git y se sube al repositorio de gitlab:<br /><b><span style="color: red;">git push --set-upstream origin master</span></b><br /><br />La estructura de directorios y archivos es el siguiente:<br /><b><span style="color: #274e13;">tutorial-flask</span></b><br /><b><span style="color: #274e13;">&#9500;&#9472;&#9472; app</span></b><br /><b><span style="color: #274e13;">&#9474; &nbsp; &#9500;&#9472;&#9472; __init__.py</span></b><br /><b><span style="color: #274e13;">&#9474; &nbsp; &#9492;&#9472;&#9472; views.py</span></b><br /><b><span style="color: #274e13;">&#9500;&#9472;&#9472; docker-compose.yml</span></b><br /><b><span style="color: #274e13;">&#9500;&#9472;&#9472; Dockerfile</span></b><br /><b><span style="color: #274e13;">&#9500;&#9472;&#9472; README.md</span></b><br /><b><span style="color: #274e13;">&#9492;&#9472;&#9472; run.py</span></b><br /><div><br /></div><div><br /></div><br />Crear los archivos .gitignore, Dockerfile y docker-compose.yml:<br /><br />touch .gitignore <br /><br />El archivo Dockerfile contiene el uso de python como sistema base, se define el directorio /code, se instala las librer&#237;as requeridas, se agrega los archivos al directorio /code y se ejecuta run.py:<br /><pre class="code highlight"></pre><pre class="code highlight"><code><i><span style="color: blue;"><span class="line" id="LC1" style="display: inline-block;"><span class="k" style="font-weight: bold;">FROM</span><span class="s"> python</span></span><br /><span class="line" id="LC2" style="display: inline-block;"><span class="k" style="font-weight: bold;">WORKDIR</span><span class="s"> /code</span></span><br /><span class="line" id="LC3" style="display: inline-block;"></span><br /><span class="line" id="LC4" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install --upgrade pip</span><br /><span class="line" id="LC5" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  flask</span><br /><span class="line" id="LC6" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  flask-login</span><br /><span class="line" id="LC7" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  flask-openid</span><br /><span class="line" id="LC8" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  flask-mail</span><br /><span class="line" id="LC9" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  flask-sqlalchemy</span><br /><span class="line" id="LC10" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  sqlalchemy-migrate</span><br /><span class="line" id="LC11" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  flask-whooshalchemy</span><br /><span class="line" id="LC12" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  flask-wtf</span><br /><span class="line" id="LC13" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  flask-babel</span><br /><span class="line" id="LC14" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  guess_language</span><br /><span class="line" id="LC15" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  flipflop</span><br /><span class="line" id="LC16" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  coverage</span><br /><span class="line" id="LC17" style="display: inline-block;"><span class="k" style="font-weight: bold;">RUN </span>pip install  redis</span><br /><span class="line" id="LC18" style="display: inline-block;"><span class="k" style="font-weight: bold;">EXPOSE</span><span class="s"> 5000</span></span><br /><span class="line" id="LC19" style="display: inline-block;"></span><br /><span class="line" id="LC20" style="display: inline-block;"><span class="k" style="font-weight: bold;">ADD</span><span class="s"> . /code</span></span><br /><span class="line" id="LC21" style="display: inline-block;"><span class="k" style="font-weight: bold;">CMD</span><span class="s"> python run.py</span></span></span></i></code></pre><br /><br />El archivo docker-compose.yml contiene lo siguiente:<br />#Se define el servicio web, la construcci&#243;n de la imagen se hace con el archivo Dockerfile, se define el puerto a exportar (5000) y el volumen /code.<br /><i><span style="color: blue;">web:</span></i><br /><i><span style="color: blue;">&nbsp; build: .</span></i><br /><i><span style="color: blue;">&nbsp; ports:</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp;- "5000:5000"</span></i><br /><i><span style="color: blue;">&nbsp; volumes:</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp;- .:/code</span></i><br /><br />El archivo run.py contiene lo siguiente:<br /><br /><i><span style="color: blue;">#!/usr/bin/env python</span></i><br /><i><span style="color: blue;">from app import app</span></i><br /><i><span style="color: blue;"><br /></span></i><i><span style="color: blue;">app.run(host="0.0.0.0",debug=True)</span></i><br /><br />El archivo app/__init__.py contiene lo siguiente:<br /><br /><i><span style="color: blue;">from flask import Flask</span></i><br /><i><span style="color: blue;"><br /></span></i><i><span style="color: blue;">app = Flask(__name__)</span></i><br /><i><span style="color: blue;">from app import views</span></i><br /><br /><br />El archivo app/views.py contiene lo siguiente:<br /><br /><span style="color: blue;"><i>#!/usr/bin/env python</i></span><br /><span style="color: blue;"><i>from app import app</i></span><br /><span style="color: blue;"><i><br /></i></span><span style="color: blue;"><i><br /></i></span><span style="color: blue;"><i><br /></i></span><span style="color: blue;"><i>@app.route('/&lt;nombre&gt;')</i></span><br /><span style="color: blue;"><i>def hola_nombre(nombre):</i></span><br /><span style="color: blue;"><i>&nbsp; &nbsp; return "Hola {}!".format(nombre)</i></span><br /><span style="color: blue;"><i><br /></i></span><span style="color: blue;"><i>@app.route('/')</i></span><br /><span style="color: blue;"><i>def hola():</i></span><br /><span style="color: blue;"><i>&nbsp; &nbsp; return "Hola mundo!"</i></span><br /><div><br /></div><div><br /></div><div><br /></div><div>Ahora se usar&#225; docker-compose:</div><div><b><span style="color: red;">docker-compose build</span></b></div><div><b><span style="color: red;"><br /></span></b></div><div><div><b><span style="color: red;">Building web</span></b></div><div><b><span style="color: red;">Step 1 : FROM python</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; 7fd24fb1b492</span></b></div><div><b><span style="color: red;">Step 2 : WORKDIR /code</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; bdc41d9c0a55</span></b></div><div><b><span style="color: red;">Step 3 : RUN pip install --upgrade pip</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; a2f64276e289</span></b></div><div><b><span style="color: red;">Step 4 : RUN pip install &nbsp;flask</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; 56d3d1077646</span></b></div><div><b><span style="color: red;">Step 5 : RUN pip install &nbsp;flask-login</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; ebe8bc959ad8</span></b></div><div><b><span style="color: red;">Step 6 : RUN pip install &nbsp;flask-openid</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; fe54237ce068</span></b></div><div><b><span style="color: red;">Step 7 : RUN pip install &nbsp;flask-mail</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; f1594ad12f2b</span></b></div><div><b><span style="color: red;">Step 8 : RUN pip install &nbsp;flask-sqlalchemy</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; 6d04889555c2</span></b></div><div><b><span style="color: red;">Step 9 : RUN pip install &nbsp;sqlalchemy-migrate</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; d25cd2a54289</span></b></div><div><b><span style="color: red;">Step 10 : RUN pip install &nbsp;flask-whooshalchemy</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; 4479491e59aa</span></b></div><div><b><span style="color: red;">Step 11 : RUN pip install &nbsp;flask-wtf</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; 170b10c7dea0</span></b></div><div><b><span style="color: red;">Step 12 : RUN pip install &nbsp;flask-babel</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; fe581f26a1e5</span></b></div><div><b><span style="color: red;">Step 13 : RUN pip install &nbsp;guess_language</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; 6d2d290ed6d3</span></b></div><div><b><span style="color: red;">Step 14 : RUN pip install &nbsp;flipflop</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; 35e2dff248ce</span></b></div><div><b><span style="color: red;">Step 15 : RUN pip install &nbsp;coverage</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; 7012043af8e9</span></b></div><div><b><span style="color: red;">Step 16 : RUN pip install &nbsp;redis</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; ce2854de687f</span></b></div><div><b><span style="color: red;">Step 17 : EXPOSE 5000</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; f947cd2c0d69</span></b></div><div><b><span style="color: red;">Step 18 : ADD . /code</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; db09ee94c8e7</span></b></div><div><b><span style="color: red;">Removing intermediate container 2f21e7abd55d</span></b></div><div><b><span style="color: red;">Step 19 : CMD python run.py</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; Running in 1f58a7b38656</span></b></div><div><b><span style="color: red;">&nbsp;---&gt; 4c8390d54c13</span></b></div><div><b><span style="color: red;">Removing intermediate container 1f58a7b38656</span></b></div><div><b><span style="color: red;">Successfully built 4c8390d54c13</span></b></div></div><div><br /></div><div><br /></div><div>Ahora se inicia el servicio con docker-compose:</div><div><span style="color: red;"><b>docker-compose up</b></span></div><div><br /></div><div>A continuaci&#243;n se muestra la imagen de la ejecuci&#243;n de docker-compose:</div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-m4hrYqrb73k/V8pJF93CyDI/AAAAAAAAN3g/RcBUnTTymbghlZx8VAx_hpqSyHuz_BnpwCLcB/s1600/log.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="84" src="https://3.bp.blogspot.com/-m4hrYqrb73k/V8pJF93CyDI/AAAAAAAAN3g/RcBUnTTymbghlZx8VAx_hpqSyHuz_BnpwCLcB/s320/log.png" width="320" /></a></div><div><br /></div><div><br /></div><div><br /></div><div>Ahora se abrir&#225; el navegador en http://localhost:5000 , a continuaci&#243;n se muestra una imagen de la carga de la p&#225;gina:</div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-3HlE3yp2RrU/V8pJYDLdNLI/AAAAAAAAN3k/vbcXoevsVUcTNLe7G-Q3tTjHjxZ3tNoOACLcB/s1600/holamundo.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://1.bp.blogspot.com/-3HlE3yp2RrU/V8pJYDLdNLI/AAAAAAAAN3k/vbcXoevsVUcTNLe7G-Q3tTjHjxZ3tNoOACLcB/s1600/holamundo.png" /></a></div><div><br /></div><div><br /></div><div>Para terminar se abre el navegador en http://localhost:5000/ernesto, a continuaci&#243;n se muestra la imagen de la carga de la p&#225;gina:</div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-0EQloljKEAA/V8pJlWC-uTI/AAAAAAAAN3o/-0kWGlbOlHEh3nXaSmFyUMSiidCy-NXhgCLcB/s1600/hola-ernesto.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://4.bp.blogspot.com/-0EQloljKEAA/V8pJlWC-uTI/AAAAAAAAN3o/-0kWGlbOlHEh3nXaSmFyUMSiidCy-NXhgCLcB/s1600/hola-ernesto.png" /></a></div><div><br /></div>El c&#243;digo de este art&#237;culo lo pueden bajar desde gitlab:&nbsp;<a href="https://gitlab.com/ecrespo/tutorial-flask/repository/archive.zip?ref=articulo1" target="_blank">download.zip</a>.<br /><a href="https://gitlab.com/ecrespo/tutorial-flask/tree/articulo1" target="_blank">Tutorial de Flask rama articulo 1</a>.<br /><br />Para detener el servicio se ejecuta docker-compose:<br /><b><span style="color: red;">docker-compose down</span></b><br /><br /><br />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2016-07-17.html">&lt;</a></td>
+<td class="cal-month" colspan="5">septiembre 2016</td>
+<td class="cal-next"><a href="index-2016-10-05.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day"><strong class="cal-current">04</strong></td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2016-09-05.html">05</a></td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td></tr>
+<tr class="cal-week">
+<td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td></tr>
+<tr class="cal-week">
+<td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day"><a class="cal-link" href="index-2016-09-25.html">25</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day"><a class="cal-link" href="index-2016-09-28.html">28</a></td><td class="cal-day"><a class="cal-link" href="index-2016-09-29.html">29</a></td><td class="cal-day"><a class="cal-link" href="index-2016-09-30.html">30</a></td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

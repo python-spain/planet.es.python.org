@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>domingo, 08 junio</h2>
+<div class="time">
+<h3>07:00</h3>
+<div class="item feed-8134caca feed-{feed_id}" id="item-cc25b192">
+<p class="itemheader">
+<span class="itemtitle">
+    Pybonacci:
+<a href="https://pybonacci.wordpress.com/2014/06/08/pandas-v/">Pandas (V)</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Antes de nada, el contexto, para esta serie de entradas se va a usar lo siguiente:</p>
+<pre>Versi&#243;n de Python:      3.3.1 (default, Apr 10 2013, 19:05:32) 
+[GCC 4.6.3]
+Versi&#243;n de Pandas:      0.13.1
+Versi&#243;n de Numpy:       1.8.1
+Versi&#243;n de Matplotlib:  1.3.1</pre>
+<p>&nbsp;</p>
+<p>Y sin m&#225;s pre&#225;mbulos seguimos con esta quinta parte de <a href="https://pybonacci.wordpress.com/tag/tutorial-de-pandas/">la serie</a>.</p>
+<p><strong>Unir (merge/join)</strong></p>
+<p>Pandas dispone de la funci&#243;n <code>merge</code> (<a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.tools.merge.merge.html#pandas.tools.merge.merge">documentaci&#243;n oficial</a>) que permite &#8216;unir&#8217; datos al estilo de como se hace con bases de datos relacionales (usando SQL). Tambi&#233;n se puede acceder al m&#233;todo <code>merge</code> disponible en las instancias a un Dataframe.</p>
+<p>Por su parte, <code>join</code> es un m&#233;todo disponible en un DataFrame y sirve para hacer uniones de &#237;ndices sobre &#237;ndices o de &#237;ndices sobre columnas. Las uniones que hace <code>join</code> las hace sobre los &#237;ndices, en lugar de hacerlo sobre columnas comunes como se hace con <code>merge</code>. A ver si viendo los ejemplos queda un poco mejor este &#250;ltimo p&#225;rrafo y las diferencias entre <code>join</code> y <code>merge</code>.</p>
+<p>Las uniones pueden ser uno-a-uno, muchos-a-uno o muchos-a-muchos.</p>
+<p>Una uni&#243;n uno-a-uno ser&#237;a cuando unimos dos tablas (DataFrames) con &#237;ndices &#250;nicos como hemos hecho en la entrega anterior con las concatenaciones.</p>
+<pre class="brush: python; title: ; notranslate">
+
+datos1 = pd.DataFrame(np.random.randn(10), columns = ['columna1'])
+datos2 = pd.DataFrame(np.random.randn(14), columns = ['columna2'], index = np.arange(1,15))
+datos1j = datos1.join(datos2)
+datos2j = datos2.join(datos1)
+print('datos1j \n{}\n'.format(datos1j))
+print('datos2j \n{}'.format(datos2j))
+
+</pre>
+<pre>datos1j 
+   columna1  columna2
+0 -0.209303       NaN
+1 -0.430892  1.052453
+2  0.766200 -0.346896
+3  1.773694 -0.249700
+4 -2.259187 -0.588739
+5 -0.930647  0.160590
+6  0.029990  0.421446
+7  0.812770 -0.315913
+8  0.681786  0.256745
+9 -0.115109  0.524278
+
+[10 rows x 2 columns]
+
+datos2j 
+    columna2  columna1
+1   1.052453 -0.430892
+2  -0.346896  0.766200
+3  -0.249700  1.773694
+4  -0.588739 -2.259187
+5   0.160590 -0.930647
+6   0.421446  0.029990
+7  -0.315913  0.812770
+8   0.256745  0.681786
+9   0.524278 -0.115109
+10 -1.707269       NaN
+11 -1.140342       NaN
+12 -1.751337       NaN
+13 -0.481319       NaN
+14  1.604800       NaN
+
+[14 rows x 2 columns]</pre>
+<p>&nbsp;</p>
+<p>En los anteriores ejemplos, <code>datos1j</code> es el resultado de unir los datos <code>datos2</code> a los datos <code>datos1</code> en todos los &#237;ndices comunes que tienen ambos teniendo solo en cuenta el rango de &#237;ndices definido en <code>datos1</code>. Si alg&#250;n dato en <code>datos2</code> no tiene un &#237;ndice presente en <code>datos1</code> se rellenar&#225; con un <code>NaN</code>. Con <code>datos2j</code> sucede lo mismo que con <code>datos1j</code> lo que el &#237;ndice que tiene relevancia ahora es el perteneciente a <code>datos2j</code>. No s&#233; si habr&#225; quedado m&#225;s o menos claro.</p>
+<p>Ahora vamos a unir pero usando la palabra clave <code>how</code> que nos permite decir como se van a tener en cuenta los &#237;ndices. Normalmente le pasaremos el par&#225;metro <code>outer</code> o <code>inner</code>. El primero, <code>outer</code>, indica que los &#237;ndices de los DataFrames se unen como en una uni&#243;n de conjuntos, el segundo, <code>inner</code>, une los &#237;ndices como si hici&#233;ramos una intersecci&#243;n de conjuntos. Veamos un par de ejemplos para que se vea de forma pr&#225;ctica, el primero usando <code>outer</code> y el segundo usando <code>inner</code>:</p>
+<pre class="brush: python; title: ; notranslate">
+
+datos3j1 = datos1.join(datos2, how = 'outer')
+datos3j2 = datos2.join(datos1, how = 'outer')
+print('datos3j1 \n{}\n'.format(datos3j1))
+print('datos3j2 recolocados\n{}\n'.format(datos3j2.ix[:, ['columna1','columna2']]))
+print('datos3j2 \n{}'.format(datos3j2))
+
+</pre>
+<pre>datos3j1 
+    columna1  columna2
+0  -0.209303       NaN
+1  -0.430892  1.052453
+2   0.766200 -0.346896
+3   1.773694 -0.249700
+4  -2.259187 -0.588739
+5  -0.930647  0.160590
+6   0.029990  0.421446
+7   0.812770 -0.315913
+8   0.681786  0.256745
+9  -0.115109  0.524278
+10       NaN -1.707269
+11       NaN -1.140342
+12       NaN -1.751337
+13       NaN -0.481319
+14       NaN  1.604800
+
+[15 rows x 2 columns]
+
+datos3j2 recolocados
+    columna1  columna2
+0  -0.209303       NaN
+1  -0.430892  1.052453
+2   0.766200 -0.346896
+3   1.773694 -0.249700
+4  -2.259187 -0.588739
+5  -0.930647  0.160590
+6   0.029990  0.421446
+7   0.812770 -0.315913
+8   0.681786  0.256745
+9  -0.115109  0.524278
+10       NaN -1.707269
+11       NaN -1.140342
+12       NaN -1.751337
+13       NaN -0.481319
+14       NaN  1.604800
+
+[15 rows x 2 columns]
+
+datos3j2 
+    columna2  columna1
+0        NaN -0.209303
+1   1.052453 -0.430892
+2  -0.346896  0.766200
+3  -0.249700  1.773694
+4  -0.588739 -2.259187
+5   0.160590 -0.930647
+6   0.421446  0.029990
+7  -0.315913  0.812770
+8   0.256745  0.681786
+9   0.524278 -0.115109
+10 -1.707269       NaN
+11 -1.140342       NaN
+12 -1.751337       NaN
+13 -0.481319       NaN
+14  1.604800       NaN
+
+[15 rows x 2 columns]</pre>
+<pre class="brush: python; title: ; notranslate">
+
+datos4j1 = datos1.join(datos2, how = 'inner')
+datos4j2 = datos2.join(datos1, how = 'inner')
+print('datos4j1 \n{}\n'.format(datos4j1))
+print('datos4j2 recolocados\n{}\n'.format(datos4j2.ix[:, ['columna1','columna2']]))
+print('datos4j2 \n{}'.format(datos4j2))
+
+</pre>
+<pre>datos4j1 
+   columna1  columna2
+1 -0.430892  1.052453
+2  0.766200 -0.346896
+3  1.773694 -0.249700
+4 -2.259187 -0.588739
+5 -0.930647  0.160590
+6  0.029990  0.421446
+7  0.812770 -0.315913
+8  0.681786  0.256745
+9 -0.115109  0.524278
+
+[9 rows x 2 columns]
+
+datos4j2 recolocados
+   columna1  columna2
+1 -0.430892  1.052453
+2  0.766200 -0.346896
+3  1.773694 -0.249700
+4 -2.259187 -0.588739
+5 -0.930647  0.160590
+6  0.029990  0.421446
+7  0.812770 -0.315913
+8  0.681786  0.256745
+9 -0.115109  0.524278
+
+[9 rows x 2 columns]
+
+datos4j2 
+   columna2  columna1
+1  1.052453 -0.430892
+2 -0.346896  0.766200
+3 -0.249700  1.773694
+4 -0.588739 -2.259187
+5  0.160590 -0.930647
+6  0.421446  0.029990
+7 -0.315913  0.812770
+8  0.256745  0.681786
+9  0.524278 -0.115109
+
+[9 rows x 2 columns]</pre>
+<p>&nbsp;</p>
+<p>Todo lo anterior se puede hacer tambi&#233;n usando la funci&#243;n o m&#233;todo <code>merge</code> pero encuentro que es una forma un poco m&#225;s rebuscada por lo que no la vamos a mostrar aqu&#237; ya que a&#241;ade complejidad. Veremos usos de <code>merge</code> m&#225;s adelante.</p>
+<p>Ahora vamos a mostrar una uni&#243;n muchos-a-uno. Estas uniones se hacen sobre una o m&#225;s columnas como referencia, no a partir de &#237;ndices, por lo que los valores contenidos pueden no ser &#250;nicos. Como siempre, vamos a ver un poco de c&#243;digo para ver si clarifica un poco m&#225;s la teor&#237;a:</p>
+<pre class="brush: python; title: ; notranslate">
+
+datos1 = pd.DataFrame(np.random.randn(10), columns = ['columna1'])
+datos1['otra_columna'] = ['hola', 'mundo'] * 5
+datos2 = pd.DataFrame(np.random.randn(2,2), columns = ['col1', 'col2'], index = ['hola', 'mundo'])
+print('datos1 \n {} \n'.format(datos1))
+print('datos2 \n {} \n'.format(datos2))
+print(u'Uni&#243;n de datos \n {} \n'.format(datos1.join(datos2, on = 'otra_columna')))
+
+</pre>
+<pre>datos1 
+    columna1 otra_columna
+0 -2.086230         hola
+1 -1.015736        mundo
+2 -0.919460         hola
+3  0.923531        mundo
+4 -0.445977         hola
+5  0.719787        mundo
+6  1.064480         hola
+7 -0.235803        mundo
+8  1.395844         hola
+9  1.492875        mundo
+
+[10 rows x 2 columns] 
+
+datos2 
+            col1      col2
+hola   0.400267 -0.678126
+mundo  0.855735  0.619193
+
+[2 rows x 2 columns] 
+
+Uni&#243;n de datos 
+    columna1 otra_columna      col1      col2
+0 -2.086230         hola  0.400267 -0.678126
+1 -1.015736        mundo  0.855735  0.619193
+2 -0.919460         hola  0.400267 -0.678126
+3  0.923531        mundo  0.855735  0.619193
+4 -0.445977         hola  0.400267 -0.678126
+5  0.719787        mundo  0.855735  0.619193
+6  1.064480         hola  0.400267 -0.678126
+7 -0.235803        mundo  0.855735  0.619193
+8  1.395844         hola  0.400267 -0.678126
+9  1.492875        mundo  0.855735  0.619193
+
+[10 rows x 4 columns]</pre>
+<p>&nbsp;</p>
+<p>Estamos uniendo sobre los valores de la columna del DataFrame <code>datos1</code> que presenta valores presentes en los &#237;ndices del DataFrame <code>datos2</code>. En el anterior ejemplo hemos unido teniendo en cuenta una &#250;nica columna, si queremos unir teniendo en cuenta varias columnas, el DataFrame que se le pase deber&#225; presentar un Multi&#205;ndice con tantos &#237;ndices como columnas usemos (<a href="http://pandas.pydata.org/pandas-docs/stable/indexing.html#hierarchical-indexing-multiindex">ver documentaci&#243;n sobre Multi&#205;ndices</a> y <a href="http://pandas.pydata.org/pandas-docs/stable/merging.html#joining-key-columns-on-an-index">sobre uni&#243;n con ellos</a>).</p>
+<p>Para hacer uniones de muchos-a-muchos usaremos <code>merge</code> que ofrece mayor libertad para poder hacer uniones de cualquier tipo (tambi&#233;n las que hemos visto hasta ahora de uno-a-uno y de muchos-a-uno).</p>
+<p>En el siguiente ejemplo vamos a hacer una uni&#243;n de dos DataFrames usando <code>merge</code> y luego iremos explicando lo que hemos estado haciendo poco a poco para ver si se entiende un poco mejor.</p>
+<pre class="brush: python; title: ; notranslate">
+
+datos_dcha = pd.DataFrame({'clave': ['foo'] * 3, 'valor_dcha': np.arange(3)})
+datos_izda = pd.DataFrame({'clave': ['foo'] * 3, 'valor_izda': np.arange(5, 8)})
+datos_unidos = pd.merge(datos_izda, datos_dcha, on = 'clave')
+print('datos_dcha \n {} \n'.format(datos_dcha))
+print('datos_izda \n {} \n'.format(datos_izda))
+print('datos_unidos \n {}'.format(datos_unidos))
+
+</pre>
+<pre>datos_dcha 
+   clave  valor_dcha
+0   foo           0
+1   foo           1
+2   foo           2
+
+[3 rows x 2 columns] 
+
+datos_izda 
+   clave  valor_izda
+0   foo           5
+1   foo           6
+2   foo           7
+
+[3 rows x 2 columns] 
+
+datos_unidos 
+   clave  valor_izda  valor_dcha
+0   foo           5           0
+1   foo           5           1
+2   foo           5           2
+3   foo           6           0
+4   foo           6           1
+5   foo           6           2
+6   foo           7           0
+7   foo           7           1
+8   foo           7           2
+
+[9 rows x 3 columns]</pre>
+<p>&nbsp;</p>
+<p>Vemos que si hacemos una uni&#243;n de la anterior forma, a cada valor de <code>datos_dcha</code> le &#8216;asocia&#8217; cada uno de los valores de <code>datos_izda</code> que tengan la misma clave. En la siquiente celda de c&#243;digo vemos otro ejemplo de lo anterior un poco m&#225;s completo teniendo en cuenta dos columnas de claves y usando el m&#233;todo <code>outer</code> de &#8216;uni&#243;n&#8217;:</p>
+<pre class="brush: python; title: ; notranslate">
+
+datos_dcha = pd.DataFrame({'clave1': ['foo', 'foo', 'bar', 'bar'],
+                           'clave2': ['one', 'one', 'one', 'two'],
+                           'val_dcha': [4, 5, 6, 7]})
+datos_izda = pd.DataFrame({'clave1': ['foo', 'foo', 'bar'],
+                           'clave2': ['one', 'two', 'one'],
+                           'val_izda': [1, 2, 3]})
+datos_unidos = pd.merge(datos_izda, datos_dcha, how='outer')
+print('datos_dcha \n {} \n'.format(datos_dcha))
+print('datos_izda \n {} \n'.format(datos_izda))
+print('datos_unidos \n {}'.format(datos_unidos))
+
+</pre>
+<pre>datos_dcha 
+   clave1 clave2  val_dcha
+0    foo    one         4
+1    foo    one         5
+2    bar    one         6
+3    bar    two         7
+
+[4 rows x 3 columns] 
+
+datos_izda 
+   clave1 clave2  val_izda
+0    foo    one         1
+1    foo    two         2
+2    bar    one         3
+
+[3 rows x 3 columns] 
+
+datos_unidos 
+   clave1 clave2  val_izda  val_dcha
+0    foo    one         1         4
+1    foo    one         1         5
+2    foo    two         2       NaN
+3    bar    one         3         6
+4    bar    two       NaN         7
+
+[5 rows x 4 columns]</pre>
+<p>&nbsp;</p>
+<p>Otra vez hemos llegado al final. &#161;&#161;Estad atentos a la &#250;ltima entrega!!</p><br />Archivado en: <a href="https://pybonacci.wordpress.com/category/articulos/">Art&#237;culos</a>, <a href="https://pybonacci.wordpress.com/category/tutoriales/">Tutoriales</a> Tagged: <a href="https://pybonacci.wordpress.com/tag/big-data/">big data</a>, <a href="https://pybonacci.wordpress.com/tag/bigdata/">bigdata</a>, <a href="https://pybonacci.wordpress.com/tag/datos/">datos</a>, <a href="https://pybonacci.wordpress.com/tag/excel/">excel</a>, <a href="https://pybonacci.wordpress.com/tag/hdf5/">hdf5</a>, <a href="https://pybonacci.wordpress.com/tag/pandas/">pandas</a>, <a href="https://pybonacci.wordpress.com/tag/python3/">python3</a>, <a href="https://pybonacci.wordpress.com/tag/sql/">sql</a>, <a href="https://pybonacci.wordpress.com/tag/tutorial-de-pandas/">Tutorial de pandas</a> <a href="http://feeds.wordpress.com/1.0/gocomments/pybonacci.wordpress.com/2337/" rel="nofollow"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/pybonacci.wordpress.com/2337/" /></a> <img alt="" border="0" height="1" src="https://pixel.wp.com/b.gif?host=pybonacci.wordpress.com&#038;blog=33759577&#038;post=2337&#038;subd=pybonacci&#038;ref=&#038;feed=1" width="1" />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2014-04-15.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2014</td>
+<td class="cal-next"><a href="index-2014-07-09.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">26</em></td><td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2014-06-02.html">02</a></td><td class="cal-day">03</td><td class="cal-day"><a class="cal-link" href="index-2014-06-04.html">04</a></td><td class="cal-day">05</td><td class="cal-day"><a class="cal-link" href="index-2014-06-06.html">06</a></td><td class="cal-day">07</td><td class="cal-day"><strong class="cal-current">08</strong></td></tr>
+<tr class="cal-week">
+<td class="cal-day">09</td><td class="cal-day"><a class="cal-link" href="index-2014-06-10.html">10</a></td><td class="cal-day"><a class="cal-link" href="index-2014-06-11.html">11</a></td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td></tr>
+<tr class="cal-week">
+<td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td></tr>
+<tr class="cal-week">
+<td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td></tr>
+<tr class="cal-week">
+<td class="cal-day">30</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td><td class="cal-day"><em class="cal-othermonth">06</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

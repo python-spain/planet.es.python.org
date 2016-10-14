@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>lunes, 27 junio</h2>
+<div class="time">
+<h3>05:15</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-e64933da">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2016/06/crear-datos-json-partir-de-un.html">Crear datos JSON a partir de un diccionario en Flask (parte 1)</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Los art&#237;culos anteriores sobre el microframework Flask lo pueden revisar en el siguiente <a href="http://blog.crespo.org.ve/search/label/flask">enlace</a>.<br /><br />Este art&#237;culo se basa en un art&#237;culo &nbsp;en ingl&#233;s que se t&#237;tula: <a href="http://codehandbook.org/how-to-create-json-in-python-flask/">How to create JSON in Python flask</a> .<br /><br />El c&#243;digo de este art&#237;culo lo pueden en contrar en gitlab en el siguiente <a href="https://gitlab.com/ecrespo/flask-tutorial/blob/master/src/json/app.py">enlace</a>.<br /><br /><br />La idea es crear datos JSON a partir de un diccionario que maneja una lista de empleados, y se publica v&#237;a web por medio de flask.<br /><br />El c&#243;digo de app.py se muestra a continuaci&#243;n:<br /><br /><pre><i><span style="color: blue;">#!/usr/bin/env python</span></i><br /><br /><i><span style="color: blue;">#Se importa de flask a Flask, jsonify y json</span></i><br /><br /><i><span style="color: blue;">from flask import Flask,jsonify,json</span></i><br /><br /><i><span style="color: blue;">#Se crea la instancia de la aplicacion</span></i><br /><br /><i><span style="color: blue;">app = Flask(__name__)</span></i><br /><br /><i><span style="color: blue;">#Se tiene una lista de nombres</span></i><br /><br /><i><span style="color: blue;">lista = ["John Doe","Jane Doe"]</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se crea&nbsp;</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se define el decorador route donde se da la ruta del servidor web.</span></i><br /><br /><i><span style="color: blue;">@app.route("/ListaEmpleados")</span></i><br /><br /><i><span style="color: blue;">def ListaEmpleados():</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp;&nbsp;</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; try:</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; <span class="Apple-tab-span" style="white-space: pre;"> </span>#inicializar la lista de empleados</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; <span class="Apple-tab-span" style="white-space: pre;"> </span>listaEmpleados = []</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; <span class="Apple-tab-span" style="white-space: pre;"> </span>#crear instancias para llenar la lista</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; <span class="Apple-tab-span" style="white-space: pre;"> </span>for i &nbsp;in lista:</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; <span class="Apple-tab-span" style="white-space: pre;">  </span>datos = i.split(" ")</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; <span class="Apple-tab-span" style="white-space: pre;">  </span>listaEmpleados.append({'nombre': datos[0],'apellido': datos[1]}) &nbsp; &nbsp;</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; # convertir en dato json al diccionario</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; jsonStr = json.dumps(listaEmpleados)</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; except Exception ,e:</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; print str(e)</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; #Retorna el json</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; return jsonify(Empleados=jsonStr)</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">if __name__ == '__main__':</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>app.run()</span></i><br /><br /><br /><br /><br /><br /></pre>Ahora se ejecuta:<br /><br /><b><span style="color: red;">python app.py</span></b><br /><br />Se abre el navegador en http://localhost:5000/ListaEmpleados .<br /><br />La siguiente figura muestra lo que devuelve el navegador:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-RsIUbF7UpoA/V3BzVWGE8HI/AAAAAAAAMlc/x1SRsyfMeEoaRwMgz7WvhCW5g30zDi9EQCLcB/s1600/ListaEmpleados-json.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="83" src="https://4.bp.blogspot.com/-RsIUbF7UpoA/V3BzVWGE8HI/AAAAAAAAMlc/x1SRsyfMeEoaRwMgz7WvhCW5g30zDi9EQCLcB/s320/ListaEmpleados-json.png" width="320" /></a></div><br /><br /><br />En pr&#243;ximo art&#237;culo se continua con la parte de trabajar con el json.<br /><br /><br /><br />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2016-03-28.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2016</td>
+<td class="cal-next"><a href="index-2016-07-17.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td></tr>
+<tr class="cal-week">
+<td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2016-06-13.html">13</a></td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td></tr>
+<tr class="cal-week">
+<td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><strong class="cal-current">27</strong></td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

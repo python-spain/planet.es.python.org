@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>viernes, 30 septiembre</h2>
+<div class="time">
+<h3>02:12</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-9334b615">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2016/09/crud-usando-flask-y-mongodb-con-orm.html">CRUD usando Flask y MongoDB con ORM Flask-MongoAlchemy (parte 4)</a></span>
+</p>
+    <div class="itemdescription">
+    <h2>CRUD usando Flask y MongoDB con ORM Flask-MongoAlchemy (parte 4)</h2><div>Continuando con la serie de&nbsp;art&#237;culos sobre&nbsp;acceso a mongodb desde&nbsp;Flask.&nbsp;</div><div><br />Los art&#237;culos anteriores son:<br /><br /><ul><li><a href="http://blog.crespo.org.ve/2016/09/consulta-mongodb-desde-flask-parte-1.html">Consulta a MongoDB desde Flask (parte 1)</a></li><li><a href="http://blog.crespo.org.ve/2016/09/consulta-mongodb-desde-flask-parte-2.html">Consulta a MongoDB desde Flask (parte 2 - paginaci&#243;n)</a></li><li><a href="http://blog.crespo.org.ve/2016/09/crud-usando-flask-para-mongodb-parte-3.html">CRUD usando Flask para MongoDB </a>&nbsp;(parte 3)</li></ul></div><div>Para revisar&nbsp;los&nbsp;art&#237;culos&nbsp;relacionados&nbsp;a&nbsp;este&nbsp;art&#237;culo&nbsp;pueden&nbsp;ver:<br /><br /><ul><li><a href="http://blog.crespo.org.ve/search/label/Docker">Art&#237;culos&nbsp;sobre&nbsp;Docker</a></li><li><a href="http://blog.crespo.org.ve/search/label/mongodb">Art&#237;culos&nbsp;sobre&nbsp;MongoDB</a></li><li><a href="http://blog.crespo.org.ve/search/label/flask">Art&#237;culos&nbsp;sobre&nbsp;Flask</a></li></ul></div><div>La base de datos sigue manteniendo el formato de los art&#237;culos anteriores.</div><div><br /></div><div>En este caso se va a ingresar el empleado "Ernesto" , luego se busca en la base de datos, se actualizar&#225; su informaci&#243;n y se eliminar&#225; de la base de datos.</div><div><br /></div><h3>Archivo Dockerfile</h3><div>Este archivo tiene peque&#241;os cambios, se elimin&#243; pymongo y Flask-PyMongo, aunque mongoalchemy al final lo usa.&nbsp;</div><div><br /></div><div>A continuaci&#243;n el archivo Dockerfile:</div><div><br /></div><code></code><br /><pre><div><br /><code><i><span style="color: blue;">FROM python</span></i></code></div><br /><code><br /><div><br /><i><span style="color: blue;">WORKDIR /code/</span></i></div><br /><div><br /><i><span style="color: blue;"><br /></span></i></div><br /><div><br /><i><span style="color: blue;">RUN pip3 install --upgrade pip</span></i></div><br /><div><br /><i><span style="color: blue;">RUN pip3 install Flask</span></i></div><br /><div><br /><i><span style="color: blue;">RUN pip3 install Flask-MongoAlchemy</span></i></div><br /><div><br /><i><span style="color: blue;"><br /></span></i></div><br /><div><br /><i><span style="color: blue;"><br /></span></i></div><br /><div><br /><i><span style="color: blue;">EXPOSE 5000</span></i></div><br /><div><br /><i><span style="color: blue;"><br /></span></i></div><br /><div><br /><i><span style="color: blue;">ADD ./app/* /code/</span></i></div><br /><div><br /><i><span style="color: blue;">COPY ./app/* /code/</span></i></div><br /><div><br /><i><span style="color: blue;">CMD python run.py</span></i>&nbsp;</div><br /><div><br /></div><br /></code></pre><code></code><br /><div>El archivo docker-compose.yml se mantiene igual que en los art&#237;culos anteriores.</div><div><br /></div><div><br /></div><h3>Archivo app/run.py</h3><div><br /></div><div>En este caso el crud se hace con mongoalchemy.&nbsp;</div><div><br /></div><div>A continuaci&#243;n se muestra el c&#243;digo de run.py:</div><code></code><br /><pre><div><br /><code><br /></code><br /><code><i><span style="color: blue;">#!/usr/bin/env python</span></i></code><br /><br /><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se importa Flask, reqest y jsonify</span></i></code><br /><br /><code><i><span style="color: blue;">from flask import Flask, request,jsonify</span></i></code><br /><br /><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se importa MongoAlchemy</span></i></code><br /><br /><code><i><span style="color: blue;">from flask_mongoalchemy import MongoAlchemy</span></i></code><br /><br /><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se importa dumps</span></i></code><br /><br /><code><i><span style="color: blue;">from bson.json_util import dumps</span></i></code><br /><br /><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se instancia la clase de Flask, se configura el acceso</span></i></code><br /><br /><code><i><span style="color: blue;">#a la base de datos mongodb a empleados</span></i></code><br /><br /><code><i><span style="color: blue;">app = Flask(__name__)</span></i></code><br /><br /><code><i><span style="color: blue;">app.config['MONGOALCHEMY_DATABASE'] = 'empleados'</span></i></code><br /><br /><code><i><span style="color: blue;">app.config['MONGOALCHEMY_CONNECTION_STRING'] = 'mongodb://mongo:27017/empleados'</span></i></code><br /><br /><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se instancia mongoalchemy pasando la app.</span></i></code><br /><br /><code><i><span style="color: blue;">db = MongoAlchemy(app)</span></i></code><br /><br /><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se crea la clase empleados la cual manejara los documentos.</span></i></code><br /><br /><code><i><span style="color: blue;">class empleados(db.Document):</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; nombre = db.StringField()</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; sexo = db.StringField()</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; edad = db.IntField()</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; dni = db.IntField()</span></i></code><br /><br /><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se define la funcion add con metodo get</span></i></code><br /><br /><code><i><span style="color: blue;">@app.route('/add',methods=['GET'])</span></i></code><br /><br /><code><i><span style="color: blue;">def add():</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se crea la instancia empleado de la clase empleados donde se</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #logra hacer la inserci&#243;n de un empleado con el metodo save.</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; empleado = empleados(nombre=str(request.args['nombre']),</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sexo = str(request.args['sexo']),</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; edad = int(request.args['edad']),</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dni = int(request.args['dni']))</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; empleado.save()</span></i></code><br /><br /><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se retorna que el usuario fue agregado.</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; return jsonify({'resultado': 'Usuario agregado' })</span></i></code><br /><br /><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se crea la funcion find con metodo get.</span></i></code><br /><br /><code><i><span style="color: blue;">@app.route('/find',methods=['GET'])</span></i></code><br /><br /><code><i><span style="color: blue;">def find():</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se realiza la busqueda y se devuelve el resultado, si existe un error de atributo (que el empleado no existe)</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se devuelve empleado no encontrado.</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; try:</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; resultado = empleados.query.filter(empleados.nombre == str(request.args['nombre'])).first()</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return dumps({'resultado':{'nombre':resultado.nombre,'sexo':resultado.sexo,'edad':resultado.edad,'dni':resultado.dni}})</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; except (AttributeError):</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return dumps({'resultado': 'Empleado no encontrado'})</span></i></code><br /><br /><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">@app.route('/update',methods=['GET'])</span></i></code><br /><br /><code><i><span style="color: blue;">def update():</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se intenta buscar al empleado, si existe se toma los argumentos para actualizar sus</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #datos y devolver que se actualizo, si no devuelve usuario no encontrado.</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; try:</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; resultado = empleados.query.filter(empleados.nombre == str(request.args['nombre'])).first()</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; resultado.sexo = str(request.args['sexo'])</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; resultado.edad = int(request.args['edad'])</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; resultado.dni = int(request.args['dni'])</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; resultado.save()</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return dumps({'resultado':'Empleado actualizado'})</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; except (AttributeError):</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return dumps({'resultado': 'Empleado no encontrado'})</span></i></code><br /><br /><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">@app.route('/delete/&lt;nombre&gt;')</span></i></code><br /><br /><code><i><span style="color: blue;">def remove(nombre):</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se busca el empleado, si existe se borra de la base de datos y se devuelve</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #mensaje de empleado borrado, si no, se devuelve el mensaje de empleado no</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #encontrado.</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; try:</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; resultado = empleados.query.filter(empleados.nombre == str(nombre)).first()</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; resultado.remove()</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return dumps({'resultado':'empleado borrado'})</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; except (AttributeError):</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return dumps({'resultado':'Empleado no encontrado'})</span></i></code><br /><br /><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">if __name__ == "__main__":</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se corre la aplicacion en modo debug</span></i></code><br /><br /><code><i><span style="color: blue;">&nbsp; &nbsp; app.run(host="0.0.0.0",debug=True)</span></i></code></div><br /><code><br /><div><br /></div><br /></code></pre><code></code><br /><div><br /></div><div><h3>Construir la imagen Docker y ejecutar los contenedores</h3></div><div><br /></div><div>Para construir la imagen se ejecuta:</div><div><b><span style="color: red;">docker-compose build</span></b></div><div><br /></div><div>Para ejecutar los contenedores docker se ejecuta:</div><div><br /></div><div><b><span style="color: red;">docker-compose up</span></b></div><div><br /></div><h3>Probar el CRUD</h3><h4>Crear un empleado:</h4><div>Al abrir el navegador en el siguiente URL se inserta el empleado:</div><div><br /></div><div><b><span style="color: #4c1130;">http://localhost:5000/add?nombre=Ernesto&amp;dni=33&amp;edad=11&amp;sexo=Masculino</span></b></div><div><br /></div><div>El resultado se muestra en un JSON:</div><div><pre style="white-space: pre-wrap;"><b><span style="color: #4c1130;">{<br />  "resultado": "Usuario agregado"<br />}</span></b></pre><pre style="white-space: pre-wrap;"></pre><h4 style="white-space: pre-wrap;">Buscar un empleado</h4><div>Al abrir el navegador con el siguiente URL se busca el empleado:</div><div><br /></div><div><b><span style="color: #4c1130;">http://localhost:5000/find?nombre=Ernesto</span></b></div><div><br /></div><div>El resultado de la busqueda se muestra en un JSON:</div><div><br /></div><pre style="white-space: pre-wrap;"><span><b><span style="color: #4c1130;">{"resultado": {"nombre": "Ernesto", "sexo": "Masculino", "dni": 33, "edad": 11}}</span></b></span></pre><pre style="white-space: pre-wrap;"><span><br /></span></pre><pre style="white-space: pre-wrap;"><span><br /></span></pre></div><div><br /></div><h4>Actualizar un empleado</h4><div>Al abrir el navegador con el siguiente URL se actualiza la informaci&#243;n de un usuario:</div><div><br /></div><div><b><span style="color: #4c1130;">http://localhost:5000/update?nombre=Ernesto&amp;edad=45&amp;dni=50&amp;sexo=Masculino</span></b></div><div><br /></div><div><br /></div><div>El resultado se muestra en un JSON:</div><div><br /></div><div><b><span style="color: #4c1130;">{"resultado": "Empleado actualizado"}</span></b></div><div><br /></div><div><br /></div><h4>Borrar un empleado</h4><div>Ahora queda eliminar un documento de la base de datos, se abre el siguiente URL:</div><div><br /></div><div><b><span style="color: #4c1130;">http://localhost:5000/delete/Ernesto</span></b></div><div><br /></div><div>El resultado se muestra en un JSON:</div><div><br /></div><div><b><span style="color: #4c1130;">{"resultado": "empleado borrado"}</span></b></div><div><br /></div><div>Si se vuelve a consultar por el usuario el JSON que se devuelve dir&#225; usuario no encontrado:</div><div><br /></div><div><b><span style="color: #4c1130;">http://localhost:5000/find?nombre=Ernesto</span></b></div><div><br /></div><div><b><span style="color: #4c1130;">{"resultado": "Empleado no encontrado"}</span></b></div><div><br /></div><div>Esto indica que ha sido borrado de la base de datos el documento del empleado.</div><div><br /></div><div>Ya con esto se prob&#243; todo el proceso del CRUD en documentos de una colecci&#243;n de la base de datos MongoDB.</div><div><br /></div><div>El c&#243;digo fuente de la aplicaci&#243;n de este art&#237;culo se encuentra en el <a href="https://gitlab.com/ecrespo/tutorial-flask/tree/mongo4">repositorio tutorial-flask en la rama mongo4 en gitlab</a>.</div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2016-07-17.html">&lt;</a></td>
+<td class="cal-month" colspan="5">septiembre 2016</td>
+<td class="cal-next"><a href="index-2016-10-05.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day"><a class="cal-link" href="index-2016-09-04.html">04</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2016-09-05.html">05</a></td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td></tr>
+<tr class="cal-week">
+<td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td></tr>
+<tr class="cal-week">
+<td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day"><a class="cal-link" href="index-2016-09-25.html">25</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day"><a class="cal-link" href="index-2016-09-28.html">28</a></td><td class="cal-day"><a class="cal-link" href="index-2016-09-29.html">29</a></td><td class="cal-day"><strong class="cal-current">30</strong></td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

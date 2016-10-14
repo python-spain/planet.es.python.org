@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>lunes, 08 febrero</h2>
+<div class="time">
+<h3>04:47</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-f06e38a1">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2016/02/api-rest-ful-con-eve-parte-2.html">API rest ful con Eve (parte 2)</a></span>
+</p>
+    <div class="itemdescription">
+    <p>En el primer <a href="http://blog.crespo.org.ve/2015/04/api-rest-full-para-python-con-eve-parte.html" target="_blank">art&#237;culo</a> se toc&#243; el tema del api rest ful con eve de manera sencilla.<br /><br />En este art&#237;culo se toca el uso de mongodb para majejo del api rest con mongodb, el art&#237;culo se basa en la gu&#237;a r&#225;pida de eve que se encuentra en su <a href="http://python-eve.org/quickstart.html" target="_blank">sitio</a>.<br /><br />Los art&#237;culos relacionados con mongodb del blog son:<br /><br /><ol><li><a href="http://blog.crespo.org.ve/2014/09/instalar-un-servidor-mongodb-en-debian.html" target="_blank">Instalar un servidor mongodb en Debian</a>.</li><li><a href="http://blog.crespo.org.ve/2015/05/habilitar-autenticacion-en-un-servidor.html" target="_blank">Habilitar la autenticaci&#243;n en un servidor mongodb</a>.</li></ol><br /><br />Para ver la base de datos en mongodb se usar&#225; el cliente<a href="http://app.robomongo.org/" target="_blank"> robomongo</a> que lo pueden descargar en el siguiente <a href="http://app.robomongo.org/download.html" target="_blank">enlace</a>.<br /><br />El archivo run.py contiene lo mismo que en el art&#237;culo anterior:<br /><span style="color: blue;"><i><br /></i></span><span style="color: blue;"><i>#!/usr/bin/env python</i></span><br /><span style="color: blue;"><i><br /></i></span><span style="color: blue;"><i>from eve import Eve</i></span><br /><span style="color: blue;"><i>app = Eve()</i></span><br /><span style="color: blue;"><i><br /></i></span><span style="color: blue;"><i>if __name__ == '__main__':</i></span><br /><span style="color: blue;"><i>&nbsp; &nbsp; app.run()</i></span><br /><br />El archivo settings.py contendr&#225; algunas directivas.<br /><br />Configuraci&#243;n de la base de datos mongodb:<br /><br /><i><span style="color: blue;">MONGO_HOST = 'localhost'</span></i><br /><i><span style="color: blue;">MONGO_PORT = 27017</span></i><br /><i><span style="color: blue;">#MONGO_USERNAME = 'user'</span></i><br /><i><span style="color: blue;">#MONGO_PASSWORD = 'user'</span></i><br /><i><span style="color: blue;">MONGO_DBNAME = 'eve'</span></i><br /><br />Como a mongodb no se le ha configurado un usuario y clave se comentan esas l&#237;neas, la base de datos a usar se llama eve.<br /><br />Configurar todas las opciones del CRUD (leer, editar, update y borrar):<br /><br /><i><span style="color: blue;"># Enable reads (GET), inserts (POST) and DELETE for resources/collections</span></i><br /><i><span style="color: blue;"># (if you omit this line, the API will default to ['GET'] and provide</span></i><br /><i><span style="color: blue;"># read-only access to the endpoint).</span></i><br /><i><span style="color: blue;">RESOURCE_METHODS = ['GET', 'POST', 'DELETE']</span></i><br /><i><span style="color: blue;"><br /></span></i><i><span style="color: blue;"># Enable reads (GET), edits (PATCH), replacements (PUT) and deletes of</span></i><br /><i><span style="color: blue;"># individual items &nbsp;(defaults to read-only item access).</span></i><br /><i><span style="color: blue;">ITEM_METHODS = ['GET', 'PATCH', 'PUT', 'DELETE']</span></i><br /><br />Se define un esquema el cual permite validar los datos:<br /><br /><i><span style="color: blue;">schema = {</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; # Schema definition, based on Cerberus grammar. Check the Cerberus project</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; # (https://github.com/nicolaiarocci/cerberus) for details.</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; 'nombre': {</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'type': 'string',</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'minlength': 1,</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'maxlength': 10,</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; },</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; 'apellido': {</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'type': 'string',</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'minlength': 1,</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'maxlength': 15,</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'required': True,</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; # talk about hard constraints! For the purpose of the demo</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; # 'lastname' is an API entry-point, so we need it to be unique.</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'unique': True,</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; },</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; # 'role' is a list, and can only contain values from 'allowed'.</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; 'role': {</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'type': 'list',</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'allowed': ["author", "contributor", "copy"],</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; },</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; # An embedded 'strongly-typed' dictionary.</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; 'localizacion': {</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'type': 'dict',</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'schema': {</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'direccion': {'type': 'string'},</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'ciudad': {'type': 'string'}</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; },</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; },</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; 'nacimiento: {</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'type': 'datetime',</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; },</span></i><br /><i><span style="color: blue;">}</span></i><br /><br />Definici&#243;n de persona:<br /><br /><i><span style="color: blue;">persona = {</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; # 'title' tag used in item links. Defaults to the resource title minus</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; # the final, plural 's' (works fine in most cases but not for 'people')</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; 'titulo': 'persona',</span></i><br /><i><span style="color: blue;"><br /></span></i><i><span style="color: blue;">&nbsp; &nbsp; # by default the standard item entry point is defined as</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; # '/people/&lt;ObjectId&gt;'. We leave it untouched, and we also enable an</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; # additional read-only entry point. This way consumers can also perform</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; # GET requests at '/people/&lt;lastname&gt;'.</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; 'additional_lookup': {</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'url': 'regex("[\w]+")',</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'field': 'apellido'</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; },</span></i><br /><i><span style="color: blue;"><br /></span></i><i><span style="color: blue;">&nbsp; &nbsp; # We choose to override global cache-control directives for this resource.</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; 'cache_control': 'max-age=10,must-revalidate',</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; 'cache_expires': 10,</span></i><br /><i><span style="color: blue;"><br /></span></i><i><span style="color: blue;">&nbsp; &nbsp; # most global settings can be overridden at resource level</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; 'resource_methods': ['GET', 'POST'],</span></i><br /><i><span style="color: blue;"><br /></span></i><i><span style="color: blue;">&nbsp; &nbsp; 'schema': schema</span></i><br /><i><span style="color: blue;">}</span></i><br /><div><i><span style="color: blue;"><br /></span></i></div><div>Por &#250;ltimo se define el recurso como un dominio, el recurso persona toma la definici&#243;n dada anteriormente:</div><div><br /></div><div><div><i><span style="color: blue;">DOMAIN = {</span></i></div><div><i><span style="color: blue;">&nbsp; &nbsp; 'persona': persona,</span></i></div><div><i><span style="color: blue;">}</span></i></div></div><div><br /></div><div><br /></div><div>Con robomongo se puede observar que ya se tiene dos documentos agregados a la colecci&#243;n persona de la base de datos eve:</div><div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-5uyeYos9qOs/VrgO0L4CIII/AAAAAAAAL7s/6sMgQcS86QU/s1600/Captura%2Bde%2Bpantalla%2B-%2B070216%2B-%2B22%253A29%253A15.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="179" src="https://3.bp.blogspot.com/-5uyeYos9qOs/VrgO0L4CIII/AAAAAAAAL7s/6sMgQcS86QU/s320/Captura%2Bde%2Bpantalla%2B-%2B070216%2B-%2B22%253A29%253A15.png" width="320" /></a></div><br /></div><div><br /></div><div><br /></div><div>Se consulta v&#237;a GET a http://127.0.0.1:500 por medio de la extensi&#243;n de google chrome restclient:</div><div><br /></div><div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-yL1Lr5t_nMo/VrgPBNZ2zfI/AAAAAAAAL70/eJP0bXVejto/s1600/Captura%2Bde%2Bpantalla%2B-%2B070216%2B-%2B22%253A42%253A41.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="164" src="https://2.bp.blogspot.com/-yL1Lr5t_nMo/VrgPBNZ2zfI/AAAAAAAAL70/eJP0bXVejto/s320/Captura%2Bde%2Bpantalla%2B-%2B070216%2B-%2B22%253A42%253A41.png" width="320" /></a></div><br />Al hacer una consulta GET a http://127.0.0.1:5000/persona se tiene lo siguiente:<br /><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-zXT5xiMb7r8/VrgPwbHHmuI/AAAAAAAAL8A/2Jp69_Ly_mY/s1600/Captura%2Bde%2Bpantalla%2B-%2B070216%2B-%2B22%253A49%253A53.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="143" src="https://4.bp.blogspot.com/-zXT5xiMb7r8/VrgPwbHHmuI/AAAAAAAAL8A/2Jp69_Ly_mY/s320/Captura%2Bde%2Bpantalla%2B-%2B070216%2B-%2B22%253A49%253A53.png" width="320" /></a></div><br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-iL8wU0jkXHA/VrgP2DXBXQI/AAAAAAAAL8E/mysWFpOm_x0/s1600/Captura%2Bde%2Bpantalla%2B-%2B070216%2B-%2B22%253A50%253A45.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="320" src="https://3.bp.blogspot.com/-iL8wU0jkXHA/VrgP2DXBXQI/AAAAAAAAL8E/mysWFpOm_x0/s320/Captura%2Bde%2Bpantalla%2B-%2B070216%2B-%2B22%253A50%253A45.png" width="257" /></a></div><br /><br /></div><div>Desde la l&#237;nea de comandos se agregar&#225; dos documentos, se usar&#225; curl para ello:</div><div><b><span style="color: red;">curl -d '[{"nombre": "Ernesto", "apellido": "Crespo"}, {"nombre": "Argimiro", "apellido": "Crespo"}]' -H 'Content-Type: application/json' &nbsp;http://127.0.0.1:5000/persona</span></b></div><div><br /></div><div><br /></div><div>Al ejecutar devuelve lo siguiente:</div><div><span><b>{</b></span><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_status"</span><span>: "OK",</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_items"</span><span>: [</span></span></b><br /><span><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</b></span><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_updated"</span><span>: "Mon, 08 Feb 2016 03:34:41 GMT",</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_links"</span><span>: {</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"self"</span><span>: {</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"href"</span><span>: "persona/56b80cd146b4402633320fd5",</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"title"</span><span>: "Persona"</span></span></b><br /><span><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</b></span><br /><span><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</b></span><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_created"</span><span>: "Mon, 08 Feb 2016 03:34:41 GMT",</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_status"</span><span>: "OK",</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_id"</span><span>: "56b80cd146b4402633320fd5",</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_etag"</span><span>: "cb32857db339920319adeb23b29359936c92680f"</span></span></b><br /><span><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</b></span><br /><span><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</b></span><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_updated"</span><span>: "Mon, 08 Feb 2016 03:34:41 GMT",</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_links"</span><span>: {</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"self"</span><span>: {</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"href"</span><span>: "persona/56b80cd146b4402633320fd6",</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"title"</span><span>: "Persona"</span></span></b><br /><span><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</b></span><br /><span><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</b></span><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_created"</span><span>: "Mon, 08 Feb 2016 03:34:41 GMT",</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_status"</span><span>: "OK",</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_id"</span><span>: "56b80cd146b4402633320fd6",</span></span></b><br /><b><span style="color: red;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">"_etag"</span><span>: "c14c62e94c88dd227ccffaf5c248f18492040ee2"</span></span></b><br /><span><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</b></span><br /><span><b>&nbsp;&nbsp;&nbsp;]</b></span><br /><span><b>}</b></span></div><div><span><b><br /></b></span></div><div><span><br /></span></div><div><span>Al revisar la base de datos mongodb se tiene que se insertaron dos documentos:</span></div><div><span><br /></span></div><div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-O5R1TabfWpc/VrgPLy0XaQI/AAAAAAAAL74/wax_-9IeSE4/s1600/Captura%2Bde%2Bpantalla%2B-%2B070216%2B-%2B23%253A07%253A57.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="173" src="https://4.bp.blogspot.com/-O5R1TabfWpc/VrgPLy0XaQI/AAAAAAAAL74/wax_-9IeSE4/s320/Captura%2Bde%2Bpantalla%2B-%2B070216%2B-%2B23%253A07%253A57.png" width="320" /></a></div><br /></div><div><br /></div><div><br /></div><div><br /></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2015-11-13.html">&lt;</a></td>
+<td class="cal-month" colspan="5">febrero 2016</td>
+<td class="cal-next"><a href="index-2016-03-26.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day"><a class="cal-link" href="index-2016-02-07.html">07</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day"><strong class="cal-current">08</strong></td><td class="cal-day"><a class="cal-link" href="index-2016-02-09.html">09</a></td><td class="cal-day">10</td><td class="cal-day"><a class="cal-link" href="index-2016-02-11.html">11</a></td><td class="cal-day"><a class="cal-link" href="index-2016-02-12.html">12</a></td><td class="cal-day">13</td><td class="cal-day">14</td></tr>
+<tr class="cal-week">
+<td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day"><a class="cal-link" href="index-2016-02-18.html">18</a></td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td></tr>
+<tr class="cal-week">
+<td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day"><a class="cal-link" href="index-2016-02-24.html">24</a></td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td></tr>
+<tr class="cal-week">
+<td class="cal-day">29</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td><td class="cal-day"><em class="cal-othermonth">06</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

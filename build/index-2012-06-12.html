@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>martes, 12 junio</h2>
+<div class="time">
+<h3>10:44</h3>
+<div class="item feed-3c203c3b feed-{feed_id}" id="item-59552d8a">
+<p class="itemheader">
+<span class="itemtitle">
+    joe di castro:
+<a href="http://joedicastro.com/mantener-la-temperatura-adecuada-en-un-portatil-dell-con-linux.html">Mantener la temperatura adecuada en un port&#225;til Dell con Linux</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Los que teng&#225;is o hay&#225;is tenido un port&#225;til <strong>Dell</strong>, sabr&#233;is que es posible
+controlar la velocidad de funcionamiento de sus ventiladores de forma manual.
+Existen aplicaciones para Windows, pero tambi&#233;n es posible hacerlo desde Linux
+con el paquete <code>i8kutils</code> creado por Massimo Dal Zotto. Este paquete incluye un
+modulo del kernel <code>i8k</code> que necesita ser cargado al inicio y una serie de
+utilidades para controlar el ventilador e informar de la temperatura y otros
+valores de la <a href="https://es.wikipedia.org/wiki/Bios">BIOS</a>.</p>
+<p>Este paquete fue creado originalmente para el port&#225;til Dell Inspiron 8000, de
+ah&#237; su nombre. Esta utilidad aprovecha el modo <a href="http://es.wikipedia.org/wiki/Modo_de_Gerencia_del_Sistema">SMM </a> de la BIOS que estaba
+presente en los modelos Inspiron para controlar la velocidad de los ventiladores
+(algo que tambi&#233;n permiten otras marcas como Toshiba y Lenovo, para las que
+tambi&#233;n hay algunas utilidades). Dell tambi&#233;n ofrece el soporte de SMM BIOS en
+otras gamas y port&#225;tiles, como los de la serie Latitude o XPS. Aunque est&#225;
+utilidad no funciona en algunos modelos.</p>
+<p>Esta utilidad funciona bajo la l&#237;nea de comandos, pero al amparo del modulo del
+kernel surgieron varias aplicaciones, principalmente applets para el panel de
+Gnome 2, que permit&#237;an un control gr&#225;fico de los ventiladores y su temperatura.
+Este control pod&#237;a ser autom&#225;tico o manual. Yo personalmente me decant&#233; en su
+momento por emplear <a href="http://conky.sourceforge.net/">Conky</a> para mostrar las velocidades y la temperatura y
+emplear un script, <code>i8kapplet</code> por Wheelspin, para controlar autom&#225;ticamente la
+temperatura dentro de unos rangos.</p>
+<h2 id="i8kfanspy">i8kfans.py</h2>
+<p>Este era un script bash que lleva d&#225;ndome servicio mucho a&#241;os (el port&#225;til ya
+tiene sus siete a&#241;os) pero que por la forma que tiene de controlar cuando se
+debe subir/bajar la velocidad de los ventiladores, provocaba que se sucediesen
+de vez en cuando continuos acelerones y frenazos en los mismos. Esto al principio
+no me disgustaba, pero con los a&#241;os los ventiladores hacen cada vez m&#225;s ruido y
+si bien el sonido constante a alta velocidad es ligeramente molesto, esos
+cambios bruscos de velocidad se me han vuelto insoportables. Y dado que el
+port&#225;til se acerca al final de su vida &#250;til, sustituir los ventiladores, aunque
+es la soluci&#243;n adecuada, no lo veo econ&#243;micamente rentable.</p>
+<p>Yo sab&#237;a que el problema por el que esto suced&#237;a es porque la BIOS por defecto
+regula las temperaturas de los ventiladores en unos rangos predefinidos y esto
+no se desactiva, de hecho trabaja conjuntamente con el script. Como los rangos
+de temperatura que yo predefino son inferiores a los de la BIOS, en algunas
+ocasiones los dos pelean por el control de los ventiladores y es lo que ocasiona
+el problema. Pero el calor es el peor enemigo de la electr&#243;nica, y en los
+port&#225;tiles esto es un factor critico. De hecho estoy seguro de que este equipo
+(muy bien amortizado) me ha durado tantos a&#241;os gracias a que me he preocupado de
+este punto. Estoy cansado de ver morir a port&#225;tiles y discos duros en verano
+porque la gente no se preocupa de este tema. Por favor, limpiad el polvo de los
+ventiladores al llegar el verano, os ahorrareis muchos disgustos.</p>
+<p>As&#237; que descartado el reemplazar los ventiladores, me plante&#233; el crear un script
+que intentara hacer lo mismo pero de forma m&#225;s suave, intentado reducir el
+n&#250;mero de cambios bruscos de velocidad y fruto de ello es el siguiente script,
+que est&#225; disponible en <a href="http://github.com/joedicastro/i8kfans">GitHub</a>:</p>
+<div class="codehilite"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    i8kfans.py: Adjust the fans speed in various Dell laptops (with a nvidia</span>
+<span class="sd">    graphics card) to maintain the right temperatures. This affect both fans,</span>
+<span class="sd">    the cpu and the gpu fan. Originally i8k was created to run in a Dell</span>
+<span class="sd">    Inspiron 8000 laptop, but this Dell fan control via SMM BIOS is available</span>
+<span class="sd">    in others laptops of various series (Inspiron, XPS, Latitude, etcetera),</span>
+<span class="sd">    but not all of them are supported. Mine is an Inspiron 9400 but I tested</span>
+<span class="sd">    this successfully in a XPS m1330 too.</span>
+
+<span class="sd">    Based on a 2006 bash script by Wheelspin, `i8kapplet`. This old script</span>
+<span class="sd">    served faithfully me for many years, but my ears couldn't stand much longer</span>
+<span class="sd">    its random and common slow downs/speed ups. Over the years, fans have</span>
+<span class="sd">    become more and more loud. This new script runs in a more smooth way, with</span>
+<span class="sd">    less sudden changes.  It's cheaper than replace booth fans, don't you</span>
+<span class="sd">    think?</span>
+
+<span class="sd">    This script needs the `i8kutils` linux package installed and the `i8k`</span>
+<span class="sd">    kernel module loaded to work.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c">#==============================================================================</span>
+<span class="c">#    Copyright 2012 joe di castro &lt;joe@joedicastro.com&gt;</span>
+<span class="c">#</span>
+<span class="c">#    This program is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    This program is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#==============================================================================</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&quot;joe di castro &lt;joe@joedicastro.com&gt;&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s">&quot;GNU General Public License version 3&quot;</span>
+<span class="n">__date__</span> <span class="o">=</span> <span class="s">&quot;12/06/2012&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0.3&quot;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">linesep</span>
+    <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_output</span><span class="p">,</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
+    <span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="nb">exit</span><span class="p">,</span> <span class="n">exc_info</span>
+    <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c"># Checks the installation of the necessary python modules</span>
+    <span class="k">print</span><span class="p">((</span><span class="n">linesep</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;An error found importing one module:&quot;</span><span class="p">,</span>
+    <span class="nb">str</span><span class="p">(</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="s">&quot;You need to install it&quot;</span><span class="p">,</span> <span class="s">&quot;Stopping...&quot;</span><span class="p">]))</span>
+    <span class="nb">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">check_execs</span><span class="p">(</span><span class="o">*</span><span class="n">progs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if the programs are installed, if not exit and report.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">prog</span> <span class="ow">in</span> <span class="n">progs</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Popen</span><span class="p">([</span><span class="n">prog</span><span class="p">,</span> <span class="s">'--help'</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">'The {0} program is necessary to run this script'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prog</span><span class="p">)</span>
+            <span class="nb">exit</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">return</span>
+
+<span class="k">def</span> <span class="nf">get_right_fan_speed</span><span class="p">(</span><span class="n">current_temperature</span><span class="p">,</span> <span class="n">current_fan_speed</span><span class="p">,</span> <span class="n">temp_triggers</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the right fan speed to use with i8kfan command.</span>
+
+<span class="sd">    :current_temperature: current temperature value for the fan implied</span>
+<span class="sd">    :current_fan_speed: current fan speed</span>
+<span class="sd">    :temp_triggers: the threshold temperatures to trigger the fan speed change</span>
+<span class="sd">    :returns: right fan speed or &quot;-&quot; (means change nothing to i8kfan)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">right_fan_speed</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># the right fan speed for the current temp</span>
+    <span class="k">if</span> <span class="n">current_temperature</span> <span class="o">&gt;=</span> <span class="n">temp_triggers</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">current_temperature</span> <span class="o">&gt;=</span> <span class="n">temp_triggers</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">right_fan_speed</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">right_fan_speed</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">right_fan_speed</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">right_fan_speed</span> <span class="k">if</span> <span class="n">right_fan_speed</span> <span class="o">!=</span> <span class="n">current_fan_speed</span> <span class="k">else</span> <span class="s">&quot;-&quot;</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Main section&quot;&quot;&quot;</span>
+    <span class="c"># time between temperature checks</span>
+    <span class="n">interval</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c"># the temp thresholds to jump to a faster fan speed. Values greater than</span>
+    <span class="c"># [g|c]pu[0] set the fan speed to 1 and the ones greater than [g|c]pu[1]</span>
+    <span class="c"># set the speed to 2. Obviously, values minor than [g|c]pu[0] stop the fan</span>
+    <span class="n">gpu_temps</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span> <span class="mi">53</span><span class="p">]</span>
+    <span class="n">cpu_temps</span> <span class="o">=</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+
+    <span class="c"># check if the i8k kernel module is already loaded</span>
+    <span class="k">if</span>  <span class="s">&quot;i8k&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">check_output</span><span class="p">(</span><span class="s">&quot;ls /proc/&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">()):</span>
+        <span class="nb">exit</span><span class="p">(</span><span class="s">&quot;The i8k kernel module is not loaded&quot;</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># get current values</span>
+            <span class="n">cpu_temp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">check_output</span><span class="p">(</span><span class="s">&quot;i8kctl temp&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+            <span class="n">gpu_out</span> <span class="o">=</span> <span class="n">check_output</span><span class="p">(</span><span class="s">&quot;nvidia-smi -q -d TEMPERATURE&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+            <span class="n">gpu_temp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">gpu_out</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">cpu_fan</span><span class="p">,</span> <span class="n">gpu_fan</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">check_output</span><span class="p">(</span><span class="s">&quot;i8kfan&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+
+            <span class="c"># get the right speed values for each fan</span>
+            <span class="n">cpu_rfs</span> <span class="o">=</span> <span class="n">get_right_fan_speed</span><span class="p">(</span><span class="n">cpu_temp</span><span class="p">,</span> <span class="n">cpu_fan</span><span class="p">,</span> <span class="n">cpu_temps</span><span class="p">)</span>
+            <span class="n">gpu_rfs</span> <span class="o">=</span> <span class="n">get_right_fan_speed</span><span class="p">(</span><span class="n">gpu_temp</span><span class="p">,</span> <span class="n">gpu_fan</span><span class="p">,</span> <span class="n">gpu_temps</span><span class="p">)</span>
+
+            <span class="c"># if any of the fans needs to change their speed, change it!</span>
+            <span class="k">if</span> <span class="n">cpu_rfs</span> <span class="o">!=</span> <span class="s">&quot;-&quot;</span> <span class="ow">or</span> <span class="n">gpu_rfs</span> <span class="o">!=</span> <span class="s">&quot;-&quot;</span><span class="p">:</span>
+                <span class="n">Popen</span><span class="p">(</span><span class="s">&quot;i8kfan {0} {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cpu_rfs</span><span class="p">,</span> <span class="n">gpu_rfs</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span>
+                      <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+
+            <span class="c"># wait a moment. We want a cooler laptop, aren't we?</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="nb">exit</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">check_execs</span><span class="p">(</span><span class="s">&quot;i8kctl&quot;</span><span class="p">,</span> <span class="s">&quot;i8kfan&quot;</span><span class="p">,</span> <span class="s">&quot;nvidia-smi&quot;</span><span class="p">)</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c">###############################################################################</span>
+<span class="c">#                                  Changelog                                  #</span>
+<span class="c">###############################################################################</span>
+<span class="c">#</span>
+<span class="c"># 0.3:</span>
+<span class="c">#</span>
+<span class="c"># * Better documentation</span>
+<span class="c">#</span>
+<span class="c"># 0.2:</span>
+<span class="c">#</span>
+<span class="c"># * Fix an error in a function docstring due to refactorization</span>
+<span class="c"># * Give appropriate credit to original idea' script</span>
+<span class="c">#</span>
+<span class="c"># 0.1:</span>
+<span class="c">#</span>
+<span class="c"># * First attempt</span>
+<span class="c">#</span>
+</pre></div>
+
+
+<p>De momento, aunque a&#250;n sufre del mismo problema inevitable por el conflicto
+por el control entre el script y la BIOS, de momento he observado que se produce
+con menos frecuencia y durante menos tiempo. Aunque quiz&#225;s realice algunos
+cambios para intentar reducir a&#250;n m&#225;s esos conflictos.</p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2012-05-10.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2012</td>
+<td class="cal-next"><a href="index-2012-08-01.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day"><a class="cal-link" href="index-2012-06-01.html">01</a></td><td class="cal-day">02</td><td class="cal-day">03</td></tr>
+<tr class="cal-week">
+<td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day"><a class="cal-link" href="index-2012-06-06.html">06</a></td><td class="cal-day"><a class="cal-link" href="index-2012-06-07.html">07</a></td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
+<tr class="cal-week">
+<td class="cal-day">11</td><td class="cal-day"><strong class="cal-current">12</strong></td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2012-06-18.html">18</a></td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day"><a class="cal-link" href="index-2012-06-21.html">21</a></td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td></tr>
+<tr class="cal-week">
+<td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day"><em class="cal-othermonth">01</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

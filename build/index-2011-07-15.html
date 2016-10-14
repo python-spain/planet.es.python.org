@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>viernes, 15 julio</h2>
+<div class="time">
+<h3>01:12</h3>
+<div class="item feed-640af247 feed-{feed_id}" id="item-6e28f2fc">
+<p class="itemheader">
+<span class="itemtitle">
+    Python Insider ES:
+<a href="http://feedproxy.google.com/~r/PythonInsiderES/~3/948g5zp6f88/formalizando-las-directrices-de-control.html">Formalizando las Directrices de Control de Cambios de AST</a></span>
+</p>
+    <div class="itemdescription">
+    <div class="document" id="formalizando-las-directrices-de-control-de-cambios-de-ast">Art&#237;culo original: <a class="reference external" href="http://blog.python.org/2011/04/formalizing-ast-change-control-policy.html">Formalizing the AST Change Control Policy</a><br />Python ofrece un &#225;rbol de sintaxis abstracta (AST) que representa la forma compilada del c&#243;digo fuente Python en el <a class="reference external" href="http://docs.python.org/py3k/library/ast.html">m&#243;dulo AST</a>. El m&#243;dulo AST permite que el c&#243;digo de usuario inspeccione y manipule la representaci&#243;n AST; se halla por tanto entre el an&#225;lisis sint&#225;ctico del c&#243;digo y la compilaci&#243;n a c&#243;digo byte (bytecode).<br />Mientras que el c&#243;digo Python se define en la <a class="reference external" href="http://docs.python.org/py3k/reference/index.html">referencia del lenguaje</a>, el m&#243;dulo AST es un detalle de la implementaci&#243;n CPython y no es necesaria en otras implementaciones de Python.<br /><div class="section" id="compatibilidad-del-ast"><h4>Compatibilidad del AST</h4>Como parte del <a class="reference external" href="http://bugs.python.org/issue11549">trabajo</a> de reescritura del optimizador local de CPython para trabajar en el AST (en lugar del c&#243;digo byte en bruto, como se realiza actualmente), Eugene Toder necesitaba hacer algunos cambios a la estructura del AST. Un detalle en la implementaci&#243;n de CPython era que no estaba del todo claro qu&#233; directrices de compatibilidad hacia atr&#225;s se pod&#237;an aplicar al AST. De modo que Eugene <a class="reference external" href="http://mail.python.org/pipermail/python-dev/2011-April/110399.html">pregunt&#243;</a> en python-dev: &#191;Es necesario, cuando cambie el AST, asegurar la compatibilidad hacia atr&#225;s?<br />El consenso general result&#243; en que <i>no</i> era necesaria esta compatibilidad. El m&#243;dulo AST dispone de una constante <tt class="docutils literal">ast.__version__</tt>, que ofrece al c&#243;digo de usuario una forma de variar el comportamiento dependiendo de la versi&#243;n del AST con que se encuentre. Esto result&#243; ser suficientemente compatible para un m&#243;dulo de implementaci&#243;n espec&#237;fica.</div><div class="section" id="otras-implementaciones-python"><h4>Otras implementaciones Python</h4>Actualmente, los mantenedores de Jython e IronPython han hecho notar que sus respectivas implementaciones, ten&#237;an un m&#243;dulo de compatibilidad AST, o bien se ofrecer&#225; uno en el futuro. A pesar de esto, no opinan que esto signifique que el AST deba ser congelado y no les importa saber que cuando la constante <tt class="docutils literal">ast.__version__</tt> cambie, el AST deber&#225; ser modificado para que sea compatible.<br />Un aspecto que sali&#243; a la luz, es que el conjunto de casos de prueba en <tt class="docutils literal">test_ast.py</tt> ayudar&#237;a a otras implementaciones a asegurar que sus representaciones AST son compatibles con CPython. &#161;Un buen proyecto para alguien que quiera involucrarse en los aspectos internos de Python, ser&#237;a incrementar la cobertura de <tt class="docutils literal">test_ast.py</tt>!</div><div class="section" id="que-ocurrira-a-continuacion"><h4>&#191;Qu&#233; ocurrir&#225; a continuaci&#243;n?</h4>El <a class="reference external" href="http://bugs.python.org/issue11549">parche</a> que motiv&#243; la discusi&#243;n todav&#237;a no ha sido incluido en CPython. Por lo que, probablemente, nada vaya a cambiar. Sin embargo, si no se incorpora, el AST <i>cambiar&#225;</i> de forma que sea incompatible. La constante <tt class="docutils literal">ast.__version__</tt> se modificar&#225; para reflejar esto, de modo que el c&#243;digo de usuario detectar&#225; el cambio, pero deber&#225; ser igualmente modificado. De forma m&#225;s general, este ser&#225; el modo en que se gestionen los cambios al AST en el futuro.<br />Los desarrolladores de Python est&#225;n interesados en la medida en que se est&#225; usando el AST y en el impacto que estas directrices tendr&#225;n. Si alg&#250;n lector tiene c&#243;digo afectado por este cambio, es recomendable que participen en la <a class="reference external" href="http://mail.python.org/pipermail/python-dev/2011-April/110399.html">discusi&#243;n que se mantiene en python-dev</a>.</div></div><img alt="" height="1" src="http://feeds.feedburner.com/~r/PythonInsiderES/~4/948g5zp6f88" width="1" />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-06-30.html">&lt;</a></td>
+<td class="cal-month" colspan="5">julio 2011</td>
+<td class="cal-next"><a href="index-2011-08-30.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td></tr>
+<tr class="cal-week">
+<td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2011-07-05.html">05</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-06.html">06</a></td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
+<tr class="cal-week">
+<td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day"><a class="cal-link" href="index-2011-07-13.html">13</a></td><td class="cal-day">14</td><td class="cal-day"><strong class="cal-current">15</strong></td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-07-18.html">18</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-19.html">19</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-20.html">20</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-21.html">21</a></td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td></tr>
+<tr class="cal-week">
+<td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day"><a class="cal-link" href="index-2011-07-27.html">27</a></td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>martes, 19 julio</h2>
+<div class="time">
+<h3>22:42</h3>
+<div class="item feed-640af247 feed-{feed_id}" id="item-7130fcda">
+<p class="itemheader">
+<span class="itemtitle">
+    Python Insider ES:
+<a href="http://feedproxy.google.com/~r/PythonInsiderES/~3/V5H1rih4Wwo/lanzamientos-de-junio-267-272-314.html">Lanzamientos de junio - 2.6.7, 2.7.2, 3.1.4</a></span>
+</p>
+    <div class="itemdescription">
+    <div class="document" id="lanzamientos-de-junio-2-6-7-2-7-2-3-1-4"> <p>Art&#237;culo original: <a class="reference external" href="http://blog.python.org/2011/06/june-releases-267-272-314.html">June Releases - 2.6.7, 2.7.2, 3.1.4</a></p><p>Junio es un gran mes para lanzamientos de Python, con una actualizaci&#243;n en cada una de las ramas activas.</p><div class="section" id="id1"><h4>2.6.7</h4><p>Est&#225; disponible un nuevo lanzamiento de c&#243;digo fuente de Python <a class="reference external" href="http://www.python.org/download/releases/2.6.7/">2.6.7</a> que aporta correcciones a tres cuestiones de seguridad. Ahora que la l&#237;nea 2.6 est&#225; en modo seguridad, estos lanzamientos se producir&#225;n en forma de c&#243;digo fuente cada vez que se necesiten hasta octubre de 2013. Si necesitas instaladores binarios, deber&#237;as considerar actualizar a 2.7 o 3.2.</p><p>La versi&#243;n 2.6.7 es el primer lanzamiento en el que se corrige la <a class="reference external" href="http://blog-es.python.org/2011/05/corregida-vulnerabilidad-en-la.html">vulnerabilidad urllib</a> ya comentada. Adem&#225;s se han arreglado una vulnerabilidad DoS en <tt class="docutils literal">smtpd</tt> (cuesti&#243;n <a class="reference external" href="http://bugs.python.org/issue9129">#9129</a>) y una vulnerabilidad XSS en <tt class="docutils literal">SimpleHTTPServer.list_directory</tt> (cuesti&#243;n <a class="reference external" href="http://bugs.python.org/issue11442">#11442</a>).</p></div><div class="section" id="id2"><h4>2.7.2</h4><p>Se realizaron m&#225;s de 150 correcciones a la &#250;ltima versi&#243;n menor de la l&#237;nea 2.x, la 2.7, desde su versi&#243;n 2.7.1 de noviembre de 2010. Desde el 12 de junio est&#225; disponible el c&#243;digo fuente y el instalador binario para la <a class="reference external" href="http://www.python.org/download/releases/2.7.2/">2.7.2</a>, la cual incluye las correcciones de seguridad mencionadas en la 2.6.7.</p><p>Varios fallos han sido corregidos: una situaci&#243;n en la que Python usaba incorrectamente memoria no gestionada por &#233;l mismo mientras la modificaba otro hilo, cuando se eliminaba <tt class="docutils literal">__abstractmethods__</tt> de una clase, accediendo un fichero mapeado en memoria m&#225;s all&#225; de su longitud, y varios otros.</p><p>Una correcci&#243;n en <tt class="docutils literal">getpass</tt> soluciona una regresi&#243;n en relaci&#243;n a la gesti&#243;n de CTRL-C y CTRL-Z. <tt class="docutils literal">multiprocessing</tt> recibi&#243; varias correcciones, incluyendo el tratamiento de servicios de Windows como p. ej. el de ejecutables congelados y una correcci&#243;n de condici&#243;n de carrera cuando terminan los (procesos) trabajadores de <tt class="docutils literal">multiprocessing.Pool</tt>. <tt class="docutils literal">mmap</tt> fue corregido para trabajar con tama&#241;os de fichero y desplazamientos superiores a 4 GB incluso en compilaciones de 32 bit, y ahora se produce un <tt class="docutils literal">TypeError</tt> en lugar de producir un fallo de segmento cuando se intenta escribir a un mapa no escribible.</p><p>Para una lista completa de cambios, v&#233;ase <a class="reference external" href="http://hg.python.org/cpython/raw-file/eb3c9b74884c/Misc/NEWS">el fichero de novedades 2.7.2</a>.</p></div><div class="section" id="id3"><h4>3.1.4</h4><p>La versi&#243;n 3.1.4 es el &#250;ltimo lanzamiento que corrige bugs de la l&#237;nea 3.1.x, enviando la 3.1 al modo de seguridad mientras la l&#237;nea 3.2 continua. La versi&#243;n 3.1.4 contiene m&#225;s de 100 correcciones de bugs desde el lanzamiento de la 3.1.3 en noviembre de 2010. Al igual que con la 2.7.2, est&#225;n disponibles instaladores binarios desde el 12 de junio, y adem&#225;s la 3.1.4 es el primer lanzamiento 3.x en contener los arreglos de seguridad listados en 2.6.7.</p><p>La versi&#243;n 3.1.4 corrige varios problemas con b&#250;squedas <tt class="docutils literal">__dir__</tt> sobre objetos, fechas posteriores al 2038 en la implementaci&#243;n para Windows de <tt class="docutils literal">os.stat</tt> y <tt class="docutils literal">os.utime</tt>, y una serie de limpiezas para 64 bits. Se realizaron una serie de cambios en la biblioteca <tt class="docutils literal">io</tt> para retornar <tt class="docutils literal">None</tt> cuando no se hab&#237;a le&#237;do nada y lanzando las excepciones apropiadas en otros puntos. Se corrigieron los argumentos de llamada de <tt class="docutils literal">ctypes</tt> para Windows 64 bits y tambi&#233;n se corrigi&#243; un fallo en la ejecuci&#243;n.</p><p>Para una lista completa de cambios, v&#233;ase <a class="reference external" href="http://hg.python.org/cpython/raw-file/feae9f9e9f30/Misc/NEWS">el fichero de novedades 3.1.4</a>.</p></div><div class="section" id="id4"><h4>3.2.1</h4><p>La versi&#243;n <a class="reference external" href="http://www.python.org/download/releases/3.2.1/">3.2.1</a> est&#225; actualmente en la fase de candidata a lanzamiento, con una ronda ya completada y se espera un segunda versi&#243;n candidata en breve. Queremos agradecer enormemente a los usuarios de la versi&#243;n 3.2 las pruebas de la versi&#243;n candidata a lanzamiento para asegurar que cubrimos cualquier cuesti&#243;n que puedas encontrar. Si tienes que reportar cualquier bug, por favor reg&#237;stralo en <a class="reference external" href="http://bugs.python.org">bugs.python.org</a>.</p></div></div><img alt="" height="1" src="http://feeds.feedburner.com/~r/PythonInsiderES/~4/V5H1rih4Wwo" width="1" />
+    </div>
+</div></div>
+<div class="time">
+<h3>16:31</h3>
+<div class="item feed-640af247 feed-{feed_id}" id="item-39e43ddc">
+<p class="itemheader">
+<span class="itemtitle">
+    Python Insider ES:
+<a href="http://feedproxy.google.com/~r/PythonInsiderES/~3/zqBdu_0ct60/el-nuevo-modulo-para-la-gestion-de.html">El nuevo m&#243;dulo para la gesti&#243;n de fallos en Python 3.3 ayuda en la depuraci&#243;n</a></span>
+</p>
+    <div class="itemdescription">
+    <div class="document" id="el-nuevo-modulo-para-la-gestion-de-fallos-en-python-3-3-ayuda-en-la-depuracion"> <p>Art&#237;culo original: <a class="reference external" href="http://blog.python.org/2011/05/new-faulthandler-module-in-python-33.html">New faulthandler module in Python 3.3 helps debugging</a></p><p>Cuando un usuario reporta que tu programa ha fallado o se cuelga, algunas veces s&#243;lo puedes ayudar a probar y recoger m&#225;s informaci&#243;n y componer un escenario para reproducir la situaci&#243;n. Incluso con un escenario fidedigno de usuario, como desarrollador muchas veces eres incapaz de reproducir la situaci&#243;n debido a diferencias en el entorno, p. ej., sistema operativo y compilador. Si tienes suerte, el usuario podr&#225; instalar herramientas de depuraci&#243;n, pero la mayor&#237;a de las veces tendr&#225;s que esperar a que otra persona pueda obtener m&#225;s informaci&#243;n sobre la situaci&#243;n.</p><div class="section" id="errores-fatales"><h4>Errores fatales</h4><p>En Python 3.3 se ha introducido un nuevo m&#243;dulo que te ayudar&#225; a resolver este problema: <a class="reference external" href="http://docs.python.org/dev/library/faulthandler.html">faulthandler</a>. <tt class="docutils literal">faulthandler</tt> proporciona la habilidad de volcar la traza inversa de Python en un error fatal tal como sucede en un fallo de segmento, divisi&#243;n por cero, abortado o error de bus. Puedes habilitarlo dentro de tu aplicaci&#243;n usando <tt class="docutils literal">faulthandler.enable()</tt>, incorporando la opci&#243;n <tt class="docutils literal"><span class="pre">-X</span> faulthandler</tt> al ejecutable Python, o con la variable de entorno <a class="reference external" href="http://docs.python.org/dev/using/cmdline.html#envvar-PYTHONFAULTHANDLER">PYTHONFAULTHANDLER=1</a>. Ejemplo de salida:</p><pre class="literal-block">Fatal Python error: Segmentation fault<br /><br />Current thread 0x00007f7babc6b700:<br />  File &quot;Lib/test/crashers/gc_inspection.py&quot;, line 29 in g<br />  File &quot;Lib/test/crashers/gc_inspection.py&quot;, line 32 in &lt;module&gt;<br />Segmentation fault<br /></pre></div><div class="section" id="tiempo-de-espera"><h4>Tiempo de espera</h4><p><tt class="docutils literal">faulthandler</tt> tambi&#233;n puede volcar la traza inversa despu&#233;s de un tiempo de espera usando <tt class="docutils literal">faulthandler.dump_tracebacks_later(timeout)</tt>. Ll&#225;malo otra vez para reiniciar el temporizador o llama a <tt class="docutils literal">faulthandler.cancel_dump_tracebacks_later()</tt> para parar el temporizador. Ejemplo de salida:</p><pre class="literal-block">Timeout (0:01:00)!<br />Current thread 0x00007f987d459700:<br />  File &quot;Lib/test/crashers/infinite_loop_re.py&quot;, line 20 in &lt;module&gt;<br /></pre><p>Usa la opci&#243;n <tt class="docutils literal">repeat=True</tt> para volcar la traza inversa cada <tt class="docutils literal">timeout</tt> segundos, o <tt class="docutils literal">exit=True</tt> para salir del programa inmediatamente de forma insegura, p. ej. no volcando el buffer de archivos a disco.</p></div><div class="section" id="senal-de-usuario"><h4>Se&#241;al de usuario</h4><p>Si tienes acceso a la maquina en la cual se est&#225; ejecutando el programa, puedes usar <tt class="docutils literal">faulthandler.register(signal)</tt> para instalar un gestor de se&#241;al que vuelque la traza inversa cuando se reciba <tt class="docutils literal">signal</tt>. En UNIX, por ejemplo, puedes usar la se&#241;al <tt class="docutils literal">SIGUSR1</tt>: <tt class="docutils literal">kill <span class="pre">-USR1</span> &lt;pid&gt;</tt> volcar&#225; la traza inversa actual. Esta funcionalidad no est&#225; disponible bajo Windows. Ejemplo de salida:</p><pre class="literal-block">Current thread 0x00007fdc3da74700:<br />  File &quot;Lib/test/crashers/infinite_loop_re.py&quot;, line 19 in &lt;module&gt;<br /></pre><p>Otra posibilidad es llamar expl&#237;citamente a <tt class="docutils literal">faulthandler.dump_traceback()</tt> en tu programa.</p></div><div class="section" id="temas-de-seguridad-y-el-fichero-de-salida"><h4>Temas de seguridad y el fichero de salida</h4><p><tt class="docutils literal">faulthandler</tt> est&#225; deshabilitado por defecto por razones de seguridad, principalmente porque almacena el descriptor de fichero de <tt class="docutils literal">sys.stderr</tt> y escribe las trazas inversas en este descriptor de fichero. Si se cierra <tt class="docutils literal">sys.stderr</tt> y se reusa el descriptor de fichero, este descriptor puede ser un socket, una tuber&#237;a, un fichero cr&#237;tico o cualquier otra cosa. Por defecto, <tt class="docutils literal">faulthandler</tt> escribe las trazas inversas en <tt class="docutils literal">sys.stderr</tt>, pero puedes especificar otro fichero. Para m&#225;s informaci&#243;n, consulta la <a class="reference external" href="http://docs.python.org/dev/library/faulthandler.html#file-descriptor-issue">documentaci&#243;n de faulthandler</a>.</p></div><div class="section" id="modulo-de-terceros-para-versiones-antiguas-de-python"><h4>M&#243;dulo de terceros para versiones antiguas de Python</h4><p><tt class="docutils literal">faulthandler</tt> tambi&#233;n es mantenido como un m&#243;dulo de terceros para Python 2.5 hasta 3.2 <a class="reference external" href="http://pypi.python.org/pypi/faulthandler/">mediante PyPi</a>. La mayor diferencia entre el m&#243;dulo Python 3.3 y el m&#243;dulo de terceros es la implementaci&#243;n de <tt class="docutils literal">dump_tracebacks_later()</tt>: Python 3.3 usa un hilo con un tiempo de espera en un bloqueo, por otro lado el de terceros usa <tt class="docutils literal">SIGALRM</tt> y <tt class="docutils literal">alarm()</tt>.</p><p>El tiempo de espera del bloqueo (que es una nueva funcionalidad de Python 3.3), tiene una resoluci&#243;n de un microsegundo. El temporizador <tt class="docutils literal">alarm()</tt> usado en versiones anteriores tiene una resoluci&#243;n de un segundo, y la se&#241;al <tt class="docutils literal">SIGALRM</tt> puede interrumpir la llamada actual al sistema que fallar&#225; con un error <tt class="docutils literal">EINTR</tt>.</p></div><div class="section" id="exito-rapido"><h4>&#201;xito r&#225;pido</h4><p>El nuevo m&#243;dulo <tt class="docutils literal">faulthandler</tt> ya ha sido de ayuda en el rastreo de condiciones de carrera en nuestros buildbots. Esperamos que te ayude tambi&#233;n en tus programas.</p></div></div><img alt="" height="1" src="http://feeds.feedburner.com/~r/PythonInsiderES/~4/zqBdu_0ct60" width="1" />
+    </div>
+</div></div>
+<div class="time">
+<h3>16:14</h3>
+<div class="item feed-640af247 feed-{feed_id}" id="item-b70184fb">
+<p class="itemheader">
+<span class="itemtitle">
+    Python Insider ES:
+<a href="http://feedproxy.google.com/~r/PythonInsiderES/~3/W2HYZRsgmbM/traducciones-al-portugues-aleman.html">Traducciones al portug&#250;es, alem&#225;n, coreano y chino tradicional</a></span>
+</p>
+    <div class="itemdescription">
+    <div class="document" id="traducciones-al-portugues-aleman-coreano-y-chino-tradicional"><p>Art&#237;culo original: <a class="reference external" href="http://blog.python.org/2011/05/portuguese-german-korean-and.html">Python Insider Translation Project</a></p><p>&#161;El <a class="reference external" href="http://blog-es.python.org/2011/05/proyecto-de-traduccion-de-python.html">proyecto de traducci&#243;n</a> de Python Insider contin&#250;a creciendo! Hoy lanzamos la versi&#243;n <a class="reference external" href="http://blog-pt.python.org">portuguesa</a>, <a class="reference external" href="http://blog-de.python.org">alemana</a>, <a class="reference external" href="http://blog-ko.python.org">coreana</a>, y <a class="reference external" href="http://blog-tw.python.org">china tradicional</a> del blog. Los traductores ya han empezado a traducir las entradas anteriores. Tal como ocurre con las otras traducciones, estas ediciones paralelas estar&#225;n un poco retrasadas con respecto a las entradas originales en <a class="reference external" href="http://blog.python.org/">Python Insider</a>.</p></div><img alt="" height="1" src="http://feeds.feedburner.com/~r/PythonInsiderES/~4/W2HYZRsgmbM" width="1" />
+    </div>
+</div></div>
+<div class="time">
+<h3>16:04</h3>
+<div class="item feed-640af247 feed-{feed_id}" id="item-2b5ecbd3">
+<p class="itemheader">
+<span class="itemtitle">
+    Python Insider ES:
+<a href="http://feedproxy.google.com/~r/PythonInsiderES/~3/pzTbkzgVCEA/traducciones-rumano-y-chino.html">Traducciones a rumano y a chino simplificado</a></span>
+</p>
+    <div class="itemdescription">
+    <div class="document" id="traducciones-a-rumano-y-a-chino-simplificado"><p>Art&#237;culo original: <a class="reference external" href="http://blog.python.org/2011/05/romanian-and-simplified-chinese.html">Romanian and Simplified Chinese Translations</a></p><p>El equipo de Python Insider se complace en anunciar hoy dos nuevos blogs. Al <a class="reference external" href="http://blog-es.python.org/2011/05/proyecto-de-traduccion-de-python.html">proyecto de traducci&#243;n</a> se han unido traductores de <a class="reference external" href="http://blog-ro.python.org">rumano</a> y de <a class="reference external" href="http://blog-cn.python.org">chino simplificado</a>, y han empezado a publicar los art&#237;culos pasados. Como el resto de traducciones, estas ediciones paralelas tendr&#225;n un ligero retraso con respecto a los art&#237;culos originales en <a class="reference external" href="http://blog.python.org/">Python Insider</a>.</p></div><img alt="" height="1" src="http://feeds.feedburner.com/~r/PythonInsiderES/~4/pzTbkzgVCEA" width="1" />
+    </div>
+</div></div>
+<div class="time">
+<h3>15:56</h3>
+<div class="item feed-640af247 feed-{feed_id}" id="item-44c46bb1">
+<p class="itemheader">
+<span class="itemtitle">
+    Python Insider ES:
+<a href="http://feedproxy.google.com/~r/PythonInsiderES/~3/oFs2OYR_fcw/proyecto-de-traduccion-de-python.html">Proyecto de traducci&#243;n de Python Insider</a></span>
+</p>
+    <div class="itemdescription">
+    <div class="document" id="proyecto-de-traduccion-de-python-insider"> <p>Art&#237;culo original: <a class="reference external" href="http://blog.python.org/2011/05/python-insider-translation-project.html">Python Insider Translation Project</a></p><p>Pensamos que el contenido de este blog es &#250;til para toda la comunidad Python, por lo que alcanzar la mayor cantidad de p&#250;blico es una de nuestras prioridades. Para ampliar nuestro alcance estamos reuniendo un equipo de traductores para crear ediciones paralelas del blog en otros idiomas. Hoy lanzamos dos traducciones: <a class="reference external" href="http://blog-ja.python.org/">japon&#233;s</a> y <a class="reference external" href="http://blog-es.python.org/">espa&#241;ol</a>.</p><p>Las traducciones estar&#225;n un poco retrasadas con respecto a las publicaciones en <a class="reference external" href="http://blog.python.org/">Python Insider</a>, pero estar&#225;n lo m&#225;s actualizadas posible.</p><div class="section" id="necesitamos-ayuda"><h4>Necesitamos ayuda</h4><p>El equipo de traducci&#243;n es a&#250;n muy peque&#241;o, por lo que estamos buscando gente para unirse a &#233;l. Necesitamos gente capaz de trabajar en los idiomas existentes, o que nos ayude a expandirnos a otros idiomas. Si puedes ayudar de alguna forma, contacta con Doug Hellmann (doug punto hellmann en gmail).</p></div></div><img alt="" height="1" src="http://feeds.feedburner.com/~r/PythonInsiderES/~4/oFs2OYR_fcw" width="1" />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-06-30.html">&lt;</a></td>
+<td class="cal-month" colspan="5">julio 2011</td>
+<td class="cal-next"><a href="index-2011-08-30.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td></tr>
+<tr class="cal-week">
+<td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2011-07-05.html">05</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-06.html">06</a></td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
+<tr class="cal-week">
+<td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day"><a class="cal-link" href="index-2011-07-13.html">13</a></td><td class="cal-day">14</td><td class="cal-day"><a class="cal-link" href="index-2011-07-15.html">15</a></td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-07-18.html">18</a></td><td class="cal-day"><strong class="cal-current">19</strong></td><td class="cal-day"><a class="cal-link" href="index-2011-07-20.html">20</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-21.html">21</a></td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td></tr>
+<tr class="cal-week">
+<td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day"><a class="cal-link" href="index-2011-07-27.html">27</a></td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

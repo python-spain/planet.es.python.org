@@ -1,0 +1,3 @@
+-e git+http://offog.org/git/rawdog.git#egg=rawdog
+mako
+feedparser

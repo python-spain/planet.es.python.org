@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<opml encoding="utf-8" version="1.1">
+   <head>
+      <title>Python Hispano</title>
+      <dateCreated>Fri, 14 Oct 2016 15:00:12 GMT</dateCreated>
+      <dateModified>Fri, 14 Oct 2016 15:00:12 GMT</dateModified>
+      <ownerName>joe di castro</ownerName>
+      <ownerEmail>joe@joedicastro.com</ownerEmail>
+   </head>
+   <body>
+      <outline htmlUrl="" text="Alfffa Solutions" title="http://alfffa.net/blog/category/informatica/programacion/python/feed/" type="rss" xmlUrl="http://alfffa.net/blog/category/informatica/programacion/python/feed/"/>
+      <outline htmlUrl="http://blep.blogspot.com/search/label/python" text="Javier Santana" title="javier santana - blog" type="rss" xmlUrl="http://blep.blogspot.com/feeds/posts/default/-/python"/>
+      <outline htmlUrl="http://blog.crespo.org.ve/search/label/python" text="La libertad de desarrollar..." title="La libertad de desarrollar no tiene  precio..." type="rss" xmlUrl="http://blog.crespo.org.ve/feeds/posts/default/-/python"/>
+      <outline htmlUrl="" text="Frogblog" title="http://blog.willinux.net/?cat=14&amp;amp;feed=rss2" type="rss" xmlUrl="http://blog.willinux.net/?cat=14&amp;feed=rss2"/>
+      <outline htmlUrl="" text="Hyperreals *R" title="http://ch3m4.org/blog/category/python/feed/" type="rss" xmlUrl="http://ch3m4.org/blog/category/python/feed/"/>
+      <outline htmlUrl="http://elviajedelnavegante.blogspot.com/search/label/python" text="El viaje del navegante" title="El viaje del navegante" type="rss" xmlUrl="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"/>
+      <outline htmlUrl="https://www.atareao.es" text="El Atareao" title="Python &amp;#8211; El atareao" type="rss" xmlUrl="http://feeds.feedburner.com/ElAtareao_python"/>
+      <outline htmlUrl="http://blog-es.python.org/" text="Python Insider ES" title="Python Insider ES" type="rss" xmlUrl="http://feeds.feedburner.com/PythonInsiderES"/>
+      <outline htmlUrl="" text="JavAguirre.net" title="http://javaguirre.net/python.xml" type="rss" xmlUrl="http://javaguirre.net/python.xml"/>
+      <outline htmlUrl="" text="python majibu" title="http://joedicastro.com/feeds/rss" type="rss" xmlUrl="http://joedicastro.com/feeds/rss"/>
+      <outline htmlUrl="http://joedicastro.com" text="joe di castro" title="joe di castro" type="rss" xmlUrl="http://joedicastro.com/feeds/tags/python.rss.xml"/>
+      <outline htmlUrl="" text="Dead Epsilon" title="http://juanlu001.github.io/rss.xml" type="rss" xmlUrl="http://juanlu001.github.io/rss.xml"/>
+      <outline htmlUrl="" text="codeplasticlesthack" title="http://lesthack.com.mx/category/programacion/python/feed/" type="rss" xmlUrl="http://lesthack.com.mx/category/programacion/python/feed/"/>
+      <outline htmlUrl="http://maengora.blogspot.com/search/label/python" text="Actualidad Informatica" title="El blog de MaEnGoRa" type="rss" xmlUrl="http://maengora.blogspot.com/feeds/posts/default/-/python"/>
+      <outline htmlUrl="" text="Monobot" title="http://monobotblog.alvarezalonso.es/archives/category/python/feed" type="rss" xmlUrl="http://monobotblog.alvarezalonso.es/archives/category/python/feed"/>
+      <outline htmlUrl="http://mundo-python.blogspot.com/" text="Mundo Python" title="Mundo Python" type="rss" xmlUrl="http://mundo-python.blogspot.com/feeds/posts/default"/>
+      <outline htmlUrl="" text="Read The Fucking Docs" title="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python" type="rss" xmlUrl="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"/>
+      <outline htmlUrl="http://simelo-es.blogspot.com/search/label/python" text="Simelo pides..." title="Simelo pides ... a bloguear !" type="rss" xmlUrl="http://simelo-es.blogspot.com/feeds/posts/default/-/python"/>
+      <outline htmlUrl="http://www.eferro.net/search/label/Python" text="e-ferro" title="e-ferro Venturas/Desventuras de &quot;inform&amp;#225;tico&quot;" type="rss" xmlUrl="http://www.eferro.net/feeds/posts/default/-/Python"/>
+      <outline htmlUrl="http://www.genbetadev.com" text="Genbeta:dev" title="Magazine - python" type="rss" xmlUrl="http://www.genbetadev.com/categoria/python/rss2.xml"/>
+      <outline htmlUrl="https://pybonacci.wordpress.com" text="Pybonacci" title="Pybonacci" type="rss" xmlUrl="https://pybonacci.wordpress.com/feed/"/>
+      <outline htmlUrl="https://saforas.wordpress.com" text="The::Beastieux" title="Python &amp;#8211; The::Beastieux" type="rss" xmlUrl="https://saforas.wordpress.com/category/python/feed/"/>
+      <outline htmlUrl="https://unoyunodiez.com" text="Uno y uno = diez" title="python &amp;#8211; Uno + uno = diez" type="rss" xmlUrl="https://unoyunodiez.com/tag/python-2/feed/"/>
+      <outline htmlUrl="http://www.userlinux.net" text="oscarmlage" title="userlinux.net" type="rss" xmlUrl="https://userlinux.net/tag-python/feed/"/>
+   </body>
+</opml>

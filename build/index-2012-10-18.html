@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>jueves, 18 octubre</h2>
+<div class="time">
+<h3>21:50</h3>
+<div class="item feed-3c203c3b feed-{feed_id}" id="item-5f960d44">
+<p class="itemheader">
+<span class="itemtitle">
+    joe di castro:
+<a href="http://joedicastro.com/productividad-linux-ranger.html">Productividad &amp; Linux: Ranger</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Algunos pensar&#225;n, de acuerdo, podemos entender que prefieras un <a href="http://joedicastro.com/productividad-en-el-escritorio-linux-tiling.html">gestor de
+ventanas de mosaico</a>, o que emplees aplicaciones como <a href="http://joedicastro.com/productividad-linux-pentadactyl.html">Pentadactyl</a>,
+<a href="http://joedicastro.com/productividad-linux-newsbeuter.html">Newsbeuter</a>, <a href="http://joedicastro.com/productividad-linux-zathura.html">Zathura</a> o <a href="http://joedicastro.com/productividad-linux-turses.html">Turses</a>, pero <strong>Ranger</strong>... ya es
+demasiado. &#191;A quien en su sano juicio se le ocurrir&#237;a utilizar semejante
+engendro? A m&#237;, y no solo lo utilizo a diario, si no que adem&#225;s opino que es
+quiz&#225;s la mejor aplicaci&#243;n que he descubierto en el &#250;ltimo a&#241;o y medio. Y esto
+&#250;ltimo es mucho decir para alguien, que como yo, est&#225; continuamente buscando
+formas de mejorar su modo de trabajo.</p>
+<p><a href="http://ranger.nongnu.org/">Ranger</a> es un administrador de archivos en modo texto. Pero no es un
+administrador de archivos en modo texto cl&#225;sico a dos columnas, como el norton
+commander y similares. No, Ranger es una peque&#241;a joya con un planteamiento
+distinto y tan potente, que puede conseguir que olvides que no pod&#237;as vivir sin
+un gestor de archivos gr&#225;fico como <a href="https://es.wikipedia.org/wiki/Nautilus_(software)">Nautilus</a>, <a href="https://es.wikipedia.org/wiki/Konqueror">Konqueror</a>,
+<a href="https://es.wikipedia.org/wiki/Dolphin_(administrador_de_archivos)">Dolphin</a> o <a href="https://es.wikipedia.org/wiki/Thunar">Thunar</a>.</p>
+<h2 id="ranger">Ranger</h2>
+<p>Tengo que estar enormemente agradecido a su autor, <a href="https://github.com/hut">Roman Zimbelmann</a> no
+solo por su trabajo, si no por mostrarme que incluso en modo texto, se puede
+revolucionar el mundo de la usabilidad. Evidentemente, en una aplicaci&#243;n que
+basa su control en el teclado (tiene un soporte muy b&#225;sico del rat&#243;n), es
+requisito imprescindible invertir alg&#250;n tiempo en aprender a utilizarlo, ya que
+no es tan intuitivo como una aplicaci&#243;n gr&#225;fica. A menos que seas un usuario
+t&#237;pico de <a href="https://es.wikipedia.org/wiki/Vim">Vim</a>, entonces te encontrar&#225;s como en casa. Una vez que dominas
+esta aplicaci&#243;n, el moverse entre los directorios y el realizar operaciones se
+hace a velocidad de v&#233;rtigo y con control absoluto (siempre que no seas un
+manazas con el teclado).</p>
+<p><strong>Ranger</strong> est&#225; desarrollado en <strong>Python</strong> y emplea una interfaz ncurses igual que
+<a href="http://joedicastro.com/productividad-linux-turses.html">Turses</a>. Al contrario de lo que algunos puedan pensar, el estar
+desarrollado en Python no lo convierte ni en pesado ni en lento, si no que se
+mueve a velocidad endiablada y consume una cantidad de memoria rid&#237;cula
+comparada con cualquier gestor de archivos gr&#225;fico.</p>
+<p style="text-align: center;"><img alt="Ranger" height="437" src="http://joedicastro.com/feeds/tags/pictures/ranger.png" width="700" /></p>
+
+<p>Aqu&#237; puede verse una imagen t&#237;pica de ranger, visualizando el contenido de un
+directorio y previsualizando el contenido de un fichero, en este caso un fichero
+de c&#243;digo python.</p>
+<h3 id="caracter+sticas">Caracter&#237;sticas</h3>
+<p>&#191;Qu&#233; se puede hacer con ranger?, bueno, quiz&#225;s es mejor preguntarse que no se
+puede hacer con Ranger. Pr&#225;cticamente todas las funciones a las que est&#233;s
+acostumbrado en un administrador de archivos gr&#225;fico se pueden realizar con
+Ranger. Vamos primero a ver un resumen de sus caracter&#237;sticas:</p>
+<ul>
+<li>Soporte de UTF-8 por defecto</li>
+<li>Visualizaci&#243;n en m&#250;ltiples columnas</li>
+<li>Previsualizaci&#243;n del directorio o fichero seleccionado</li>
+<li>Operaciones comunes sobre los ficheros. Crear, copiar, borrar, cambiar
+  atributos (<code>chmod</code>), etc...</li>
+<li>Combinaciones de teclado y consola inspiradas en Vim</li>
+<li>Autodetecci&#243;n de tipos de fichero y apertura de los mismos con el programa
+  adecuado</li>
+<li>Permite establecer etiquetas y marcadores sobre archivos y directorios</li>
+<li>Empleo de pesta&#241;as. Nos permite navegar por varios directorios simult&#225;neamente
+  sin necesidad de abrir otra instancia del programa. Adem&#225;s se pueden realizar
+  operaciones entre ellas</li>
+<li>Muestra una barra de progreso para las operaciones que lo necesitan</li>
+</ul>
+<p>Conviene dejar claro que no es un programa para <em>impacientes</em>, hacerse con &#233;l y
+sus innumerables opciones requiere tiempo. Hay que leerse la ayuda del programa
+y practicar con &#233;l. A su vez, si queremos personalizar las opciones o ampliarlo,
+debemos comprender como funcionan sus archivos de configuraci&#243;n, mejor a&#250;n si
+tenemos conocimientos de Python. La documentaci&#243;n de su web, as&#237; como la de sus
+p&#225;ginas <em>man</em> est&#225; un poco desactualizada, por lo que sacarle todo su jugo
+requiere algo de paciencia.</p>
+<h3 id="ejemplos">Ejemplos</h3>
+<p>Voy a intentar dar algo de visibilidad a algunas de las capacidades que nos
+ofrece ranger empleando una par de ejemplos que lo ilustren.</p>
+<p>En el siguiente ejemplo vemos la previsualizaci&#243;n que hace ranger en funci&#243;n del
+tipo de fichero que se trate.</p>
+<div style="text-align: center;">
+
+
+<p>Previsualizaci&#243;n de archivos en ranger con varios tipos de archivo.
+Recomiendo ver en alta resoluci&#243;n y a pantalla completa.</p>
+</div>
+
+<p>La previsualizaci&#243;n de im&#225;genes en ASCII puede parecer una tonter&#237;a, pero
+resulta muy &#250;til a la hora de diferenciar entre distintas im&#225;genes con nombre
+muy parecido. El fichero en HTML est&#225; renderizado en vez de mostrarnos el texto
+plano, algo m&#225;s amigable. Tambi&#233;n se agradece mucho el que los ficheros de
+c&#243;digo se vean con resaltado de sintaxis.</p>
+<blockquote>
+<p>Conviene aclarar que para realizar esta previsualizaci&#243;n es necesario tener
+instalado una serie de peque&#241;as aplicaciones que se detallan en el sitio de
+ranger como dependencias.</p>
+</blockquote>
+<p>Aqu&#237; vemos como se abren autom&#225;ticamente los programas adecuados en funci&#243;n del
+tipo de archivo (se puede configurar que aplicaciones emplear y cuales usar en
+cada momento)</p>
+<div style="text-align: center;">
+
+
+<p>Ejecuci&#243;n autom&#225;tica de aplicaciones en funci&#243;n del tipo de archivo.
+Recomiendo ver en alta resoluci&#243;n y a pantalla completa.</p>
+</div>
+
+<p>En el caso del fichero Torrent, al que no tengo asociada ninguna aplicaci&#243;n en
+ranger, me abre un comando en el que puedo especificar directamente la
+aplicaci&#243;n que deseo emplear para gestionarlo. En este caso, ninguna. En el
+archivo comprimido solo me muestra el contenido del mismo, podr&#237;a asociarle
+alguna aplicaci&#243;n, pero ya tengo comandos para manejarlos dentro del propio
+ranger, algo que veremos a continuaci&#243;n.</p>
+<h2 id="mi_configuraci+n">Mi configuraci&#243;n</h2>
+<p>No he personalizado mucho mi configuraci&#243;n de momento, pero quien quiera echarle
+un vistazo puede hacerlo en mi repositorio dotfiles en <a href="http://github.com/joedicastro/dotfiles">GitHub</a></p>
+<h3 id="archivos_de_configuraci+n">Archivos de configuraci&#243;n</h3>
+<p>Para configurar ranger necesitamos editar ciertos archivos, que crearemos por
+primera vez con el siguiente comando:</p>
+<div class="codehilite"><pre><span class="nv">$ </span>ranger --copy-config<span class="o">=</span>all
+</pre></div>
+
+
+<p>qu&#233; nos creara los siguientes archivos por defecto en la carpeta
+<code>~/.config/ranger/</code>:</p>
+<ul>
+<li><code>commands.py</code> <em>(python)</em>, en este archivo se configuran los comandos a emplear
+  en la l&#237;nea de comandos de ranger</li>
+<li><code>options.py</code> <em>(python)</em>, el fichero de opciones principal de ranger</li>
+<li><code>rc.conf</code> <em>(texto)</em>, aqu&#237; configuramos los atajos de teclado de ranger</li>
+<li><code>rifle.conf</code> <em>(texto)</em>, para establecer los programas que ejecutaran o abrir&#225;n
+  un tipo de archivo en orden de preferencia</li>
+<li><code>scope.sh</code> <em>(bash)</em>, los programas empleados para previsualizar un determinado
+  tipo de archivo</li>
+</ul>
+<p>Adicionalmente, con el uso se a&#241;adir&#225;n tres ficheros m&#225;s: <code>bookmarks</code>, <code>history</code>
+y <code>tagged</code> que guardar&#225;n los marcadores, la historia de comandos y las etiquetas
+respectivamente.</p>
+<h3 id="gestionar_la_papelera">Gestionar la papelera</h3>
+<p>Por defecto ranger no contempla la gesti&#243;n de la papelera de Linux que
+implementan escritorios como Gnome. Aunque no empleo ning&#250;n entorno
+de escritorio ni gestores de archivos gr&#225;ficos, si me interesa gestionar la
+papelera, pues cada vez m&#225;s aplicaciones la emplean para eliminar los archivos.
+De hecho en <em>bash</em> y <em>zsh</em> tengo un alias para <code>rm</code> que mueve los archivos a la
+papelera en vez de eliminarlos.</p>
+<div class="codehilite"><pre><span class="nb">alias </span><span class="nv">rm</span><span class="o">=</span><span class="s1">'mv --target-directory ~/.local/share/Trash/files'</span>
+</pre></div>
+
+
+<p>Para gestionar la papelera desde ranger, a&#241;ado dos atajos de teclado y un
+comando editando varios archivos de configuraci&#243;n de la siguiente manera:</p>
+<p><strong>Mandar archivos a la papelera</strong></p>
+<p>Para mandar a la papelera lo que tengamos seleccionado actualmente, en lugar de
+eliminarlo directamente, a&#241;adimos esta l&#237;nea al fichero <code>rc.conf</code></p>
+<div class="codehilite"><pre><span class="c"># move to trash</span>
+<span class="nb">map</span> <span class="n">DD</span> <span class="n">shell</span> <span class="n">mv</span> <span class="o">-</span><span class="n">t</span> <span class="o">~/.</span><span class="n">local</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">Trash</span><span class="o">/</span><span class="n">files</span> <span class="o">%</span><span class="n">s</span>
+</pre></div>
+
+
+<p>de este modo, cada vez que pulsemos <strong><code>DD</code></strong> el contenido seleccionado es movido
+al directorio donde tenemos nuestra papelera.</p>
+<p><strong>Movernos a la papelera</strong></p>
+<p>Del mismo modo que ranger provee por defecto de atajos de teclado para movernos
+al directorio <code>home</code>, al directorio raiz, etc, he a&#241;adido un atajo de teclado
+siguiendo el mismo criterio para acceder a nuestra papelera. A&#241;adimos lo
+siguiente al fichero <code>rc.conf</code></p>
+<div class="codehilite"><pre><span class="c"># go to trash</span>
+<span class="nb">map</span> <span class="n">gp</span> <span class="n">cd</span> <span class="o">~/.</span><span class="n">local</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">Trash</span><span class="o">/</span><span class="n">files</span>
+</pre></div>
+
+
+<p>as&#237;, pulsando <strong><code>gp</code></strong> vamos directamente a la papelera, estemos donde estemos.</p>
+<p><strong>Vaciar la papelera</strong></p>
+<p>Para vaciar la papelera opto por emplear un comando, para ello tenemos que
+editar otro fichero, <code>commands.py</code>, y a&#241;adir lo siguiente</p>
+<div class="codehilite"><pre><span class="k">class</span> <span class="nc">empty</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :empty</span>
+
+<span class="sd">    Empties the trash directory ~/.local/share/Trash/files</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fm</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s">&quot;rm -rf ~/.local/share/Trash/files/{*,.[^.]*}&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>por lo que vaciar la papelera se convierte en algo tan simple como teclear
+<strong><code>:empty</code></strong> o para los m&#225;s c&#243;modos <strong><code>:em&#8633;</code></strong></p>
+<h3 id="desmontar_una_unidad_con_udiskie">Desmontar una unidad con udiskie</h3>
+<p>Dada mi "particular" configuraci&#243;n, ya que no empleo ning&#250;n escritorio, empleo
+la herramienta <a href="https://bitbucket.org/byronclark/udiskie">udiskie</a> para automontar unidades de almacenamiento
+externas, como unidades USB o tarjetas de memoria. El montado se hace de forma
+autom&#225;tica y solo el desmontado ha de hacerse de forma manual. Ya que no quiero
+teclear el comando cada vez que desee desmontar una unidad, lo que hago es
+hacerlo desde ranger. En el fichero <code>rc.conf</code> mapeamos este atajo</p>
+<div class="codehilite"><pre><span class="c"># umount a drive with udiskie</span>
+<span class="nb">map</span> <span class="n">un</span> <span class="n">shell</span> <span class="o">-</span><span class="n">d</span> <span class="n">udiskie</span><span class="o">-</span><span class="n">umount</span> <span class="o">%</span><span class="n">d</span><span class="o">/%</span><span class="n">f</span>
+</pre></div>
+
+
+<p>as&#237; para desmontar una unidad inicio ranger (en mi caso <strong><code>Win + F1</code></strong>), me
+dirijo a las unidades externas montadas, <strong><code>gm</code></strong>, selecciono la unidad deseada
+y la desmonto, <strong><code>un</code></strong>. Un proceso que me lleva apenas dos segundos, sin
+abandonar las manos del teclado, comp&#225;rese con hacerlo con un rat&#243;n y un entorno
+gr&#225;fico.</p>
+<h3 id="expulsar_un_cddvd">Expulsar un CD/DVD</h3>
+<p>Del mismo modo, en lugar de abrir un terminal y escribir el comando <code>eject</code>, en
+determinadas circunstancias, por ejemplo al acabar de examinar el contenido de
+un disco, prefiero hacerlo directamente desde ranger. Para ello en el fichero
+<code>rc.conf</code> creamos este atajo de teclado</p>
+<div class="codehilite"><pre><span class="c"># eject a CD-ROM/DVD</span>
+<span class="nb">map</span> <span class="n">ej</span> <span class="n">shell</span> <span class="o">-</span><span class="n">d</span> <span class="n">eject</span>
+</pre></div>
+
+
+<h3 id="trabajar_con_archivos_comprimidos">Trabajar con archivos comprimidos</h3>
+<p>Estos comandos los he sacado de el <a href="https://wiki.archlinux.org/index.php/Ranger">Wiki de Arch Linux</a> y los he adaptado
+a la versi&#243;n de ranger que estoy empleando en este momento, la 1.5.5</p>
+<p><strong>Extraer los ficheros de un archivo comprimido</strong></p>
+<p>Con el comando <strong><code>:extracthere</code></strong> extraemos el contenido de un archivo/s
+comprimido que previamente habremos seleccionado para copia (es decir empleando
+el atajo <strong><code>yy</code></strong>). El contenido se extrae en el directorio en el que nos
+encontremos actualmente. Es muy comodo para extraer m&#250;ltiples archivos
+comprimidos a la vez, si quisieramos descomprimir solo un archivo y en el mismo
+directorio en el que este se encuentra, podr&#237;amos emplear el atajo <strong><code>1l</code></strong></p>
+<p>Para a&#241;adir el comando a ranger, tenemos que insertar esta clase en el fichero
+<code>commands.py</code></p>
+<div class="codehilite"><pre><span class="k">class</span> <span class="nc">extracthere</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Extract copied files to current directory &quot;&quot;&quot;</span>
+        <span class="n">copied_files</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">copy</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">copied_files</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+            <span class="n">cwd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_directory</span><span class="p">(</span><span class="n">original_path</span><span class="p">)</span>
+            <span class="n">cwd</span><span class="o">.</span><span class="n">load_content</span><span class="p">()</span>
+
+        <span class="n">one_file</span> <span class="o">=</span> <span class="n">copied_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">cwd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fm</span><span class="o">.</span><span class="n">thisdir</span>
+        <span class="n">original_path</span> <span class="o">=</span> <span class="n">cwd</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">au_flags</span> <span class="o">=</span> <span class="p">[</span><span class="s">'-X'</span><span class="p">,</span> <span class="n">cwd</span><span class="o">.</span><span class="n">path</span><span class="p">]</span>
+        <span class="n">au_flags</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">au_flags</span> <span class="o">+=</span> <span class="p">[</span><span class="s">'-e'</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">copy</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">cut</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">copied_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">descr</span> <span class="o">=</span> <span class="s">&quot;extracting: &quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">one_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">descr</span> <span class="o">=</span> <span class="s">&quot;extracting files from: &quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">one_file</span><span class="o">.</span><span class="n">dirname</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">CommandLoader</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s">'aunpack'</span><span class="p">]</span> <span class="o">+</span> <span class="n">au_flags</span> \
+                <span class="o">+</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">path</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">copied_files</span><span class="p">],</span> <span class="n">descr</span><span class="o">=</span><span class="n">descr</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">signal_bind</span><span class="p">(</span><span class="s">'after'</span><span class="p">,</span> <span class="n">refresh</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fm</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</pre></div>
+
+
+<p><strong>Crear un archivo comprimido</strong></p>
+<p>Este comando te permite seleccionar uno o varios ficheros y crear un archivo
+comprimido al llamar al comando <strong><code>:compress</code></strong>. Este comando te permite (a
+trav&#233;s del autocompletado) darle un nombre autom&#225;tico a partir del directorio o
+uno personalizado. Te permite adem&#225;s seleccionar el tipo de compresi&#243;n en
+funci&#243;n de la extension empleada.</p>
+<p>En el fichero <code>commands.py</code> a&#241;adimos el siguiente c&#243;digo.</p>
+<div class="codehilite"><pre><span class="k">class</span> <span class="nc">compress</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Compress marked files to current directory &quot;&quot;&quot;</span>
+        <span class="n">cwd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fm</span><span class="o">.</span><span class="n">thisdir</span>
+        <span class="n">marked_files</span> <span class="o">=</span> <span class="n">cwd</span><span class="o">.</span><span class="n">get_selection</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">marked_files</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+            <span class="n">cwd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fm</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_directory</span><span class="p">(</span><span class="n">original_path</span><span class="p">)</span>
+            <span class="n">cwd</span><span class="o">.</span><span class="n">load_content</span><span class="p">()</span>
+
+        <span class="n">original_path</span> <span class="o">=</span> <span class="n">cwd</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">au_flags</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">descr</span> <span class="o">=</span> <span class="s">&quot;compressing files in: &quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">CommandLoader</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s">'apack'</span><span class="p">]</span> <span class="o">+</span> <span class="n">au_flags</span> <span class="o">+</span> \
+                <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">cwd</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">marked_files</span><span class="p">],</span> <span class="n">descr</span><span class="o">=</span><span class="n">descr</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">signal_bind</span><span class="p">(</span><span class="s">'after'</span><span class="p">,</span> <span class="n">refresh</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fm</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">tab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Complete with current folder name &quot;&quot;&quot;</span>
+        <span class="n">extension</span> <span class="o">=</span> <span class="p">[</span><span class="s">'.zip'</span><span class="p">,</span> <span class="s">'.tar.gz'</span><span class="p">,</span> <span class="s">'.rar'</span><span class="p">,</span> <span class="s">'.7z'</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s">'compress '</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fm</span><span class="o">.</span><span class="n">thisdir</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="n">ext</span> <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">extension</span><span class="p">]</span>
+</pre></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2012-08-13.html">&lt;</a></td>
+<td class="cal-month" colspan="5">octubre 2012</td>
+<td class="cal-next"><a href="index-2012-11-06.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td></tr>
+<tr class="cal-week">
+<td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td></tr>
+<tr class="cal-week">
+<td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day"><strong class="cal-current">18</strong></td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td></tr>
+<tr class="cal-week">
+<td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td></tr>
+<tr class="cal-week">
+<td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

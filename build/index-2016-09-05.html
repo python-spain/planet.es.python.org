@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>lunes, 05 septiembre</h2>
+<div class="time">
+<h3>00:47</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-59c6542d">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2016/09/tutorial-de-flask-parte-2-plantillas.html">Tutorial de Flask parte 2 (plantillas html).</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Continuando con la serie de tutorial de flask, ahora se explicar&#225; el uso de plantillas html.<br /><br />En el <a href="http://blog.crespo.org.ve/2016/09/tutorial-de-flask-parte-1.html" target="_blank">primer art&#237;culo</a> se explic&#243; como usar docker y docker-compose. <br /><br />La serie de art&#237;culos de flask lo pueden revisar en el siguiente <a href="http://blog.crespo.org.ve/search/label/flask" target="_blank">enlace</a>.<br /><br />Este art&#237;culo se basa en el segundo art&#237;culo del blog de <a href="http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-ii-templates" target="_blank">Miguel Grinberg</a>.<br /><br />La estructura de archivos y directorios del proyecto se muestra a continuaci&#243;n:<br /><b><span style="color: #274e13;">tutorial-flask</span></b><br /><b><span style="color: #274e13;">&#9500;&#9472;&#9472; app</span></b><br /><b><span style="color: #274e13;">&#9474; &nbsp; &#9500;&#9472;&#9472; __init__.py</span></b><br /><b><span style="color: #274e13;">&#9474; &nbsp; &#9500;&#9472;&#9472; __pycache__</span></b><br /><b><span style="color: #274e13;">&#9474; &nbsp; &#9474; &nbsp; &#9500;&#9472;&#9472; __init__.cpython-35.pyc</span></b><br /><b><span style="color: #274e13;">&#9474; &nbsp; &#9474; &nbsp; &#9492;&#9472;&#9472; views.cpython-35.pyc</span></b><br /><b><span style="color: #274e13;">&#9474; &nbsp; &#9500;&#9472;&#9472; templates</span></b><br /><b><span style="color: #274e13;">&#9474; &nbsp; &#9474; &nbsp; &#9500;&#9472;&#9472; base.html</span></b><br /><b><span style="color: #274e13;">&#9474; &nbsp; &#9474; &nbsp; &#9492;&#9472;&#9472; index.html</span></b><br /><b><span style="color: #274e13;">&#9474; &nbsp; &#9492;&#9472;&#9472; views.py</span></b><br /><b><span style="color: #274e13;">&#9500;&#9472;&#9472; docker-compose.yml</span></b><br /><b><span style="color: #274e13;">&#9500;&#9472;&#9472; Dockerfile</span></b><br /><b><span style="color: #274e13;">&#9500;&#9472;&#9472; README.md</span></b><br /><b><span style="color: #274e13;">&#9500;&#9472;&#9472; run.py</span></b><br /><b><span style="color: #274e13;">&#9492;&#9472;&#9472; tmp</span></b><br /><div><br /></div><div>Los nuevos archivos son:</div><div><ul><li>base.html : Es la plantilla base que se usar&#225; en las p&#225;ginas web.</li><li>index.html: Es la p&#225;gina inicial que hereda de la plantilla base.html.</li><li>views.py: Ahora este archivo manejar&#225; el pase de informaci&#243;n v&#237;a renderizado a las plantillas.</li></ul></div><div>Los dem&#225;s archivos se explicaron ya en el art&#237;culo anterior.</div><div><br /></div><div>Archivo templates/base.html:</div><div><br /></div><div><br /></div><pre><span style="color: blue;"><i>&lt;html&gt;<br />  &lt;head&gt;<br />    {% if title %}<br />    &lt;title&gt;{{ title }} - microblog&lt;/title&gt;<br />    {% else %}<br />    &lt;title&gt;microblog&lt;/title&gt;<br />    {% endif %}<br />  &lt;/head&gt;<br />  &lt;body&gt;<br />    &lt;div&gt;Microblog: &lt;a href="/index"&gt;Home&lt;/a&gt;&lt;/div&gt;<br />    &lt;hr&gt;<br />    {% block content %}{% endblock %}<br />  &lt;/body&gt;<br />&lt;/html&gt;</i></span><br /></pre><br /><br />Est&#225; plantilla define el c&#243;digo base html de la p&#225;gina, donde se define el t&#237;tulo si se le pasa como variable, si no se coloca directamente en el c&#243;digo html. Luego se coloc&#225; el enlace del blog y se define el bloque de contenido el cual se usar&#225; en la plantilla index.html.<br /><br /><br />Archivo templates/index.html:<br /><br /><pre><i><span style="color: blue;">{% extends "base.html" %}</span></i><br /><br /><i><span style="color: blue;">{% block content %}</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &lt;h1&gt;Hola, {{ usuario.nickname }}!&lt;/h1&gt;</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; {% for post in posts %}</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &lt;p&gt;</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; {{ post.autor.nickname }} dice: &lt;b&gt;{{ post.cuerpo }}&lt;/b&gt;</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &lt;/p&gt;</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; {% endfor %}</span></i><br /><br /><i><span style="color: blue;">{% endblock %}</span></i><br /><br /><div><br /></div><br /><div><br /></div><br /></pre><div>Lo primero que se hace es extender las caracter&#237;sticas que maneja base.html, luego se muestra el bloque content, donde se define un h1, luego se muestra los posts del microblog.<br /><br /><br />Ahora toca el turno al archivo views.py:<br /><pre><br /><br /><i><span style="color: blue;">#Se importa render_template para renderizar plantillas html</span></i><br /><br /><i><span style="color: blue;">from flask import render_template</span></i><br /><br /><i><span style="color: blue;">#Se importa la aplicacion</span></i><br /><br /><i><span style="color: blue;">from app import app</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se define la ruta del url raiz e index</span></i><br /><br /><i><span style="color: blue;">@app.route('/')</span></i><br /><br /><i><span style="color: blue;">@app.route('/index')</span></i><br /><br /><i><span style="color: blue;">def index():</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se define el nombre del usuario</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; usuario = {'nickname': 'Ernesto'}</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se define los posts del blog</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; posts = [</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; {</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'autor': {'nickname': 'John Doe'},</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'cuerpo': 'Un dia en Edimburgo'</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; },</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; {</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'autor': {'nickname': 'Jane Doe'},</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'cuerpo': 'Muy buena Civil war!'</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; }</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; ]</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se devuelve index.html con el titulo, usuario y posts</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; return render_template("index.html",</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;title='Home',</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;usuario=usuario,</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;posts=posts)</span></i><br /><br /><br /><br /></pre>Con los diccionarios se pasa los datos a las plantillas al devolver el renderizado de la plantilla con la p&#225;gina web (index.html, el t&#237;tulo de la &#225;gina, el usuario y los posts).<br /><br />S&#243;lo queda construir la imagen de docker &nbsp;y levantar la aplicaci&#243;n usando docker-compose:<br /><br /><br /><b><span style="color: red;">docker-compose &nbsp;build</span></b><br /><b><span style="color: red;">Building web</span></b><br /><b><span style="color: red;">Step 1 : FROM python</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 7fd24fb1b492</span></b><br /><b><span style="color: red;">Step 2 : WORKDIR /code</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; bdc41d9c0a55</span></b><br /><b><span style="color: red;">Step 3 : RUN pip install --upgrade pip</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; a2f64276e289</span></b><br /><b><span style="color: red;">Step 4 : RUN pip install &nbsp;flask</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 56d3d1077646</span></b><br /><b><span style="color: red;">Step 5 : RUN pip install &nbsp;flask-login</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; ebe8bc959ad8</span></b><br /><b><span style="color: red;">Step 6 : RUN pip install &nbsp;flask-openid</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; fe54237ce068</span></b><br /><b><span style="color: red;">Step 7 : RUN pip install &nbsp;flask-mail</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; f1594ad12f2b</span></b><br /><b><span style="color: red;">Step 8 : RUN pip install &nbsp;flask-sqlalchemy</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 6d04889555c2</span></b><br /><b><span style="color: red;">Step 9 : RUN pip install &nbsp;sqlalchemy-migrate</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; d25cd2a54289</span></b><br /><b><span style="color: red;">Step 10 : RUN pip install &nbsp;flask-whooshalchemy</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 4479491e59aa</span></b><br /><b><span style="color: red;">Step 11 : RUN pip install &nbsp;flask-wtf</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 170b10c7dea0</span></b><br /><b><span style="color: red;">Step 12 : RUN pip install &nbsp;flask-babel</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; fe581f26a1e5</span></b><br /><b><span style="color: red;">Step 13 : RUN pip install &nbsp;guess_language</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 6d2d290ed6d3</span></b><br /><b><span style="color: red;">Step 14 : RUN pip install &nbsp;flipflop</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 35e2dff248ce</span></b><br /><b><span style="color: red;">Step 15 : RUN pip install &nbsp;coverage</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 7012043af8e9</span></b><br /><b><span style="color: red;">Step 16 : RUN pip install &nbsp;redis</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; ce2854de687f</span></b><br /><b><span style="color: red;">Step 17 : EXPOSE 5000</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; f947cd2c0d69</span></b><br /><b><span style="color: red;">Step 18 : ADD . /code</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 3cc197931bf8</span></b><br /><b><span style="color: red;">Step 19 : CMD python run.py</span></b><br /><b><span style="color: red;">&nbsp;---&gt; Using cache</span></b><br /><b><span style="color: red;">&nbsp;---&gt; 7154441c088c</span></b><br /><b><span style="color: red;">Successfully built 7154441c088c</span></b><br /><br />Es neceario reconstruir la imagen para que tome el volumen definido en docker-compose.yml.<br /><br /><br />Ahora se levanta la aplicaci&#243;n:<br /><br /><b><span style="color: red;">docker-compose up</span></b><br /><b><span style="color: red;">Creating tutorialflask_web_1</span></b><br /><b><span style="color: red;">Attaching to tutorialflask_web_1</span></b><br /><b><span style="color: red;">web_1 &nbsp;| &nbsp;* Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)</span></b><br /><b><span style="color: red;">web_1 &nbsp;| &nbsp;* Restarting with stat</span></b><br /><b><span style="color: red;">web_1 &nbsp;| &nbsp;* Debugger is active!</span></b><br /><b><span style="color: red;">web_1 &nbsp;| &nbsp;* Debugger pin code: 309-259-945</span></b><br /><div><br /></div><div><br /></div><div>Al abrir el navegador en la p&#225;gina http://localhost:5000 se tiene lo que muestra la siguiente imagen:</div><div><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-PvO3VE8Huxk/V8yiq-odsfI/AAAAAAAAN5E/rZvZYAJc4WUUwfeSEAngCXfctyQ_cnIswCLcB/s1600/manejo-plantillas.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://1.bp.blogspot.com/-PvO3VE8Huxk/V8yiq-odsfI/AAAAAAAAN5E/rZvZYAJc4WUUwfeSEAngCXfctyQ_cnIswCLcB/s1600/manejo-plantillas.png" /></a></div><div><br /></div><br />Para detener la aplicaci&#243;n se usa docker-compose down:<br /><b><span style="color: red;">docker-compose down&nbsp;</span></b><br /><b><span style="color: red;">Stopping tutorialflask_web_1 ... done</span></b><br /><b><span style="color: red;">Removing tutorialflask_web_1 ... done</span></b></div><div><br /></div><div>El c&#243;digo de este art&#237;culo lo pueden ver en la rama <a href="https://gitlab.com/ecrespo/tutorial-flask/tree/articulo2" target="_blank">articulo2</a> del repositorio en gitlab.</div><div><br /></div><div><br /></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2016-07-17.html">&lt;</a></td>
+<td class="cal-month" colspan="5">septiembre 2016</td>
+<td class="cal-next"><a href="index-2016-10-05.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day"><a class="cal-link" href="index-2016-09-04.html">04</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day"><strong class="cal-current">05</strong></td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td></tr>
+<tr class="cal-week">
+<td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td></tr>
+<tr class="cal-week">
+<td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day"><a class="cal-link" href="index-2016-09-25.html">25</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day"><a class="cal-link" href="index-2016-09-28.html">28</a></td><td class="cal-day"><a class="cal-link" href="index-2016-09-29.html">29</a></td><td class="cal-day"><a class="cal-link" href="index-2016-09-30.html">30</a></td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

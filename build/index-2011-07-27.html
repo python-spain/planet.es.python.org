@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>mi&#233;rcoles, 27 julio</h2>
+<div class="time">
+<h3>23:46</h3>
+<div class="item feed-640af247 feed-{feed_id}" id="item-9ed667b0">
+<p class="itemheader">
+<span class="itemtitle">
+    Python Insider ES:
+<a href="http://feedproxy.google.com/~r/PythonInsiderES/~3/q-dxS3CHufE/un-lanzador-python-para-windows.html">Un lanzador python para Windows</a></span>
+</p>
+    <div class="itemdescription">
+    <div class="document" id="un-lanzador-python-para-windows"> <p>Art&#237;culo original: <a class="reference external" href="http://blog.python.org/2011/07/python-launcher-for-windows_11.html">A Python Launcher For Windows</a></p><p>Mark Hammond (autor de <a class="reference external" href="http://sourceforge.net/projects/pywin32/">pywin32</a> y mantenedor de Python para Windows desde hace tiempo) ha escrito <a class="reference external" href="http://www.python.org/dev/peps/pep-0397/">PEP 397</a>, que describe un nuevo lanzador de Python para Windows. Vinay Sanjip (autor del m&#243;dulo <a class="reference external" href="http://docs.python.org/py3k/library/logging.html">logging</a> de la biblioteca est&#225;ndar) ha creado recientemente una implementaci&#243;n del lanzador. Se puede descargar desde <a class="reference external" href="https://bitbucket.org/vinay.sajip/pylauncher/downloads">https://bitbucket.org/vinay.sajip/pylauncher/downloads</a></p><p>El lanzador permite que los guiones Python (ficheros <tt class="docutils literal">.py</tt> y <tt class="docutils literal">.pyw</tt>) en Windows especifiquen la versi&#243;n de Python que debe ser usada, permitiendo el uso simult&#225;neo de Python 2 y 3.</p><p>Los usuarios de Windows deber&#237;an considerar descargar el lanzador y probarlo para ayudar a los desarrolladores de Python a rematar cualquier cuesti&#243;n pendiente. El lanzador est&#225; empaquetado como aplicaci&#243;n independiente y soportar&#225; las versiones de Python disponibles actualmente. La intenci&#243;n, una vez haya finalizado el desarrollo del lanzador, es incluirlo como parte de Python 3.3 (aunque seguir&#225; disponible como aplicaci&#243;n independiente para usuarios de versiones anteriores).</p><p>Hay disponibles dos versiones del lanzador - <tt class="docutils literal">launcher.msi</tt> que se instala en el directorio <tt class="docutils literal">Archivos de programa</tt>, y <tt class="docutils literal">launchsys.msi</tt> que se instala en el directorio <tt class="docutils literal">System32</tt> de Windows. (Hay versiones de 64 bits para versiones de Windows de 64 bits).</p><div class="section" id="algunos-detalles-acerca-del-lanzador"><h4>Algunos detalles acerca del lanzador</h4><p>La especificaci&#243;n completa del comportamiento del lanzador se encuentra el <a class="reference external" href="http://www.python.org/dev/peps/pep-0397/">PEP 397</a>. Un resumen de los principios b&#225;sicos:</p><ul class="simple"><li>El lanzador incluye dos ejecutables - <tt class="docutils literal">py.exe</tt> (la versi&#243;n consola) y <tt class="docutils literal">pyw.exe</tt> (la versi&#243;n GUI).</li><li>El lanzador se registra como gestor para las extensiones de fichero <tt class="docutils literal">.py</tt> (consola) y <tt class="docutils literal">.pyw</tt> (GUI).</li><li>Cuando se ejecuta un gui&#243;n, el lanzador buscar&#225; una l&#237;nea <tt class="docutils literal">#!</tt> (shebang) al estilo Unix en el gui&#243;n. El lanzador reconoce los siguientes nombres de ejecutables: <tt class="docutils literal">python</tt> (python del sistema por defecto), <tt class="docutils literal">python2</tt> (versi&#243;n por defecto de Python 2) y <tt class="docutils literal">python3</tt> (versi&#243;n por defecto de Python 3). Los detalles exactos se pueden personalizar f&#225;cilmente por usuario o por m&#225;quina.</li><li>Cuando se usa de forma independiente, el comando <tt class="docutils literal">py.exe</tt> lanza el int&#233;rprete interactivo de Python. Se pueden especificar opciones en la l&#237;nea de comandos, de forma que <tt class="docutils literal">py <span class="pre">-2</span></tt> lanza Python 2, <tt class="docutils literal">py <span class="pre">-3</span></tt> lanza Python 3, y <tt class="docutils literal">py</tt> la la versi&#243;n por defecto.</li></ul></div><div class="section" id="instrucciones-de-uso-sencillas"><h4>Instrucciones de uso sencillas</h4><p>Cuando se ha instalado, el lanzador se asocia a si mismo con los guiones <tt class="docutils literal">.py</tt> y <tt class="docutils literal">.pyw</tt>. Si no haces nada m&#225;s, los guiones ser&#225;n ejecutados usando el int&#233;rprete de Python por defecto de la maquina, por lo que no ver&#225;s ning&#250;n cambio. Algo que quiz&#225;s quieras hacer, si usas mucho la consola, es a&#241;adir <tt class="docutils literal">.py</tt> a tu variable <tt class="docutils literal">PATHEXT</tt> para que los guiones no se ejecuten en una consola independiente.</p><p>Para especificar que un gui&#243;n tiene que usar Python 2, simplemente haz que:</p><pre class="literal-block">#!/usr/bin/env python2<br /></pre><p>sea la primera l&#237;nea del gui&#243;n. (Esto es un formato compatible con Unix. Si no necesitas compatibilidad con Unix, utiliza <tt class="docutils literal">#!python2</tt>).</p><p>Por otro lado, si quieres especificar que un gui&#243;n tiene que usar Python 3, haz que:</p><pre class="literal-block">#!/usr/bin/env python3<br /></pre><p>sea la primera l&#237;nea.</p><p>Tambi&#233;n puedes iniciar el int&#233;rprete Python usando cualquiera de los siguientes comandos:</p><pre class="literal-block"># Versi&#243;n por defecto de Python<br />py<br /># Python 2<br />py -2<br /># Python 3<br />py -3<br /></pre><p>Para que esto funcione el ejecutable <tt class="docutils literal">py.exe</tt> tiene que estar en tu ruta. Esto se configura de forma autom&#225;tica con la versi&#243;n <tt class="docutils literal">launchsys</tt> del instalador, pero con <tt class="docutils literal">launcher.msi</tt> el directorio de instalaci&#243;n (<tt class="docutils literal"><span class="pre">C:\Archivos</span> de programa\Python Launcher</tt>) debe ser a&#241;adido manualmente a <tt class="docutils literal">PATH</tt>.</p></div><div class="section" id="mas-informacion"><h4>M&#225;s informaci&#243;n</h4><p>Los siguientes hilos de correos en python-dev cubren algunas de las discusiones clave:</p><ul class="simple"><li>Anuncio inicial de Mark del borrador PEP: <a class="reference external" href="http://mail.python.org/pipermail/python-dev/2011-March/109509.html">http://mail.python.org/pipermail/python-dev/2011-March/109509.html</a></li><li>El segundo borrador del PEP: <a class="reference external" href="http://mail.python.org/pipermail/python-dev/2011-March/109786.html">http://mail.python.org/pipermail/python-dev/2011-March/109786.html</a></li><li>Cuesti&#243;n inicial de Vinay sobre una implementaci&#243;n en C del lanzador: <a class="reference external" href="http://mail.python.org/pipermail/python-dev/2011-June/112145.html">http://mail.python.org/pipermail/python-dev/2011-June/112145.html</a></li><li>Anuncio de Vinay de su implementaci&#243;n en C: <a class="reference external" href="http://mail.python.org/pipermail/python-dev/2011-July/112184.html">http://mail.python.org/pipermail/python-dev/2011-July/112184.html</a></li><li>Llamamiento de Vinay para probadores: <a class="reference external" href="http://mail.python.org/pipermail/python-dev/2011-July/112251.html">http://mail.python.org/pipermail/python-dev/2011-July/112251.html</a></li></ul></div></div><img alt="" height="1" src="http://feeds.feedburner.com/~r/PythonInsiderES/~4/q-dxS3CHufE" width="1" />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-06-30.html">&lt;</a></td>
+<td class="cal-month" colspan="5">julio 2011</td>
+<td class="cal-next"><a href="index-2011-08-30.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td></tr>
+<tr class="cal-week">
+<td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2011-07-05.html">05</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-06.html">06</a></td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
+<tr class="cal-week">
+<td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day"><a class="cal-link" href="index-2011-07-13.html">13</a></td><td class="cal-day">14</td><td class="cal-day"><a class="cal-link" href="index-2011-07-15.html">15</a></td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-07-18.html">18</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-19.html">19</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-20.html">20</a></td><td class="cal-day"><a class="cal-link" href="index-2011-07-21.html">21</a></td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td></tr>
+<tr class="cal-week">
+<td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day"><strong class="cal-current">27</strong></td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

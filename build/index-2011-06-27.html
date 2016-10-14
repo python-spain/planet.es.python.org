@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>lunes, 27 junio</h2>
+<div class="time">
+<h3>23:18</h3>
+<div class="item feed-5fd98f4c feed-{feed_id}" id="item-0c07ca35">
+<p class="itemheader">
+<span class="itemtitle">
+    Uno y uno = diez:
+<a href="https://unoyunodiez.com/2011/06/27/mi-primera-entrevista-con-google/">Mi primera entrevista con Google</a></span>
+</p>
+    <div class="itemdescription">
+    <p style="text-align: justify;">Bueno, el pasado Jueves pas&#233; mi primera entrevista con Google y el Viernes me dijeron que la hab&#237;a hecho satisfactoriamente y que a la semana siguiente me pasar&#237;an otra. &#161;Algo es algo!</p>
+<p style="text-align: justify;">Fueron unos 45-50min de entrevista en Ingl&#233;s con uno de los ingenieros de Google. Para mi el tiempo se me hizo eterno y entre los nervios, el calor, el tel&#233;fono y mi dicci&#243;n inglesa, me dio la impresi&#243;n de que lo hab&#237;a hecho fatal aunque reconoc&#237;a que era f&#225;cil. De hecho la sensaci&#243;n era &#8220;avergonzado de lo mal que lo hab&#237;a hecho para lo f&#225;cil que era&#8221;. Afortunadamente no fue as&#237;.</p>
+<p style="text-align: justify;">La entrevista se dividi&#243;n en tres partes: una parte de teor&#237;a y dos problemas. Aunque me hab&#237;an pedido Java o C++, me pude defender perfectamente en Python y a continuaci&#243;n os cuento un poco la entrevista, c&#243;mo respond&#237; y c&#243;mo me hubiera gustado responder&#8230;</p>
+<h2 style="text-align: justify;"><span id="more-756"></span>En Python &#191;Qu&#233; diferencia existe entre una tupla y una lista?</h2>
+<p style="text-align: justify;">Lo primero que respond&#237; fue que la tupla es inmutable mientras que la lista no. Sin embargo el entrevistador estaba m&#225;s interesado en las diferencias a nivel sem&#225;ntico. No entend&#237; lo que quiso decir hasta que me dijo &#8220;Si tuvieras que devolver un entero, una cadena y un objeto de una funci&#243;n&#8230; &#191;qu&#233; usar&#237;as?&#8221; Aqu&#237; &#8211;dije&#8211; usar&#237;a sin duda una tupla.</p>
+<p style="text-align: justify;">S&#237;, la diferencia a la que se refer&#237;a era a la del concepto matem&#225;tico detr&#225;s de la tupla. La tupla es la forma de representar los elementos del producto cartesiano de dos conjuntos. Los conjuntos pueden no tener nada que ver entre s&#237;. Visto de otr forma, como le&#237; una vez por ah&#237;, una &#8220;<strong>tupla es una estructura de C ligera</strong>&#8220;. Cuando trabajas con listas, se supone que los tipos de los elementos son el mismo o est&#225;n relacionados.</p>
+<h2 style="text-align: justify;">&#191;Por qu&#233; en Java no hay que liberar la memoria de un objeto?</h2>
+<p style="text-align: justify;">Bueno, pues porque Java tiene un mecanismo llamado <a href="http://es.wikipedia.org/wiki/Recolector_de_basura">recolector de basura</a> (garbage collector) encargado de contabilizar qu&#233; objetos est&#225;n siendo referenciados y cu&#225;les no y liberar el espacio de los que no.</p>
+<h2 style="text-align: justify;">&#191;Qu&#233; implicaciones en rendimiento tiene el recolector de basura?</h2>
+<p style="text-align: justify;">A esta no supe responder. Por supuesto, las hay, pero no sab&#237;a cuantificarlas. No obstante, mi coleg Adri me pas&#243; este <a href="http://www.ibm.com/developerworks/java/library/j-jtp01274/index.html" target="_blank">art&#237;culo de IBM sobre el recolector de basura</a> que afirma que la sobrecarga inducida por el recolector de Java apenas sobrecarga el rendimiento e incluso hace que la reserva de memoria sea m&#225;s r&#225;pida de lo que es en C.</p>
+<h2 style="text-align: justify;">&#191;Qu&#233; es una funci&#243;n lambda y para qu&#233; se utilizan?</h2>
+<p style="text-align: justify;">La primera vez que dijo <em>lambda</em> no lo entend&#237; as&#237; que le ped&#237; si pod&#237;a escribir la palabra en el Google Doc que compart&#237;amos. Cuando vi escrito <em>lambda</em> afirm&#233; y contest&#233;.</p>
+<p style="text-align: justify;">Las funciones lambda son funciones sin nombre que devuelven una sola expresi&#243;n. En python una funci&#243;n lambda tiene la siguiente pinta:</p>
+<pre class="brush: python; title: ; notranslate">
+&gt;&gt;&gt; (lambda x:x**2)(9) # Esta funci&#243;n sin nombre, aplicada sobre 9, devuelve el cuadrado de 9
+81
+</pre>
+<p style="text-align: justify;">Las <a href="http://en.wikipedia.org/wiki/Lambda_calculus" target="_blank">funciones lambda</a> son &#250;tiles en el contexto de uso junto con <a href="http://en.wikipedia.org/wiki/Higher-order_function" target="_blank">funciones de segundo orden</a>. Esto es, funciones capaces de acepta otra funciones o devolver nuevas funciones. Algunas funciones de segundo orden son map, filter, sort&#8230; Os dejo un ejemplo de utilidad:</p>
+<pre class="brush: python; title: ; notranslate">
+def elevado_a (exponente):
+return lambda x : x**exponente # Devuelve una nueva funci&#243;n que eleva al exponente dado
+
+cuadrado = elevado_a(2) # Ahora cuadrado es una funci&#243;n que eleva a 2
+cubo = elevado_a(3) # Ahora cubo es una funci&#243;n que eleva a 3
+
+print cuadrado(5) # Imprimir&#225; 25
+print cubo(3) # Imprimir&#225; 27
+print elevado_a(4)(2) # Imprimir&#225; 16 (2 elevado a 4)
+</pre>
+<h2 style="text-align: justify;">&#191;Diferencias entre un set y un hash set en la STL?</h2>
+<p style="text-align: justify;">Creo que esta pregunta me sali&#243; muy bien. La <strong>STL</strong> es la <a href="http://en.cppreference.com/w/cpp/container" target="_blank">Standard Template Library</a> de C++. Primero le dije que hac&#237;a mucho tiempo que no tocaba la STL aunque estaba acostumbrado a tratar con los tipos de datos que formaban la librer&#237;a. De esta forma me pregunt&#243; la diferencia entre un set (un conjunto) y un hash set (un conjunto hash).</p>
+<p style="text-align: justify;">La diferencia radica en el rendimiento de acceso e inserci&#243;n. Normalmente, los conjuntos se implementan utilizando un &#225;rbol de b&#250;squeda por lo que tanto la inserci&#243;n como la recuperaci&#243;n de un elemento se realizan en <strong>O(log n)</strong> para el caso medio.</p>
+<p style="text-align: justify;">Con un hash set, el conjunto se implementa como una <a href="https://unoyunodiez.wordpress.com/2011/06/19/hash-tables-diccionarios-o-la-memoria-del-futuro/" title="Hash tables, diccionarios o la memoria del&#160;futuro">tabla hash</a> por lo que los accesos e inserciones se realizan en <strong>O(1)</strong> para el caso medio. En el caso peor, si se producen un mont&#243;n de colisiones y todos los elementos se encuentran en el mismo bucket de la tabla hash, si estos buckets est&#225;n bien implementados es posible que sean &#225;rboles de b&#250;squeda por lo que a las malas, tendr&#225; el mismo rendimiento que un set normal.</p>
+<h2 style="text-align: justify;">Haz una funci&#243;n que, tomando una lista de listas que representa los p&#237;xeles de una imagen, rote la imagen 90&#186; a la derecha.</h2>
+<p style="text-align: justify;">Este fue el primero de los problemas. Lo primero que respond&#237; es que el problema se resolv&#237;a con cuaterniones pero que para 90&#186; seguro que pod&#237;a obtener otra soluci&#243;n m&#225;s sencilla.</p>
+<p style="text-align: justify;">La clave estaba en darse cuenta de que la rotaci&#243;n a la derecha era como obtener la traspuesta del array bidimensional y luego tomar cada fila al reves. La refleja de la traspuesta. As&#237;, dada la sigiuente imagen:</p>
+<pre style="text-align: justify;">[
+  [1, 2, 3],
+  [4, 5, 6]
+]</pre>
+<p style="text-align: justify;">El objetivo era obtener:</p>
+<pre style="text-align: justify;">[
+  [4, 1],
+  [5, 2],
+  [6, 3]
+[</pre>
+<p style="text-align: justify;">La soluci&#243;n que implemente fue:</p>
+<pre class="brush: python; title: ; notranslate">
+def rotate(image):
+l = len(image[0])
+new_image = []
+for pixel in range(l):
+aux = reverse([subelement[pixel] for subelement in image])
+new_image.append(aux)
+
+return new_image
+</pre>
+<pre style="text-align: justify;">Podr&#237;a haber recorrido los p&#237;xeles directamente al rev&#233;s, pero bueno, as&#237; queda claro que es la refleja de la traspuesta y me curo en salud.</pre>
+<h2 style="text-align: justify;">Considera un tablero de ajedrez, un alfil en una casilla y una casilla objetivo a la que tiene que llegar el alfil. Crea una funci&#243;n que devuelva en cu&#225;ntos movimientos llega el alfil a la casilla.</h2>
+<p style="text-align: justify;">Esta es la &#250;ltima pregunta y la que peor cre&#237;a que me hab&#237;a saludo. No obstante, bien pensado, tampoco destin&#233; m&#225;s de 15&#160; minutos (que no es mucho) a cada probelma por lo que imagino que eso, sumado a que el entrevistador no hac&#237;a m&#225;s que repetir la frase &#8220;make sense&#8221; eran indicadores de que iba por el buen camino. Mi desconcierto vino de la representaci&#243;n del tablero de ejemplo (donde SS y TT son origen y destino respectivamente:</p>
+<pre style="text-align: justify;">00 SS 02 TT 04 05 06 07
+08 09 10 11 12 13 14 15
+16 17 ...</pre>
+<p style="text-align: justify;">El caso es que mi cerebro se dividi&#243; entre una soluci&#243;n num&#233;rica, que trabajara con los n&#250;meros de las casillas buscando alguna relaci&#243;n entre ellos y otra algoritmica, calculando las diagonales y dem&#225;s. Ten&#237;a claro que si no se llegaba en 1 movimiento, se llegaba en 2 (siempre que estuviera en el mismo color, claro). Pero no lo dije.</p>
+<p style="text-align: justify;">En un rato el entrevistador me pregunt&#243; si no hab&#237;a localizado una cota y le dije que s&#237;, que la cota era evidentemente 2. Entonces, al decirlo en alto me di cuenta de que era siempre 2 a menos que ya estuvieran alineados.</p>
+<p style="text-align: justify;">Para ver si estaban alineados podr&#237;a calcular la diagonal pero la iluminaci&#243;n me vino justo antes del fin de la entrevista, cuando me di cuenta de que si estaban alineados por la diagonal entonces, entre el origen y el destino deb&#237;a haber un cuadrado, por lo que bastaba con ver si la distancia entre las coordenadas X e Y del origen y el destino eran iguales. As&#237; de tonto:</p>
+<pre class="brush: python; title: ; notranslate">
+def movements(source, target):
+ss = (source % 8, int(source / 8))
+    tt = (target % 8, int(target / 8))
+if abs(ss[0]-tt[0]) == abs(ss[1]-tt[1]):
+        return 1
+return 2
+</pre>
+<p style="text-align: justify;">Y eso fue todo, la pr&#243;xima entrevista la tendr&#233; este Viernes, ya os contar&#233; (qu&#233; nervios).</p><br />  <a href="http://feeds.wordpress.com/1.0/gocomments/unoyunodiez.wordpress.com/756/" rel="nofollow"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/unoyunodiez.wordpress.com/756/" /></a> <img alt="" border="0" height="1" src="https://pixel.wp.com/b.gif?host=unoyunodiez.com&#038;blog=15323300&#038;post=756&#038;subd=unoyunodiez&#038;ref=&#038;feed=1" width="1" />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-05-25.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2011</td>
+<td class="cal-next"><a href="index-2011-07-05.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day"><a class="cal-link" href="index-2011-06-04.html">04</a></td><td class="cal-day">05</td></tr>
+<tr class="cal-week">
+<td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-06-13.html">13</a></td><td class="cal-day"><a class="cal-link" href="index-2011-06-14.html">14</a></td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td></tr>
+<tr class="cal-week">
+<td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><strong class="cal-current">27</strong></td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day"><a class="cal-link" href="index-2011-06-30.html">30</a></td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

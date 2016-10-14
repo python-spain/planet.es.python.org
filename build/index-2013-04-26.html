@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>viernes, 26 abril</h2>
+<div class="time">
+<h3>07:00</h3>
+<div class="item feed-a1322d23 feed-{feed_id}" id="item-663fe2b4">
+<p class="itemheader">
+<span class="itemtitle">
+    Genbeta:dev:
+<a href="http://www.genbetadev.com/herramientas/dataset-abstraccion-de-bases-de-datos-relacionales-para-pythoneros-vagos">Dataset, abstracci&#243;n de bases de datos relacionales para pythoneros vagos</a></span>
+</p>
+    <div class="itemdescription">
+    <p><img alt="dataset" class="centro_sinmarco" src="https://i.blogs.es/b0c810/650_1000_captura-20de-20pantalla-202013-04-25-20a-20la-s-2022.53.05/650_1200.png" /></p>
+
+<p>Seamos serios, tratar con <strong>bases de datos</strong> as&#237;, a pelo, es un pe&#241;azo de cuidado. Por eso surgen <strong>frameworks, interfaces, abstracciones</strong> o como quieras llamarlos para facilitar esta labor. Es el caso de (aunque son muy distintos entre si) Hibernate (Java) o PDO (PHP). Para <strong>Python</strong> tambi&#233;n hay varias opciones pero hoy te traemos una que tiene especial buena pinta: <strong>dataset</strong>.</p>
+
+<p>La premisa de dataset es hacer <strong>tan sencillo manejarse con bases de datos en Python como lo es manejarse con ficheros a trav&#233;s de JSON</strong> y la verdad es que tiene unas caracter&#237;sticas bien interesantes:</p>
+
+<ul>
+<li><strong>Schema autom&#225;tico</strong>, es decir, si escribes una tabla o una columna que no existe, se crea. Magia potagia.</li>
+<li><strong>Upserts</strong>, o sea, no tienes que distinguir si updateas o insertas, ya lo hace dataset por ti</li>
+<li>Es <strong>compatible</strong> con la mayor&#237;a de las bases de datos relacionales top como MySQL, Postgre SQL, SQLite (o cualquier otra que incluya SQL en su nombre, basicamente).</li>
+<li>La base de datos <strong>puede ser exportada</strong> de manera sencilla a trav&#233;s de scripts e incluyendo metadatos y nombres de ficheros din&#225;micos</li>
+<li><strong>Query helpers</strong>, como <em>all rows</em> en una tabla o <em>all distinct values</em> a trav&#233;s de un conjunto de columnas.
+</li>
+</ul>
+
+<p>Y ya que estamos, un ejemplo de como queda el c&#243;digo:</p>
+
+<p><code>import dataset</p>
+
+<p>db = dataset.connect('sqlite:///:memory:')</p>
+
+<p>table = db['sometable']
+table.insert(dict(name='John Doe', age=37))
+table.insert(dict(name='Jane Doe', age=34, gender='female'))</p>
+
+<p>john = table.find_one(name='John Doe')</code> </p>
+
+<p>Elegante a la par que bello. Tiene buena pinta. Ya sab&#233;is pythoneros, a probarlo (los que no lo hay&#225;is hecho todav&#237;a, claro) y a darnos feedback al resto v&#237;a comentarios.</p>
+
+<p>Pd: obviamente puedes <em>forkear</em> <strong>dataset</strong> desde <a href="https://github.com/pudo/dataset">Github</a>.</p>
+
+<p>V&#237;a e imagen | <a href="https://dataset.readthedocs.org/en/latest/">dataset</a></p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2013-03-25.html">&lt;</a></td>
+<td class="cal-month" colspan="5">abril 2013</td>
+<td class="cal-next"><a href="index-2013-05-15.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day"><a class="cal-link" href="index-2013-04-06.html">06</a></td><td class="cal-day">07</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2013-04-08.html">08</a></td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td></tr>
+<tr class="cal-week">
+<td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td></tr>
+<tr class="cal-week">
+<td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day"><a class="cal-link" href="index-2013-04-25.html">25</a></td><td class="cal-day"><strong class="cal-current">26</strong></td><td class="cal-day">27</td><td class="cal-day">28</td></tr>
+<tr class="cal-week">
+<td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

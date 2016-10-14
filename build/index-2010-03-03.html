@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>mi&#233;rcoles, 03 marzo</h2>
+<div class="time">
+<h3>22:52</h3>
+<div class="item feed-a3d00a2b feed-{feed_id}" id="item-fa0ca096">
+<p class="itemheader">
+<span class="itemtitle">
+    Javier Santana:
+<a href="http://blep.blogspot.com/2010/03/consejos-para-trabajar-con-python.html">Consejos para trabajar con python</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Cada lenguaje tiene sus herramientas, su forma de trabajar, sus reglas de estilo, etc... aparte cada uno tenemos nuestros peque&#241;os trucos y reglas para trabajar lo m&#225;s ordenado posible.  Por ello voy a dar una serie de consejos que he ido aprendiendo a medida que he ido programando en python que espero puedan ser de utilidad a otras personas que as&#237; lo hagan.<br /><br />- Sigue las reglas de python. Para conocerlas basta con que ejecutes python -c "import this" en la consola. No son espec&#237;ficas python, creo que sirven para cualquier lenguaje, muy recomendable "lectura".<br /><br />- Trata de seguir las recomendaciones de la gu&#237;a de estilo del <a href="http://www.python.org/dev/peps/pep-0008/">PEP-008</a> (Style Guide for Python Code). Los PEP (Python Enhancement Proposals) son documentos que se redactan y siguen cuando se implementa una nueva caracter&#237;stica. <br /><br />- Aprovecha la potencia del lenguaje. Si sabes ruby o similar sabr&#225;s de lo que hablo, los que vienen de java, C, C++ est&#225;n acostumbrados a  lenguajes m&#225;s bien est&#225;ticos, se usa poco la metaprogramaci&#243;n. Python tiene cosas muy interesantes, por ejemplo las <a href="http://docs.python.org/tutorial/datastructures.html#list-comprehensions">list comprehesions</a> que agilizan mucho el desarrollo. Siempre con mucho cuidado de no pasarse (la gente de ruby me entender&#225;). Por ejemplo, la gente que viene de java suele escribir interfaces y luego heredar para a implementaci&#243;n. En python directamente usa <a href="http://es.wikipedia.org/wiki/Duck_typing">duck typing</a>. <br /><br />- Cuidado con los imports. Salvo que sepas lo que haces trata de no hacer "from module import *". Primero porque si lo haces posiblemente es que no sepas ni lo que quieres usar, segundo porque puede ser una fuente de bugs importante. Es mejor hacer "from module import MyClass, MyClass2". A mi me gusta primero poner los imports de la librer&#237;a estandard y despu&#233;s lo propios de la aplicaci&#243;n, pero es algo personal.<br /><br />- Unicode: siempre especifica la codificaci&#243;n del fichero, en el <a href="http://www.python.org/dev/peps/pep-0263/">pep-0263</a> tienes toda la informaci&#243;n, pero el resumen es, pon la siguiente cabecera:<br /><blockquote>          <br />#!/usr/bin/python<br /> # -*- coding:  -*-<br /></blockquote><br />Si no lo haces tarde o temprano tendr&#225;s alguna excepci&#243;n al ejecutar tu c&#243;digo por haber puesto caracteres fuera del ascii. Adem&#225;s, trata de entender como qu&#233; es unicode, como <a href="http://www.amk.ca/python/howto/unicode">se hace para usarlo en python</a>.<br /><br />- Excepciones. No captures una excepci&#243;n y no hagas nada. La gente que programa en java lo puede hacer (y de hecho lo hace), pero si eres un hombre de bien haz algo. Captura la excepci&#243;n que corresponde, esto es, si esperas un socket.error no pongas un except que recoja a troche y moche, solo captura esa excepci&#243;n.<br /><br />- Las doctest son una verdadera virguer&#237;a para documentar a la vez que testear. No en todos los sitios se pueden usar, pero por ejemplo si al comienzo de un m&#243;dulo pones una explicaci&#243;n usando doctest mejorar&#225; bastante, por ejemplo:<br /><br /><blockquote>          <br />"""<br />Este m&#243;dulo sirve para sumar 3 n&#250;meros usando la funci&#243;n add3.<br />Un ejemplo de uso es:<br />>>> add3(1,2,3)<br />6<br />""""<br />def add3(....<br /></blockquote><br /><br />Luego desde la consola puedes hacer:<br /><blockquote>          <br />python -m doctest modulo.py<br /></blockquote><br /><br />y ver si algo casca. M&#225;s informaci&#243;n de <a href="http://docs.python.org/library/doctest.html">doctest y ejemplos</a>. Adem&#225;s luego hay el m&#243;dulo unittest, hay frameworks para stubs y mocks, helpers para facilitar los test como <a href="http://somethingaboutorange.com/mrl/projects/nose/0.11.1/">nose</a> y <a href="http://codespeak.net/py/dist/test/">pytest</a>, todo lo necesario para estar a la &#250;ltima moda del TDD.<br /><br />- usa la consola. Unas de las cosas m&#225;s &#250;tiles es que tienes la consola siempre a mano para probar cosillas. La mayor&#237;a de las veces no me acuerdo como hacer algo, en la consola lo pruebas instantaneamente. Recomiendo usar <a href="http://ipython.scipy.org/moin/">ipython</a>, que viene ser igual que la consola original python, pero con facilidades para acceder a la documentaci&#243;n, autocompletado, etc.<br /><br />- Usar <a href="http://pypi.python.org/pypi/pip">pip</a> o easy_install. Es similar a gem en ruby, lo que hace es instalar m&#243;dulos de terceros desde internet con un solo comando. Esto es fundamental y agiliza el desarrollo much&#237;simo. Para buscar el software usa <a href="http://pypi.python.org/pypi">Python Package Index</a> donde t&#250; mismo puedes subir tus paquetes. De hecho el paquete de la librer&#237;a standard para empaquetar m&#243;dulos lo sube autom&#225;ticamente con un comando. Prefiero pip a easy_install porque pip est&#225; constru&#237;do con m&#225;s l&#243;gica (tiene uninstall) y m&#225;s caracter&#237;sticas que cuento dos puntos m&#225;s abajo.<br /><br />- Haz peque&#241;os m&#243;dulos y empaqueta. Empaquetar es s&#250;mamente sencillo, con hacer un fichero setup.py con pocos par&#225;metros tienes el empaquetado hecho. Aparte de los benficios que tiene separar las aplicaciones en modulos, tiene otros muy interesantes. El m&#243;dulo que se usa para estas cosas es distutils, donda hay un <a href="http://docs.python.org/distutils/introduction.html#a-simple-example">ejemplo de setup.py</a> muy sencillo.<br /><br />- Usa pip. S&#237;, es repetido, pero pongamos que tienes el caso que has separado tu aplicaci&#243;n en varios m&#243;dulos que tienes en un repositorio. Desarrollas una aplicaci&#243;n que los necesita, pip te va a ayudar a resolver este problema ya que puede instalar m&#243;dulos directamente del repositorio (siemre que tengan su setup.py), por ejemplo:<br /><br /><blockquote>          <br />pip install svn+https://mirepo/project/module#egg=module<br /></blockquote><br /><br />Todos los paquetes necesarios se pueden poner en un fichero requirements.txt que todas las aplicaciones tengan.<br /><br />- virtualenv. Herramienta fundamental, permite aislar entornos de ejecuci&#243;n. Puedes crear tantos entornos como quieras, cada uno con una versi&#243;n de python diferente, cada uno con sus librer&#237;as. Esta herramienta es, repito, fundamental. Yo lo uso junto a <a href="http://pypi.python.org/pypi/virtualenvwrapper">virtualenvwrapper</a> que simplifica la creaci&#243;n y gesti&#243;n de entornos. Adem&#225;s junto con pip hacen el combo perfecto. Por ejemplo, para tener un entorno de trabajo funcionando basta con hacer:<br /><br /><blockquote>          <br />pip install -E env -r requirements.txt<br /></blockquote><br />pip crear&#225; un entorno nuevo, e instalar&#225; todo los especificado en el fichero requirements.txt, baj&#225;ndose lo necesario. Luego basta con activar el entorno y a trabajar:<br /><br /><blockquote>          <br /> . ./env/bin/activate<br /></blockquote><br /><br />- Aprender a usar el debugger, pdb. S&#233; que ya no mola hacer debug en la l&#237;nea de comando, que eclipse te lo da todo mascadito, pero si est&#225;s en un servidor remoto es &#250;til cuando solo tienes ssh y vim :).<br /><br />- Usa el log. Python tiene un m&#243;dulo llamado logging, &#250;salo, luego se puede configurar para redireccionar a un fichero, al syslog, a stdout. Tiene las t&#237;picas error, info, debug... pero lo importante es que lo uses. <br /><br />En general, cuando no s&#233; la mejor forma de hacer algo, suelo ir al c&#243;digo de la librer&#237;a standard y mirar paquetes que suelo usar.
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2010-02-23.html">&lt;</a></td>
+<td class="cal-month" colspan="5">marzo 2010</td>
+<td class="cal-next"><a href="index-2010-04-06.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day">01</td><td class="cal-day"><a class="cal-link" href="index-2010-03-02.html">02</a></td><td class="cal-day"><strong class="cal-current">03</strong></td><td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2010-03-05.html">05</a></td><td class="cal-day">06</td><td class="cal-day">07</td></tr>
+<tr class="cal-week">
+<td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day"><a class="cal-link" href="index-2010-03-11.html">11</a></td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td></tr>
+<tr class="cal-week">
+<td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day"><a class="cal-link" href="index-2010-03-21.html">21</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td></tr>
+<tr class="cal-week">
+<td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>domingo, 31 octubre</h2>
+<div class="time">
+<h3>23:34</h3>
+<div class="item feed-a3d00a2b feed-{feed_id}" id="item-432a34d6">
+<p class="itemheader">
+<span class="itemtitle">
+    Javier Santana:
+<a href="http://blep.blogspot.com/2010/10/scrapper-multiproceso-en-python.html">scrapper multiproceso en python</a></span>
+</p>
+    <div class="itemdescription">
+    <div>Nota inicial: Si no te gusta python puede que este post te haga cambiar de opini&#243;n :)</div><div><br /></div>Una de las <a href="http://docs.python.org/dev/whatsnew/2.6.html#pep-371-the-multiprocessing-package">mejoras de Python 2.6</a> (en estos momentos vamos por la 2.7, que ser&#225; la <a href="http://docs.python.org/dev/whatsnew/2.7.html#the-future-for-python-2-x">&#250;ltima de la rama 2.x</a>) es el m&#243;dulo multiprocessing. En pocas palabras viene a ser un m&#243;dulo para trabajar con procesos de la misma forma que se hace con threads, de hecho en un subconjunto de la funcionalidad puedes cambiar threads por procesos cambiando un solo import.<div><br /></div><div>Sin embargo el m&#243;dulo multiprocessing a&#241;ade cosas muy interesantes como la posibilidad de trabajar con pool de procesos. Veamos un ejemplo.</div><div><br /></div><div>Imaginemos que tenemos que bajar una serie de ficheros pdf para posteriormente extraer informaci&#243;n de ellos. Una primera aproximaci&#243;n ser&#237;a esta:</div><br /><br /><pre><br />import urllib<br />import urllib2<br /><br />reg_nos = [16738, 17288, 18162, 18776, 18868, 19116, 19223, 19505];<br />pdf_url = 'http://www.mapa.es/agricultura/pags/fitos/registro/sustancias/pdf/%s.pdf'<br /><br />def fetch_url(url, params={}): <br />    return urllib2.urlopen(url).read() <br /><br />def save_url_as_file(url, filename):<br />    open(filename,'wb').write(fetch_url(url))<br />    <br />def download_pdf(reg_no):<br />    f = '%d.pdf' % reg_no<br />    save_url_as_file(pdf_url % reg_no, f)<br />    print "\t- %s downloaded" % f<br /><br /># tests<br />def single(regs):<br />    for u in regs:<br />        download_pdf(u)<br /><br />single(reg_nos)<br /></pre><br />(puedes verlo mejor con sint&#225;xis coloreada en <a href="http://gist.github.com/657222">github</a>)<br /><br />Para 4 m&#237;seros ficheros no merece la pena hacer m&#225;s, pero imaginemos que queremos bajarnos miles y que adem&#225;s lo tenemos que hacer peri&#243;dicamente, el tiempo en bajarse todos esos ficheros es alto. Lo primero que se nos ocurre es usar concurrencia: lanzando una serie de hilos/procesos que vayan bajando los ficheros acelerar&#237;a sensiblemente el proceso (de hecho as&#237; lo hacen los navegadores cuando se bajan los ficheros que referencia el HTML).<br /><br />En python esto traducido a c&#243;digo ocupa mucho menos que explicarlo:<br /><br /><pre><br />def download_multi(regs, nprocesses=4):<br />    pool = Pool(processes=nprocesses) <br />    pool.map_async(download_pdf, regs).get()<br /></pre><br /><br />Usando multiprocessing.Pool python se encarga de lanzar los procesos y preparar una cola para enviarle a la funci&#243;n que especificamos en el primer par&#225;metro. <br /><br />Este es un uso de <a href="http://docs.python.org/dev/library/multiprocessing.html#module-multiprocessing">multiprocessing</a>, pero tiene otros muchos muy interesantes.<br /><br />Pod&#233;is ver todo el <a href="http://gist.github.com/657219">c&#243;digo en github</a> y ejecutar el peque&#241;o benchmark:<br /><pre><br />q6:smll javi$ python fetch.py <br />        - 16738.pdf downloaded<br />        - 17288.pdf downloaded<br />        - 18162.pdf downloaded<br />        - 18776.pdf downloaded<br />        - 18868.pdf downloaded<br />        - 19116.pdf downloaded<br />        - 19223.pdf downloaded<br />        - 19505.pdf downloaded<br />2.30190205574<br />        - 18776.pdf downloaded<br />        - 17288.pdf downloaded<br />        - 18162.pdf downloaded<br />        - 16738.pdf downloaded<br />        - 19116.pdf downloaded<br />        - 18868.pdf downloaded<br />        - 19505.pdf downloaded<br />        - 19223.pdf downloaded<br />0.807252883911<br /></pre><br />Un incremento un poco menor de 4X, el n&#250;mero de procesos que lanzo en el pool. <br /><br />&#218;ltimamente uso este m&#243;dulo para much&#237;simas tareas ya que el uso es pr&#225;cticamente directo si la aplicaci&#243;n est&#225; bien modularizada y permite aprovechar la potencia de las m&#225;quinas actuales (en mi caso un dual core).<br /><br /><span style="font-weight: bold;">Bonus Track - threads</span><br /><br />Con threads tambi&#233;n es posible hacerlo, pero lamentablemente el m&#243;dulo threading no tiene la funcionalidad Pool, as&#237; que debemos emularla. <br /><br />Antes de pasar a la implementeaci&#243;n est&#225; bien decir que desde hace cosa de dos a&#241;os hasta ahora se ha criticado mucho el modelo multithread de python debido a que existe una cosa llamada GIL (Global Interpreter Lock) que hace que solo pueda estar ejecut&#225;ndose un hilo al mismo tiempo en el int&#233;rprete python. A pesar de ser hilos nativos hay un lock que evita que dos hilos se puedan ejecutar al mismo tiempo. Si quieres saber un poco m&#225;s sobre el GIL hay una <a href="http://www.dabeaz.com/python/GIL.pdf">presentaci&#243;n</a> excelente de maestro Dave Beazley. <br /><br />Es para llevarse las manos a la cabeza, pero esto no quiere decir que el desarrollo con hilos en python est&#233; "prohibido", s&#237;mplemente hay que saber para qu&#233; se puede o no usar. En este caso el uso de threads, a pesar del Lock es muy interesante, ya que al ser tareas fundamentalmente de Entrada/Salida no hay problemas de bloqueo entre hilos (la explicaci&#243;n m&#225;s en detalle en la presentaci&#243;n que he citado antes).<br /><br />Sin m&#225;s, usando Queue (otro m&#243;dulo python m&#225;gico), una cola FIFO sincronizada la tarea es m&#225;s o menos simple:<br /><br /><pre><br />def threaded(regs, nthreads=4):<br />    # ripped from http://www.dabeaz.com/generators/Generators.pdf<br />    def consumer(q): <br />        while True:<br />            item = q.get() <br />            if not item: break <br />            download_pdf(item)<br /><br />    in_q = Queue.Queue() <br />    <br />    # start threads<br />    ths = [threading.Thread(target=consumer,args=(in_q,)) <br />                for th in xrange(nthreads)]<br />    for x in ths: x.start()<br /><br />    # put files to download<br />    for i in regs:<br />        in_q.put(i)<br /><br />    # put end guards<br />    for th in xrange(nthreads): in_q.put(None)<br /><br />    # wait to finish<br />    for x in ths: x.join()<br /></pre>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2010-09-30.html">&lt;</a></td>
+<td class="cal-month" colspan="5">octubre 2010</td>
+<td class="cal-next"><a href="index-2010-11-05.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2010-10-04.html">04</a></td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
+<tr class="cal-week">
+<td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
+<tr class="cal-week">
+<td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td></tr>
+<tr class="cal-week">
+<td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day"><strong class="cal-current">31</strong></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

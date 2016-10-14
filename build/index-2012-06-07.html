@@ -1,0 +1,900 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>jueves, 07 junio</h2>
+<div class="time">
+<h3>00:00</h3>
+<div class="item feed-3c203c3b feed-{feed_id}" id="item-468cef9f">
+<p class="itemheader">
+<span class="itemtitle">
+    joe di castro:
+<a href="http://joedicastro.com/productividad-en-el-escritorio-linux-awesome.html">Productividad en el escritorio Linux: Awesome</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Como hab&#237;a comentando en el anterior articulo sobre <a href="http://joedicastro.com/productividad-en-el-escritorio-linux-xmonad.html">Xmonad</a>, ten&#237;a la
+intenci&#243;n de probar un <a href="http://joedicastro.com/productividad-en-el-escritorio-linux-tiling.html">Gestor de ventanas de mosaico</a> m&#225;s, antes de tomar
+la decisi&#243;n final de cual emplear a diario. Y si, <em>y solo si</em>, resultaba ser una
+mejor alternativa, abandonar&#237;a <strong>Xmonad</strong>. Este <strong>tiling window manager</strong> era
+<a href="http://awesome.naquadah.org/">Awesome</a> y ha conseguido con creces que abandone a Xmonad.</p>
+<p><strong>Awesome</strong> carece de algunas funcionalidades que me ofrec&#237;a Xmonad, pero despu&#233;s
+de trabajar con &#233;l durante seis meses y conseguir tener una configuraci&#243;n a mi
+medida, solamente hecho en falta una caracter&#237;stica que comentare despu&#233;s. Adem&#225;s
+Awesome me ofrece algunas caracter&#237;sticas que no me ofrec&#237;a Xmonad y que valoro lo
+suficiente como para realizar el cambio sin mirar atr&#225;s.</p>
+<h2 id="awesome_vs_xmonad">Awesome vs Xmonad</h2>
+<p>En esta tabla podemos ver una comparativa r&#225;pida de algunas de las
+caracter&#237;sticas de ambos gestores de ventanas.</p>
+<table>
+<thead>
+<tr>
+<th>Caracter&#237;stica</th>
+<th>Awesome</th>
+<th>Xmonad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Lenguaje</strong></td>
+<td>C</td>
+<td>Haskell</td>
+</tr>
+<tr>
+<td><strong>Extensible</strong></td>
+<td>Lua</td>
+<td>Haskell</td>
+</tr>
+<tr>
+<td><strong>Gesti&#243;n ventanas</strong></td>
+<td>Autom&#225;tico</td>
+<td>Autom&#225;tico</td>
+</tr>
+<tr>
+<td><strong>Soporte rat&#243;n</strong></td>
+<td>Muy bueno</td>
+<td>B&#225;sico</td>
+</tr>
+<tr>
+<td><strong>Bandeja sistema (systray)</strong></td>
+<td>Integrada</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Paneles</strong></td>
+<td>Integrado</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Reinicio en caliente</strong></td>
+<td>Si</td>
+<td>Si</td>
+</tr>
+<tr>
+<td><strong>Librer&#237;a</strong></td>
+<td>XCB</td>
+<td>Xlib</td>
+</tr>
+<tr>
+<td><strong>Soporte varios monitores</strong></td>
+<td>Muy bueno</td>
+<td>Bueno</td>
+</tr>
+<tr>
+<td><strong>Transparencias</strong></td>
+<td>Gestor externo</td>
+<td>Gestor externo</td>
+</tr>
+<tr>
+<td><strong>Integraci&#243;n escritorios</strong></td>
+<td>Buena</td>
+<td>Muy buena (Gnome, KDE)</td>
+</tr>
+<tr>
+<td><strong>Desarrollo</strong></td>
+<td>Muy activo</td>
+<td>Muy activo</td>
+</tr>
+<tr>
+<td><strong>Estabilidad</strong></td>
+<td>Estable</td>
+<td>Estable</td>
+</tr>
+<tr>
+<td><strong>Documentaci&#243;n</strong></td>
+<td>Buena</td>
+<td>Buena</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ventajas">Ventajas</h3>
+<p>Una de las principales ventajas de Awesome sobre Xmonad es la velocidad de
+respuesta que ofrece el entorno, que en Awesome es bastante superior a la de
+Xmonad. Alguna que otra vez, al intentar realizar muchas operaciones
+consecutivas entre ventanas y escritorios en Xmonad, se me ha quedado colgado y
+he tenido que reiniciarlo (que se hace en caliente y en segundos, pero no deja
+de ser algo molesto). En este sentido Awesome solo se me ha colgado un par de
+veces.</p>
+<p>Otra de las grandes ventajas es que al configurarse en <a href="https://es.wikipedia.org/wiki/Lua">Lua</a> es
+bastante m&#225;s sencillo hacerse con &#233;l, ya que es un lenguaje relativamente
+asequible y carece de la complejidad inicial de <a href="https://es.wikipedia.org/wiki/Haskell">Haskell</a> para aquellos
+que no conocen la programaci&#243;n funcional. Esto aumenta las posibilidades de
+personalizarlo para un usuario con conocimientos muy b&#225;sicos de programaci&#243;n.</p>
+<p>La configuraci&#243;n por defecto de Awesome tambi&#233;n es m&#225;s completa y amigable que
+la de Xmonad, partiendo de un esquema tradicional de ventanas flotantes y con
+men&#250;s que nos permiten dar los primeros pasos y poder abandonar la sesi&#243;n sin
+llegar a conocer las combinaciones de teclado por defecto. Algo que agradecer&#225;n
+aquellos que se hayan tenido que enfrentar a una configuraci&#243;n por defecto de
+Xmonad por primera vez. Esto invita a conocer el sistema y no abandonarlo
+"asustado" por su complejidad. En la imagen se puede ver el aspecto que presenta
+una sesi&#243;n de Awesome con la configuraci&#243;n por defecto.</p>
+<p style="text-align: center;"><img alt="configuraci&#243;n por defecto de Awesome" height="525" src="http://joedicastro.com/feeds/tags/pictures/awesome_default.png" width="700" /></p>
+
+<blockquote>
+<p>Para acceder al men&#250; podemos bien hacer click sobre el icono de
+Awesome en la parte superior izquierda o bien con el bot&#243;n derecho en
+cualquier parte de la pantalla. Tambi&#233;n se puede acceder a &#233;l con la
+combinaci&#243;n de teclas <strong><code>Win</code></strong> + <strong><code>w</code></strong></p>
+</blockquote>
+<p>Finalmente, el que Awesome tenga integrados aspectos como los paneles, una
+bandeja del sistema (systray), lanzador de aplicaciones y un soporte muy bueno del
+rat&#243;n facilita el poder emplearlo en solitario, sin un sistema de escritorio
+tradicional detr&#225;s. Y a trav&#233;s de librer&#237;as es f&#225;cil implementar un sistema de
+notificaciones, un localizador de ventanas, temas, men&#250;s emergentes, ...</p>
+<h3 id="desventajas">Desventajas</h3>
+<p>Quiz&#225;s para m&#237; la mayor desventaja frente a Xmonad y lo &#250;nico que hecho
+realmente en falta, es la imposibilidad, a diferencia de Xmonad, de poder
+regular el tama&#241;o vertical de las ventanas. Es particularmente &#250;til en algunas
+situaciones y en Xmonad est&#225; integrado de manera natural. Pero despu&#233;s de varios
+meses he aprendido a vivir sin ello.</p>
+<p>La otra gran desventaja es que el desarrollo a&#250;n no ha alcanzado el estadio de
+madurez de Xmonad, esta sujeto a demasiados cambios y no cuidan demasiado la
+retrocompatibilidad. Las nuevas versiones frecuentemente obligan a realizar
+cambios en la configuraci&#243;n para que todo vuelva a funcionar con normalidad.</p>
+<p>Por otro lado, la instalaci&#243;n en algunas distribuciones puede no ser tan
+sencilla como la de Xmonad por la falta de soporte a la librer&#237;a XCB o por
+necesitar versiones especificas de cairo.</p>
+<h3 id="diferentes_filosof+as">Diferentes filosof&#237;as</h3>
+<p>Siendo como son ambos, gestores de ventanas de mosaico, difieren particularmente
+en la manera de entender principalmente dos conceptos:</p>
+<h4 id="__m+ltiples_escritorios__"><strong>M&#250;ltiples escritorios</strong></h4>
+<p>Aqu&#237; Xmonad sigue el concepto tradicional de m&#250;ltiples escritorios en Linux,
+soportando por defecto 9 por monitor y asign&#225;ndoles un n&#250;mero del 1 al 0. Luego
+una aplicaci&#243;n puede estar, por ejemplo, en el escritorio 4 del monitor 2 y
+podemos movernos entre escritorios y monitores y mover a su vez las aplicaciones
+entre ellos.</p>
+<p>En cambio, Awesome, aunque aparentemente sigue el mismo sistema, y para
+cualquiera que no quiera profundizar en ello no habr&#225; diferencia alguna, se
+basa en un concepto diferente. En Awesome cada escritorio es en realidad una
+<strong>etiqueta</strong> y puede ser tanto un n&#250;mero como un texto. En principio tambi&#233;n
+son 9 por monitor, aunque esto puede ampliarse o reducirse en la configuraci&#243;n.
+La diferencia principal es que una aplicaci&#243;n puede ser asignada a varias
+etiquetas simult&#225;neamente y puede por lo tanto ser mostrada en varios
+<em>escritorios</em>  a la vez. Esto permite asignar de forma muy sencilla etiquetas
+destinadas a una tarea y predefinir ciertas aplicaciones para que sean mostradas
+en una o m&#225;s etiquetas. Por ejemplo podemos tener una etiqueta para
+<code>redes sociales</code> y mostrar all&#237; un navegador, pero al mismo tiempo podemos tener
+una etiqueta <code>desarrollo</code> en la que tambi&#233;n queremos que se muestre el navegador.
+Por otro lado, tambi&#233;n es posible mostrar varias etiquetas al mismo tiempo, lo
+que nos permite trabajar en dos tareas distintas y bien definidas, cada una en su
+etiqueta, y en un momento dado, visualizarlas juntas sin perder la asignaci&#243;n de
+etiquetas original. En este sentido Awesome es mucho m&#225;s flexible y potente que
+Xmonad.</p>
+<h4 id="__m+ltiples_monitores__"><strong>M&#250;ltiples monitores</strong></h4>
+<p>En este caso Xmonad comparte el mismo escritorio en distintos monitores. Por lo
+tanto si estamos en el escritorio 1 en el monitor 1 y nos movemos al escritorio
+2, lo har&#225; en todos los monitores a la vez, lo que tambi&#233;n es el comportamiento
+cl&#225;sico. Con lo que podemos decir que aunque tenemos 9 escritorios por monitor,
+se comporta como si tuvi&#233;ramos 9 para todos los monitores.</p>
+<p>Awesome, al contrario, emplea 9 etiquetas por monitor independientes entre
+si. Lo que significa que en este casi si tenemos 9 <em>escritorios</em> reales por cada
+monitor. Si nos encontramos en el monitor 1 y la etiqueta 1, al cambiar a la
+etiqueta 2, el resto de monitores permanecer&#225;n inalterados en la etiqueta en la
+que estuvieran previamente. En este sentido Awesome tambi&#233;n sigue siendo bastante
+m&#225;s flexible y potente que Xmonad. Este comportamiento puede ser alterado mediante
+la configuraci&#243;n. Hay quienes prefieren un m&#233;todo de trabajo y quienes
+prefieren el otro, yo soy de los que prefieren el comportamiento de Awesome.</p>
+<h2 id="awesome_con_gnome">Awesome con Gnome</h2>
+<p>Actualmente estoy empleando Awesome en solitario, si un escritorio detr&#225;s, lo que
+me obliga a configurar por mi cuenta todos los servicios que estos proporcionan,
+pero me compensa con la ligereza que me reporta el no emplear un pesado
+escritorio por debajo. Sin embargo, los primeros meses lo emple&#233; conjuntamente
+con Gnome en Ubuntu, utilizando solo los componentes b&#225;sicos del mismo. La forma
+de configurar una sesi&#243;n de Awesome con Gnome en Ubuntu (11.10 y 12.04) y en
+<a href="http://www.archlinux.org">Arch Linux</a>, la distribuci&#243;n que estoy empleando ahora, es a trav&#233;s
+de los siguientes ficheros:</p>
+<p><code>/usr/share/applications/awesome.desktop</code></p>
+<div class="codehilite"><pre><span class="k">[Desktop Entry]</span>
+<span class="na">Version</span><span class="o">=</span><span class="s">1.0</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">Application</span>
+<span class="na">Name</span><span class="o">=</span><span class="s">Awesome</span>
+<span class="na">Comment</span><span class="o">=</span><span class="s">The awesome launcher!</span>
+<span class="na">TryExec</span><span class="o">=</span><span class="s">awesome</span>
+<span class="na">Exec</span><span class="o">=</span><span class="s">awesome</span>
+</pre></div>
+
+
+<p><code>/usr/share/gnome-session/sessions/awesome.session</code></p>
+<div class="codehilite"><pre><span class="k">[GNOME Session]</span>
+<span class="na">Name</span><span class="o">=</span><span class="s">Awesome session</span>
+<span class="na">RequiredComponents</span><span class="o">=</span><span class="s">gnome-settings-daemon;</span>
+<span class="na">RequiredProviders</span><span class="o">=</span><span class="s">windowmanager;</span>
+<span class="na">DefaultProvider-windowmanager</span><span class="o">=</span><span class="s">awesome</span>
+<span class="na">DesktopName</span><span class="o">=</span><span class="s">GNOME</span>
+</pre></div>
+
+
+<p><code>/usr/share/xsessions/awesome-gnome-session.desktop</code></p>
+<div class="codehilite"><pre><span class="k">[Desktop Entry]</span>
+<span class="na">Name</span><span class="o">=</span><span class="s">Awesome GNOME</span>
+<span class="na">Comment</span><span class="o">=</span><span class="s">Dynamic window manager</span>
+<span class="na">TryExec</span><span class="o">=</span><span class="s">/usr/bin/gnome-session</span>
+<span class="na">Exec</span><span class="o">=</span><span class="s">gnome-session --session=awesome</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">XSession</span>
+</pre></div>
+
+
+<p>Evidentemente para esto es necesario instalar los paquetes necesarios para
+ejecutar Awesome que en el caso de Ubuntu son <code>awesome</code> y <code>awesome-extra</code>:</p>
+<div class="codehilite"><pre><span class="gp">$</span> sudo apt-get install awesome awesome-extra
+</pre></div>
+
+
+<p>En Arch, bastar&#237;a con instalar el paquete <code>awesome</code>:</p>
+<div class="codehilite"><pre><span class="gp">$</span> sudo pacman -S awesome
+</pre></div>
+
+
+<h2 id="mi_configuraci+n">Mi configuraci&#243;n</h2>
+<p>A diferencia de Xmonad, mi configuraci&#243;n de Awesome no est&#225; contenida en un solo
+fichero, ya que el tema y los diversos plugins est&#225;n alojados dentro de sus
+propios directorios. Adem&#225;s el fichero de configuraci&#243;n <code>rc.lua</code> es demasiado
+extenso (cerca de 1200 lineas) para volcarlo aqu&#237;. As&#237; que me limitare a
+mencionar los aspectos m&#225;s destacados, la configuraci&#243;n completa queda
+disponible a trav&#233;s de mi repositorio en <a href="http://github.com/joedicastro/dotfiles">GitHub</a>.</p>
+<p>Destacar que al principio del fichero incluyo una <em>Cheat Sheet</em> ("chuleta") con
+todas las combinaciones de teclado y rat&#243;n que tengo habilitadas en mi
+configuraci&#243;n.</p>
+<h2 id="panel_y_widgets">Panel y Widgets</h2>
+<p>Awesome permite la creaci&#243;n de varios paneles, generalmente se suelen crear en
+la parte superior y/o inferior de la pantalla. A mi me gusta disponer del m&#225;ximo
+espacio posible para las aplicaciones, as&#237; que solo he creado uno superior que
+adem&#225;s puedo ocultar a conveniencia. De hecho, para determinadas tareas, lo
+mantengo oculto la mayor parte del tiempo y solo lo muestro cuando me interesa
+consultar la informaci&#243;n que all&#237; se muestra.</p>
+<p>Aqu&#237; se puede ver la apariencia del panel superior y una ampliaci&#243;n del mismo:</p>
+<p style="text-align: center;"><img alt="wibox" height="8" src="http://joedicastro.com/feeds/tags/pictures/wibox_full.png" width="700" /></p>
+
+<p style="text-align: center;"><img alt="Zoom sobre la barra de estado" height="63" src="http://joedicastro.com/feeds/tags/pictures/wibox.png" width="600" /></p>
+
+<p>En el que se pueden apreciar (de izquierda a derecha y de arriba a abajo) los
+siguientes widgets:</p>
+<ul>
+<li>Icono de Awesome. Proporciona acceso al men&#250; de Awesome</li>
+<li>Etiquetas. Aqu&#237; se puede ver que hay dos activas y que nos encontramos en la
+  segunda, <code>&#946;</code></li>
+<li>Icono de esquema. Vemos que est&#225; seleccionado el esquema <code>tile</code></li>
+<li>Icono y titulo de la ventana activa. En este caso tenemos una ventana de <em>Gvim</em>
+  y adem&#225;s el icono del final nos indica que es una ventana flotante</li>
+<li>Pomodoro. Es un widget que me permite seguir el m&#233;todo <a href="http://www.pomodorotechnique.com/">Pomodoro</a> y que
+  indica que quedan 4 minutos y 14 segundos para tomarme un peque&#241;o descanso.</li>
+<li>MPD. Indica el estado del servidor de m&#250;sica <em>mpd</em>, y en este caso nos indica el
+  autor y el titulo de la canci&#243;n que se est&#225; reproduciendo</li>
+<li>Velocidad de los ventiladores del sistema</li>
+<li>Temperaturas de CPU y GPU</li>
+<li>Uso de las CPUs del microprocesador</li>
+<li>Porcentaje y cantidad de memoria RAM en uso</li>
+<li>Velocidad (en Kbs) de bajada y subida de la red.</li>
+<li>Porcentaje de ocupaci&#243;n en disco de <code>/</code> y <code>/home</code></li>
+<li>Estado de la bater&#237;a y tiempo estimado de carga/descarga</li>
+<li>Uptime. Indica el tiempo que lleva el equipo encendido desde el &#250;ltimo
+  reinicio</li>
+<li>Versi&#243;n del Kernel Linux en ejecuci&#243;n</li>
+<li>Volumen del sonido del sistema</li>
+<li>Fecha y hora</li>
+</ul>
+<p>Muchos prefieren a&#241;adir iconos o encabezados a todos los widgets para facilitar
+su identificaci&#243;n, pero yo ya conozco para que es cada uno y prefiero un entorno
+minimalista que me distraiga lo menos posible. Muchos de estos widgets ejecutan
+una acci&#243;n al ser pulsados con un bot&#243;n del rat&#243;n o al pasar por encima de
+ellos. Por ejemplo al pasar el rat&#243;n por encima de la fecha y hora se muestra un
+calendario y al pulsar con el bot&#243;n izquierdo sobre el uso de las CPUs, se lanza
+una ventana con el programa <code>htop</code></p>
+<h2 id="localizar_aplicaciones">Localizar aplicaciones</h2>
+<p>Una de las funcionalidades geniales que ten&#237;a implementada en Xmonad me permit&#237;a
+conocer todas las ventanas que estaban abiertas y elegir la deseada con una
+r&#225;pida combinaci&#243;n de teclas. Awesome no tiene esto implementado, pero gracias a
+una librer&#237;a externa, <strong><a href="https://github.com/bioe007/awesome-revelation">Revelation</a></strong>, podemos emplear un m&#233;todo similar al
+famoso Expos&#233; del Mac OS y tambi&#233;n presente en Compiz. Lo que hace es mostrarnos
+en la etiqueta que estemos actualmente todas las ventanas abiertas en forma de
+mosaico y podemos elegir una de ellas para saltar autom&#225;ticamente a ella (y la
+etiqueta en la que se encuentre). Aqu&#237; podemos ver un screencast de su
+funcionamiento:</p>
+<p style="text-align: center;"><img alt="Revelation en funcionamiento" height="400" src="http://joedicastro.com/feeds/tags/pictures/revelation.gif" width="640" /></p>
+
+<p>Es tambi&#233;n un m&#233;todo muy r&#225;pido y muy visual, al final he acabado prefiriendo
+este m&#233;todo al que empleaba en Xmonad, ya que en este &#250;ltimo, el titulo de las
+ventanas pod&#237;a ser muy ambiguo y no ser f&#225;cil dar con la ventana adecuada.</p>
+<h2 id="gesti+n_din+mica_de_etiquetas">Gesti&#243;n din&#225;mica de etiquetas</h2>
+<p>Aunque por defecto Awesome define 10 etiquetas por monitor, podemos definir a
+nuestro antojo el n&#250;mero de ellas que queramos en el fichero de configuraci&#243;n.
+Podemos optar por un n&#250;mero cl&#225;sico en los escritorios Linux, cuatro, o
+podemos crear una para cada tarea concreta m&#225;s una libre. Por defecto tengo
+definidas diez, empleando para identificarlas los n&#250;meros en griego:</p>
+<div class="codehilite"><pre><span class="c1">-- definici&#243;n de las etiquetas en el fichero de configuraci&#243;n rc.lua</span>
+<span class="n">tags</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">awful</span><span class="p">.</span><span class="n">tag</span><span class="p">({</span> <span class="s2">&quot;</span><span class="s">&#945;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">&#946;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">&#947;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">&#948;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">&#949;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">&#962;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">&#950;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">&#951;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">&#952;&quot;</span><span class="p">},</span> <span class="n">s</span><span class="p">,</span> <span class="n">layouts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+
+
+<p>Sin embargo, en mi configuraci&#243;n empleo una librer&#237;a externa, <a href="http://git.glacicle.org/eminent">Eminent</a>,
+que gestiona estas etiquetas de forma din&#225;mica, cre&#225;ndolas y destruy&#233;ndolas
+seg&#250;n sea necesario. As&#237; de entrada solo tenemos una etiqueta, <code>&#945;</code> y solo se
+creara una segunda etiqueta, <code>&#946;</code> si nos desplazamos a ella. Del mismo modo,
+cuando eliminamos la &#250;ltima ventana de una etiqueta y la abandonamos, se
+destruye. La ventaja de esto es que por un lado nos facilita localizar donde
+estamos m&#225;s f&#225;cilmente y por otro, que en caso de ser necesario, si necesitamos
+m&#225;s etiquetas (de las creadas por defecto), las creara de forma autom&#225;tica. De
+este modo cuando llegamos a la etiqueta <code>&#952;</code>, si necesitamos otra, creara la <code>10</code>
+y as&#237; en lo sucesivo.</p>
+<h2 id="lanzar_aplicaciones">Lanzar aplicaciones</h2>
+<p>Existen dos m&#233;todos para realizar esta tarea:</p>
+<ul>
+<li>Empleando un prompt que emerge en el panel superior y nos permite escribir el
+  comando que queremos ejecutar y que posee autocompletado. La combinaci&#243;n de
+  teclas por defecto que activa esto es <strong><code>Win</code></strong> + <strong><code>r</code></strong></li>
+</ul>
+<p style="text-align: center;"><img alt="prompt en Awesome" height="30" src="http://joedicastro.com/feeds/tags/pictures/awesome_prompt.png" width="585" /></p>
+
+<ul>
+<li>Empleando <a href="http://awesome.naquadah.org/wiki/Menubar">menubar</a>. Menubar es una librer&#237;a externa, que ser&#225; incluida
+  en la pr&#243;xima versi&#243;n de Awesome por defecto, que al igual que muchos
+  otros lanzadores de aplicaciones (<em>Gnome Do</em>, <em>Kupfer</em>, <em>Synapse</em>, etc) nos va
+  mostrando las aplicaciones disponibles en funci&#243;n de lo que vayamos tecleando.
+  Se lanza con la combinaci&#243;n de teclas <strong><code>Win</code></strong> + <strong><code>p</code></strong> y en mi caso, esta
+  aparece inmediatamente debajo del panel superior.
+  Aqu&#237; se puede ver la menubar en funcionamiento (la tecla <strong><code>Win</code></strong> tambi&#233;n es
+  llamada <strong><code>Super</code></strong> ):</li>
+</ul>
+<p style="text-align: center;"><img alt="Lanzar aplicaciones con menubar en Awesome wm" height="400" src="http://joedicastro.com/feeds/tags/pictures/menubar.gif" width="640" /></p>
+
+<p>Yo adem&#225;s empleo un tercer m&#233;todo que heredo de Xmonad, y es emplear
+<a href="http://tools.suckless.org/dmenu/">dmenu</a> para lanzar aplicaciones. <code>dmenu</code> es muy parecido al prompt de
+Awesome, pero busca para el autocompletado en todo el nombre del comando y no
+solo al principio. Adem&#225;s muestra todas las coincidencias disponibles y que se
+pueden seleccionar con las teclas de direcci&#243;n.</p>
+<p style="text-align: center;"><img alt="dmenu en acci&#243;n" height="400" src="http://joedicastro.com/feeds/tags/pictures/dmenu.gif" width="640" /></p>
+
+<h3 id="grabar_v+deos_y_screencasts_del_escritorio">Grabar v&#237;deos y screencasts del escritorio</h3>
+<p>Adicionalmente, tengo definidas ciertas combinaciones de teclas para lanzar
+determinadas aplicaciones o procesos con las teclas de funci&#243;n. Dentro de estos
+atajos de teclado cabe destacar cinco que en lugar lanzar una aplicaci&#243;n,
+comienzan o terminan un determinado proceso. Estas combinaciones, que van de
+<strong><code>F8</code></strong> a <strong><code>F12</code></strong>, las utilizo para grabar v&#237;deos y screencasts con gifs
+animados y son las que he empleado para ilustrar este articulo.</p>
+<div class="codehilite"><pre><span class="c1">-- Win  +  F8                       Start gif screencast recording LowRes</span>
+<span class="c1">-- Win  +  F9                       Start gif screencast recording HighRes</span>
+<span class="c1">-- Win  +  F10                      Stop gif screencast recording</span>
+<span class="c1">-- Win  +  F11                      Start mkv screencast recording</span>
+<span class="c1">-- Win  +  F12                      Stop mkv screencast recording</span>
+
+<span class="n">awful</span><span class="p">.</span><span class="n">key</span><span class="p">({</span> <span class="n">modkey</span> <span class="p">},</span> <span class="s2">&quot;</span><span class="s">F8&quot;</span><span class="p">,</span>
+    <span class="k">function</span> <span class="p">()</span>
+        <span class="n">awful</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">spawn_with_shell</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">rm &quot;</span> <span class="o">..</span> <span class="n">home_dir</span> <span class="o">..</span> <span class="s2">&quot;</span><span class="s">/screencast.gif&quot;</span><span class="p">)</span>
+        <span class="n">awful</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">ffmpeg -f x11grab -s &quot;</span> <span class="o">..</span> <span class="n">scr_res</span> <span class="o">..</span>
+                        <span class="s2">&quot;</span><span class="s"> -r 2 -i :0.0 -b:v 500k -pix_fmt rgb24 -y&quot;</span> <span class="o">..</span>
+                        <span class="s2">&quot;</span><span class="s"> -loop 0 -s 640x400 &quot;</span> <span class="o">..</span> <span class="n">home_dir</span> <span class="o">..</span>
+                        <span class="s2">&quot;</span><span class="s">/animated.gif&quot;</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">),</span>
+
+<span class="n">awful</span><span class="p">.</span><span class="n">key</span><span class="p">({</span> <span class="n">modkey</span> <span class="p">},</span> <span class="s2">&quot;</span><span class="s">F9&quot;</span><span class="p">,</span>
+    <span class="k">function</span> <span class="p">()</span>
+        <span class="n">awful</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">spawn_with_shell</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">rm &quot;</span> <span class="o">..</span> <span class="n">home_dir</span> <span class="o">..</span> <span class="s2">&quot;</span><span class="s">/screencast.gif&quot;</span><span class="p">)</span>
+        <span class="n">awful</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">ffmpeg -f x11grab -s &quot;</span> <span class="o">..</span> <span class="n">scr_res</span> <span class="o">..</span>
+                        <span class="s2">&quot;</span><span class="s"> -r 2 -i :0.0 -b:v 500k -pix_fmt rgb24 -y&quot;</span> <span class="o">..</span>
+                        <span class="s2">&quot;</span><span class="s"> -loop 0 -s 1440x900 &quot;</span> <span class="o">..</span> <span class="n">home_dir</span> <span class="o">..</span>
+                        <span class="s2">&quot;</span><span class="s">/animated.gif&quot;</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">),</span>
+
+<span class="n">awful</span><span class="p">.</span><span class="n">key</span><span class="p">({</span> <span class="n">modkey</span> <span class="p">},</span> <span class="s2">&quot;</span><span class="s">F10&quot;</span><span class="p">,</span>
+    <span class="k">function</span> <span class="p">()</span>
+        <span class="n">awful</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">killall ffmpeg&quot;</span><span class="p">)</span>
+        <span class="n">awful</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">convert ephemeral:&quot;</span> <span class="o">..</span> <span class="n">home_dir</span> <span class="o">..</span>
+                         <span class="s2">&quot;</span><span class="s">/animated.gif -fuzz 7% -layers Optimize &quot;</span> <span class="o">..</span>
+                         <span class="n">home_dir</span> <span class="o">..</span> <span class="s2">&quot;</span><span class="s">/screencast.gif&quot;</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">),</span>
+
+<span class="n">awful</span><span class="p">.</span><span class="n">key</span><span class="p">({</span> <span class="n">modkey</span> <span class="p">},</span> <span class="s2">&quot;</span><span class="s">F11&quot;</span><span class="p">,</span>
+    <span class="k">function</span> <span class="p">()</span>
+        <span class="n">awful</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">spawn_with_shell</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">rm &quot;</span> <span class="o">..</span> <span class="n">home_dir</span> <span class="o">..</span> <span class="s2">&quot;</span><span class="s">/screencast.mkv&quot;</span><span class="p">)</span>
+        <span class="n">awful</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">ffmpeg -f x11grab -s &quot;</span> <span class="o">..</span> <span class="n">scr_res</span> <span class="o">..</span>
+                        <span class="s2">&quot;</span><span class="s"> -r 25 -i :0.0 -sameq &quot;</span> <span class="o">..</span> <span class="n">home_dir</span> <span class="o">..</span>
+                        <span class="s2">&quot;</span><span class="s">/screencast.mkv&quot;</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">),</span>
+
+<span class="n">awful</span><span class="p">.</span><span class="n">key</span><span class="p">({</span> <span class="n">modkey</span> <span class="p">},</span> <span class="s2">&quot;</span><span class="s">F12&quot;</span><span class="p">,</span>
+    <span class="k">function</span> <span class="p">()</span>
+        <span class="n">awful</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">killall ffmpeg&quot;</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">)</span>
+</pre></div>
+
+
+<h2 id="gesti+n_tiempo_con_pomodoro">Gesti&#243;n tiempo con pomodoro</h2>
+<p>La <a href="https://es.wikipedia.org/wiki/T%C3%A9cnica_Pomodoro">t&#233;cnica Pomodoro</a> puede ser muy provechosa en ciertas tareas si se
+emplea con sentido com&#250;n y se sigue m&#225;s o menos a rajatabla. Yo la empleo muy a
+menudo cuando tengo una tarea concreta en la que quiero centrarme sin
+distracciones para sacarla adelante y no caer en el error de procrastinar
+demasiado. Es una combinaci&#243;n ideal entre concentraci&#243;n puntual y alternar
+distracciones, que impiden a uno "quemarse" por no saber echar el freno a
+tiempo. Es una t&#233;cnica muy &#250;til a la hora de programar o de crear un articulo
+como este, pero que es dif&#237;cilmente aplicable en tareas que requieren cierta
+multitarea como son las de administraci&#243;n de sistemas.</p>
+<p>Existen m&#250;ltiples aplicaciones, applets, indicadores, etc para aplicar esta
+t&#233;cnica, que se basaba originalmente en un simple reloj de cocina. Pero alguien,
+en su momento pens&#243;, que no era mala idea crear un widget para Awesome que nos
+permitiera medir los tiempos para aplicarla y creo una librer&#237;a externa para
+ello. Yo empleo esta <a href="https://github.com/nikolavp/awesome-pomodoro">librer&#237;a</a> ligeramente modificada para controlar
+el tiempo transcurrido.</p>
+<p>El funcionamiento es muy b&#225;sico, pulsamos sobre el icono y se activa la cuenta
+atr&#225;s de 25 minutos. Al acabar, una alarma sonora y una notificaci&#243;n emergente,
+nos avisan de que se ha terminado el tiempo de trabajo y nos merecemos un
+descanso. Volvemos a pulsar sobre el widget y comienza la cuenta atr&#225;s de cinco
+minutos y se repite el proceso. Si pulsamos con el bot&#243;n derecho se reinicia el
+widget.</p>
+<p style="text-align: center;"><img alt="notificaciones de pomodoro" height="105" src="http://joedicastro.com/feeds/tags/pictures/pomodoro.png" width="613" /></p>
+
+<h2 id="debug_con_xephyr">Debug con Xephyr</h2>
+<p>Esta es una de las posibilidades que nos permite Awesome, que m&#225;s nos ayudar&#225; a
+la hora de "trastear" con &#233;l, sin temor a "romper" nada. Podemos depurar los
+errores y realizar pruebas con Awesome con una configuraci&#243;n distinta a la
+nuestra y en una sesi&#243;n X distinta a la actual. Esto lo conseguimos ejecutando
+Awesome dentro de un servidor X, <a href="http://www.freedesktop.org/wiki/Software/Xephyr">Xephyr</a>, que aparecer&#225; dentro de
+nuestra sesi&#243;n como una ventana m&#225;s.</p>
+<p>Yo he integrado esta posibilidad dentro del men&#250; de Awesome para que sea mucho
+m&#225;s sencillo e inmediato el poder probar cambios en un entorno de pruebas.</p>
+<p style="text-align: center;"><img alt="Mi menu de Awesome" height="275" src="http://joedicastro.com/feeds/tags/pictures/awesome_menu.png" width="603" /></p>
+
+<p>En este v&#237;deo se puede ver el funcionamiento b&#225;sico de este sistema. Normalmente
+inicio el entorno de pruebas a pantalla completa, pero que se pueda apreciar
+mejor la diferencia, he grabado la mayor&#237;a del v&#237;deo con una sesi&#243;n de Xephyr a
+menor resoluci&#243;n. Lo que se puede ver es como primero inicio una sesi&#243;n de
+Awesome dentro de Xephyr con la configuraci&#243;n por defecto. Despu&#233;s la cierro y
+compruebo la sintaxis Lua de la configuraci&#243;n de test. La notificaci&#243;n me alerta
+de que el fichero no existe, luego procedo a crearlo (es una copia de la
+configuraci&#243;n real actual) y vuelvo a comprobar la sintaxis. Una vez que veo que
+esta es correcta, lanzo Awesome con la configuraci&#243;n de test. Cierro la sesi&#243;n y
+procedo a realizar cambios en la configuraci&#243;n de pruebas. Ahora lanzo de nuevo
+Awesome con esta configuraci&#243;n y compruebo que efectivamente se han realizado
+los cambios. Dentro de esta sesi&#243;n vuelvo a editar la configuraci&#243;n de test para
+deshacer los cambios y despu&#233;s reinicio este Awesome de pruebas. Se puede ver
+como efectivamente todo vuelve a el estado anterior. Cierro la sesi&#243;n y
+compruebo el log de la sesi&#243;n para ver los mensajes de error. Finalmente abro
+varias sesiones de Awesome a la vez y una a pantalla completa.</p>
+<div style="text-align: center;">
+
+
+<p>Muestra de las posibilidades que ofrecen Xephyr y el script
+<strong>awdt.py</strong> para poder depurar la configuraci&#243;n de Awesome.
+Recomiendo ver en alta resoluci&#243;n y a pantalla completa.</p>
+</div>
+
+<p>Para realizar estas acciones program&#233; un script en Python, <code>awdt.py</code>, que incluyo
+al final del articulo.</p>
+<p>Una de las ventajas de Awesome con respecto a Xmonad, es que no necesitamos
+recompilar cada vez que realizamos un cambio en la configuraci&#243;n, basta con
+editar el fichero, salvar y reiniciarlo. Reiniciar Awesome es algo que lleva
+menos de un segundo.</p>
+<h2 id="reinicio_apagado_y_suspensi+n">Reinicio, apagado y suspensi&#243;n</h2>
+<p>Dado que no empleo ning&#250;n escritorio, arrancando directamente la sesi&#243;n en
+Awesome, debo gestionar directamente cierto tipo de situaciones que vienen
+resueltas de manera predefinida en estos. Uno de estos casos es la gesti&#243;n de
+energ&#237;a del equipo, esto es: apagarlo, reiniciarlo, suspenderlo e hibernarlo.
+Dado que nunca lo hiberno, he implementado &#250;nicamente las tres primeras
+acciones. Lo que hago es emplear directamente los comandos de consola, que
+ejecuto a trav&#233;s de un dialogo gr&#225;fico que me pide la contrase&#241;a para <code>sudo</code> con
+<code>gksudo</code> (podr&#237;a haber empleado <em>Zenity</em>, <em>Xdialog</em> o cualquier otro similar)
+que es activado a trav&#233;s de una combinaci&#243;n de teclas. Por ejemplo, para
+suspender el equipo lo activo a trav&#233;s de la combinaci&#243;n <strong><code>Win</code></strong> + <strong><code>s</code></strong> :</p>
+<div class="codehilite"><pre><span class="n">awful</span><span class="p">.</span><span class="n">key</span><span class="p">({</span> <span class="n">modkey</span> <span class="p">},</span> <span class="s2">&quot;</span><span class="s">s&quot;</span><span class="p">,</span>
+        <span class="k">function</span> <span class="p">()</span>
+            <span class="n">awful</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">gksudo pm-suspend -m &quot;</span> <span class="o">..</span>
+                             <span class="s2">&quot;</span><span class="s">'Se va a suspender el equipo, &#191;est&#225;s seguro?'&quot;</span><span class="p">)</span>
+        <span class="k">end</span><span class="p">),</span>
+</pre></div>
+
+
+<p>con el siguiente resultado:</p>
+<p style="text-align: center;"><img alt="Dialogo para suspensi&#243;n" height="191" src="http://joedicastro.com/feeds/tags/pictures/suspend.png" width="381" /></p>
+
+<p>S&#233; que la mayor&#237;a no est&#225; acostumbrado a tener que introducir la contrase&#241;a para
+realizar cualquiera de estas acciones y posiblemente detestar&#237;an hacerlo, pero
+yo lo prefiero as&#237;.</p>
+<h2 id="bloqueo_de_la_pantalla">Bloqueo de la pantalla</h2>
+<p>Empleo un m&#233;todo similar para bloquear la pantalla, ya que no empleo un
+salvapantallas (simplemente apago la pantalla pasado un cierto tiempo) empleo el
+programa <a href="http://joelburget.com/slimlock/"><code>slimlock</code></a> para realizar esta tarea y lo activo de forma manual
+con otra combinaci&#243;n de teclas. El resultado es una pantalla como esta:</p>
+<p style="text-align: center;"><img alt="slimlock" height="401" src="http://joedicastro.com/feeds/tags/pictures/slimlock.png" width="642" /></p>
+
+<h2 id="documentaci+n_y_enlaces_de_inter+s">Documentaci&#243;n y enlaces de inter&#233;s.</h2>
+<p>La documentaci&#243;n del c&#243;digo fuente y de la API de Awesome son bastante buenas,
+con lo que si tienes los conocimientos suficientes no te ser&#225; muy dificil
+hacerte con &#233;l. Si necesitas algo m&#225;s general, tanto el propio Wiki de Awesome
+como los recursos disponibles gracias a su comunidad (lista de correo e IRC) son
+bastante &#250;tiles para ayudarte a conseguir la configuraci&#243;n que m&#225;s se ajuste a
+tus necesidades. Es una comunidad muy din&#225;mica y bastante colaboradora. Tambi&#233;n
+en el Wiki de Arch Linux hay informaci&#243;n interesante sobre Awesome.</p>
+<ul>
+<li><a href="http://awesome.naquadah.org/">Pagina principal</a></li>
+<li><a href="http://awesome.naquadah.org/wiki/Main_Page">Wiki</a></li>
+<li><a href="http://awesome.naquadah.org/wiki/Screenshots">Pantallazos</a></li>
+<li><a href="http://awesome.naquadah.org/wiki/User_Configuration_Files">Ficheros de configuraci&#243;n</a></li>
+<li><a href="http://awesome.naquadah.org/doc/api/">API Docs</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/Awesome">Arch Linux Wiki</a></li>
+<li><a href="http://www.lua.org/pil/">Programming in Lua</a></li>
+</ul>
+<h2 id="awdtpy">awdt.py</h2>
+<p>Este es el contenido del script <code>awdt.py</code> que empleo para depurar la
+configuraci&#243;n de Awesome en un entorno de pruebas. Se encuentra dentro del mismo
+repositorio que el resto de la configuraci&#243;n.</p>
+<div class="codehilite"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># encoding: utf-8</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    awdt.py: a script to debug awesome wm configs in nested Xephyr sessions</span>
+
+<span class="sd">    This script is a tool intended to help to debug Awesome wm configurations</span>
+<span class="sd">    in a safe manner. To this purpose uses the Xephyr X server to nest a X</span>
+<span class="sd">    session inside the current Awesome X session.</span>
+
+<span class="sd">    The original idea come from the mikar's bash awmtt script (Thanks mikar):</span>
+
+<span class="sd">    https://github.com/mikar/awmtt</span>
+
+<span class="sd">    Needs logger.py and check_execs.py from my Python Recipes repository at</span>
+
+<span class="sd">    https://github.com/joedicastro/python-recipes</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c">#==============================================================================</span>
+<span class="c">#    Copyright 2012 joe di castro &lt;joe@joedicastro.com&gt;</span>
+<span class="c">#</span>
+<span class="c">#    This program is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    This program is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#==============================================================================</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&quot;joe di castro &lt;joe@joedicastro.com&gt;&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s">&quot;GNU General Public License version 3&quot;</span>
+<span class="n">__date__</span> <span class="o">=</span> <span class="s">&quot;05/06/2012&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0.5&quot;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span><span class="p">,</span> <span class="n">RawDescriptionHelpFormatter</span>
+    <span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="n">findall</span>
+    <span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copy</span>
+    <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">STDOUT</span>
+    <span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">gettempdir</span>
+    <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+    <span class="kn">from</span> <span class="nn">logger</span> <span class="kn">import</span> <span class="n">Logger</span>
+    <span class="kn">from</span> <span class="nn">check_execs</span> <span class="kn">import</span> <span class="n">check_execs</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c"># Checks the installation of the necessary python modules</span>
+    <span class="k">print</span><span class="p">((</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;An error found importing one module:&quot;</span><span class="p">,</span>
+    <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="s">&quot;You need to install it&quot;</span><span class="p">,</span> <span class="s">&quot;Stopping...&quot;</span><span class="p">]))</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">arguments</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Defines the command line arguments for the script.&quot;&quot;&quot;</span>
+    <span class="n">main_desc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;Debug awesome wm configurations in Xephyr sessions.</span>
+
+<span class="s">    Use `new` to create a new test config file cloned from your rc.lua</span>
+<span class="s">    Use `check` to test the Lua syntax on this file</span>
+<span class="s">    Use `start` to start a new awesome debug session</span>
+<span class="s">    Use `restart` to restart all awesome debug sessions</span>
+<span class="s">    Use `stop` to stop all awesome debug sessions</span>
+<span class="s">                   &quot;&quot;&quot;</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">main_desc</span><span class="p">,</span>
+                            <span class="n">formatter_class</span><span class="o">=</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;new&quot;</span><span class="p">,</span> <span class="s">&quot;check&quot;</span><span class="p">,</span> <span class="s">&quot;start&quot;</span><span class="p">,</span> <span class="s">&quot;restart&quot;</span><span class="p">,</span>
+                        <span class="s">&quot;stop&quot;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the action to perform&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-t&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;test&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;use created test configuration file&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;screen&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the screen resolution&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;display&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the DISPLAY to use&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--version&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;version&quot;</span><span class="p">,</span>
+                        <span class="n">version</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(prog)s</span><span class="s"> {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">__version__</span><span class="p">),</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;show program's version number and exit&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The script core.&quot;&quot;&quot;</span>
+    <span class="c"># the files needed</span>
+    <span class="n">cfg_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&quot;~/.config/awesome&quot;</span><span class="p">)</span>
+    <span class="n">rc_real</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg_dir</span><span class="p">,</span> <span class="s">&quot;rc.lua&quot;</span><span class="p">)</span>
+    <span class="n">rc_test</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg_dir</span><span class="p">,</span> <span class="s">&quot;rc_test.lua&quot;</span><span class="p">)</span>
+    <span class="n">rc_original</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg_dir</span><span class="p">,</span> <span class="s">&quot;rc_original.lua&quot;</span><span class="p">)</span>
+    <span class="n">xpids_tmp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s">&quot;xpids&quot;</span><span class="p">)</span>
+    <span class="n">apids_tmp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s">&quot;apids&quot;</span><span class="p">)</span>
+    <span class="n">log_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg_dir</span><span class="p">,</span> <span class="s">&quot;awdt.log&quot;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">arguments</span><span class="p">()</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c"># get the current screen resolution</span>
+    <span class="n">xdpyinfo</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="s">&quot;xdpyinfo&quot;</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">currres</span> <span class="o">=</span> <span class="n">findall</span><span class="p">(</span><span class="s">&quot;dimensions:\s*(\d+x\d+)\spixels&quot;</span><span class="p">,</span> <span class="n">xdpyinfo</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c"># set defaults</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">screen</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">screen</span> <span class="k">else</span> <span class="n">currres</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="n">rc_test</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">test</span> <span class="k">else</span> <span class="n">rc_original</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">display</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">display</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s">&quot;new&quot;</span><span class="p">:</span>
+        <span class="n">copy</span><span class="p">(</span><span class="n">rc_real</span><span class="p">,</span> <span class="n">rc_test</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s">&quot;check&quot;</span><span class="p">:</span>
+        <span class="n">check</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="s">&quot;awesome -c {0} -k&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rc_test</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span>
+                      <span class="n">stderr</span><span class="o">=</span><span class="n">STDOUT</span><span class="p">)</span>
+        <span class="n">check_out</span> <span class="o">=</span> <span class="n">check</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">Popen</span><span class="p">([</span><span class="s">&quot;notify-send&quot;</span><span class="p">,</span> <span class="s">&quot;Lua sintax chek:&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">check_out</span><span class="p">)])</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s">&quot;start&quot;</span><span class="p">:</span>
+        <span class="c"># clean log in each debug session</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">apids_tmp</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">log_file</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">log_file</span><span class="p">)</span>
+
+        <span class="n">log</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">()</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">log_file</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="s">&quot;https://github.com/joedicastro/dotfiles&quot;</span><span class="p">,</span>
+                   <span class="s">&quot;This is a log from an Awesome wm's debug session&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="s">&quot;Start time&quot;</span><span class="p">)</span>
+
+        <span class="n">x_cmd</span> <span class="o">=</span> <span class="s">&quot;Xephyr -ac -br -noreset -screen {0} :{1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span>
+                                                                  <span class="n">args</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+        <span class="n">aw_cmd</span> <span class="o">=</span> <span class="s">&quot;awesome -c {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">test</span><span class="p">)</span>
+
+        <span class="n">xserver</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">x_cmd</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">STDOUT</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">putenv</span><span class="p">(</span><span class="s">&quot;DISPLAY&quot;</span><span class="p">,</span> <span class="s">&quot;:{0}.0&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">display</span><span class="p">))</span>
+        <span class="n">awesome</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">aw_cmd</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">STDOUT</span><span class="p">)</span>
+
+        <span class="c"># save the process PIDs for kill them properly later. This way, no</span>
+        <span class="c"># matter how many awesome sessions do you start, all of them will be</span>
+        <span class="c"># reported to the log file. Also, awesome PIDs are used to restart each</span>
+        <span class="c"># one when is required</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">xpids_tmp</span><span class="p">,</span> <span class="s">'a+'</span><span class="p">)</span> <span class="k">as</span> <span class="n">xpids</span><span class="p">:</span>
+            <span class="n">xpids</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">xserver</span><span class="o">.</span><span class="n">pid</span><span class="p">)</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">apids_tmp</span><span class="p">,</span> <span class="s">'a+'</span><span class="p">)</span> <span class="k">as</span> <span class="n">apids</span><span class="p">:</span>
+            <span class="n">apids</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">awesome</span><span class="o">.</span><span class="n">pid</span><span class="p">)</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="s">&quot;Parameters&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;Screen resolution: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">screen</span><span class="p">),</span>
+                                <span class="s">&quot;Display: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">display</span><span class="p">),</span>
+                                <span class="s">&quot;Configuration file: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">test</span><span class="p">)])</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="s">&quot;Xephyr output&quot;</span><span class="p">,</span> <span class="n">xserver</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="s">&quot;Awesome output&quot;</span><span class="p">,</span> <span class="n">awesome</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="s">&quot;End time&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">free</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s">&quot;restart&quot;</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">apids_tmp</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">apids</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">apids</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">kill</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pid</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s">&quot;stop&quot;</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">xpids_tmp</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">xpids</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">xpids</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">kill</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pid</span><span class="p">),</span> <span class="mi">9</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">xpids_tmp</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">apids_tmp</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">check_execs</span><span class="p">(</span><span class="s">&quot;Xephyr&quot;</span><span class="p">,</span> <span class="s">&quot;awesome&quot;</span><span class="p">)</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c">#==============================================================================</span>
+<span class="c"># Changelog:</span>
+<span class="c">#==============================================================================</span>
+<span class="c">#</span>
+<span class="c"># 0.5:</span>
+<span class="c">#</span>
+<span class="c"># * New log file per debug session</span>
+<span class="c"># * Improve argparse help</span>
+<span class="c"># * Better comments</span>
+<span class="c">#</span>
+<span class="c"># 0.4:</span>
+<span class="c">#</span>
+<span class="c"># * remove debug prints</span>
+<span class="c"># * clean code</span>
+<span class="c">#</span>
+<span class="c"># 0.3:</span>
+<span class="c">#</span>
+<span class="c"># * implement logging functions</span>
+<span class="c"># * check for executables</span>
+<span class="c">#</span>
+<span class="c"># 0.2:</span>
+<span class="c">#</span>
+<span class="c"># * argparse instead of sys.argv</span>
+<span class="c"># * create a new rc_test.lua file from original</span>
+<span class="c"># * restart the awesome session</span>
+<span class="c">#</span>
+<span class="c"># 0.1:</span>
+<span class="c">#</span>
+<span class="c"># * First attempt</span>
+<span class="c">#</span>
+<span class="c">#==============================================================================</span>
+</pre></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2012-05-10.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2012</td>
+<td class="cal-next"><a href="index-2012-08-01.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day"><a class="cal-link" href="index-2012-06-01.html">01</a></td><td class="cal-day">02</td><td class="cal-day">03</td></tr>
+<tr class="cal-week">
+<td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day"><a class="cal-link" href="index-2012-06-06.html">06</a></td><td class="cal-day"><strong class="cal-current">07</strong></td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
+<tr class="cal-week">
+<td class="cal-day">11</td><td class="cal-day"><a class="cal-link" href="index-2012-06-12.html">12</a></td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2012-06-18.html">18</a></td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day"><a class="cal-link" href="index-2012-06-21.html">21</a></td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td></tr>
+<tr class="cal-week">
+<td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day"><em class="cal-othermonth">01</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

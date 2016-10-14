@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>viernes, 13 marzo</h2>
+<div class="time">
+<h3>14:56</h3>
+<div class="item feed-a3d00a2b feed-{feed_id}" id="item-0c6de71e">
+<p class="itemheader">
+<span class="itemtitle">
+    Javier Santana:
+<a href="http://blep.blogspot.com/2009/03/planificando-un-deploy-django-nginx.html">Planificando un deploy (django + nginx)</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Si algo he aprendido a lo largo de mi corta vida como perfil mixto entre desarrollador web y adminitrador de sistemas es que los <span style="font-weight: bold;">deploys s&#237; importan</span>. Ahora mismo tengo una aplicaci&#243;n web en django y mis <span style="font-weight: bold;">requisitos</span> para el deploy son los siguientes (lo cierto es que servir&#237;an para cualquier aplicaci&#243;n web):<br /><br />- Hacer el setup del servidor en un solo paso<br />- <span style="font-weight: bold;">Poder tener la aplicaci&#243;n en el servidor funcionando con un solo comando</span><br />- Poder volver a una versi&#243;n anterior en cualquier momento<br /><br />Simples de describir, pero complicados de llevar a cabo.<br /><br />Hay 3 cosas que tengo que tener en cuenta en la <span style="font-weight: bold;">configuraci&#243;n</span>:<br />- el servidor web<br />- la aplicaci&#243;n<br />- la base de datos<br /><br />Por mi parte he elegido nginx como servidor web ya que soporta fastcgi y parece ligero, para la aplicaci&#243;n uso django y como base de datos mysql. La elecci&#243;n no se basa nada m&#225;s que en mi experiencia, no quiero entrar en el juego de que es mejor o peor.<br /><br />Para el deploy estoy usando <a href="http://www.nongnu.org/fab/">fabric</a>, un sistema que permite en 3 puntos:<br />- ejecutar comandos en local<br />- ejecutar comandos en un server remoto<br />- subir y bajar ficheros<br /><br />Y todo con sintaxis python :), con lo cual puede adem&#225;s usar todo el api de python.<br /><br />El <span style="font-weight: bold;">layout de carpetas</span> es el siguiente:<br /><br />&nbsp;- /srv/agroguia/<br />&nbsp;&nbsp;&nbsp;- versions<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;         - 0<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;            - timestamp<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;            - ....<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;           - last (enlace simb&#243;lico a la &#250;ltima versi&#243;n subida de esta versi&#243;n)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 1<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - ...<br />&nbsp;&nbsp;&nbsp;    - current (enlace simb&#243;lico a la carpeta dentro de versions/X/timestamp)<br /><br /><br />El <span style="font-weight: bold;">servidor web</span> est&#225; dividio en dos rutas:<br /> - la parte est&#225;tica que apunta a current/assets. De momento el peso de los assets es muy bajo (<1M), puedo permitirme el tenerlos replicados.<br /> - la parte din&#225;mica que usa fastcgi contra un socket unix que se crea al levantar django.<br /><br />Y por qu&#233; dividir la aplicaci&#243;n en versiones y dentro de cada una en timestamp (en realidad timestamp + hash de la revisi&#243;n del sistema de control de versiones). Cada versi&#243;n tiene un esquema de base de datos y una base de datos diferente dentro de mysql, de forma que todas las versiones de la aplicaci&#243;n dentro de esa carpeta pueden usar la misma base de datos sin problemas de integridades ni nada por el estilo. Similar a este sistema de versiones y timestamps lo usa el sistema de deploy de google app engine.<br /><br />Del mismo modo, cada vez que cambie el esquema de la base de datos, se crear&#225; una carpeta nueva, se llamar&#225; al comando de creaci&#243;n de base de datos de django (manage.py syncdb) y luego llamar&#233; a la migraci&#243;n (manual, django a&#250;n no soporta migraciones al estilo rails, una pena) que usar&#225; los datos de la versi&#243;n anterior.<br /><br />Si en cualquier momento quiero volver a una versi&#243;n anterior puedo s&#237;mplemente cambiar el enlace simb&#243;lico de current y levantar de nuevo el servidor. Incluso si quiero tener una versi&#243;n en producci&#243;n y una para desarrollar basta con que levante un servidor de desarrollo en otro puerto diferente al 80 (google en este caso lo hace con subdominios, pero yo no soy tan guay)<br /><br />Otro detalle importante es la posibilidad de hacer un <span style="font-weight: bold;">setup del sistema desde 0</span>. Me baso en un servidor ubuntu, as&#237; que tengo unos cuantos targets que instalan dependencias (mercurial, nginx...), m&#243;dulos python con <a href="http://pypi.python.org/pypi/pip">pip</a> (el reemplazo de easy_install), carpetas, usuarios y permisos varios.
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2009-01-07.html">&lt;</a></td>
+<td class="cal-month" colspan="5">marzo 2009</td>
+<td class="cal-next"><a href="index-2009-04-27.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">23</em></td><td class="cal-day"><em class="cal-othermonth">24</em></td><td class="cal-day"><em class="cal-othermonth">25</em></td><td class="cal-day"><em class="cal-othermonth">26</em></td><td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day">01</td></tr>
+<tr class="cal-week">
+<td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td></tr>
+<tr class="cal-week">
+<td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day"><strong class="cal-current">13</strong></td><td class="cal-day">14</td><td class="cal-day">15</td></tr>
+<tr class="cal-week">
+<td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td></tr>
+<tr class="cal-week">
+<td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td></tr>
+<tr class="cal-week">
+<td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

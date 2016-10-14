@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>mi&#233;rcoles, 04 mayo</h2>
+<div class="time">
+<h3>08:48</h3>
+<div class="item feed-a3d00a2b feed-{feed_id}" id="item-b35883b9">
+<p class="itemheader">
+<span class="itemtitle">
+    Javier Santana:
+<a href="http://blep.blogspot.com/2011/04/whitebrdme-detalles-tecnicos.html">whitebrd.me - detalles t&#233;cnicos</a></span>
+</p>
+    <div class="itemdescription">
+    <p>El pasado fin de semana (primero de abril del 2011 por si lees esto en un futuro lejano) organizamos <a href="http://alltogether.es/">alltogethernow</a>, un encuentro de un fin de semana para hacer una aplicaci&#243;n en 48 horas. La aplicaci&#243;n que hicimos nosotros (@<a href="http://twitter.com/flopezluis">flopezluis</a> y yo)fue <a href="http://whitebrd.me/">whitebrd.me</a>, una pizarra compartida en tiempo real. Voy a dar una pinceladas de los detalles t&#233;cnicos y un peque&#241;o post-morten despu&#233;s de 1 semana funcionando.<div><br /></div><div>Para empezar optamos por usar toda la tecnolog&#237;a del servidor as&#237;ncrona. Pensar&#225;s que lo hicimos porque es lo que mola, ahora lo as&#237;ncrono est&#225; en todos lados, si no tienes algo as&#237;ncrono no puedes montar algo como dios manda... si toda la gente que se le llena la boca con "as&#237;ncrono" hubiese le&#237;do la famosa (en mi &#233;poca) "<a href="http://beej.us/guide/bgnet/output/html/multipage/index.html">beej's socket guide</a>"... :).</div><div><br /></div><div>El caso es que <a href="http://www.tornadoweb.org/">tornado</a>, un peque&#241;o framework web creado por friendfeed (despu&#233;s comprada por facebook) y ahora matenido por facebook, hizo las veces de servidor web y redis como sistema de persistencia. La elecci&#243;n de redis fue por dos raz&#243;nes. La primera por hypearnos a m&#225;s no poder y la segunda es que permite escribir muy r&#225;pido, tiene funcionalidad de publisher/sibscriber y un sistema de VM que encaja muy bien (luego veremos c&#243;mo). Para rematar usamos nginx como frontend. Se puede ser m&#225;s as&#237;ncrono? :)</div><div><br /></div><div>La raz&#243;n para usar as&#237;ncrono realmente es muy sencilla: es una aplicaci&#243;n con MUY poca carga de CPU y mucha E/S, as&#237; que el paradigma encaja perfectamente.</div><div><br /></div><div>En la parte de cliente usamos websockets para enviar todos los comandos y canvas para dibujar. Es una tecnolog&#237;a novedosa, as&#237; que sab&#237;amos que muchos navegadores no lo soportar&#237;an (FF4 lo tiene desactivado por defecto, primer #FAIL).</div><div><br /></div><div>Manos a la obra, nos pusimos y en 48 horas ten&#237;amos <a href="https://github.com/javisantana/whitebrd.me">el c&#243;digo</a> en cuesti&#243;n. M&#225;s que comentar el c&#243;digo, prefiero centrarme en las cosas que han pasado en estos d&#237;as y algunas conclusiones t&#233;cnicas que he sacado.</div><div><br /></div><div>- El segundo d&#237;a a la gente de github les dio por poner un enlace en su <a href="https://github.com/blog/829-github-reflog-v1-4-04">blog</a>. No s&#233; cual ser&#225; el tr&#225;fico de ese blog, pero en el nuestro gener&#243; 4.5Gb de tr&#225;fico en 12 horas. Iluso de mi, no hab&#237;a activado la memoria virtual en redis, de forma que redis no pod&#237;a tirar a disco las pizarras ya no usadas (<a href="https://github.com/javisantana/whitebrd.me/blob/master/src/models.py#L20">se almacenan todos los comandos que genera una pizarra</a>), as&#237; que empez&#243; a "swapear" como un demonio. Suerte que ten&#237;amos el <a href="https://github.com/javisantana/whitebrd.me/blob/master/fabfile.py">deploy autom&#225;tico</a>, as&#237; que la activ&#233; r&#225;pido y medio solucionado. Finalmente la clave que almacenaba esa pizarra termin&#243; con m&#225;s de 20mb de datos. He tenido que eliminarla porque el VPS de 256mb no da para mucho m&#225;s :). La CPU de la m&#225;quina no pas&#243; de un 8%.</div><div><br /></div><div>- tornado funciona excepcionalmente bien, adem&#225;s de ser un framework muy interesante para cosas "sencillas" (no tiene ORM por ejemplo) es realmente r&#225;pido. Adem&#225;s el <a href="https://github.com/facebook/tornado/blob/master/tornado/ioloop.py">nucleo</a> es f&#225;cil de entender y est&#225; bien documentado. Podr&#237;amos haber optado por twisted, gevent o alg&#250;n otro sistema as&#237;ncrono en python.</div><div><br /></div><div>- tratamos de usar el mecanismo <a href="http://redis.io/topics/pubsub">pub/sub de redis</a>, pero la librer&#237;a as&#237;ncrona cliente redis para python es completamente inestable, as&#237; que terminamos por implementar lo misma funcionalidad en una <a href="https://github.com/javisantana/whitebrd.me/blob/master/src/publisher.py">peque&#241;a clase </a>. Moraleja: a veces la soluci&#243;n m&#225;s simple es la mejor.</div><div><br /></div><div>- no conoc&#237;a redis, pero es realmente un descubrimiento. Funciona muy bien: el setup es muy r&#225;pido, pr&#225;cticamente configuraci&#243;n 0, la integraci&#243;n con los tipos de python buena y adem&#225;s r&#225;pida. El model de memoria virtual encaja muy bien ya que si es necesaria m&#225;s memoria las claves que no se usan las vuelca a disco, de forma que todas las pizarras que ya no se usan no est&#225;n malgastando los 256mb memoria.</div><div><br /></div><div>Ahora mismo hay m&#225;s de 1000 pizarras creadas y la mayor&#237;a de ellas tienen dibujos de aparatos reproductores masculinos :)</div><div><br /></div><div><br /></div><div><br /></div><div><br /></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-04-18.html">&lt;</a></td>
+<td class="cal-month" colspan="5">mayo 2011</td>
+<td class="cal-next"><a href="index-2011-06-04.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">25</em></td><td class="cal-day"><em class="cal-othermonth">26</em></td><td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td></tr>
+<tr class="cal-week">
+<td class="cal-day">02</td><td class="cal-day"><a class="cal-link" href="index-2011-05-03.html">03</a></td><td class="cal-day"><strong class="cal-current">04</strong></td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td></tr>
+<tr class="cal-week">
+<td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td></tr>
+<tr class="cal-week">
+<td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day"><a class="cal-link" href="index-2011-05-19.html">19</a></td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td></tr>
+<tr class="cal-week">
+<td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day"><a class="cal-link" href="index-2011-05-25.html">25</a></td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td></tr>
+<tr class="cal-week">
+<td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

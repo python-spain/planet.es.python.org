@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>jueves, 27 enero</h2>
+<div class="time">
+<h3>21:00</h3>
+<div class="item feed-08cadf41 feed-{feed_id}" id="item-037d2281">
+<p class="itemheader">
+<span class="itemtitle">
+    El viaje del navegante:
+<a href="http://elviajedelnavegante.blogspot.com/2011/01/persistencia-de-imagenes-con-python.html">Persistencia de im&#225;genes con Python: SQLServer y cPickle</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Hola. En este art&#237;culo vamos a ver c&#243;mo guardar y recuperar im&#225;genes de una base de datos <b>Microsoft SQLServer 2005 Express Edition</b>, con <b>Python</b>, as&#237; como guardar y recuperar tambi&#233;n, im&#225;genes, en un objeto que se <i>serializa</i>, guardando dicha informaci&#243;n en disco, mediante <b>cPickle</b>.<br /><br />Antes de nada comentar que en este<b><span class="Apple-style-span" style="color: #990000;"> blog</span></b> se han tratado varios tipos de <b>SGBD</b>, tales como <b>MySQL</b>, <b>Firebird</b>, &nbsp;&#243;&nbsp;<b>SQLServer 2008</b>. El elegir <b>SQLServer 2005 Express Edition</b> es simplemente para probar que <b>Python</b> funciona, mediante <b>pyodbc</b>, con la mayor&#237;a de los sistemas gestores de bases de datos actuales. Y para ver si funciona lo mejor es probarlo uno mismo, ya que <i>no es lo mismo conocer el camino que andar el camino</i>.<br /><br /><b>NOTA</b>: Este <i>post </i>lo he escrito en la plataforma <b>Microsoft Windows XP SP3,</b> con <b>Python 2.6.6</b>.<br /><br /><b><span class="Apple-style-span" style="color: #990000; font-size: large;">Im&#225;genes en SQLServer 2005 con Python</span></b><br /><br /><div class="separator" style="clear: both; text-align: justify;">Lo primero de todo es descargar el SGBD <b>Microsoft SQLServer 2005 Express Edition</b>.</div><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TUGWbvr7AzI/AAAAAAAABOs/_Ee_97_eFoA/s1600/sqlserver2005_0.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="152" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TUGWbvr7AzI/AAAAAAAABOs/_Ee_97_eFoA/s320/sqlserver2005_0.JPG" width="320" /></a></div><br />Se puede hacer desde aqu&#237;:<br /><br /><a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=220549b5-0b07-4448-8848-dcc397514b41&amp;displayLang=es">http://www.microsoft.com/downloads/details.aspx?FamilyID=220549b5-0b07-4448-8848-dcc397514b41&amp;displayLang=es</a><br /><br />Tambi&#233;n (recomendable) es posible descargarse el&nbsp;<b>Microsoft SQL Server Management Studio Express</b>, el cual es un entorno gr&#225;fico para gestionar las bases de datos que vayamos creando, de la siguiente <b>URL</b>:<br /><br /><a href="http://www.microsoft.com/downloads/details.aspx?displaylang=es&amp;FamilyID=c243a5ae-4bd1-4e3d-94b8-5a0f62bf7796#filelist">http://www.microsoft.com/downloads/details.aspx?displaylang=es&amp;FamilyID=c243a5ae-4bd1-4e3d-94b8-5a0f62bf7796#filelist</a><br /><br />Instalamos los dos paquetes de software....<br /><br /><div style="text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TUGW2kYMJWI/AAAAAAAABO0/ws8LrLc0iGM/s1600/sqlserver2005_1.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TUGW2kYMJWI/AAAAAAAABO0/ws8LrLc0iGM/s1600/sqlserver2005_1.JPG" /></a></div><br />Una vez instalado, nos vamos al <b>Management Studio</b> y creamos una base de datos, llamada <span class="Apple-style-span" style="color: #990000;"><b>imagenes</b></span>, con una tabla, llamada <span class="Apple-style-span" style="color: #38761d;"><b>registro</b></span>.<br /><br /><div style="text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TUGW4J4TnlI/AAAAAAAABO8/UjlmamYZ1aI/s1600/sqlserver2005_3.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="470" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TUGW4J4TnlI/AAAAAAAABO8/UjlmamYZ1aI/s640/sqlserver2005_3.JPG" width="640" /></a></div><div style="text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TUGW2AcoudI/AAAAAAAABOw/b9ZnQe0WoY4/s1600/sqlserver2005_4.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="353" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TUGW2AcoudI/AAAAAAAABOw/b9ZnQe0WoY4/s640/sqlserver2005_4.JPG" width="640" /></a></div><br />Como podemos observar, se crea una tabla con tres campos, un <b>int</b>, un <b>nvarchar</b> y un tipo <b>image</b>.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TUGZdqVYSlI/AAAAAAAABPA/zO3UMq_JSIQ/s1600/sqlserver2005_pyodbc.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TUGZdqVYSlI/AAAAAAAABPA/zO3UMq_JSIQ/s1600/sqlserver2005_pyodbc.JPG" /></a></div>Una vez tenemos instalado <b>SQLServer 2005</b>, con nuestra base de datos y nuestra tabla, vamos a instalar <b>pyodbc</b>, el software de&nbsp;<b>Python</b> para crear conexiones <b>ODBC </b>a or&#237;genes de datos, en este caso, el software de <b>Microsoft</b>. Para ello, descargamos el <b>pyodbc</b>, desde&nbsp;<a href="http://code.google.com/p/pyodbc/">http://code.google.com/p/pyodbc/</a>. Creamos a continuaci&#243;n, mediante las <i>Herramientas Administrativas/Or&#237;genes de datos (ODBC)</i>, nuestra conexi&#243;n:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TUGaM9DkanI/AAAAAAAABPE/bHX9EFT6u8A/s1600/sqlserver2005_pyodbc2.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="246" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TUGaM9DkanI/AAAAAAAABPE/bHX9EFT6u8A/s640/sqlserver2005_pyodbc2.JPG" width="640" /></a></div><br /><b>NOTA</b>: El lector debe de tener en cuenta que existe un m&#243;dulo espec&#237;fico para la conexi&#243;n de <b>SQLServer </b>con&nbsp;<b>Python</b>, llamado <b>pymssql</b>, que se puede obtener de&nbsp;<a href="http://code.google.com/p/pymssql/">http://code.google.com/p/pymssql/</a>.<br /><br /><b>NOTA 2</b>: Pudiera ser que con <b>SQLServer 2005 Express Edition </b>aparezcan ciertos errores a la hora de crear la conexi&#243;n <b>ODBC</b> referidos a la&nbsp;configuraci&#243;n del mismo, con el<i> prop&#243;sito de permitir conexiones remotas</i>. Bien, la soluci&#243;n la ten&#233;is aqu&#237;:&nbsp;<a href="http://support.microsoft.com/kb/914277/es">http://support.microsoft.com/kb/914277/es</a>.<br /><br />Una vez creado el <b>ODBC</b>&nbsp;y la conexi&#243;n correctamente realizada, ya tenemos todo listo para programar en <b>Python</b>.<br /><br />El c&#243;digo para <u>crear una conexi&#243;n</u> desde <b>Python</b> a <b>SQLServer 2005</b>, mediante <b>pyodbc</b>, podr&#237;a ser tal que as&#237;:<br /><span class="Apple-style-span" style="color: #990000;"><br /></span><br /><span class="Apple-style-span" style="color: #990000;">import pyodbc</span><br /><span class="Apple-style-span" style="color: #990000;"><br /></span><br /><span class="Apple-style-span" style="color: #990000;"># Cadena de conexi&#243;n.</span><br /><span class="Apple-style-span" style="color: #990000;">cadenaConexion = 'DSN=imagenes;UID=ABUSIMBEL\familia'</span><br /><span class="Apple-style-span" style="color: #990000;"><br /></span><br /><span class="Apple-style-span" style="color: #990000;">try:</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp;conexionSQLServer = pyodbc.connect(cadenaConexion)</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp;cursorSQLServer = conexionSQLServer.cursor()</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp;print "Conectado con SQLServer 2005 Express!"</span><br /><span class="Apple-style-span" style="color: #990000;">except:</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp;print "No he podido conectar con base de datos SQLServer!"</span><br /><div><span class="Apple-style-span" style="color: #990000;"><br /></span></div><div><span class="Apple-style-span" style="color: #990000;"># Cerramos cursor y conexi&#243;n.</span></div><div><div><span class="Apple-style-span" style="color: #990000;">print "Cerrando conexiones!"</span></div><div><span class="Apple-style-span" style="color: #990000;">cursorSQLServer.close()</span></div><div><span class="Apple-style-span" style="color: #990000;">conexionSQLServer.close()</span></div></div><div><br /></div><div>Si todo ha ido bien, debe de aparecer algo como esto:</div><div><br /></div><div><div><span class="Apple-style-span" style="color: blue;">Conectado con SQLServer 2005 Express!</span></div><div><span class="Apple-style-span" style="color: blue;">Cerrando conexiones!</span></div><div><br /></div></div><div>A continuaci&#243;n vamos a insertar una imagen en la tabla <span class="Apple-style-span" style="color: #38761d;"><b>registro </b></span>de la base de datos <span class="Apple-style-span" style="color: #990000;"><b>imagenes</b></span>. El c&#243;digo podr&#237;a ser tal que as&#237;:</div><div><br /></div><div><div><span class="Apple-style-span" style="color: #990000;">import os</span></div><div><span class="Apple-style-span" style="color: #990000;"><br /></span></div><div><span class="Apple-style-span" style="color: #990000;">fichero_imagen = os.path.realpath('alvaro.jpg')</span></div><div><span class="Apple-style-span" style="color: #990000;">imagen = open(fichero_imagen,'rb').read()</span></div></div><div><br /></div><div>Cargamos un fichero <b>jpg</b>, y lo referenciamos mediante imagen. Se supone que el fichero ha de existir. El c&#243;digo para insertar una imagen en la base de datos es el siguiente:</div><div><br /></div><div><div><span class="Apple-style-span" style="color: #990000;"># Cadena SQL a ejecutar.</span></div><div><span class="Apple-style-span" style="color: #990000;">cadenaSQL = "insert into registro values (1,'alvaro',?)"</span></div><div><span class="Apple-style-span" style="color: #990000;"># Lanzamos Sentencia.</span></div><div><span class="Apple-style-span" style="color: #990000;">cursorSQLServer.execute(cadenaSQL, (pyodbc.Binary(imagen),))</span></div><div><span class="Apple-style-span" style="color: #990000;"># Confirmamos escritura.</span></div><div><span class="Apple-style-span" style="color: #990000;">conexionSQLServer.commit()</span></div></div><div><br /></div><div>Cabe destacar que transformamos en binario la imagen cargada del fichero. Adem&#225;s hacemos <b>commit</b>, no olvidarlo. Si nos vamos al <b>Management Studio</b> y hacemos una consulta a la tabla tenemos la soluci&#243;n:</div><div><br /></div><div class="separator" style="clear: both; text-align: center;"></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/_y_bGxMwbE9g/TUGhTi4rp9I/AAAAAAAABPM/y4ZhmpijRuE/s1600/sqlserver2005_100.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="336" src="http://4.bp.blogspot.com/_y_bGxMwbE9g/TUGhTi4rp9I/AAAAAAAABPM/y4ZhmpijRuE/s640/sqlserver2005_100.JPG" width="640" /></a></div><div><br /></div><div>Bien, ya sabemos como insertar im&#225;genes en la base de datos. Ahora toca como recuperar la informaci&#243;n, mediante el <b>select</b> correspondiente. El c&#243;digo para hacer esto podr&#237;a parecerse a lo siguiente:</div><div><br /></div><div><span class="Apple-style-span" style="color: #990000;"># Creamos el nombre de un fichero destino.</span></div><div><div><span class="Apple-style-span" style="color: #990000;">fichero_destino = os.path.realpath('destino.jpg')</span></div><div><span class="Apple-style-span" style="color: #990000;"># Lanzamos la consulta de selecci&#243;n SQL.</span></div><div><span class="Apple-style-span" style="color: #990000;">imagen = cursorSQLServer.execute('SELECT * FROM registro WHERE id = 1')</span></div><div><span class="Apple-style-span" style="color: #990000;"># Creamos un fichero de destino (temporal).</span></div><div><span class="Apple-style-span" style="color: #990000;">fichero_final = open(fichero_destino,'wb')</span></div><div><span class="Apple-style-span" style="color: #990000;"># Escribimos en el fichero y lo cerramos.</span></div><div><span class="Apple-style-span" style="color: #990000;">fichero_final.write(imagen.next()[2])</span></div><div><span class="Apple-style-span" style="color: #990000;">fichero_final.close()</span></div></div><div><br /></div><div>Cabe destacar que se crea un fichero de salida temporal (destino.jpg) para obtener en disco el fichero seleccionado de la base de datos. Tambi&#233;n decir que utilizamos next() para iterar sobre el cursor y obtener la imagen, que se encuentra en la posici&#243;n 3 de la tupla (es decir, imagen.next()[2]), ya que la tabla tiene 3 campos y el campo imagen es el tercero.</div><div><br /></div><div>Decir que si se quiere que se vea autom&#225;ticamente la imagen recuperada, se puede utilizar:</div><div><br /></div><div><span class="Apple-style-span" style="color: #990000;">fichero_destino = os.path.realpath('destino.jpg')</span></div><div><span class="Apple-style-span" style="color: #990000;">os.startfile(fichero_destino)</span></div><div><br /></div><div>En mi sistema <b>Windows</b>, autom&#225;ticamente se abre el programa asociado a ficheros de im&#225;genes, <i>Visor de im&#225;genes y faz de Windows</i>, dando como resultado:</div><div><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_y_bGxMwbE9g/TUGk83AgJYI/AAAAAAAABPQ/bqAonuxs0Vw/s1600/sqlserver2005_200.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="432" src="http://1.bp.blogspot.com/_y_bGxMwbE9g/TUGk83AgJYI/AAAAAAAABPQ/bqAonuxs0Vw/s640/sqlserver2005_200.JPG" width="640" /></a></div><div><br /></div><div><b><span class="Apple-style-span" style="color: #990000; font-size: large;">Im&#225;genes serializadas en objetos con Python</span></b></div><div><br /></div><div>Bien. Estamos en la segunda parte del post. Ahora lo que vamos a hacer es guardar una imagen dentro de un objeto y dicho objeto guardarlo en disco. Ser&#237;a as&#237; como un wrapper de la imagen que se guardar&#225; en disco. Lo bueno que tiene esto es que se pueden guardar m&#250;ltiples im&#225;genes en cualquier tipo de contenedor (lista, tupla, diccionario) y guardarla directamente en disco, a cap&#243;n. Para ello vamos a crear primero una clase, llamada persistencia, que tendr&#225; la funcionalidad de cargar y guardar un objeto.<br /><br />El c&#243;digo que define la <b>clase persistencia </b>es el siguiente:<br /><br /><br /><span class="Apple-style-span" style="color: #990000;">import cPickle</span><br /><span class="Apple-style-span" style="color: #990000;"><br /></span><br /><span class="Apple-style-span" style="color: #990000;">class persistencia(object):</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp;def nombre_clase(self):</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;return str(self).split(' ')[0].split('.')[1]</span><br /><span class="Apple-style-span" style="color: #990000;"><br /></span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp;def cargar(self, nombre_fichero = None):</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;if nombre_fichero is None:</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;nombre_fichero = self.nombre_clase()</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;manejador_fichero = open(nombre_fichero,'r')</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;objeto = cPickle.load(manejador_fichero)</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;manejador_fichero.close()</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;return objeto</span><br /><span class="Apple-style-span" style="color: #990000;"><br /></span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp;def salvar(self, objeto, nombre_fichero = None):</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;if nombre_fichero is None:</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;nombre_fichero = self.nombre_clase()</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;# Fichero que contendr&#195;&#161; el objeto.</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;manejador_fichero = open(nombre_fichero,'w')</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;# Volcamos el objeto de memoria al fichero.</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;cPickle.dump(self, manejador_fichero)</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;# Cerramos fichero.</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;manejador_fichero.close()</span><br /><div><br /></div><br />Ahora, &#250;nicamente hay que crear una clase que herede de <b>persistencia</b>, para obtener su funcionalidad, e implementar las estructuras necesarias para guardar im&#225;genes. Para ello implementamos la <b>clase registro</b>, tal que as&#237;:<br /><br /><br /><span class="Apple-style-span" style="color: #990000;">class registro(persistencia):</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp;def __init__(self):</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;self._registro = []</span><br /><span class="Apple-style-span" style="color: #990000;"><br /></span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp;def insertar_persona(self, nombre, foto):</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;self._registro.append([nombre, foto])</span><br /><span class="Apple-style-span" style="color: #990000;"><br /></span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp;def devolver_persona(self, nombre = None):</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;if nombre is None:</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;return self._registro</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;else:</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;for i in self._registro:</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if i[0] == nombre:</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;return i</span><br /><span class="Apple-style-span" style="color: #990000;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;return None</span><br /><div><br /></div><div>Ahora falta, por fin, utilizar las clases que hemos dise&#241;ado, para poder ver que efectivamente funciona la idea. El c&#243;digo para <i>serializar</i> una imagen en un objeto podr&#237;a tener el siguiente:</div><div><br /></div><div><span class="Apple-style-span" style="color: #990000;">import os</span></div><div><span class="Apple-style-span" style="color: #990000;"><br /></span></div><div><div><span class="Apple-style-span" style="color: #990000;"># Cargamos imagen.</span></div><div><span class="Apple-style-span" style="color: #990000;">fichero_imagen = os.path.realpath('alvaro.jpg')</span></div><div><span class="Apple-style-span" style="color: #990000;">imagen = open(fichero_imagen,'rb').read()</span></div><div><span class="Apple-style-span" style="color: #990000;"><br /></span></div><div><span class="Apple-style-span" style="color: #990000;"># Instanciamos la clase que contendr&#225; el registro de personas.</span></div><div><span class="Apple-style-span" style="color: #990000;">personas = registro()</span></div><div><span class="Apple-style-span" style="color: #990000;">personas.insertar_persona('alvaro',imagen)</span></div><div><span class="Apple-style-span" style="color: #990000;">personas.salvar(personas)</span></div></div><div><br /></div><div>Como podemos observar la funcionalidad heredada nos permite guardar la imagen en un fichero, mediante la <i>serializaci&#243;n del objeto</i>. Decir que hemos incluido una imagen &#250;nicamente. Podr&#237;amos incluir tantas im&#225;genes como quisi&#233;ramos. Evidentemente se crea un fichero, llamado <b>registro</b>, el cual tiene el siguiente contenido:</div><div><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/_y_bGxMwbE9g/TUHDXoCCD0I/AAAAAAAABPU/zTFv93BdneE/s1600/registro_persistencia.JPG" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="276" src="http://2.bp.blogspot.com/_y_bGxMwbE9g/TUHDXoCCD0I/AAAAAAAABPU/zTFv93BdneE/s640/registro_persistencia.JPG" width="640" /></a></div><div><br /></div><div>El formato del fichero nos da igual. Lo importante es que podamos recuperar la informaci&#243;n guardada en las estructuras de datos de alto nivel que dispone <b>Python</b>. Vamos por &#250;ltimo a ver c&#243;mo recuperar la informaci&#243;n guardada en el <b>objeto serializado</b>. Podr&#237;amos utilizar un c&#243;digo como este:&nbsp;</div><div><br /></div><div><span class="Apple-style-span" style="color: #990000;">import os</span></div><div><span class="Apple-style-span" style="color: #990000;"><br /></span></div><div><div><span class="Apple-style-span" style="color: #990000;"># Obtenemos datos.</span></div><div><span class="Apple-style-span" style="color: #990000;">personas = registro()</span></div><div><span class="Apple-style-span" style="color: #990000;">personas = personas.cargar()</span></div><div><span class="Apple-style-span" style="color: #990000;">individuo = personas.devolver_persona('alvaro')</span></div><div><span class="Apple-style-span" style="color: #990000;"><br /></span></div><div><span class="Apple-style-span" style="color: #990000;"># Creamos fichero.</span></div><div><span class="Apple-style-span" style="color: #990000;">fichero_destino = os.path.realpath('destino.jpg')</span></div><div><span class="Apple-style-span" style="color: #990000;">imagen = open(fichero_destino,'wb')</span></div><div><span class="Apple-style-span" style="color: #990000;">imagen.write(individuo[1])</span></div><div><span class="Apple-style-span" style="color: #990000;">imagen.close()</span></div><div><span class="Apple-style-span" style="color: #990000;"><br /></span></div><div><span class="Apple-style-span" style="color: #990000;"># Y lo mostramos por pantalla, para ver que efectivamente funciona la idea.</span></div><div><span class="Apple-style-span" style="color: #990000;">os.startfile(fichero_destino)</span></div></div><div><br /></div><div>Esto es todo por el momento. Saludos.</div></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2010-12-23.html">&lt;</a></td>
+<td class="cal-month" colspan="5">enero 2011</td>
+<td class="cal-next"><a href="index-2011-02-14.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td></tr>
+<tr class="cal-week">
+<td class="cal-day">03</td><td class="cal-day"><a class="cal-link" href="index-2011-01-04.html">04</a></td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day"><a class="cal-link" href="index-2011-01-09.html">09</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day"><a class="cal-link" href="index-2011-01-15.html">15</a></td><td class="cal-day">16</td></tr>
+<tr class="cal-week">
+<td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td></tr>
+<tr class="cal-week">
+<td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day"><strong class="cal-current">27</strong></td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td></tr>
+<tr class="cal-week">
+<td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td><td class="cal-day"><em class="cal-othermonth">06</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

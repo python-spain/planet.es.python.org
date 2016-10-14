@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>martes, 22 marzo</h2>
+<div class="time">
+<h3>22:02</h3>
+<div class="item feed-08cadf41 feed-{feed_id}" id="item-f55eadfa">
+<p class="itemheader">
+<span class="itemtitle">
+    El viaje del navegante:
+<a href="http://elviajedelnavegante.blogspot.com/2011/03/script-para-pasar-codigo-python-html.html">Script para pasar c&#243;digo Python a HTML</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Hola. En este art&#237;culo vamos a crear un <b>script</b> para pasar c&#243;digo fuente <b>Python</b> (<b>.py</b>) a formato <b>HTML</b> (y de esta manera mostrar dicho c&#243;digo en una p&#225;gina <b>web</b>). Adem&#225;s vamos a darle &nbsp;<i><span class="Apple-style-span" style="color: #990000;">coloraci&#243;n</span></i>&nbsp;al c&#243;digo <b>Python</b>. Debe de haber formas m&#225;s simples, sin duda, de resolver este tipo de problem&#225;ticas, ... a m&#237; se me ha ocurrido esta.<br /><br />Como siempre, el fichero <b>.py</b> que contiene el <b>script</b> se puede obtener del repositorio de este <b>blog</b>, en:<br /><br /><a href="https://sites.google.com/site/elviajedelnavegante/">https://sites.google.com/site/elviajedelnavegante/</a><br /><br />El fichero se llama <b>mi_tokenize.zip</b>, el cual contiene el script<b> mi_tokenize.py</b>.<br /><br />En este problema no se ha utilizado programaci&#243;n orientada a objetos, esto es, no se implementa ninguna clase. Todo se resuelve con programaci&#243;n imperativa (mediante funciones).<br /><br /><span class="Apple-style-span" style="color: #990000; font-size: x-large;"><b>Al grano...</b></span><br /><br />El funcionamiento es sencillo, en t&#233;rminos generales. De lo que se trata es que, a partir de un fichero de c&#243;digo fuente<b> Python</b>, se genera otro (con extensi&#243;n html) con c&#243;digo <b>HTML</b>, que representa el c&#243;digo <b>Python</b> formateado (con indentaci&#243;n y coloreado de c&#243;digo).<br /><br />Un ejemplo ser&#237;a el siguiente:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://lh6.googleusercontent.com/-SSI6IRzRJLM/TYjX9l4vgcI/AAAAAAAABQM/mkxupdEzbmI/s1600/python_a_html1.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://lh6.googleusercontent.com/-SSI6IRzRJLM/TYjX9l4vgcI/AAAAAAAABQM/mkxupdEzbmI/s1600/python_a_html1.png" /></a></div><br />La captura de arriba es del <b>Stani's Python Editor</b>. Abajo nos encontramos el mismo c&#243;digo, formateado en <b>HTML</b> y coloreado, en <b>Firefox</b>.<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://lh3.googleusercontent.com/-mULfi5BleSU/TYjX_xJjftI/AAAAAAAABQQ/mn_DjgkeHdA/s1600/python_a_html2.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="537" src="https://lh3.googleusercontent.com/-mULfi5BleSU/TYjX_xJjftI/AAAAAAAABQQ/mn_DjgkeHdA/s640/python_a_html2.png" width="640" /></a></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;"><b><span class="Apple-style-span" style="color: #990000; font-size: x-large;">&#191;C&#243;mo enfocar el problema?</span></b></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Pasar c&#243;digo <b>Python</b> a <b>html</b> es casi trivial. &#218;nicamente hay que abrir un fichero <b>.py</b>, leerlo, crear otro fichero con una cabecera<b> html</b>, incluir dicho c&#243;digo <b>Python</b> y cerrar el <b>html</b>. Listo, ya tenemos el c&#243;digo en una p&#225;gina web.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">El verdadero problema es el coloreado del c&#243;digo, ya que se tiene que identificar los diferentes bloques de c&#243;digo a los que se quieren dar color. En nuestro caso, daremos color a los <i><u>comentarios</u></i>, a las<i><u> cadenas</u></i> y a las <i><u>palabras clave</u></i> de la versi&#243;n que utilicemos de <b>Python</b>.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">&#191;C&#243;mo hacerlo? Mediante los m&#243;dulos&nbsp;<b>cStringIO</b> y <b>tokenize</b>, que se pueden encontrar en cualquier distribuci&#243;n de <b>Python</b>.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;"><b>cStringIO</b> sirve para crear, a partir de una cadena, un buffer de cadena. <b>tokenize</b> es el m&#243;dulo que nos permite analizar c&#243;digo <b>Python</b> e identificar componentes del mismo (comentarios, cadenas, etc) a partir de un buffer de cadena. Mejor lo vemos con los pasos que debe de dar nuestro script:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">1) Cargamos en memoria un fichero <b>.py</b> con el m&#233;todo <b>read()</b> de <b>open</b>.&nbsp;</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">2) Mediante <b>cStringIO</b> creamos un fichero en memoria &#243; buffer de cadena, el cual es necesario para utilizar el <b>tokenize</b>. En realidad esto sirve para iterar, l&#237;nea a l&#237;nea sobre una cadena con varias l&#237;neas (con saltos de l&#237;nea). Por ejemplo:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;"></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: blue;">import cStringIO</span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: blue;"><br /></span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: blue;">cadena = '''</span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: blue;">Este es un ejemplo</span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: blue;">de la potencia del</span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: blue;">m&#243;dulo cStringIO</span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: blue;">'''</span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: blue;"><br /></span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: blue;">texto = cStringIO.StringIO(cadena)</span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: blue;">for i in texto: print i</span></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Devuelve:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;"></div><div class="separator" style="clear: both; text-align: left;"></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: orange;">Este es un ejemplo</span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: orange;">de la potencia del</span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: orange;">m&#243;dulo cStringIO</span></div><br /><div class="separator" style="clear: both; text-align: left;">3) Mediante <b>tokenize</b>, y a partir del buffer de cadena creado en el paso anterior, podemos obtener los token (elementos de c&#243;digo), iterando sobre ellos, e identificando los elementos de c&#243;digo <b>Python</b>.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">En la documentaci&#243;n de <b>Python</b> ten&#233;is una explicaci&#243;n muy buena (en ingl&#233;s) de estos dos m&#243;dulos:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;"><a href="http://docs.python.org/library/stringio.html#module-cStringIO">http://docs.python.org/library/stringio.html#module-cStringIO</a></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;"><a href="http://docs.python.org/library/tokenize.html">http://docs.python.org/library/tokenize.html</a></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Puff!!! Una explicaci&#243;n algo extra&#241;a. Ve&#225;moslo con un ejemplo. Imaginemos que hemos cargado mediante el m&#233;todo<b> read()</b> de <b>open</b> un fichero con c&#243;digo <b>Python</b> con el siguiente contenido:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;"></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: #274e13;"># -*- coding: utf-8 -*-</span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: #274e13;"># C&#243;digo Python.</span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: #274e13;">for i in range(0,5):</span></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: #274e13;">&nbsp;&nbsp;print "N&#250;mero ", i</span></div><br /><div class="separator" style="clear: both; text-align: left;">Mediante los pasos anteriores vamos a identificar los elementos del c&#243;digo, a saber, comentarios, palabras clave y cadenas. El c&#243;digo que har&#237;a esta operaci&#243;n podr&#237;a ser el siguiente:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;"></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: #990000;"># Creamos buffer de cadena.</span></div><div class="separator" style="clear: both; text-align: left;">texto =<span class="Apple-style-span" style="color: purple;"> cStringIO.StringIO(</span>cadena<span class="Apple-style-span" style="color: purple;">)</span></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;"><span class="Apple-style-span" style="color: #990000;"># Creamos tokens.</span></div><div class="separator" style="clear: both; text-align: left;">tokens = <span class="Apple-style-span" style="color: purple;">tokenize.generate_tokens(</span>texto.readline<span class="Apple-style-span" style="color: purple;">)</span></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">for a,b,c,d,_ in tokens:</div><div class="separator" style="clear: both; text-align: left;">&nbsp;&nbsp;if a == <span class="Apple-style-span" style="color: purple;">tokenize.STRING</span>:</div><div class="separator" style="clear: both; text-align: left;">&nbsp;&nbsp; &nbsp;print "Cadena: %s en posici&#243;n [%s,%s]" %( b,c,d)&nbsp;</div><div class="separator" style="clear: both; text-align: left;">&nbsp;&nbsp;if a == <span class="Apple-style-span" style="color: purple;">tokenize.NAME</span> and <span class="Apple-style-span" style="color: magenta;">b in keyword.kwlist</span>:</div><div class="separator" style="clear: both; text-align: left;">&nbsp;&nbsp; &nbsp;print "Palabra clave: %s en posici&#243;n [%s,%s]" % (b,c,d)</div><div class="separator" style="clear: both; text-align: left;">&nbsp;&nbsp;if a == <span class="Apple-style-span" style="color: purple;">tokenize.COMMENT</span>:</div><div class="separator" style="clear: both; text-align: left;">&nbsp;&nbsp; &nbsp;print "Comentario: %s en posici&#243;n [%s,%s]" % (b,c,d)</div><br /><div class="separator" style="clear: both; text-align: left;">Dando como resultado:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;"></div><div class="separator" style="clear: both; text-align: left;">Comentario: <b># -*- coding: utf-8 -*-</b> en posici&#243;n [(1, 0),(1, 23)]</div><div class="separator" style="clear: both; text-align: left;">Comentario: <b># C&#243;digo Python.</b> en posici&#243;n [(2, 0),(2, 17)]</div><div class="separator" style="clear: both; text-align: left;">Palabra clave: <b>for</b> en posici&#243;n [(3, 0),(3, 3)]</div><div class="separator" style="clear: both; text-align: left;">Palabra clave: <b>in</b> en posici&#243;n [(3, 6),(3, 8)]</div><div class="separator" style="clear: both; text-align: left;">Palabra clave: <b>print</b> en posici&#243;n [(4, 2),(4, 7)]</div><div class="separator" style="clear: both; text-align: left;">Cadena: <b>"N&#250;mero "</b> en posici&#243;n [(4, 8),(4, 18)]</div><br /><div class="separator" style="clear: both; text-align: left;">Por tanto, mediante el m&#243;dulo <b>tokenize</b> podemos identificar todos los elementos de los que se compone un c&#243;digo <b>Python</b>. La idea fundamental es esta. Aparte, mediante operaciones de transformaci&#243;n entre listas y cadenas, y dem&#225;s operaciones se llega al resultado esperado.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">&#191;Y c&#243;mo se colorea el texto? Pues mediante c&#243;digo <b>HTML</b> del tipo:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="https://lh5.googleusercontent.com/-N9sbQmdCOWI/TYkD-ofNFiI/AAAAAAAABQU/oTghaUWJAkc/s1600/span.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://lh5.googleusercontent.com/-N9sbQmdCOWI/TYkD-ofNFiI/AAAAAAAABQU/oTghaUWJAkc/s1600/span.png" /></a></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">As&#237; el otro h&#225;ndicap es que a partir de las coordenadas de los elementos de c&#243;digo a colorear hay que insertar c&#243;digo <b>HTML</b>.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;"><b><span class="Apple-style-span" style="color: #990000; font-size: x-large;">El script mi_tokenize.py</span></b></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Tal como antes se ha comentado, el lector puede obtener el c&#243;digo de este <b>script</b> en el repositorio de <a href="https://sites.google.com/site/elviajedelnavegante/">El viaje del navegante</a>. Aqu&#237; se presentan capturas de pantalla del c&#243;digo, debido principalmente a que se utiliza sintaxis <b>html</b> en el c&#243;digo <b>Python</b>, y no mezclar cosas.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">M&#243;dulos que se cargan y estructuras que se definen:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="https://lh4.googleusercontent.com/-krBypFRO2hE/TYkHtM06NNI/AAAAAAAABQc/6KZhEWOLotE/s1600/c0.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://lh4.googleusercontent.com/-krBypFRO2hE/TYkHtM06NNI/AAAAAAAABQc/6KZhEWOLotE/s1600/c0.png" /></a></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Importamos los m&#243;dulos necesarios y creamos un diccionario para colorear los elementos de c&#243;digo <b>Python</b>.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">El c&#243;digo principal que ejecuta el script:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="https://lh3.googleusercontent.com/-kWDklm11w7Q/TYkGRFC1nbI/AAAAAAAABQY/78TOdt08Lfk/s1600/c1.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://lh3.googleusercontent.com/-kWDklm11w7Q/TYkGRFC1nbI/AAAAAAAABQY/78TOdt08Lfk/s1600/c1.png" /></a></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Podemos observar que el <b>script</b> pide dos argumentos para funcionar, el primero el fichero <b>Python</b> y el segundo el nombre del fichero <b>html</b> que se generar&#225; (se le da extensi&#243;n <b>.html</b> si esta se omite) . A continuaci&#243;n llamamos a la funci&#243;n <i>cargar_fichero</i> que devuelve, mediante <b>read()</b> una cadena con el contenido del fichero. Finalmente, mediante la funci&#243;n <i>tokenizar_codigo</i> se crea una cadena con sintaxis <b>html</b> y <b>Python</b>, que se guarda en el fichero identificado por <i>f_html_nombre</i>.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Funci&#243;n para cargar el fichero <b>.py</b>:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="https://lh6.googleusercontent.com/-n3eVvQbSvt0/TYkIYZf7Z_I/AAAAAAAABQg/yTCA4aK4od0/s1600/c2.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://lh6.googleusercontent.com/-n3eVvQbSvt0/TYkIYZf7Z_I/AAAAAAAABQg/yTCA4aK4od0/s1600/c2.png" /></a></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Darse cuenta que reemplazamos ciertos caracteres especiales en <b>html</b>.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">La funci&#243;n que analiza el c&#243;digo creando una cadena con <b>html</b> y c&#243;digo <b>Python</b> es la siguiente:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="https://lh4.googleusercontent.com/-UYZuMH44di4/TYkJO2rTFVI/AAAAAAAABQk/V7DSqTXCxTE/s1600/c3.png" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="https://lh4.googleusercontent.com/-UYZuMH44di4/TYkJO2rTFVI/AAAAAAAABQk/V7DSqTXCxTE/s1600/c3.png" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://lh5.googleusercontent.com/-Vqc1No6nfiE/TYkJRWEmWPI/AAAAAAAABQo/UF8-Ig6WTUI/s1600/c4.png" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="https://lh5.googleusercontent.com/-Vqc1No6nfiE/TYkJRWEmWPI/AAAAAAAABQo/UF8-Ig6WTUI/s1600/c4.png" /></a></div><div class="separator" style="clear: both; text-align: left;">Esta funci&#243;n podr&#237;a haberse escrito de otra forma, para ahorrar c&#243;digo, pero me ha parecido m&#225;s pedag&#243;gico realizarlo de esta forma. Como se puede observar se utilizan <b>cStringIO</b> y <b>tokenize</b>. Devuelve una cadena con c&#243;digo <b>html</b>. Esta &#250;ltima funci&#243;n utiliza dos funciones auxiliares, a saber:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">La funci&#243;n para insertar los elementos de <b>html</b>:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="https://lh3.googleusercontent.com/-CSPaCzYwpJk/TYkLTCAZ-ZI/AAAAAAAABQs/YvN0I2b7Owo/s1600/c5.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://lh3.googleusercontent.com/-CSPaCzYwpJk/TYkLTCAZ-ZI/AAAAAAAABQs/YvN0I2b7Owo/s1600/c5.png" /></a></div><br />Y la funci&#243;n para incluir la cabecera y pie del documento de la p&#225;gina <b>web</b>:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://lh3.googleusercontent.com/-zDHj74ZSbbM/TYkLTu-z2ZI/AAAAAAAABQw/rxPjjLXDN-s/s1600/c6.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://lh3.googleusercontent.com/-zDHj74ZSbbM/TYkLTu-z2ZI/AAAAAAAABQw/rxPjjLXDN-s/s1600/c6.png" /></a></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Pero como no es lo mismo andar el camino que conocer el camino, es mejor probar el<b> script</b>. El lector puede pensar que ser&#237;a mucho mejor utilizar <b>CSS</b> para estos menesteres, y en cierta manera, es verdad, pero no es objetivo de este post hacer un tratado sobre <b>web</b> y<b> CSS</b>. Lo verdaderamente importante es el parseo de c&#243;digo <b>Python</b> y el tratamiento de cadenas.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Se insta al lector a mejorar el c&#243;digo.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Saludos.</div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-02-25.html">&lt;</a></td>
+<td class="cal-month" colspan="5">marzo 2011</td>
+<td class="cal-next"><a href="index-2011-04-18.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><a class="cal-link" href="index-2011-03-01.html">01</a></td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td></tr>
+<tr class="cal-week">
+<td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td></tr>
+<tr class="cal-week">
+<td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day"><a class="cal-link" href="index-2011-03-16.html">16</a></td><td class="cal-day"><a class="cal-link" href="index-2011-03-17.html">17</a></td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td></tr>
+<tr class="cal-week">
+<td class="cal-day">21</td><td class="cal-day"><strong class="cal-current">22</strong></td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td></tr>
+<tr class="cal-week">
+<td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

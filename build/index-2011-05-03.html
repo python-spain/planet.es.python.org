@@ -1,0 +1,964 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>martes, 03 mayo</h2>
+<div class="time">
+<h3>22:35</h3>
+<div class="item feed-5fd98f4c feed-{feed_id}" id="item-c45fe85c">
+<p class="itemheader">
+<span class="itemtitle">
+    Uno y uno = diez:
+<a href="https://unoyunodiez.com/2011/05/03/django-en-cero-coma-ii/">Django 1.3 en &#8220;cero coma&#8221; II</a></span>
+</p>
+    <div class="itemdescription">
+    <p style="text-align: justify;">La <a href="https://unoyunodiez.com/2011/05/03/django-en-cero-coma-i/" title="Django en &#8220;cero coma&#8221;&#160;I">primera entrega de este tutorial</a> sirvi&#243; para introducir en 10 pasos algunos aspectos interesantes de Django 1.3. en esta segunda parte vamos a tratar de ser m&#225;s caseros, programando un poco m&#225;s pero utilizando correctamente el framework. Aqu&#237; ten&#233;is un resumen:</p>
+<ol style="text-align: justify;">
+<li>A&#241;adiremos un propietario al modelo</li>
+<li>Mejoraremos la administraci&#243;n de posts</li>
+<li>Implementaremos un sistema de comentarios</li>
+<li>Retocaremos el administrador para gestionar los post y comentarios</li>
+<li>Implementaremos un formulario de b&#250;squeda muy sencillo</li>
+</ol>
+<h2 style="text-align: justify;"><span id="more-556"></span>0.- Estilizando la p&#225;gina</h2>
+<p style="text-align: justify;">Asumiremos que hemos seguido la primera parte del tutorial r&#225;pido de Django. Estamos creando un blog de funcionalidad b&#225;sica y vamos a estilizarlo un poco a&#241;adiendo una hoja de estilo CSS3 para mejorar el aspecto gr&#225;fico del mismo. Para ello, edita un archivo <strong>style.css</strong> dentro de la carpeta <strong>staticfiles</strong> del proyecto y copia el siguiente contenido:</p>
+<pre class="brush: css; title: ; notranslate">
+@font-face { font-family: myScript; src: url('SCRIPTIN.ttf'); }
+body, p, td, th { font-family:&quot;Times New Roman&quot;, times, serif; }
+body { background-color:#f4e0b4; margin:4em; margin-top:0; }
+body &gt; header { font-family:myScript; font-size:20pt; border-bottom:2px solid black; }
+body &gt; header &gt; h1 { margin-top:0; }
+body &gt; header &gt; h1 a { margin:0; color:#333; text-decoration:none; }
+.post p { text-indent:4ex; text-align:justify; }
+.post aside p { font-style:italic; text-align:right; }
+.post header a { font-family:sans; color:#333; text-decoration:none; }
+.post header a:hover { color:#f4e0b4; text-shadow:0 1px 1px #333, 1px 0 1px #333, -1px 0 1px #333, 0 -1px 1px #333, -1px 1px 1px #333, -1px 1px 1px #333, -1px -1px 1px #333; font-size:1.1em; }
+#comments { color:#333; }
+#comments article { border:1px solid black; border-radius:5px 5px; box-shadow:5px 5px 5px #888; margin:1em; padding:1em; }
+#comments article p.owner { text-align:center; }
+#comments article aside p { text-align:right; font-style:italic; }
+.errorlist { background-color:#f44; color:white; padding:0.25em; font-weight:bold; font-style:italic; font-family:sans; list-style:none;}
+label { display:block; margin-top:1em;}
+</pre>
+<p style="text-align: justify;">Necesitareis situar la <a href="http://img.dafont.com/dl/?f=scriptina">fuente Scriptina</a> en la carpeta <strong>staticfiles</strong> tambi&#233;n.</p>
+<h2 style="text-align: justify;">1.- Modificando el modelo</h2>
+<p style="text-align: justify;">La modificaci&#243;n de modelos es normal en proyectos grandes. En este caso, por ejemplo, los posts podr&#237;an tener un propietario lo que permitir&#237;a en un futuro identificar al autor de un art&#237;culo adem&#225;s de asegurar que los mismos s&#243;lo fueran editados por sus leg&#237;timos propietarios.</p>
+<p style="text-align: justify;">Editaremos el archivo <strong>models.py</strong> de la aplicaci&#243;n posts y a&#241;adiremos la siguiente l&#237;nea debajo de <em>publication_date</em>:</p>
+<pre class="brush: python; title: ; notranslate">
+owner = models.ForeignKey(auth.models.User)
+</pre>
+<p style="text-align: justify;">Comprobamos c&#243;mo <em>User</em> no es m&#225;s que otro modelo de la aplicaci&#243;n <em>auth</em> que proporciona el framework.</p>
+<p style="text-align: justify;">Ahora tenemos que actualizar la base de datos para lo que debemos indicar a <strong>south</strong> que realice otro snapshot y luego migrar a &#233;l. Para ello, escribimos:</p>
+<pre>$ ./manage schemamigration posts --auto</pre>
+<p style="text-align: justify;">El par&#225;metro <em>auto</em> indica que queremos que sea <strong>south</strong> quien se de cuenta de los cambios realizados. Al ejecutar el comando se nos explicar&#225; que el campo es no nulo (por defecto) y nuevo por lo que necesita un valor por defecto. Seleccionamos la opci&#243;n 2 para especificarlo manualmente y luego 1 (el administrador por defecto tiene clave 1).</p>
+<p style="text-align: justify;">Ahora aplicamos el snapshot mediante:</p>
+<pre>$ ./manage migrate posts</pre>
+<p style="text-align: justify;">Podemos comprobar que todos los posts tienen ahora propietario ejecutando el servidor y desde el panel de administraci&#243;n.</p>
+<h2 style="text-align: justify;">2.- Mejorando la administraci&#243;n de posts</h2>
+<p style="text-align: justify;">Podemos mejorar la forma en la que se editan los posts en el administrador registrando, junto al modelo, un <strong>modelo de administraci&#243;n</strong>. Para ello, editaremos el archivo <strong>admin.py</strong> de la aplicaci&#243;n posts y lo dejaremos de la siguiente manera:</p>
+<pre class="brush: python; title: ; notranslate">
+from posts.models import Post
+from django.contrib import admin
+
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'briefing', 'publication_date', 'owner')
+
+    list_filter = ['publication_date']
+
+    date_hierarchy = 'publication_date'
+
+    search_fields = ['title', 'content', 'owner__username', 'owner__first_name', 'owner__last_name']
+
+    prepopulated_fields = { 'machine_name' : ('title', ) }
+
+admin.site.register(Post, PostAdmin)
+</pre>
+<p style="text-align: justify;">Los distintos campos merecen una explicaci&#243;n:</p>
+<ul style="text-align: justify;">
+<li><em>list_display</em> establece qu&#233; campos veremos en la lista de posts</li>
+<li><em>list_filter</em> a&#241;ade a la derecha un filtro por fecha</li>
+<li><em>date_hierarchy</em> permite establecer la jerarqu&#237;a de fechas que aparece sobre el cuadro de b&#250;squeda</li>
+<li><em>search_fields</em> indica d&#243;nde se buscar&#225; el texto introducido en el cuadro de b&#250;squeda (no podemos especificar funciones, s&#243;lo campos)</li>
+<li><em>prepopulated_fileds</em> se utiliza para poblar algunos campos en funci&#243;n de otros</li>
+</ul>
+<p style="text-align: justify;">La notaci&#243;n &#8216;__&#8217; se utiliza para alcanzar las propiedades de otros objetos. As&#237; &#8216;<em>owner__firstname</em>&#8216; es el equivalente de<em> owner.first_name</em> y <em>&#8216;owner__last_name</em>&#8216;, de <em>owner.last_name</em></p>
+<p style="text-align: justify;">Fij&#233;monos por &#250;ltimo que la l&#237;nea que registra <em>Post</em> en el administrador incluye ahora el modelo de administraci&#243;n tambi&#233;n.</p>
+<p style="text-align: justify;">Podemos probar el nuevo administrador arracando el servidor.</p>
+<h2 style="text-align: justify;">3.- Un sistema de comentarios</h2>
+<p style="text-align: justify;">Resulta que Django ya tiene una aplicaci&#243;n de comentarios. No obstante, con el fin de ilustrar m&#225;s aspectos del framework, vamos a implementar un peque&#241;o sistema de comentarios sin necesidad de registro por nosotros mismos.</p>
+<p style="text-align: justify;">Lo primero ser&#225; crear el modelo, para lo cual a&#241;adimos a <strong>models.py</strong>:</p>
+<pre class="brush: python; title: ; notranslate">
+class Commentary(models.Model):
+
+    post = models.ForeignKey(Post)
+
+    content = models.TextField()
+
+    publication_date = models.DateTimeField(auto_now_add=True)
+
+    owner = models.CharField(max_length=50, default='El hombre invisible')
+
+    def __unicode__(self):
+        return self.owner + '@' + unicode(self.post)
+
+    class Meta:
+        verbose_name_plural = 'commentaries'
+        ordering = ['-publication_date']
+</pre>
+<p style="text-align: justify;">Los comentarios pertenecen a un post, y podemos reflejar este hecho mediante un campo <em>ForeignKey</em>. El valor del par&#225;metro <em>default</em> en <em>owner</em> indica qu&#233; valor deber&#225; grabarse en la base de datos en caso que el usuario no especifique ninguno. El campo <em>verbose_name_plural</em>, dentro de la clase interna <em>Meta</em>, indica el nombre &#8220;humanizado&#8221;, en plural, de la clase.</p>
+<p style="text-align: justify;">Antes de continuar, debemos crear una nueva instantanea y aplicarla mediante <strong>south</strong>:</p>
+<pre>$ ./manage.py schemamigration posts --auto
+$ ./manage.py migrate posts</pre>
+<h3 style="text-align: justify;">El formulario para agregar comentarios</h3>
+<p style="text-align: justify;">Ahora definiremos el formulario para agregar comentarios. Los formularios son colecciones de campos. Como precisamente el modelo <em>Commentary</em> que acabamos de definir ya especifica los campos de un objeto de clase <em>Commentary</em>, utilizaremos la clase <em>ModelForm</em> para evitar redefinir dichos campos. Para ello crearemos un nuevo archivo <strong>forms.py</strong> dentro de la aplicacion <strong>posts</strong> con el siguiente contenido:</p>
+<pre class="brush: python; title: ; notranslate">
+from django import forms
+from posts.models import Commentary
+
+class AddCommentaryForm(forms.ModelForm):
+    class Meta:
+        model = Commentary
+        fields = ('owner', 'content')
+</pre>
+<p style="text-align: justify;">La propiedad <em>fields</em> permite indicar el orden de los campos que ser&#225;n mostrados en el formulario. Faltar&#237;an<em> publication_date</em> (que se a&#241;ade autom&#225;ticamente) y <em>post</em> pero no necesitamos que el usuario especifique a qu&#233; post pertenecer&#225; el comentario. Este ser&#225; el que en ese momento estemos mostrando.</p>
+<h3 style="text-align: justify;">La vista del post</h3>
+<p style="text-align: justify;">Vamos a crear una vista para presentar un s&#243;lo post y sus comentarios. Para ello modificaremos el archivo <strong>views.py</strong> de la aplicaci&#243;n <strong>posts</strong>. Esta vista estar&#225; muy personalizada. Comenzaremos importando <em>TemplateView</em> al comienzo del archivo:</p>
+<pre class="brush: python; title: ; notranslate">
+from django.views.generic import ListView, TemplateView
+</pre>
+<p style="text-align: justify;">Y a&#241;adiremos la nueva vista tal y como sigue:</p>
+<pre class="brush: python; title: ; notranslate">
+class PostDetails(TemplateView):
+    template_name='postdetails.html'
+
+    def get_post(self, slug):
+        return Post.objects.get(pk=slug)
+
+    def get_form(self, post):
+        if self.request.method == 'POST':
+            form = AddCommentaryForm(self.request.POST)
+            if form.is_valid():
+                post.commentary_set.add(form.save(commit=False))
+            form = AddCommentaryForm()
+
+        else:
+            form = AddCommentaryForm()
+
+        return form
+
+    def get_context_data(self, **kwargs):
+        context = super(PostDetails, self).get_context_data(**kwargs)
+
+        post = self.get_post(kwargs['slug'])
+        form = self.get_form(post)
+
+        context.update({'form':form, 'post':post})
+
+        return context
+
+     def post(self, request, *args, **kwargs):
+         context = self.get_context_data(**kwargs)
+         return self.render_to_response(context)
+</pre>
+<p style="text-align: justify;">Esta vista ya tiene m&#225;s chicha. Primero, el m&#233;todo <em>get_post()</em> recupera un &#250;nico objeto (el m&#233;todo <em>get</em> s&#243;lo recupera objetos &#250;nicos, si hubiese una ambig&#252;edad se lanzar&#237;a una excepci&#243;n), aquel cuya <em>public key</em> (par&#225;metro <em>pk</em>) sea igual al par&#225;metro <em>slug</em>.</p>
+<p style="text-align: justify;">La funci&#243;n <em>get_form()</em> es m&#225;s elaborada. Primero se comprueba si existen datos enviados como POST. Si no es as&#237;, se crea un formulario vac&#237;o. En caso contrario crearemos un formulario con los datos pasados por POST. El objeto formulario es inmutable, una vez construido no puede modificarse. Cuando se construye un formulario, se valida autom&#225;ticamente y la informaci&#243;n se normaliza, crandose campos internos para albergar los problemas que hubiesen podido detectarse-</p>
+<p style="text-align: justify;">A continuaci&#243;n comprobamos si es v&#225;lido. El m&#233;todo <em>save</em> devuelve el objeto <em>Commentary</em> asociado al formulario y lo introduce en la base de datos. El problema es que, al no especificar el campo post, el modelo est&#225; incompleto y Django no nos permitir&#225; grabarlo en la base de datos. Tendremos que completarlo primero.</p>
+<p style="text-align: justify;">El par&#225;metro <em>commit=false</em> evita, precisamente, que el objeto se grabe en la base de datos aunque el m&#233;todo <em>save</em> seguir&#225; devolviendo el objeto asociado. La propiedad <em>commentary_set</em>, disponible en la clase <em>Post</em> por el mero hecho de tener una relaci&#243;n desde <em>Commentary</em>, es una <strong>relaci&#243;n inversa</strong> (<strong>backward relation</strong>). Las relaciones inversas se crean autom&#225;ticamente en la clase referenciada por una <em>ForeignKey</em>. Al a&#241;adir un objeto a <em>commentary_set</em>, la propiedad de la clase <em>Commentary</em> que establece la relaci&#243;n (en este caso, <strong>post</strong>) se establece autom&#225;ticamente al objeto propietario del conjunto.</p>
+<p style="text-align: justify;">Tras salvarlo devolveremos un formulario vac&#237;o.</p>
+<p style="text-align: justify;">El m&#233;todo <em>get_context_data()</em> nos permite definir los objetos del contexto. Para ello, dejaremos que la superclase <em>TemplateView</em> realice su trabajo y luego actualizaremos el objeto diccionario para incluir el <strong>post</strong> y el <strong>formulario</strong>. Cabe destacar el uso de kwargs para obtener el par&#225;metro de URL &#8216;<em>slug</em>&#8216;. Veremos c&#243;mo pasar par&#225;metros a las URLs en breves momentos.</p>
+<p style="text-align: justify;">Por &#250;ltimo, el m&#233;todo <em>post()</em> se debe definir para que la vista sea capaz de procesar datos env&#237;ados en POST puesto que, por alguna raz&#243;n, la vista <em>TemplateView</em> s&#243;lo maneja datos enviados mediante GET.</p>
+<p style="text-align: justify;">El pen&#250;ltimo paso ser&#225; a&#241;adir esta vista al archivo de URLs. As&#237; que editamos <strong>urls.py</strong> para que quede de la siguiente manera:</p>
+<pre class="brush: python; title: ; notranslate">
+from posts.views import PostList, PostDetails
+from django.conf.urls.defaults import patterns, include, url
+
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+# Examples:
+# url(r'^$', 'djangoblog.views.home', name='home'),
+# url(r'^djangoblog/', include('djangoblog.foo.urls')),
+
+# Uncomment the admin/doc line below to enable admin documentation:
+# url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+# Uncomment the next line to enable the admin:
+url(r'^admin/', include(admin.site.urls), name='adminpage'),
+
+url(r'^$', PostList.as_view(), name='mainpage'),
+url(r'^posts/', PostList.as_view(), name='postlist'),
+url(r'^post/(?P&lt;slug&gt;[a-zA-Z0-9_-]+)/', PostDetails.as_view(), name='postdetails'),
+)
+</pre>
+<p style="text-align: justify;">El fragmento de la expresion regular<em> (?P&lt;slug&gt;[a-zA-Z0-9_]+)</em> se denomina grupo con nombre. La expresi&#243;n regular del grupo comienza tras el s&#237;mbolo &gt; y el nombre es precisamente lo que se encuentra entre &lt; y &gt;. En este caso, <em>slug</em>. Es as&#237; como se proporcionan par&#225;metros a las vistas. Como dec&#237;amos, el m&#233;todo <em>get_contex_data()</em> utiliza el par&#225;metros <em>slug</em> que es justamente lo que proporcionamos.</p>
+<h3 style="text-align: justify;">El template del post</h3>
+<p style="text-align: justify;">Vamos ahora a escribir el template. Para ello, crea un nuevo archivo <strong>postdetails.html</strong> dentro de la carpeta <strong>templates</strong> del proyecto, con el siguiente contenido:</p>
+<pre class="brush: xml; title: ; notranslate">
+{% extends &quot;base.html&quot; %}
+
+{% block title %}{{ post.title|title }}{% endblock %}
+
+{% block content %}
+    &lt;a id=&quot;top&quot;&gt;&lt;/a&gt;
+
+    &lt;!-- Post --&gt;
+   {% include &quot;post.html&quot; %}
+   &lt;hr&gt;
+
+    &lt;!-- A&#241;adir comentario --&gt;
+    &lt;h2&gt;A&#241;adir comentario:&lt;/h2&gt;
+    &lt;a id=&quot;add_commentary&quot;&gt;&lt;/a&gt;
+
+    &lt;form action=&quot;{% url postdetails post.machine_name&#160; %}#add_commentary&quot; method=&quot;post&quot;&gt;
+        {{ form.as_p }}
+        &lt;p&gt;&lt;input type=&quot;submit&quot; value=&quot;Nuevo comentario&quot;&gt;&lt;/p&gt;
+    &lt;/form&gt;
+
+    &lt;!-- Comentarios&#160; --&gt;
+    &lt;h2&gt;Comentarios:&lt;/h2&gt;
+    &lt;a id=&quot;commentaries&quot;&gt;&lt;/a&gt;
+
+    &lt;section id=&quot;comments&quot;&gt;
+        {% if post.commentary_set.all %}
+            {% for commentary in post.commentary_set.all %}
+                &lt;article&gt;
+                    &lt;p&gt;{{ commentary.owner&#160; }} dijo&lt;/p&gt;
+                    &lt;cite&gt;{{ commentary.content }}&lt;/cite&gt;
+                    &lt;aside&gt;
+                    &lt;p&gt;A {{commentary.publication_date|date:&quot;r&quot;}} &lt;/p&gt;
+                    &lt;/aside&gt;
+                &lt;/article&gt;
+             {% endfor %}
+         {% else %}
+             &lt;p&gt;Todav&#237;a no hay comentarios...&lt;/p&gt;
+         {% endif %}
+      &lt;/section&gt;
+{% endblock %}
+</pre>
+<p style="text-align: justify;">Este nuevo template merece algunas explicaciones r&#225;pidas:</p>
+<ul style="text-align: justify;">
+<li>La etiqueta <em>{% include %}</em> se utiliza para incluir un documento externo. A este documento se le pasa el contexto actual y se interpreta como si fuera otra plantilla.</li>
+<li>El m&#233;todo <em>as_p()</em> del formulario se utiliza para volcar el formulario en p&#225;rrafos</li>
+<li>El m&#233;todo <em>all()</em> del conjunto <em>commentary_set</em> se utiliza para seleccionar todos sus elementos</li>
+<li>La etiqueta <em>{% if %} </em>permite tomar decisiones. En caso de que haya comentarios, los mostramos y, si no, indicamos que aun no hay comentarios.</li>
+</ul>
+<p style="text-align: justify;">Modificaremos el archivo <strong>postlist.html</strong> y copiaremos el contenido del bucle for en otro archivo al que llamaremos <em>post.html</em>. La plantilla <strong>postlist.html</strong> quedar&#225; as&#237;:</p>
+<pre class="brush: xml; title: ; notranslate">
+{% extends &quot;base.html&quot; %}
+
+{% block title %}Post list{% endblock %}
+
+{% block content %}
+&lt;section id=&quot;postlist&quot;&gt;
+
+{% for post in object_list %}
+{% include &quot;post.html&quot; %}
+{% endfor %}
+
+&lt;/section&gt;
+{% endblock %}
+</pre>
+<p style="text-align: justify;">Y, por &#250;ltimo, el fichero <strong>post.html</strong> contendr&#225; s&#243;lo la parte que muestra el post y algunas modificaciones para incluir los comentarios:</p>
+<pre class="brush: xml; title: ; notranslate">
+&lt;article&gt;
+    &lt;header&gt;
+        &lt;h2&gt;&lt;a href=&quot;{% url postdetails post.machine_name %}&quot;&gt;{{ post.title }}&lt;/a&gt;&lt;/h2&gt;
+    &lt;/header&gt;
+    &lt;section&gt;
+    {{ post.content|safe }}
+    &lt;/section&gt;
+    &lt;aside&gt;
+    {% with comcount=post.commentary_set.all.count %}
+        &lt;p&gt;&lt;a href=&quot;{% url postdetails post.machine_name %}#commentaries&quot;&gt;{{ comcount }} comentario{{comcount|pluralize}}&lt;/a&gt;&lt;/p&gt;
+    {% endwith %}
+    &lt;p&gt;Fecha de publicaci&#243;n: {{ post.publication_date|date:&quot;r&quot; }}&lt;/p&gt;
+    &lt;/aside&gt;
+&lt;/article&gt;
+</pre>
+<p style="text-align: justify;">Como &#250;ltimas explicaciones:</p>
+<ul style="text-align: justify;">
+<li>La etiqueta <em>{% with %}</em> permite definir nombres alternativos (variables nuevas) como en el caso de <em>comcount</em> para almacenar el n&#250;mero de comentarios de un post.</li>
+<li>El filtro <em>pluralize</em> a&#241;ade una &#8216;s&#8217; si la variable filtrada es distinta de 1.</li>
+</ul>
+<h2 style="text-align: justify;">4.- Gesti&#243;n de posts y comentarios</h2>
+<p style="text-align: justify;">Registraremos el modelo <em>Commentary</em> en la aplicaci&#243;n de administrador editando <strong>admin.py</strong> de la siguiente manera:</p>
+<pre class="brush: python; title: ; notranslate">
+from posts.models import Post, Commentary
+from django.contrib import admin
+
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'briefing', 'publication_date', 'owner')
+
+    list_filter = ['publication_date']
+
+    date_hierarchy = 'publication_date'
+
+    search_fields = ['title', 'content', 'owner__username', 'owner__first_name', 'owner__last_name']
+
+    prepopulated_fields = { 'machine_name' : ('title', ) }
+
+class CommentaryAdmin(admin.ModelAdmin):
+    list_display = ('owner', 'post', 'publication_date')
+
+    list_filter = ['publication_date', 'owner']
+
+    search_fields = ['owner', 'content', 'post__title']
+
+admin.site.register(Post, PostAdmin)
+admin.site.register(Commentary, CommentaryAdmin)
+</pre>
+<p style="text-align: justify;">Comprobar&#225;s que editar los comentarios es muy inc&#243;modo porque primero hay que localizar el post al que pertenece. Ser&#237;a mucho m&#225;s sencillo si pudi&#233;ramos editar el los comentarios de un post al mismo tiempo que el post en s&#237;.</p>
+<p style="text-align: justify;">Para ello volveremos a editar a<strong>dmin.py</strong> y crearemos un <strong>modelo de administraci&#243;n &#8220;en l&#237;nea&#8221;</strong> y le diremos al modelo de administraci&#243;n de post, <em>PostAdmin</em>, que lo incluya:</p>
+<pre class="brush: python; title: ; notranslate">
+from posts.models import Post, Commentary
+from django.contrib import admin
+
+class CommentaryInline(admin.StackedInline):
+    model = Commentary
+
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'briefing', 'publication_date', 'owner')
+
+    list_filter = ['publication_date']
+
+    date_hierarchy = 'publication_date'
+
+    search_fields = ['title', 'content', 'owner__username', 'owner__first_name', 'owner__last_name']
+
+    prepopulated_fields = { 'machine_name' : ('title', ) }
+
+    inlines = [ CommentaryInline ]
+
+class CommentaryAdmin(admin.ModelAdmin):
+    list_display = ('owner', 'post', 'publication_date')
+
+    list_filter = ['publication_date', 'owner']
+
+    search_fields = ['owner', 'content', 'post__title']
+
+admin.site.register(Post, PostAdmin)
+admin.site.register(Commentary, CommentaryAdmin)
+</pre>
+<p style="text-align: justify;">Hemos a&#241;adido la propiedad <em>inlines</em> a <em>PostAdmin</em> indicando un modelo de administraci&#243;n en l&#237;nea para los comentarios a trav&#233;s de la clase <em>CommentaryInline</em>.</p>
+<h2 style="text-align: justify;">5.- A&#241;adiendo la posibilidad de buscar</h2>
+<p style="text-align: justify;">Para terminar, vamos a a&#241;adir un formulario de b&#250;squeda. Para ello aplicaremos todo lo aprendido anteriormente e introduciremos el concepto de <strong>context processor </strong>o<strong> procesador de contexto</strong>. Un procesador de contexto no es m&#225;s que una funci&#243;n que acepta un objeto <em>request</em> y devuelve un diccionario que se a&#241;adir&#225; al contexto.</p>
+<p style="text-align: justify;">Utilizamos el procesador de contexto para a&#241;adir el formulario de b&#250;squeda a nuestros templates y no tener que reescribir el c&#243;digo de cada vista. Los procesadores de contexto son muy &#250;tiles para fragmentos de funcionalidad comunes a todas las p&#225;ginas.</p>
+<h3 style="text-align: justify;">El formulario de b&#250;squeda y el procesador de contexto</h3>
+<p style="text-align: justify;">Editaremos el archivo <strong>forms.py</strong> de la siguiente manera:</p>
+<pre class="brush: python; title: ; notranslate">
+from django import forms
+from posts.models import Commentary
+
+class AddCommentaryForm(forms.ModelForm):
+    class Meta:
+        model = Commentary
+        fields = ('owner', 'content')
+
+class SearchForm(forms.Form):
+    query = forms.CharField(min_length=3, required=False)
+</pre>
+<p style="text-align: justify;">Y ahora crearemos un nuevo archivo llamado<em> context.p</em>y con el siguiente contenido:</p>
+<pre class="brush: python; title: ; notranslate">
+from posts.forms import SearchForm
+
+def searchform(request):
+    if request.method == 'GET':
+        form = SearchForm(request.GET)
+
+    else:
+        form = SearchForm()
+
+    return { 'searchform' : form }
+</pre>
+<p style="text-align: justify;">Debemos editar el archivo de configuraci&#243;n, <em>settings.py</em>, para incluir la variable <strong>TEMPLATE_CONTEXT_PROCESSORS</strong>. Obtendremos los valores por defecto de la documentaci&#243;n de Django y a&#241;adiremos el nuestro:</p>
+<pre class="brush: python; title: ; notranslate">
+TEMPLATE_CONTEXT_PROCESSORS = (
+    &quot;django.contrib.auth.context_processors.auth&quot;,
+    &quot;django.core.context_processors.debug&quot;,
+    &quot;django.core.context_processors.i18n&quot;,
+    &quot;django.core.context_processors.media&quot;,
+    &quot;django.core.context_processors.static&quot;,
+    &quot;django.contrib.messages.context_processors.messages&quot;,
+    &quot;posts.context.searchform&quot;,
+)
+</pre>
+<p style="text-align: justify;">Para terminar con la integraci&#243;n del formulario de b&#250;squeda, modificaremos el template <em>base.html</em> para que quede as&#237;:</p>
+<pre class="brush: xml; title: ; notranslate">
+{% load static %}
+{% get_static_prefix as STATIC_URL %}
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Mi blog | {% block title %}Un t&#237;tulo gen&#233;rico{% endblock %}&lt;/title&gt;
+        &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;{{ STATIC_URL }}style.css&quot;&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;form action=&quot;{% url searchresults %}&quot; method=&quot;GET&quot;&gt;
+            &lt;p&gt;{{ searchform.query.errors }}&lt;/p&gt;
+            &lt;label&gt;Buscar: {{ searchform.query }}&lt;input type=&quot;submit&quot; value=&quot;Buscar&quot;&gt;&lt;/label&gt;
+        &lt;/form&gt;
+        &lt;header&gt;
+            &lt;h1&gt;&lt;a href=&quot;{% url mainpage %}&quot;&gt;Mi blog&lt;/a&gt;&lt;/h1&gt;
+        &lt;/header&gt;
+        {% block content %}Un contenido gen&#233;rico{% endblock %}
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<h3 style="text-align: justify;">La vista de resultados de b&#250;squeda</h3>
+<p style="text-align: justify;">De nuevo tendremos que crear crearemos un template, <em>searchresults.html</em>, con, por ejemplo, la siguiente estructura:</p>
+<pre class="brush: xml; title: ; notranslate">
+{% extends &quot;base.html&quot; %}
+
+{% block title %}Search results{% endblock %}
+
+{% block content %}
+
+{% if object_list %}
+&lt;h2&gt;Resultados:&lt;/h2&gt;
+{% for post in object_list %}
+{% include &quot;post.html&quot; %}
+{% endfor %}
+{% else %}
+&lt;p&gt;No hay resultados para la b&#250;squeda indicada&lt;/p&gt;
+{% endif %}
+
+{% endblock %}
+</pre>
+<p style="text-align: justify;">Tambi&#233;n crearemos la vista en <strong>views.py</strong> como sigue:</p>
+<pre class="brush: python; title: ; notranslate">
+from posts.forms import AddCommentaryForm, SearchForm
+...
+class SearchResults(ListView):
+    template_name = &quot;searchresults.html&quot;
+
+    def get_queryset(self):
+        if self.request.method == 'GET':
+            form = SearchForm(self.request.GET)
+            if form.is_valid():
+                query = form.cleaned_data['query']
+                results = Post.objects.filter(content__icontains=query)
+                return results
+
+        return Post.objects.none()
+</pre>
+<p style="text-align: justify;">Esta vista hereda de <em>ListView</em> como la vista <em>PostList</em> pero redefine el m&#233;todo <em>get_queryset()</em> para obtener el conjunto de resultados de la b&#250;squeda. En este caso tratamos de construir un formulario de b&#250;squeda v&#225;lido. Si el formulario valida, accedemos a la informaci&#243;n normalizada del formulario a trav&#233;s de la propiedad <em>cleaned_data</em>. Las validaciones y normalizaciones de los campos del formulario vienen dadas por los tipos de los campos definidos en la clase del formulario.</p>
+<p style="text-align: justify;">El resultado es un <strong>filtro</strong> de los objetos post que devolver&#225; aquellos que contengan, en su contenido, la cadena buscada. La propiedad <em>icontains</em> indica que se comparar&#225; sin atender a may&#250;sculas o min&#250;sculas.</p>
+<p style="text-align: justify;">Por &#250;ltimo, en <strong>urls.py</strong>, enlazaremos la vista con la URL como sigue:</p>
+<pre class="brush: python; title: ; notranslate">
+from posts.views import PostList, PostDetails, SearchResults
+from django.conf.urls.defaults import patterns, include, url
+
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+# Examples:
+# url(r'^$', 'djangoblog.views.home', name='home'),
+# url(r'^djangoblog/', include('djangoblog.foo.urls')),
+
+# Uncomment the admin/doc line below to enable admin documentation:
+# url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+# Uncomment the next line to enable the admin:
+url(r'^admin/', include(admin.site.urls), name='adminpage'),
+
+url(r'^$', PostList.as_view(), name='mainpage'),
+url(r'^posts/', PostList.as_view(), name='postlist'),
+url(r'^post/(?P&lt;slug&gt;[a-zA-Z0-9_-]+)/', PostDetails.as_view(), name='postdetails'),
+url(r'^search/', SearchResults.as_view(), name='searchresults'),
+)
+</pre>
+<p style="text-align: justify;">Hemos terminado&#8230; o no.</p>
+<h3 style="text-align: justify;">Una peque&#241;a mejora con objetos Q</h3>
+<p style="text-align: justify;">Nuestro buscador tiene un problema y es que en el momento que introduzacmos m&#225;s de una palabra, s&#243;lo mostrar&#225; los resultados que contengan la cadena de b&#250;squeda tal cual. Podr&#237;amos hacer que buscara el post que contuviese todas las palabras bien en su contenido, bien en el t&#237;tulo.</p>
+<p style="text-align: justify;">Para ello utilizaremos objetos Q. Importa el objeto y modifica el archivo <strong>views.py</strong>:</p>
+<pre class="brush: python; title: ; notranslate">
+from django.db.models import Q
+...
+class SearchResults(ListView):
+template_name = &quot;searchresults.html&quot;
+
+def get_queryset(self):
+if self.request.method == 'GET':
+form = SearchForm(self.request.GET)
+if form.is_valid():
+query = form.cleaned_data['query']
+words = query.split(' ')
+qobjects = [Q(content__icontains=w) | Q(title__icontains=w) for w in words]
+condition = reduce(lambda x,y:x&amp;y, qobjects)
+results = Post.objects.filter(condition)
+return results
+
+return Post.objects.none()
+</pre>
+<p style="text-align: justify;">En pocas palabras, los objetos Q se usan para construir las clausulas WHERE de SQL. Dos objetos Q pueden combinarse mediante | y &amp; para combinar condiciones mediante OR y AND respectivamente.</p>
+<p style="text-align: justify;">Lo que hemos hecho puede resumirse en:</p>
+<ol style="text-align: justify;">
+<li>Dividir la cadena de b&#250;squeda en palabras</li>
+<li>Crear un objeto Q por palabra con el significado &#8220;contenido contiene palabra O t&#237;tulo contiene palabra&#8221;</li>
+<li>Combinar todos los objetos Q en uno s&#243;lo para que busque los post que contengan TODAS las palabras</li>
+<li>Filtrar con este objeto Q</li>
+</ol>
+<p style="text-align: justify;">Y ahora s&#237;. Hemos terminado.</p>
+<h2 style="text-align: justify;">Conclusi&#243;n</h2>
+<p style="text-align: justify;">A lo largo de estos cinco puntos he tratado de exponer Django como herramienta al mismo tiempo que he terminado de presentar los aspectos m&#225;s importantes del framework. Mi idea era que vierais c&#243;mo <em>programar de verdad</em> con Django haciendo cosas un pel&#237;n fuera de lo com&#250;n.</p>
+<p style="text-align: justify;">Espero que os haya sido entretenido y si quer&#233;is saber m&#225;s cosas o ver c&#243;mo se puede codificar todo esto en una hora, os espero el d&#237;a <strong>5 de Mayo a las 18.00</strong> de la tarde en el <strong>aula 13</strong> de la <strong>Facultad de Inform&#225;tica de la UCM</strong>.</p>
+<p style="text-align: justify;">Si teneis cualquier problema, a los comentarios y si os quedais con ganas de que ense&#241;e algo m&#225;s, a los comentarios tambi&#233;n.</p>
+<p style="text-align: justify;">Hasta la pr&#243;xima.</p><br />  <a href="http://feeds.wordpress.com/1.0/gocomments/unoyunodiez.wordpress.com/556/" rel="nofollow"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/unoyunodiez.wordpress.com/556/" /></a> <img alt="" border="0" height="1" src="https://pixel.wp.com/b.gif?host=unoyunodiez.com&#038;blog=15323300&#038;post=556&#038;subd=unoyunodiez&#038;ref=&#038;feed=1" width="1" />
+    </div>
+</div></div>
+<div class="time">
+<h3>22:34</h3>
+<div class="item feed-5fd98f4c feed-{feed_id}" id="item-70267716">
+<p class="itemheader">
+<span class="itemtitle">
+    Uno y uno = diez:
+<a href="https://unoyunodiez.com/2011/05/03/django-en-cero-coma-i/">Django 1.3 en &#8220;cero coma&#8221; I</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Puedes encontrar una versi&#243;n actualizada de este tutorial en &#8217;<a href="https://unoyunodiez.com/2013/03/16/django-in-a-nutshell-i/" title="Django in a nutshell&#160;I">Django 1.5 in a nutshell I</a>&#8216; para <strong>Django 1.5</strong></p>
+<p style="text-align: justify;">Esta semana son las <strong><a href="http://www.gulucm.org/node/9" target="_blank">I Jornadas del Software Libre de la Facultad de Inform&#225;tica de la UCM</a></strong> y me toca dar un par de charlas. Una sobre lenguajes y paradigmas de programaci&#243;n y otra sobre framworks de programaci&#243;n de aplicaciones web. En especial, la charla tratar&#225; sobre <a href="http://www.rubyonrails.org.es/" target="_blank">Ruby on Rails</a> y <a href="http://www.djangoproject.com/" target="_blank">Django</a>. De la de Rails se encargar&#225; mi compa&#241;ero del Grupo de Usuarios de L&#237;nux de la Complutense y Vicepresidente de KDE Espa&#241;a, Rafael Fern&#225;ndez y de la de Django, un humilde servidor.</p>
+<p style="text-align: justify;">Resulta que Rails tiene un tutorial para desarrollar una <a href="http://guides.rubyonrails.org/getting_started.html" target="_blank">aplicaci&#243;n r&#225;pida de blog</a> que presenta las principales caracter&#237;sticas del framework y aunque el <a href="http://docs.djangoproject.com/en/1.3/intro/tutorial01/" target="_blank">tutorial de Django</a> es excelente y presenta muchas caracter&#237;sticas del software, yo necesito algo m&#225;s r&#225;pido, que me de tiempo a codificar en una hora que es lo que dura mi exposici&#243;n.</p>
+<p style="text-align: justify;">As&#237; que este post es eso, un tutorial r&#225;pido de Django donde desarrollar un <strong>blog muy sencillo</strong> y parecido al del tutorial de Rails, presentando las caracter&#237;sticas principales del lenguaje pudiendo desarrollarse en menos de una hora. Espero que lo disfruteis.</p>
+<h2 style="text-align: justify;"><span id="more-539"></span>0.- Requisitos previos</h2>
+<p style="text-align: justify;">Asumiremos que trabajamos en L&#237;nux, y que disponemmos de un int&#233;rprete <strong>Python 2.7</strong>, la base de datos <strong>sqlite3</strong> y el software de instalaci&#243;n de paquetes python <strong>easy_install</strong>. Tambi&#233;n vamos a asumir que hemos instalado correctamente <strong>Django 1.3</strong> bien desde el servicio de paquetes de nuestra distribuci&#243;n de Linux, bien desde el comprimido que encontraremos en la web del proyecto.</p>
+<p style="text-align: justify;">Con easy_install instalaremos <strong>south</strong>, la aplicaci&#243;n de migraci&#243;n de base de datos para Django, de la que hablaremos m&#225;s adelante. Bastar&#225; con escribir el siguiente comando (como administrador):</p>
+<pre># easy_install south</pre>
+<h2 style="text-align: justify;">1.- Configuraci&#243;n inicial</h2>
+<p style="text-align: justify;">Ahora s&#237;, el primer paso ser&#225; crear la aplicaci&#243;n con el comando <strong>django-admin.py</strong> (a veces se encuentra disponible sin la extensi&#243;n .py), as&#237; que tecleamos en una consola (no es necesario ser administrador):</p>
+<pre>$ django-admin.py startproject djangoblog</pre>
+<p style="text-align: justify;">Con esto habremos creado la carpeta blog que contiene la estructura principal de nuestro proyecto. Vamos a configurar el proyecto de cara a la primera ejecuci&#243;n de prueba, para ello editaremos el archivo <strong>settings.py</strong> que se encuentra en la carpeta del proyecto.</p>
+<p style="text-align: justify;">Aplicaremos unos truquitos que me ha ense&#241;ado la experiencia con Django y que hacen nuestras aplicaciones m&#225;s flexibles y reaprovechables.</p>
+<p style="text-align: justify;">Para empezar, a&#241;adiremos esto al comienzo del archivo:</p>
+<pre class="brush: python; title: ; notranslate">
+import os
+import sys
+PROJECT_PATH = os.path.dirname(&quot;__file__&quot;)
+sys.path.insert(0, PROJECT_PATH)
+</pre>
+<p style="text-align: justify;">Con ello creamos una nueva variable de configuraci&#243;n que guarda la ruta del proyecto, de manera que ahora podemos indicar el resto de rutas de forma relativa a la nueva variable. Adem&#225;s a&#241;adimos esta ruta al <em>path</em> de python lo que repercutir&#225; en ventajas futuras.</p>
+<p style="text-align: justify;">Lo siguiente ser&#225; configurar la base de datos, usaremos <strong>SQLite3</strong> por lo que modificaremos la variable DATABASES para que quede:</p>
+<pre class="brush: python; title: ; notranslate">
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': os.path.join(PROJECT_PATH, 'db/database.db'), # Or path to database file if using sqlite3.
+        'USER': '',&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; # Not used with sqlite3.
+        'PASSWORD': '',&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; # Not used with sqlite3.
+        'HOST': '',&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; # Set to empty string for default. Not used with sqlite3.
+     }
+}
+</pre>
+<p style="text-align: justify;">Tambi&#233;n modificaremos las siguientes variables:</p>
+<pre class="brush: python; title: ; notranslate">
+TIME_ZONE = 'Europe/Madrid'
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_PATH, 'staticfiles'),
+)
+
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_PATH, 'templates'),
+)
+
+MIDDLEWARE_CLASSES = (
+'django.middleware.common.CommonMiddleware',
+'django.contrib.sessions.middleware.SessionMiddleware',
+#&#160;&#160;&#160; 'django.middleware.csrf.CsrfViewMiddleware',
+'django.contrib.auth.middleware.AuthenticationMiddleware',
+'django.contrib.messages.middleware.MessageMiddleware',
+)
+
+INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
+    'south',
+)
+</pre>
+<p style="text-align: justify;">Y crearemos los direcorios <strong>db</strong>, <strong>staticfiles</strong> y <strong>templates</strong> a los que nos acabamos de referir mediante:</p>
+<pre style="text-align: justify;">$ mkdir db staticfiles templates</pre>
+<p style="text-align: justify;">Adem&#225;s, modificaremos el archivo <strong>urls.py</strong> descomentando las lineas que guarden relaci&#243;n con la herramienta de administraci&#243;n:</p>
+<pre class="brush: python; title: ; notranslate">
+from django.conf.urls.defaults import patterns, include, url
+
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+# Examples:
+# url(r'^$', 'djangoblog.views.home', name='home'),
+# url(r'^djangoblog/', include('djangoblog.foo.urls')),
+
+# Uncomment the admin/doc line below to enable admin documentation:
+# url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+# Uncomment the next line to enable the admin:
+url(r'^admin/', include(admin.site.urls)),
+)
+</pre>
+<h2 style="text-align: justify;">2.- Sincronizaci&#243;n de la base de datos</h2>
+<p style="text-align: justify;">Es hora de crear la base de datos para el proyecto actual. Puede parecer que no hemos hecho nada pero es que Django ya incluye algunas aplicaciones preinstaladas muy &#250;tiles como lo &#233;s la gesti&#243;n de usuarios y grupos. Para ello escribiremos primero:</p>
+<pre>$ chmod u+x manage.py
+$ ./manage.py syncdb</pre>
+<p style="text-align: justify;">La primera l&#237;nea otorga permisos de ejecuci&#243;n al archivo <strong>manage.py</strong> mientras que la segunda crear&#225; la base de datos al tiempo que nos preguntar&#225; por a&#241;adir un usuario administrador. Contestamos <em>yes</em>, respondemos a las preguntas pertinentes y listo.</p>
+<h2 style="text-align: justify;">3.- Probando el proyecto</h2>
+<p style="text-align: justify;">Podemostio&#160; escribir:</p>
+<pre>$ ./manage.py runserver</pre>
+<p style="text-align: justify;">y probar el servidor. Si todo est&#225; funcionando correctamente, al entrar en la URL provista por el script deber&#237;amos encontrar una p&#225;gina de error indicando que la URL no se corresponde con ninguna vista y proponiendo los patrones v&#225;lidos. Esto es as&#237; porque la variable DEBUG est&#225; establecida en <em>True</em>. Lo que s&#237; funcionar&#225; ser&#225; la <strong>direcci&#243;n /admin/</strong> que nos permitir&#225; acceder al sitio de administraci&#243;n. Modificaremos el usuario administrador para indicar nuestro <strong>nombre y apellidos</strong>.</p>
+<p style="text-align: justify;">Podemos <strong>detener el servidor pulsando Ctrl+C</strong> en la consola d&#243;nde lo estemos ejecutando.</p>
+<h2 style="text-align: justify;">4.- A&#241;adir una nueva aplicaci&#243;n</h2>
+<p style="text-align: justify;">Es hora de crear nuestra primera aplicaci&#243;n. Ser&#225; con la que gestionemos los posts del blog y se llamar&#225; (en un alarde de originalidad e ingenio) <em>posts</em>. Para ello escribiremos, dentro de la carpeta del poryecto, lo siguiente:</p>
+<pre>$ django-admin.py startapp posts</pre>
+<p style="text-align: justify;">El comando crear&#225; una carpeta <strong>posts</strong> y dentro, encontraremos tres archivos:</p>
+<ul style="text-align: justify;">
+<li>models.py contendr&#225; los modelos de la aplicaci&#243;n</li>
+<li>tests.py contendr&#225; las pruebas para la verificaci&#243;n de la aplicaci&#243;n</li>
+<li>views.py contendr&#225; las vistas de la aplicaci&#243;n</li>
+</ul>
+<p style="text-align: justify;">Tendremos que editar el archivo <strong>settings.py</strong> una vez m&#225;s para a&#241;adir la aplicacion posts a la lista de aplicaciones instaladas, justo antes de south (south siempre debe quedar la &#250;ltima):</p>
+<pre class="brush: python; title: ; notranslate">
+INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
+    'posts',
+    'south',
+)
+</pre>
+<h2 style="text-align: justify;">5.- El modelo de la aplicaci&#243;n posts</h2>
+<p style="text-align: justify;">Lleg&#243; la hora del turr&#243;n, toca definir el modelo para la aplicaci&#243;n posts por lo que editaremos el archivo models.py dej&#225;ndolo como sigue:</p>
+<pre class="brush: python; title: ; notranslate">
+from django.db import models
+from django.contrib import auth
+
+class Post(models.Model):
+
+    title = models.CharField(max_length=255)
+
+    machine_name = models.SlugField(max_length=255, primary_key=True)
+
+    content = models.TextField(blank=True)
+
+    publication_date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.title
+
+    def briefing(self):
+        return self.content[:300] + '...'
+
+    class Meta:
+        ordering = ['-publication_date']
+</pre>
+<p style="text-align: justify;">Esto define <em>title</em> como un campo de hasta 255 caracteres, una clave primaria <em>machine_name</em> con el <em>tipico_formato_slug</em> formado por s&#243;lo caracteres alfab&#233;ticos americanos, sin espacios y con guiones bajos como elemento de separaci&#243;n; el contenido, <em>content,</em> como un campo de texto que podr&#237;amos dejar en blanco y la fecha de publicaci&#243;n, <em>publication_date</em>, para la que especificamos que se autoestablezca en el momento de salvar un nuevo post.</p>
+<p style="text-align: justify;">Adem&#225;s creamos el m&#233;todo <em>briefing()</em> y <em>__unicode__()</em>. Los m&#233;todos de los modelos que funcionan sin par&#225;metros se comportan como si de campos corrientes se tratasen. El m&#233;todo especial <em>__unicode__()</em> proporciona una representaci&#243;n textual del objeto (como si fuera el nombre propio de cada objeto), bien para la aplicaci&#243;n de administraci&#243;n, bien para tareas de depuraci&#243;n por nuestra cuenta.</p>
+<p style="text-align: justify;">La clase interna <em>Meta</em> nos permite establecer cierta informaci&#243;n extra sobre el modelo. En nuestro caso especificamos la ordenaci&#243;n por defecto que ser&#225; por fecha de publicaci&#243;n en orden descendente (del m&#225;s reciente al m&#225;s antiguo).</p>
+<h2 style="text-align: justify;">6.- Sincronizar la base de datos, el primer snapshot</h2>
+<p style="text-align: justify;">Si no utiliz&#225;ramos south, deber&#237;amos sincronizar la base de datos mediante:</p>
+<pre>$ ./manage.py posts syncdb</pre>
+<p style="text-align: justify;">Esto har&#237;a que Django creara las tablas que se corresponden al modelo de la aplicaci&#243;n indicada. Pero sin south, una modificaci&#243;n en el modelo nos obligar&#237;a a cambiar la base de datos manualmente para que coincidiese con el modelo. Gracias a Dio, <strong>south</strong> realiza <em>capturas</em> o <em>snapshots</em> de la base de datos y comprueba qu&#233; ha cambiado (casi sin nuestra intervenci&#243;n)&#160; de una versi&#243;n a otra.</p>
+<p style="text-align: justify;">Como esta es la primera vez que generamos el modelo de posts, usaremos el siguiente comando para crear el snapshot:</p>
+<pre>$ ./manage.py schemamigration posts --initial</pre>
+<p style="text-align: justify;">Y este otro para aplicar los cambios y crear efectivamente, las tablas correspondientes:</p>
+<pre>$ ./manage.py migrate posts</pre>
+<h2 style="text-align: justify;">7.- Registrando el modelo en el panel de administraci&#243;n</h2>
+<p style="text-align: justify;">Antes de poder empezar a crear posts, es necesario registrar el modelo en la aplicaci&#243;n admin de Django. Para ello, bajo la carpeta posts crearemos un archivo <strong>admin.py</strong> con el siguiente contenido:</p>
+<pre class="brush: python; title: ; notranslate">
+from posts.models import Post
+from django.contrib import admin
+
+admin.site.register(Post)
+</pre>
+<h2 style="text-align: justify;">8.- El panel de administraci&#243;n autogenerado para posts</h2>
+<p style="text-align: justify;">Podemos probar la aplicaci&#243;n con:</p>
+<pre>$ ./manage.py runserver</pre>
+<p style="text-align: justify;">Puedes crear un nuevo art&#237;culo. No olvides el nombre para la m&#225;quina y observa c&#243;mo Django transforma los nombres de los campos en nombres <em>humanizados</em> sustiyendo los guiones bajos por espacios, trasladando a min&#250;sculas el nombre de los modelos y a&#241;adiendoles una &#8216;s&#8217; cuando los utiliza en plural. Puedes cometer errores (por ejemplo incluyendo espacios o caracteres acentuados en el campo Machine name) y probar la validaci&#243;n autom&#225;tica de los campos. La aplicaci&#243;n admin de Django es realmente potente y volveremos a ella m&#225;s adelante.</p>
+<p style="text-align: justify;">Crearemos unos cuatro o cinco posts de prueba, m&#225;s o menos largos.</p>
+<h2 style="text-align: justify;">9.- Vistas en Django</h2>
+<p style="text-align: justify;">Las vistas y las plantillas son la base de la interacci&#243;n usuario / aplicaci&#243;n en Django. El ciclo es el siguiente:</p>
+<ol style="text-align: justify;">
+<li>Se produce una petici&#243;n mediante una URL</li>
+<li>&#201;sta se compara con un patr&#243;n definido en urls.py que determina la vista a usar</li>
+<li>La vista genera un diccionario llamado <em>contexto </em>o <em>context</em> que pasa a una plantilla a la que est&#225; asociada</li>
+<li>La plantilla se interpreta con el contexto pasado por la vista y se genera el HTML oportuno</li>
+</ol>
+<p style="text-align: justify;">Una de las novedades de Django 1.3 es la inclusi&#243;n de <strong>clases-vista</strong> en sustituci&#243;n de las funciones-vistas. Si a esto a&#241;adimos el paquete de vistas gen&#233;ricas que proporciona el framework nos encontramos que desarrollar vistas es algo increiblemente sencillo.</p>
+<p style="text-align: justify;">Editaremos el archivo <strong>views.py</strong> de la carpeta posts e incluiremos el siguiente c&#243;digo:</p>
+<pre class="brush: python; title: ; notranslate">
+# Create your views here.
+from django.views.generic import ListView
+from posts.models import Post
+
+class PostList(ListView):
+    template_name=&quot;postlist.html&quot;
+    model = Post
+</pre>
+<p style="text-align: justify;">Por heredar de ListView y gracias a especificar la propiedad model como Post, la vista introducir&#225; autom&#225;ticamente un objeto en el contexto llamado object_list con todos los objetos Post de la aplicaciones.</p>
+<p style="text-align: justify;">Ahora tenemos que unir esta vista a una URL, permitiremos dos formas de acceder a la lista de grupos:</p>
+<ul style="text-align: justify;">
+<li>/posts/list</li>
+<li>/ &#8211; como atajo</li>
+</ul>
+<p style="text-align: justify;">Para ello modifica el archivo <strong>urls.py</strong> de la aplicaci&#243;n de forma que quede de la siguiente manera:</p>
+<pre class="brush: python; title: ; notranslate">
+from posts.views import PostList
+from django.conf.urls.defaults import patterns, include, url
+
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+# Examples:
+# url(r'^$', 'djangoblog.views.home', name='home'),
+# url(r'^djangoblog/', include('djangoblog.foo.urls')),
+
+# Uncomment the admin/doc line below to enable admin documentation:
+# url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+# Uncomment the next line to enable the admin:
+url(r'^admin/', include(admin.site.urls), name='adminpage'),
+
+url(r'^$', PostList.as_view(), name='mainpage'),
+url(r'^posts/', PostList.as_view(), name='postlist'),
+)
+</pre>
+<p style="text-align: justify;">Presta atenci&#243;n al <strong>import inicial</strong> y al par&#225;metro <em>name</em> a&#241;adido a las funciones url de admin y posts.</p>
+<h2 style="text-align: justify;">10.- Plantillas en Django</h2>
+<p style="text-align: justify;">Cuando se dise&#241;a una aplicaci&#243;n web no toda la p&#225;gina cambia seg&#250;n la funcionalidad que se ofrece en cada momento. Algunos elementos como la cabecera o el pie de p&#225;gina no var&#237;an. Esto sugiere el uso de plantillas con <em>huecos</em> que llenar por el contenido variable. Las plantillas de Django funcionan de una manera muy similar.</p>
+<p style="text-align: justify;">Para empezar, crearemos el archivo <strong>base.html</strong> en la carpeta templates del proyecto. Su contenido es el siguiente:</p>
+<pre class="brush: xml; title: ; notranslate">
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Mi blog | {% block title %}Un t&#237;tulo gen&#233;rico{% endblock %}&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+        &lt;header&gt;
+            &lt;h1&gt;&lt;a href=&quot;{% url mainpage %}&quot;&gt;Mi blog&lt;/a&gt;&lt;/h1&gt;
+        &lt;/header&gt;
+    &#160;&#160;&#160; {% block content %}Un contenido gen&#233;rico{% endblock %}
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p style="text-align: justify;">El archivo define dos bloques: <em>title</em> y <em>content</em>. Con Django podemos crear plantillas que extiendan la plantilla base proporcionando sus propios bloques title y content. Con esto en mente crearemos el archivo <strong>postlist.html</strong>, tambi&#233;n dentro de la carpeta templates del proyecto, con el siguiente contenido:</p>
+<pre class="brush: xml; title: ; notranslate">
+{% extends &quot;base.html&quot; %}
+
+{% block title %}Post list{% endblock %}
+
+{% block content %}
+&lt;section id=&quot;postlist&quot;&gt;
+
+{% for post in object_list %}
+&lt;article class=&quot;post&quot;&gt;
+&lt;header&gt;
+&lt;h2&gt;{{ post.title }}&lt;/h2&gt;
+&lt;/header&gt;
+&lt;section&gt;
+{{ post.content|safe }}
+&lt;/section&gt;
+&lt;aside&gt;
+&lt;p&gt;Fecha de publicaci&#243;n: {{ post.publication_date|date:&quot;r&quot; }}&lt;/p&gt;
+&lt;!-- Aqu&#237; ir&#225;n los comentarios --&gt;
+&lt;/aside&gt;
+&lt;/article&gt;
+{% endfor %}
+
+&lt;/section&gt;
+{% endblock %}
+</pre>
+<p style="text-align: justify;">Las marcas {% y %} sirven para introducir etiquetas. Por ejemplo, la etiqueta {% <em>for &#8230; in &#8230;. %}</em> permite recorrer los elementos de una colecci&#243;n. Usamos el objeto object_list del contexto proporcionado por la vista gen&#233;rica como colecci&#243;n. La etiqueta <em>{% block %}</em> introduce un bloque y la etiqueta <em>{% endblock %}</em> lo cierra. La etiqueta <em>{% extends &#8230; %}</em> indica cu&#225;l es la plantilla base cuyos bloques ser&#225;n sustituidos por los presentes en la actual. La etiqueta<em> {% url %}</em> del archivo base.html genera la URL que corresponde con ese nombre a partir de la expresi&#243;n regular.</p>
+<p style="text-align: justify;">Las marcas {{ y }} sirven para introducir el contenido de una variable. Las variables pueden <em>filtrarse</em> utilizando el operador de tuber&#237;a |. Por ejemplo, el filtro <em>safe</em> indica que el contenido del contenido del post es <em>seguro</em> en cuanto a contenido HTML por lo que los caracteres propios de HTML, que se escapan por defecto, no ser&#225;n reinterpretados y se escribir&#225;n sin m&#225;s. As&#237; permitimos HTML en el cuerpo de los posts pero no en el t&#237;tulo, por ejemplo.</p>
+<p style="text-align: justify;">Los filtros pueden aceptar par&#225;metros como le ocurre a <em>date</em> usando dos puntos y el par&#225;metro. En este caso la cadena indica un formato est&#225;ndar de fecha larga.</p>
+<p style="text-align: justify;">Ahora estamos listos para probar la vista. Volvemos a lanzar el servidor de pruebas y, esta vez s&#237;, accedemos a &#233;l sin a&#241;adir nada m&#225;s a la URL.</p>
+<pre>$ ./manage runserver</pre>
+<h2 style="text-align: justify;">Conclusi&#243;n</h2>
+<p style="text-align: justify;">Con eso hemos terminado con la primera parte del tutorial. No s&#233; si me dar&#225; tiempo a contar las dos partes del tutorial en la presentaci&#243;n pero esta primera parte deber&#237;a haberos convencido de cu&#225;les son dos de las principales ventajas de Django: <strong>reutilizaci&#243;n del c&#243;digo y backend</strong>.</p>
+<p style="text-align: justify;">Una de las m&#225;ximas de Django es la reutilizaci&#243;n de c&#243;digo, el ejemplo deber&#237;a dejar claro esto tambi&#233;n aunque quiz&#225; este tutorial de la sensaci&#243;n de que Django est&#225; orientados a casos muy concretos y&#8230; es verdad. Es verdad que el framework ofrece atajos arquitect&#243;nicos para los casos m&#225;s comunes pero tambi&#233;n es verdad que no hemos expuesto ni una d&#233;cima parte del potencial de Django.</p>
+<p style="text-align: justify;">Por otro lado, la aplicaci&#243;n admin del framewor, tan potente y configurable (ya lo vereis en la segunda parte del tutorial) hace que podamos poner m&#225;s &#233;nfasis y atenci&#243;n en la experiencia de usuario puesto que, en general, el administrador est&#225; algo m&#225;s acostumbrado a lidiar con las tripas de las aplicaciones.</p>
+<p style="text-align: justify;">En la pr&#243;xima entrega de este tutorial contin&#250;r&#233; con la mejora de la aplicaci&#243;n de administraci&#243;n, la adici&#243;n de un sistema de comentarios, un sencillo formulario de b&#250;squeda y una migraci&#243;n administrada por south para terminar de presentar las ventajas de este, parafraseando al equipo de desarrollo, &#8220;framework para perfeccionistas con las fechas de entrega&#8221;.</p>
+<p style="text-align: justify;">EDIT: Contin&#250;a en <a href="https://unoyunodiez.wordpress.com/2011/05/03/django-en-cero-coma-ii/" title="Django en &#8220;cero coma&#8221;&#160;II">Django en &#8220;cero coma&#8221; II</a></p><br />  <a href="http://feeds.wordpress.com/1.0/gocomments/unoyunodiez.wordpress.com/539/" rel="nofollow"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/unoyunodiez.wordpress.com/539/" /></a> <img alt="" border="0" height="1" src="https://pixel.wp.com/b.gif?host=unoyunodiez.com&#038;blog=15323300&#038;post=539&#038;subd=unoyunodiez&#038;ref=&#038;feed=1" width="1" />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-04-18.html">&lt;</a></td>
+<td class="cal-month" colspan="5">mayo 2011</td>
+<td class="cal-next"><a href="index-2011-06-04.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">25</em></td><td class="cal-day"><em class="cal-othermonth">26</em></td><td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td></tr>
+<tr class="cal-week">
+<td class="cal-day">02</td><td class="cal-day"><strong class="cal-current">03</strong></td><td class="cal-day"><a class="cal-link" href="index-2011-05-04.html">04</a></td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td></tr>
+<tr class="cal-week">
+<td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td></tr>
+<tr class="cal-week">
+<td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day"><a class="cal-link" href="index-2011-05-19.html">19</a></td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td></tr>
+<tr class="cal-week">
+<td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day"><a class="cal-link" href="index-2011-05-25.html">25</a></td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td></tr>
+<tr class="cal-week">
+<td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

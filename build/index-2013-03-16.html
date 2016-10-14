@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>s&#225;bado, 16 marzo</h2>
+<div class="time">
+<h3>12:22</h3>
+<div class="item feed-5fd98f4c feed-{feed_id}" id="item-a939eacf">
+<p class="itemheader">
+<span class="itemtitle">
+    Uno y uno = diez:
+<a href="https://unoyunodiez.com/2013/03/16/django-in-a-nutshell-i/">Django 1.5 in a nutshell I</a></span>
+</p>
+    <div class="itemdescription">
+    <p style="text-align: justify;">In 2011, I wrote a <a href="https://unoyunodiez.com/2011/05/03/django-en-cero-coma-i/" title="Django en &#8220;cero coma&#8221;&#160;I">quick tutorial about Django 1.3</a>. I was going to demonstrate how to write a blog in just one hour in a <em>live code</em> session. This time I&#8217;m in a mentoring program teaching Python and Django to a&#160;colleague so I decided to update that tutorial. Django is now in version 1.5 and you can find <a href="https://docs.djangoproject.com/en/dev/releases/1.5/#what-s-new-in-django-1-5" target="_blank" title="Django 1.5 - What's new?">what is new</a> in the release notes of the framework. Let&#8217;s code!</p>
+<p style="text-align: justify;"><span id="more-1083"></span></p>
+<h2 style="text-align: justify;">0. Prerequisites</h2>
+<p style="text-align: justify;">I&#8217;m assuming we are working on Linux with&#160;<strong>Python 2.7</strong>, database&#160;<strong>sqlite3</strong> and the&#160;<strong>pip</strong> software for managing Python package. First step is to install Django and <strong>south</strong> from pip by typing in a terminal as administrator:</p>
+<pre># pip install django</pre>
+<p style="text-align: justify;">Or, if you have Django already installed&#8230;</p>
+<pre># pip install --upgrade django</pre>
+<p style="text-align: justify;">Then&#160;<strong>south</strong><strong>:</strong></p>
+<pre># pip install south</pre>
+<p style="text-align: justify;">Check the version of Django in a Python console writing:</p>
+<pre class="brush: python; title: ; notranslate">
+import south
+import django
+django.get_version()
+</pre>
+<h2 style="text-align: justify;">1. Starting a Django project</h2>
+<p style="text-align: justify;">Now, the first step will be to create the project with <strong>django-admin.py</strong> utility (sometime it is available without the .py extension) so please, type in a console (not as admin, just your regular user):</p>
+<pre>$ django-admin.py startproject djangoblog</pre>
+<p style="text-align: justify;">The command creates the folder djangoblog as a container for your Django project:</p>
+<pre>djangoblog/
+&#9500;&#9472;&#9472; djangoblog
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; __init__.py
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; settings.py
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; urls.py
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; wsgi.py
+&#9492;&#9472;&#9472; manage.py</pre>
+<p style="text-align: justify;">One of the main differences from Django 1.4 and Django 1.3 is the change in project structure. The outer folder is&#160;irrelevant, you can rename it whenever you want. It is only a convenient place to put your custom applications. A project is nothing more than a set of Django applications working together. Normally the main application of your site is not very reusable but the rest of them could be installed separately and reused for other projects.</p>
+<p style="text-align: justify;">Starting a Django project is as easy as this. You can start a test server typing:</p>
+<pre>$ cd djangoblog
+$ chmod +x manage.py
+$ ./manage.py runserver</pre>
+<p style="text-align: justify;">Check the output to navigate to the URL with the test server (normally <a href="http://127.0.0.1:8000/" target="_blank" title="Your Django testing server">http://127.0.0.1:8000/</a>) Stop the server by pressing <strong>Ctrl+C</strong></p>
+<p style="text-align: justify;">But let&#8217;s edit the <strong>settings.py</strong> for our needs. We first apply some useful tricks I learned along time to make our applications more flexible and improving&#160;re-usability.</p>
+<p style="text-align: justify;">Enter folder <em>djangoblog</em>,&#160;choose your favorite code editor and open <strong>settings.py</strong>,<strong>&#160; </strong>add these lines at the beginning:</p>
+<pre class="brush: python; title: ; notranslate">
+import os
+PROJECT_PATH = os.path.dirname(__file__)
+</pre>
+<p style="text-align: justify;">This variable is useful to allow relative paths in our settings file.</p>
+<p style="text-align: justify;">Now let&#8217;s configure DATABASES variable to use&#160;<strong>SQLite3</strong>. Look for DATABASES variable and make it look like:</p>
+<pre class="brush: python; title: ; notranslate">
+DATABASES = {
+  'default': {
+    'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+    'NAME': os.path.join(PROJECT_PATH, 'db/database.db'), # Or path to database file if using sqlite3.
+    # The following settings are not used with sqlite3:
+    'USER': '',
+    'PASSWORD': '',
+    'HOST': '', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+    'PORT': '', # Set to empty string for default.
+  }
+}
+</pre>
+<p style="text-align: justify;">We should modify following variables as well:</p>
+<pre class="brush: python; title: ; notranslate">
+TIME_ZONE = 'Europe/Madrid'
+
+LANGUAGE_CODE = 'en-eu'
+
+STATIC_ROOT = os.path.join(PROJECT_PATH, 'static_files')
+
+INSTALLED_APPS = (
+  'django.contrib.auth',
+  'django.contrib.contenttypes',
+  'django.contrib.sessions',
+  'django.contrib.sites',
+  'django.contrib.messages',
+  'django.contrib.staticfiles',
+  # Uncomment the next line to enable the admin:
+  'django.contrib.admin',
+  # Uncomment the next line to enable admin documentation:
+  'django.contrib.admindocs',
+  'djangoblog',
+  'south'
+)
+</pre>
+<p style="text-align: justify;">Note you are adding the own djangoblog application to the list of installed applications. This is because it is convenient to find only-application-related content inside the <em>djangoblog</em> folder. For instance, customized templates or static files so&#160;by declaring djangoblog as an installed application we are letting Django know there is relevant content inside djangoblog application.</p>
+<p style="text-align: justify;">Now, inside <em>djangoblog</em> folder, create&#160;<strong>db, static&#160;</strong>and<strong> templates</strong>&#160;sub directories:</p>
+<pre>$ mkdir db static templates</pre>
+<p style="text-align: justify;">To automatically enable administration portal lets touch&#160;<strong>urls.py</strong>&#160;file and remove the commentaries in the lines related with the admin tool:</p>
+<pre class="brush: python; title: ; notranslate">
+from django.conf.urls import patterns, include, url
+
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+  # Examples:
+  # url(r'^$', 'djangoblog.views.home', name='home'),
+  # url(r'^djangoblog/', include('djangoblog.foo.urls')),
+  # Uncomment the admin/doc line below to enable admin documentation:
+  url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+  # Uncomment the next line to enable the admin:
+  url(r'^admin/', include(admin.site.urls)),
+)
+</pre>
+<h2>2. Synchronizing the database</h2>
+<p style="text-align: justify;">Any Django project contains some default installed applications. Sometimes applications need their custom databases. We are going to create these databases. Do:</p>
+<pre>$ ./manage.py syncdb</pre>
+<p style="text-align: justify;">Answer <strong>yes</strong> to the first&#160;questions and enter the admin <strong>username</strong>, <strong>e-mail</strong> and <strong>password</strong> to end configuring your Django site.</p>
+<p style="text-align: justify;">Do you remember we have installed an application called south and add it to the installed applications of our project? This is a <a href="http://en.wikipedia.org/wiki/Schema_evolution" target="_blank" title="Schema Evolution">schema evolution</a> tool to assist us, developers, to evolve our databases. Using south we are not able to sync applications inside the project folder in a normal way. We need to aware south we are creating, deleting or changing the application model but this management is not very difficult and we will see it soon.</p>
+<h2>3. Testing the project</h2>
+<p style="text-align: justify;">Just start the test server in the same way we did before:</p>
+<pre>$ ./manage.py runserver</pre>
+<p style="text-align: justify;">If you want to customize where the project is started, use:</p>
+<pre>$ ./manage.py runserver IP:PORT</pre>
+<p style="text-align: justify;">If you want to expose the server through your public IP, use:</p>
+<pre>$ ./manage.py runserver 0.0.0.0:PORT</pre>
+<p style="text-align: justify;">The server shows a 404 error because there is no view associated to the default address but you can access <strong>/admin/</strong> URL (normally <a href="http://127.0.0.1:8000/admin/" target="_blank" title="You admin portal">http://127.0.0.1:8000/admin/</a>) and enter username and password you provided in the previous step to get access to the administrator portal. Get used to it by modifying your user and filling name and surname.</p>
+<h2>4. Adding a new application</h2>
+<p style="text-align: justify;">It&#8217;s time to create our first application. We will use it to manage blog posts and it will be named (in a rapture of originality and ingenious)&#160;<strong>posts</strong>. So we go to the container folder and type:</p>
+<pre>$ ./manage.py startapp posts</pre>
+<p style="text-align: justify;">The commando will create a folder called posts with three files:</p>
+<ul>
+<li style="text-align: justify;"><span style="line-height: 13px;">models.py will keep the application data model</span></li>
+<li style="text-align: justify;">tests.py will keep tests to verify application correctness</li>
+<li style="text-align: justify;">views.py will keep application&#8217;s views</li>
+</ul>
+<p style="text-align: justify;">So the complete directory structure looks like:</p>
+<pre>djangoblog/
+&#9500;&#9472;&#9472; djangoblog
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; db
+&#9474; &#160; &#9474; &#160; &#9492;&#9472;&#9472; database.db
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; __init__.py
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; settings.py
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; static
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; static_files
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; templates
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; urls.py
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; wsgi.py
+&#9500;&#9472;&#9472; manage.py
+&#9492;&#9472;&#9472; posts
+ &#9500;&#9472;&#9472; __init__.py
+ &#9500;&#9472;&#9472; models.py
+ &#9500;&#9472;&#9472; tests.py
+ &#9492;&#9472;&#9472; views.py</pre>
+<p style="text-align: justify;">Now we must let know our project that application posts exist and is available for use. Modify settings.py to add posts to the list of installed applications <strong>before south</strong>:</p>
+<pre class="brush: python; title: ; notranslate">
+INSTALLED_APPS = (
+  'django.contrib.auth',
+  'django.contrib.contenttypes',
+  'django.contrib.sessions',
+  'django.contrib.sites',
+  'django.contrib.messages',
+  'django.contrib.staticfiles',
+  # Uncomment the next line to enable the admin:
+  'django.contrib.admin',
+  # Uncomment the next line to enable admin documentation:
+  'django.contrib.admindocs',
+  'djangoblog',
+  'posts',
+  'south'
+)
+</pre>
+<p style="text-align: justify;"><strong>&#161;It is very important south is always the last installed application!</strong></p>
+<h2>5. The posts application data model</h2>
+<p style="text-align: justify;">One of the distinctive characteristics of Django is that you first <strong>model the solution and write it into models.py</strong> file and then lets the Django <a href="http://en.wikipedia.org/wiki/Object-relational_mapping" target="_blank" title="ORM in Wikipedia">ORM</a> to map it to a database automatically. We are going to model a blog post as follows, edit <strong>posts/models.py</strong> and write:</p>
+<pre class="brush: python; title: ; notranslate">
+# -*- encoding: utf-8 -*-
+from django.db import models
+from django.contrib import auth
+
+class Post(models.Model):
+
+  title = models.CharField(max_length=255)
+
+  machine_name = models.SlugField(max_length=255, primary_key=True)
+
+  content = models.TextField(blank=True)
+
+  publication_date = models.DateTimeField(auto_now_add=True)
+
+  def __unicode__(self):
+    return self.title
+
+  def excerpt(self):
+    return self.content[:300] + u'&#8230;'
+
+  class Meta:
+    ordering = [u'-publication_date']
+</pre>
+<p style="text-align: justify;">A model is no more than a regular class inheriting from <em>models.Model</em> base class able to be serialized by the Django ORM. Post class defines a&#160;<em>title&#160;</em>as a field of 255 characters, a primary key&#160;<em>machine_name</em> with the <em>tipical_slug_format </em>where only american alphanumeric characters, underscores and hyphens are allowed;&#160;the content of the post will be in the <em>content</em> field that is a text field which accepts the empty string as a valid value and the <em>publication_date</em>,&#160;with a default value being the moment when a new post is saved.</p>
+<p style="text-align: justify;">Furthermore we provide the <em>excerpt()</em> method and the <em>__unicode__()&#160;</em><a href="http://docs.python.org/2/reference/datamodel.html" title="Magic methods in Python 2.x">magic method</a>. The <em>excerpt() </em>method returns the first 300 characters of the post followed by the ellipsis character. Note the ellipsis symbol is only one character. As we are using unicode characters in the source file we need to specify the encode of the file with (see line 1):</p>
+<p style="text-align: justify;"># -*- encoding: utf-8 -*-</p>
+<p style="text-align: justify;"><strong>All strings in Django are unicode strings</strong> so my advice is to force all your strings to be unicode as well. To do this, prefix your string literal with a u<em>&#160;</em>as in the example:<em><br />
+</em></p>
+<pre style="text-align: justify;">u'An unicode string'</pre>
+<p style="text-align: justify;">Internal class&#160;<em>Meta</em> allows the developer to set some metadata related with the model. In this case we&#160;establish&#160;the default order to be by publication date from earliest to latest (descending order).</p>
+<h2 style="text-align: justify;">6. Synchronizing database: the first snapshot</h2>
+<p style="text-align: justify;">Now we have a new application declared, all that remains to get it working is to map models to the database. Without south application, this can be achieved by issuing the following command (<strong>don&#8217;t do it, you have south installed</strong>):</p>
+<pre style="text-align: justify;">$ ./manage.py posts syncdb</pre>
+<p style="text-align: justify;">But fortunately south is installed. South acts like a sort of version control software for DB schemes registering changes (snapshots) in the models, then applying them. To take the initial snapshot, type:</p>
+<pre style="text-align: justify;">$ ./manage.py schemamigration posts --initial</pre>
+<p style="text-align: justify;">The command for later changes is the same without the <em>&#8211;initial</em> parameter. Now you have the snapshot for the current state of posts application, apply it by writting:</p>
+<pre style="text-align: justify;">$ ./manage.py migrate posts</pre>
+<h2 style="text-align: justify;">7. Adding the post model to the administrator site</h2>
+<p style="text-align: justify;">Before creating new posts, we need register <em>Posts</em> model into the administrator site. To do this, create an <strong>admin.py</strong> file inside <em>posts</em> folder and add these lines:</p>
+<pre class="brush: python; title: ; notranslate">
+from posts.models import Post
+from django.contrib import admin
+
+admin.site.register(Post)
+</pre>
+<h2 style="text-align: justify;">8. Creating posts</h2>
+<p style="text-align: justify;">Now you have registered Posts model, an automatic panel to manage Posts instances is automatically added to the admin site. Try it by running the server and going to /admin/ URL:</p>
+<pre style="text-align: justify;">$ ./manage.py runserver</pre>
+<p style="text-align: justify;">You can create a new post. Don&#8217;t forget machine name and observe how Django transform class members&#8217; names into <em>humanized</em>&#160;names for the fields in the form replacing underscores by spaces, lowering model names and adding an &#8216;s&#8217; when used in plural. You can make errors (i.e. adding spaces o special characters to the machine name field) to see how validation works. Admin application from Django is really powerfull and we will return to it in a while. Lets create 4 &#8211; 6 moderate length posts.</p>
+<h2 style="text-align: justify;">9. Django views</h2>
+<p>In Django, views and templates conform the basis for user / application interaction. The procedure is as follows:</p>
+<ol>
+<li><span style="line-height: 13px;">The Django applications receive an request for an <strong>URL</strong>.</span></li>
+<li>The URL is compared with a pattern inside <strong>urls.py</strong> which determines which <strong>view</strong> will be used.</li>
+<li>The view processes the request, generates a dictionary called&#160;<em>context</em> and pass it to some <strong>template</strong>.</li>
+<li>The <strong>template is rendered</strong> by the Django template interpreter and <strong>filled with values in the <em>context </em>dictionary</strong>&#160;if proceeds.</li>
+<li>The rendered template is sent as the <strong>http response</strong>.</li>
+</ol>
+<p>With class-based views introduced in Django 1.3 and the provided framework, to implement views is something extremely easy<img alt="&#128578;" class="wp-smiley" src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/72x72/1f642.png" style="height: 1em;" /></p>
+<p>Edit <strong>views.py</strong>&#160;inside the post folder and add the following code to create a list of posts:</p>
+<pre class="brush: python; title: ; notranslate">
+# Create your views here.
+from django.views.generic import ListView
+from posts.models import Post
+
+class PostList(ListView):
+    template_name = 'postlist.html'
+    model = Post
+</pre>
+<p style="text-align: justify;">ListView instances pass a context object called <em>object_list</em> to the template specified in <em>template_name.</em></p>
+<p style="text-align: justify;">Now we need to associate this view with an URL, we will allow two ways of accessing the list of posts:</p>
+<ul>
+<li><span style="line-height: 13px;">/posts/</span></li>
+<li>/ (as a shortcut)</li>
+</ul>
+<p style="text-align: justify;">Modify <strong>urls.py</strong> inside djangoblog folder to bind these URL to the former view:</p>
+<pre class="brush: python; title: ; notranslate">
+from posts.views import PostList
+from django.conf.urls.defaults import patterns, include, url
+
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+  # Examples:
+  # url(r'^$', 'djangoblog.views.home', name='home'),
+  # url(r'^djangoblog/', include('djangoblog.foo.urls')),
+
+  # Uncomment the admin/doc line below to enable admin documentation:
+  # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+  # Uncomment the next line to enable the admin:
+  url(r'^admin/', include(admin.site.urls), name='adminpage'),
+
+  url(r'^$', PostList.as_view(), name=u'mainpage'),
+  url(r'^posts/', PostList.as_view(), name=u'postlist'),
+)
+</pre>
+<p style="text-align: justify;">Please, pay attention to the <strong>import in line 1</strong>&#160;and <em>name&#160;</em>parameters in lines 19 and 20.</p>
+<h2 style="text-align: justify;">10. Django templates</h2>
+<p style="text-align: justify;">When designing user interfaces, webpages, some elements in the webpage are fixed. Usually main navigation bar, header and footer are not altered despite the section you are in the site. This introduces the idea of having HTML templates with placeholders for variable content and this is how Django templates language works.</p>
+<p style="text-align: justify;">It is important to note Django templates are only text templates, they are not coupled to any technology and they ignore if the render process is producing HTML, JavaScript or whatever.</p>
+<p style="text-align: justify;">So, let&#8217;s write a template using Django template language on a <a href="http://twitter.github.com/bootstrap/" target="_blank" title="Twitter's Bootstrap">bootstrap-powered</a> HTML in order to make our blog looking good. <a href="http://twitter.github.com/bootstrap/getting-started.html#download-bootstrap" target="_blank" title="Download bootstrap">Download bootstrap</a> and decompress it in the folder <em>static</em> you create on step 1:</p>
+<pre>djangoblog/
+&#9500;&#9472;&#9472; djangoblog
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; db
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; static
+&#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; css
+&#9474;&#160;&#160; &#9474;&#160;&#160; &#9500;&#9472;&#9472; img
+&#9474;&#160;&#160; &#9474;&#160;&#160; &#9492;&#9472;&#9472; js
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; static_files
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; templates
+&#9492;&#9472;&#9472; posts
+    &#9492;&#9472;&#9472; migrations</pre>
+<p style="text-align: justify;">Bootstrap is no more than some CSS and JS acting like a reduced but flexible webpage framework. We are writing some HTML 5 using CSS from bootstrap so in <em>djangoblog/templates</em>&#160;folder add a new file called <strong>postlist.html</strong> and paste this content:</p>
+<pre class="brush: xml; title: ; notranslate">
+{% load staticfiles %}
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Django blog | {% block title %} Default title {% endblock %}&lt;/title&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;!-- Bootstrap --&gt;
+    &lt;link href=&quot;{% static &quot;css/bootstrap.min.css&quot; %}&quot; rel=&quot;stylesheet&quot; media=&quot;screen&quot;&gt;
+    &lt;style&gt;body { padding-top: 60px; }&lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class=&quot;navbar navbar-inverse navbar-fixed-top&quot;&gt;
+      &lt;div class=&quot;navbar-inner&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+          &lt;a class=&quot;brand&quot; href=&quot;#&quot;&gt;My Django blog&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      {% block content %}
+      &lt;h1&gt;Default title&lt;/h1&gt;
+      &lt;p&gt;Default content&lt;/p&gt;
+      {% endblock %}
+    &lt;/div&gt;
+    &lt;script src=&quot;http://code.jquery.com/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;{% static &quot;js/bootstrap.min.js&quot; %}&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p style="text-align: justify;">Template instructions are called <strong>tags</strong> in Django slang and they have the following form: &#8216;{% &lt;tag_name&gt; [parameters]&#160;%}&#8217;. When they are blocks, the starting tag follow the same schema described but the block is ended by &#8216;{% end&lt;tag_name&gt; %}&#8217;. A tag can take parameters separated by commas. Some tags are available by default but other require to load special modules. That is exactly what the <a href="https://docs.djangoproject.com/en/dev/ref/templates/builtins/#load" target="_blank" title="Tag load"><strong>tag load</strong></a> does (see line 1). <a href="https://docs.djangoproject.com/en/dev/ref/templates/builtins/#block" target="_blank" title="Tag block"><strong>Tag block </strong></a>(lines 5 and 20)<strong>&#160;</strong>is a content placeholder. It takes a parameter, the name of the block, and this can be used in other templates to be referred and replaced by new content. <a href="https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#static" target="_blank" title="Tag static"><strong>Tag static</strong></a>, part of the module loaded in line 1; it takes a parameter and return the URL for the static content suffixed by the parameter.</p>
+<p style="text-align: justify;">Before running the server, you need to collect all the static content and put inside <em>static_files</em> folder you created in step 1. But do not despair, this is done automatically by Django. Just run the following command, answering yes:</p>
+<pre style="text-align: justify;">$ ./manage.py collectstatic</pre>
+<p style="text-align: justify;">Now you can run the server as usual. Then go to the root URL (normally&#160;<a href="http://127.0.0.1:8000/" target="_blank" title="Your Django testing server">http://127.0.0.1:8000/</a>) and check the result. Compare the previous template&#8217;s source code with the HTML source in the browser (keyboard shortcut <strong>Ctrl+U </strong>in Chrome and Firefox).</p>
+<h2 style="text-align: justify;">11. A useful view</h2>
+<p style="text-align: justify;">We named former view as postlist.html for testing purposes but you probably noticed it is not listing any post. It looks more like the base page with the header and content sections so rename it to <strong>base.html</strong>:</p>
+<pre style="text-align: justify;">$ mv djangoblog/templates/postlist.html djangoblog/templates/base.html</pre>
+<p style="text-align: justify;">Now create a <strong>new postlist.html</strong> document and add the following content:</p>
+<pre class="brush: xml; title: ; notranslate">
+{% extends &quot;base.html&quot; %}
+
+{% block title %} Index {% endblock %}
+
+{% block content %}
+
+  &lt;h1&gt;Index&lt;/h1&gt;
+
+  {% for post in object_list %}
+    &lt;article class=&quot;post&quot;&gt;
+      &lt;header&gt;
+        &lt;h2&gt;{{ post.title }}&lt;/h2&gt;
+      &lt;/header&gt;
+      &lt;section&gt;
+        {{ post.excerpt }}
+      &lt;/section&gt;
+      &lt;aside&gt;
+        &lt;p class=&quot;label label-info&quot;&gt;
+          Published on
+          &lt;time&gt;{{ post.publication_date|date:&quot;r&quot; }}&lt;/time&gt;
+        &lt;/p&gt;
+        &lt;!-- Here will be commentaries --&gt;
+      &lt;/aside&gt;
+    &lt;/article&gt;
+  {% endfor %}
+
+{% endblock %}
+</pre>
+<p style="text-align: justify;">Now we are extending a template because the first line is saying so. <a href="https://docs.djangoproject.com/en/dev/ref/templates/builtins/#extends" target="_blank" title="Tag extends"><strong>Tag extends</strong></a> take as parameter the template to be extended. Extending a template means replacing its blocks by the blocks in the current template. Look at lines 3 and 5 and see how we refer to the <strong>same block names as those in file base.html</strong>. Now the content is distinct and will replace blocks with the same name on the base template.</p>
+<p style="text-align: justify;">Do you remember the view from step 9? It was passing a context object called <em>object_list</em> to the template. You can iterate on lists by using the&#160;<a href="https://docs.djangoproject.com/en/dev/ref/templates/builtins/#for" target="_blank" title="For ... in ..."><strong>tag for &#8230; in</strong></a>&#160;as in line 9. The text inside the block will be executed once per iteration.</p>
+<p style="text-align: justify;">Inside Django templates, dictionaries and objects are read-only and they are accessed in a normalized form by using &#8216;dot.notation&#8217; so getting the title of the post is:</p>
+<pre style="text-align: justify;">post.title</pre>
+<p style="text-align: justify;">Furthermore, you can call object&#8217;s methods as if they were attributes (see line 15) if they don&#8217;t take parameters:</p>
+<pre style="text-align: justify;">post.excerpt</pre>
+<p style="text-align: justify;">To print the content of a variable inside the template you must use &#8216;{{ &lt;variable_name&gt; }}&#8217;.</p>
+<p style="text-align: justify;">If you want to transform content before printing it, it is possible to pass the content of a variable through a pipe by using pipe notation:</p>
+<pre style="text-align: justify;">{{ &lt;variable_name&gt;|&lt;filter_name&gt;[:&lt;parameter&gt;] }}</pre>
+<p style="text-align: justify;">Filters are Django special functions that<strong> transform content</strong>. In line 20 we use <a href="https://docs.djangoproject.com/en/dev/ref/templates/builtins/#date" target="_blank" title="Filter date"><strong>filter date</strong></a> to format the publication date.</p>
+<p style="text-align: justify;">So now you can run the server again to see living results. Enjoy!</p>
+<h2 style="text-align: justify;">Conclusions</h2>
+<p style="text-align: justify;">Now I finish to write the updated tutorial, it seems to me a lot bigger than the original and I realize I need to update the Spanish version as well because there are significant changes from Django 1.3 to Django 1.5. Content increasing is logical, the Spanish version I did was for a living code session meanwhile this update is focused on the mentoring program (say &#8220;Hi!&#8221; Tom). I&#8217;m not restricted to an hour so I extend the explanations trying to be clearer and I added bootstrap which I think is an original point and help people to feel more satisfied with the results.</p>
+<p style="text-align: justify;">Stay tuned for the second part of the tutorial!</p><br />  <a href="http://feeds.wordpress.com/1.0/gocomments/unoyunodiez.wordpress.com/1083/" rel="nofollow"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/unoyunodiez.wordpress.com/1083/" /></a> <img alt="" border="0" height="1" src="https://pixel.wp.com/b.gif?host=unoyunodiez.com&#038;blog=15323300&#038;post=1083&#038;subd=unoyunodiez&#038;ref=&#038;feed=1" width="1" />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2013-02-27.html">&lt;</a></td>
+<td class="cal-month" colspan="5">marzo 2013</td>
+<td class="cal-next"><a href="index-2013-04-06.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">25</em></td><td class="cal-day"><em class="cal-othermonth">26</em></td><td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td></tr>
+<tr class="cal-week">
+<td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
+<tr class="cal-week">
+<td class="cal-day">11</td><td class="cal-day"><a class="cal-link" href="index-2013-03-12.html">12</a></td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day"><strong class="cal-current">16</strong></td><td class="cal-day">17</td></tr>
+<tr class="cal-week">
+<td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day"><a class="cal-link" href="index-2013-03-22.html">22</a></td><td class="cal-day">23</td><td class="cal-day">24</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2013-03-25.html">25</a></td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

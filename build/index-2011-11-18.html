@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>viernes, 18 noviembre</h2>
+<div class="time">
+<h3>14:39</h3>
+<div class="item feed-08cadf41 feed-{feed_id}" id="item-7c3ab9a4">
+<p class="itemheader">
+<span class="itemtitle">
+    El viaje del navegante:
+<a href="http://elviajedelnavegante.blogspot.com/2011/11/wxpython-como-controlar-los.html">wxPython: c&#243;mo controlar los PyDeadObject</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Hola. En este art&#237;culo vamos a ver una manera muy f&#225;cil de poder controlar los errores producidos en <b>wxPython</b> cuando se intenta acceder a widgets que han sido destruidos. Y vamos a verlo con el siguiente ejemplo:<br /><br /><span style="color: #660000;"># -*- coding: utf-8 -*-</span><br /><br />import wx<br /><br /><span style="color: #bf9000;"><span style="color: black;">class</span><b> mi_frame</b></span>(wx.Frame):<br />&nbsp;&nbsp;&nbsp; def __init__(self, parent):<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wx.Frame.__init__(self, parent)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.SetTitle("Ejemplo de PyDeadObject")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: #274e13;"> # 2 botones.</span></b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton1 = wx.Button(self, -1, u"Bot&#243;n 1")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton2 = wx.Button(self, -1, u"Bot&#243;n 2")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer = wx.BoxSizer(wx.HORIZONTAL)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer.Add(self.boton1, 0, wx.ALL, 1)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer.Add(self.boton2, 0, wx.ALL, 1)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.SetSizer(sizer)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b style="color: #274e13;"># Binding.</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton1.Bind(wx.EVT_BUTTON,<b><span style="color: #0b5394;"> self.OnBoton1</span></b>)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton2.Bind(wx.EVT_BUTTON,<span style="color: #0b5394;"> <b>self.OnBoton2</b></span>)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;<span style="color: #0b5394;"> <b>def OnBoton1(self, event):</b></span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton1.SetLabel("Hola Python")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;<b><span style="color: #0b5394;"> def OnBoton2(self, event):</span></b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton1.SetLabel("Hola wxPython")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />app = wx.PySimpleApp()<br />f =<b> <span style="color: #bf9000;">mi_frame</span></b>(None)<br />f.Show()<br />app.MainLoop()<br /><br />Como se puede observar este script es una ventana que contiene dos botones. Al hacer click en cada uno de los botones se va cambiando el Label del primer bot&#243;n. Esto es:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-uFZOUFNRgEc/TsZX2wIv24I/AAAAAAAABSs/7s3zy2K8TFE/s1600/pydeadobject1.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="200" src="http://2.bp.blogspot.com/-uFZOUFNRgEc/TsZX2wIv24I/AAAAAAAABSs/7s3zy2K8TFE/s320/pydeadobject1.png" width="320" /></a></div><br />Hacemos click en el bot&#243;n de la izquierda:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-7mLDog6_EvI/TsZX3inVqII/AAAAAAAABS0/8r3_zN7C3LQ/s1600/pydeadobject2.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="200" src="http://4.bp.blogspot.com/-7mLDog6_EvI/TsZX3inVqII/AAAAAAAABS0/8r3_zN7C3LQ/s320/pydeadobject2.png" width="320" /></a></div><br />Hacemos click en el bot&#243;n de la derecha:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-qvf5jm6Zux8/TsZX4CxJJgI/AAAAAAAABS4/Lbil53jEKSI/s1600/pydeadobject3.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="200" src="http://1.bp.blogspot.com/-qvf5jm6Zux8/TsZX4CxJJgI/AAAAAAAABS4/Lbil53jEKSI/s320/pydeadobject3.png" width="320" /></a></div><br />Ahora vamos a hacer una peque&#241;a modificaci&#243;n en el m&#233;todo <b style="color: #0b5394;">OnBoton2</b>: vamos a incluir una instrucci&#243;n para que cuando se haga click en el bot&#243;n 2 se elimine el bot&#243;n 1:<br /><br />&nbsp;&nbsp;&nbsp;<span style="color: #0b5394;"> <b>def OnBoton2(self, event):</b></span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton1.SetLabel("Hola wxPython")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b><span style="color: red;">self.boton1.Destroy()</span></b><br /><br /><br />Si volvemos a hacer la misma operativa de arriba, cuando hagamos click en el boton 2 al intentar hacer el <b>SetLabel</b> nos dar&#225; un error <b>PyDeadObject</b>, ya que estamos intentando acceder a un widget que ya ha sido eliminado. Es decir:<br /><br />Hacemos un primer click en el bot&#243;n derecho:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-SdlcJ3HnP3U/TsZaSzyqGrI/AAAAAAAABTE/2az2xnNOJSI/s1600/pydeadobject4.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="200" src="http://1.bp.blogspot.com/-SdlcJ3HnP3U/TsZaSzyqGrI/AAAAAAAABTE/2az2xnNOJSI/s320/pydeadobject4.png" width="320" /></a></div><br />Y al hacer un segundo click sobre el bot&#243;n derecho nos da el siguiente error: <br /><br /><b>wx._core.PyDeadObjectError: The C++ part of the Button object has been deleted, attribute access no longer allowed.</b><br /><span style="color: #0b5394;">File "c:\Users\Angel Luis\Desktop\ej_pydeadobject.py", line 30, in </span><br /><span style="color: #0b5394;">&nbsp; app.MainLoop()</span><br /><span style="color: #0b5394;">File "c:\Python26\Lib\site-packages\wx-2.8-msw-unicode\wx\_core.py", line 8010, in MainLoop</span><br /><span style="color: #0b5394;">&nbsp; wx.PyApp.MainLoop(self)</span><br /><span style="color: #0b5394;">File "c:\Python26\Lib\site-packages\wx-2.8-msw-unicode\wx\_core.py", line 7306, in MainLoop</span><br /><span style="color: #0b5394;">&nbsp; return _core_.PyApp_MainLoop(*args, **kwargs)</span><br /><b><span style="color: red;">File "c:\Users\Angel Luis\Desktop\ej_pydeadobject.py", line 24, in OnBoton2</span><br style="color: red;" />   <span style="color: red;">&nbsp; self.boton1.SetLabel("Hola wxPython")</span></b><br /><b>File "c:\Python26\Lib\site-packages\wx-2.8-msw-unicode\wx\_core.py", line 14610, in __getattr__<br />&nbsp; raise PyDeadObjectError(self.attrStr % self._name)</b><br /><br />Que corresponde con la l&#237;nea <b>wx _core.py:&nbsp;</b><br /><b><br /></b><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-RETdmAHaNKo/TsZaTqZYR2I/AAAAAAAABTM/Ym1c3JNQ1ts/s1600/pydeadobject5.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="264" src="http://4.bp.blogspot.com/-RETdmAHaNKo/TsZaTqZYR2I/AAAAAAAABTM/Ym1c3JNQ1ts/s640/pydeadobject5.png" width="640" /></a></div><br /><br /><br /><div style="color: #990000;"><span style="font-size: large;"><b>&#191;Soluci&#243;n?</b></span></div>&nbsp; <br />En ciertas &#225;reas de nuestro c&#243;digo<b> wxPython</b> que sepamos que son susceptibles de ser eliminadas y despu&#233;s con posibilidad de ser referenciadas de nuevo (por un proceso, por un hilo o por cualquier otra cosa), podemos evaluar primero el widget para ver si realmente existe y luego realizar las operaciones pertinentes. En nuestro ejemplo vamos a cambiar de nuevo el m&#233;todo <b style="color: #0b5394;">OnBoton2</b>:<br /><br /><br /><span style="color: #660000;"># -*- coding: utf-8 -*-</span><br /><br />import wx<br /><br /><span style="color: #bf9000;"><span style="color: black;">class</span><b> mi_frame</b></span>(wx.Frame):<br />&nbsp;&nbsp;&nbsp; def __init__(self, parent):<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wx.Frame.__init__(self, parent)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.SetTitle("Ejemplo de PyDeadObject")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: #274e13;"> # 2 botones.</span></b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton1 = wx.Button(self, -1, u"Bot&#243;n 1")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton2 = wx.Button(self, -1, u"Bot&#243;n 2")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer = wx.BoxSizer(wx.HORIZONTAL)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer.Add(self.boton1, 0, wx.ALL, 1)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizer.Add(self.boton2, 0, wx.ALL, 1)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.SetSizer(sizer)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b style="color: #274e13;"># Binding.</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton1.Bind(wx.EVT_BUTTON,<b><span style="color: #0b5394;"> self.OnBoton1</span></b>)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton2.Bind(wx.EVT_BUTTON,<span style="color: #0b5394;"> <b>self.OnBoton2</b></span>)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;<span style="color: #0b5394;"> <b>def OnBoton1(self, event):</b></span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton1.SetLabel("Hola Python")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;<b><span style="color: #0b5394;"> def OnBoton2(self, event):</span></b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>&nbsp;<span style="color: magenta;"> if not self.boton1:</span></b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wx.MessageBox(u"El bot&#243;n se destruy&#243;")<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b><span style="color: magenta;">else:</span></b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.boton1.SetLabel("Hola wxPython")<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b><span style="color: red;">self.boton1.Destroy()</span></b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />app = wx.PySimpleApp()<br />f =<b> <span style="color: #bf9000;">mi_frame</span></b>(None)<br />f.Show()<br />app.MainLoop()<br /><br /><span style="color: #660000; font-size: large;"><b>&#191;Por qu&#233;?</b></span><br /><br />Pues porque cuando un <b>widget</b> se elimina pasa a ser un <b>_wxPyDeadObject</b> el cual gana un m&#233;todo <b>__nonzero__</b> que siempre devuelve<b> False</b>.<br /><br />Si volvemos a ejecutar nuestro nuevo script y hacemos dos veces click en el bot&#243;n de la derecha tendremos el siguiente resultado:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-QU2iGlSXbZo/TsZeT0XjhzI/AAAAAAAABTU/4Pmj0FZzmw0/s1600/pydeadobject6.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="204" src="http://4.bp.blogspot.com/-QU2iGlSXbZo/TsZeT0XjhzI/AAAAAAAABTU/4Pmj0FZzmw0/s320/pydeadobject6.png" width="320" /></a></div><br />Espero que este art&#237;culo os sirva para escribir aplicaciones <b>wxPython</b> m&#225;s robustas.<br /><br />Un saludo.
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-10-27.html">&lt;</a></td>
+<td class="cal-month" colspan="5">noviembre 2011</td>
+<td class="cal-next"><a href="index-2011-12-03.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td></tr>
+<tr class="cal-week">
+<td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td></tr>
+<tr class="cal-week">
+<td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day"><strong class="cal-current">18</strong></td><td class="cal-day">19</td><td class="cal-day">20</td></tr>
+<tr class="cal-week">
+<td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td></tr>
+<tr class="cal-week">
+<td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

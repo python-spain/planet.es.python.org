@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>martes, 09 febrero</h2>
+<div class="time">
+<h3>22:08</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-bb3eb607">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2016/02/extraccion-de-datos-del-pdf-de-reporte.html">Extracci&#243;n de Datos del PDF de reporte de salud de Cencoex</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Este art&#237;culo es la continuaci&#243;n de los art&#237;culos de extracci&#243;n de datos de un PDF, enfocado al reporte de Cencoex del &#225;rea de <a href="http://www.cencoex.gob.ve/images/stories/pdfs/estadisticas/Salud.pdf" target="_blank">salud</a>.<br /><div><br /></div><div><br /></div><div>La siguiente figura muestra el pdf antes mencionado:</div><div><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-8W25VwslFKs/Vrk4W5rizXI/AAAAAAAAL8c/NAcWlY8klgw/s1600/salud.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="173" src="https://1.bp.blogspot.com/-8W25VwslFKs/Vrk4W5rizXI/AAAAAAAAL8c/NAcWlY8klgw/s320/salud.png" width="320" /></a></div><div class="separator" style="clear: both; text-align: center;"><br /></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Los art&#237;culos anteriores de extracci&#243;n de pdf son:</div><div class="separator" style="clear: both; text-align: left;"></div><ol><li><a href="http://blog.crespo.org.ve/2015/08/extraccion-de-informacion-de-pdfs-con.html" target="_blank">Extracci&#243;n de informaci&#243;n de PDFs con Python (parte 1)</a>.</li><li><a href="http://blog.crespo.org.ve/2015/08/extraccion-de-informacion-de-pdfs-con_30.html" target="_blank">Extracci&#243;n de informaci&#243;n de PDFs con Python (parte 2)</a>.</li><li><a href="http://blog.crespo.org.ve/2015/10/extraccion-de-informacion-de-pdfs-con.html" target="_blank">Extracci&#243;n de Informaci&#243;n de PDFs con Python (parte 3)</a>.</li></ol><br /><br /><div class="separator" style="clear: both; text-align: left;">En el caso del Pdf del reporte de Cencoex se tiene el script ya explicado anteriormente que guarda la informaci&#243;n en una base de datos mongodb llamada cencoex en una colecci&#243;n llamada salud.&nbsp;</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">La siguiente figura muestra los documentos de la colecci&#243;n:</div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-KAo094vwklI/Vrk6aSOq0fI/AAAAAAAAL8k/D7YV0Wf8fcg/s1600/Captura%2Bde%2Bpantalla%2B-%2B080216%2B-%2B20%253A29%253A58.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="173" src="https://1.bp.blogspot.com/-KAo094vwklI/Vrk6aSOq0fI/AAAAAAAAL8k/D7YV0Wf8fcg/s320/Captura%2Bde%2Bpantalla%2B-%2B080216%2B-%2B20%253A29%253A58.png" width="320" /></a></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Con est&#225; informaci&#243;n almacenada en mongodb se crear&#225; un API Restful con Eve como se explico en los <a href="http://blog.crespo.org.ve/search/label/Eve" target="_blank">art&#237;culos anteriores</a>.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">La imagen anterior muestra que los documentos tienen los siguientes campos:</div><div class="separator" style="clear: both; text-align: left;"></div><ul><li>_id: En el identificador del objeto</li><li>rif: Es el RIF de la empresa a la cual se le asignaron los dolares, el campo es un string.</li><li>monto: Monto en Dolares de la asignaci&#243;n de divisas a dicha empresa, el campo es un string.</li><li>empresa: Es el nombre de la empresa a la cual se le asignaron los dolares, el campo es un string.&nbsp;</li><li>numero: es el n&#250;mero asignado que aparece en el pdf, es un entero.&nbsp;</li></ul><br /><br /><div class="separator" style="clear: both; text-align: left;">Con esta informaci&#243;n es que se construir&#225; el esquema para acceder por medio de Eve.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">A continuaci&#243;n el archivo settings.py:</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both;"><i><span style="color: blue;">#Configuracion de mongodb</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">MONGO_HOST = 'localhost'</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">MONGO_PORT = 27017</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">#MONGO_USERNAME = 'user'</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">#MONGO_PASSWORD = 'user'</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">MONGO_DBNAME = 'cencoex'</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">RESOURCE_METHODS = ['GET', 'POST', 'DELETE']</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">ITEM_METHODS = ['GET', 'PATCH', 'PUT', 'DELETE']</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">#Esquema</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">schema = {</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; 'numero': {</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'type': 'integer',</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; },</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; 'rif': {</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'type': 'string',</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'maxlength': 11,</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; },</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; 'empresa': {</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'type': 'string',</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; },</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; 'monto': {</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'type': 'string',</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; },</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">}</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">empresa = {</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; 'titulo': 'numero',</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; 'additional_lookup': {</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'url': 'regex("[\w]+")',</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; 'field': 'numero'</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; },</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; 'cache_control': 'max-age=10,must-revalidate',</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; 'cache_expires': 10,</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; 'resource_methods': ['GET', 'POST'],</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; 'schema': schema</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">}</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">DOMAIN = {</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">&nbsp; &nbsp; 'salud': empresa,</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;">}</span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;"><i><span style="color: blue;"><br /></span></i></div><div class="separator" style="clear: both;">Como se ve, el dominio es salud que toma la informaci&#243;n de la empresa donde el campo a manejar es el n&#250;mero. Se defini&#243; el esquema que maneja los mismos campos de la colecci&#243;n.&nbsp;</div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;">El archivo run.py es el cual permite iniciar el API RestFul:</div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;"><span style="color: blue;"><i>#!/usr/bin/env python</i></span></div><div class="separator" style="clear: both;"><span style="color: blue;"><i><br /></i></span></div><div class="separator" style="clear: both;"><span style="color: blue;"><i>from eve import Eve</i></span></div><div class="separator" style="clear: both;"><span style="color: blue;"><i>app = Eve()</i></span></div><div class="separator" style="clear: both;"><span style="color: blue;"><i><br /></i></span></div><div class="separator" style="clear: both;"><span style="color: blue;"><i>if __name__ == '__main__':</i></span></div><div class="separator" style="clear: both;"><span style="color: blue;"><i>&nbsp; &nbsp; app.run()</i></span></div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;">Para iniciar el API RestFul se ejecuta el run.py:</div><div class="separator" style="clear: both;"><b><span style="color: red;">python run.py</span></b></div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;">Al acceder a http://127.0.0.1:5000/ por medio del cliente restclient se tiene lo siguiente:</div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-gZj2HgqjgnQ/Vrk9PqJwP_I/AAAAAAAAL8w/vecEjM1nEo8/s1600/Captura%2Bde%2Bpantalla%2B-%2B080216%2B-%2B20%253A41%253A50.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="180" src="https://3.bp.blogspot.com/-gZj2HgqjgnQ/Vrk9PqJwP_I/AAAAAAAAL8w/vecEjM1nEo8/s320/Captura%2Bde%2Bpantalla%2B-%2B080216%2B-%2B20%253A41%253A50.png" width="320" /></a></div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;">Para acceder a la lista de elementos del API RestFul se coloca en el cliente http://127.0.0.1:5000/salud/, la siguientes figuran muestran el resultado:</div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-ozKjwRu54sM/Vrk-BARyrmI/AAAAAAAAL80/-GbqrLnWOwc/s1600/Captura%2Bde%2Bpantalla%2B-%2B080216%2B-%2B20%253A45%253A22.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="137" src="https://1.bp.blogspot.com/-ozKjwRu54sM/Vrk-BARyrmI/AAAAAAAAL80/-GbqrLnWOwc/s320/Captura%2Bde%2Bpantalla%2B-%2B080216%2B-%2B20%253A45%253A22.png" width="320" /></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-dPEjdYOKdeA/Vrk-ijdQF4I/AAAAAAAAL84/5HluOTNZkBE/s1600/Captura%2Bde%2Bpantalla%2B-%2B080216%2B-%2B20%253A48%253A04.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="320" src="https://2.bp.blogspot.com/-dPEjdYOKdeA/Vrk-ijdQF4I/AAAAAAAAL84/5HluOTNZkBE/s320/Captura%2Bde%2Bpantalla%2B-%2B080216%2B-%2B20%253A48%253A04.png" width="243" /></a></div><div class="separator" style="clear: both; text-align: center;"><br /></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Como se ve en la figura se trae un JSON con los documentos de la base de datos mongodb.</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">Ahora se quiere acceder al primer n&#250;mero del reporte de la siguiente forma:</div><div class="separator" style="clear: both; text-align: left;">http://127.0.0.1:5000/salud/1</div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: left;">El resultado se muestra en las siguientes dos figuras:</div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-68ZW-279AHY/Vrk_WoBmTCI/AAAAAAAAL9A/WxMYL-2Wigw/s1600/Captura%2Bde%2Bpantalla%2B-%2B080216%2B-%2B20%253A50%253A59.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="147" src="https://2.bp.blogspot.com/-68ZW-279AHY/Vrk_WoBmTCI/AAAAAAAAL9A/WxMYL-2Wigw/s320/Captura%2Bde%2Bpantalla%2B-%2B080216%2B-%2B20%253A50%253A59.png" width="320" /></a></div><div class="separator" style="clear: both; text-align: left;"><br /></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-_LI1qvEIndQ/Vrk_dhdqurI/AAAAAAAAL9E/7lo7najEA_c/s1600/Captura%2Bde%2Bpantalla%2B-%2B080216%2B-%2B20%253A51%253A27.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="179" src="https://3.bp.blogspot.com/-_LI1qvEIndQ/Vrk_dhdqurI/AAAAAAAAL9E/7lo7najEA_c/s320/Captura%2Bde%2Bpantalla%2B-%2B080216%2B-%2B20%253A51%253A27.png" width="320" /></a></div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;">Claro, esto es una demostraci&#243;n, pero se puede buscar realizar busquedas con otros campos.&nbsp;</div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;">Se puede usar Django con el framework de API RestFul a fin &nbsp;de mejorar la forma de consultar dichos documentos de la base de datos mongodb.</div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;">La idea era mostrar lo f&#225;cil que es publicar los datos de un Reporte de Cencoex, en realidad lo m&#225;s complicado es extraer los datos de un PDF, incluso se pierde informaci&#243;n dependiendo del formato de documento utilizado, como se mostr&#243; en art&#237;culo anterior el documento es una hoja de c&#225;lculo en Excel y si se perdi&#243; informaci&#243;n en la extracci&#243;n.&nbsp;</div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;">Las instituciones que tienen dicha informaci&#243;n en base de datos pueden hacer p&#250;blicos los campos que se requieran de s&#243;lo lectura en un API RestFul, as&#237; se elimina el proceso de buscar informaci&#243;n de PDFs.&nbsp;</div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;">A continuaci&#243;n dejo la propuesta que est&#225; trabajando la comunidad de software libre&nbsp;en <a href="https://github.com/cslve/gobiernoabierto" target="_blank">github por parte de la comunidad de Software Libre de Venezuela</a>.</div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;">A continuaci&#243;n unos &nbsp;v&#237;deos de youtube:</div><div class="separator" style="clear: both;">Gobierno Abierto:</div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;"></div><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both;">Alianza para el Gobierno Abierto:</div><div class="separator" style="clear: both;"><br /></div><br /><div class="separator" style="clear: both;"><br /></div><div class="separator" style="clear: both; text-align: left;"></div><br /></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2015-11-13.html">&lt;</a></td>
+<td class="cal-month" colspan="5">febrero 2016</td>
+<td class="cal-next"><a href="index-2016-03-26.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day"><a class="cal-link" href="index-2016-02-07.html">07</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2016-02-08.html">08</a></td><td class="cal-day"><strong class="cal-current">09</strong></td><td class="cal-day">10</td><td class="cal-day"><a class="cal-link" href="index-2016-02-11.html">11</a></td><td class="cal-day"><a class="cal-link" href="index-2016-02-12.html">12</a></td><td class="cal-day">13</td><td class="cal-day">14</td></tr>
+<tr class="cal-week">
+<td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day"><a class="cal-link" href="index-2016-02-18.html">18</a></td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td></tr>
+<tr class="cal-week">
+<td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day"><a class="cal-link" href="index-2016-02-24.html">24</a></td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td></tr>
+<tr class="cal-week">
+<td class="cal-day">29</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td><td class="cal-day"><em class="cal-othermonth">06</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Hyperreals *R</a>
+<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">python majibu</a>
+<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

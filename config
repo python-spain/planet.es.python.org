@@ -380,3 +380,6 @@ feed 30m http://blog.crespo.org.ve/feeds/posts/default/-/python
 
 feed 30m https://userlinux.net/tag-python/feed/
     define_name oscarmlage
+
+feed 30m https://www.freakspot.net/feeds/python.atom.xml
+    define_name Freak Spot

@@ -43,6 +43,96 @@
     <p>Recientemente fue publicado en la &#160;revista TuxInfo un art&#237;culo introductorio a la programaci&#243;n funcional en Python que escrib&#237; junto a &#160;Arnau S&#225;nchez. Este es el m&#225;s reciente de una serie que trata de presentar las caracter&#237;sticas de dicho lenguaje de programaci&#243;n, y muy especialmente demostrar e ilustrar los multiples paradigmas que influencian su sintaxis y definici&#243;n. A todos aquellos
     </div>
 </div></div>
+<div class="time">
+<h3>13:14</h3>
+<div class="item feed-b74c3703 feed-{feed_id}" id="item-5d76ac3a">
+<p class="itemheader">
+<span class="itemtitle">
+    Hyperreals *R:
+<a href="http://blog.ch3m4.org/2011/08/30/mercurial-como-cliente-dcvs-universal/">Mercurial como cliente DCVS&#160;universal</a></span>
+</p>
+    <div class="itemdescription">
+    <h2>Introducci&#243;n</h2>
+<p>Con la llegada de los <a href="http://en.wikipedia.org/wiki/Distributed_Concurrent_Versions_System" title="Distributed Concurrent Versions System"><span class="caps">DCVS</span></a> (<em>Distributed Concurrent Versions System</em>), se ha convertido en habitual el uso de un sistema de control de versiones en todo desarrollo. La popularizaci&#243;n de sitios webs basados en estos sistemas como <a href="http://github.com">github</a>, <a href="http://gitorious.org/">gitorious</a>, <a href="http://bitbucket.org">bitbucket</a> o <a href="http://code.google.com/">googlecode</a> como foros p&#250;blicos donde compartir c&#243;digo entre programadores hasta el punto de convertirse en aut&#233;nticas <em>redes sociales</em>, ha hecho de estos sistemas una necesidad para todo desarrollador que se precio, con el consabido dilema de cu&#225;l de los sistemas&nbsp;elegir.</p>
+<p>Gracias a las extensiones que podemos a&#241;adir, cada d&#237;a es menos transcendente la elecci&#243;n de un <span class="caps">DCVS</span>, pudiendo usar cualquier cliente con cualquier otro&nbsp;servidor.</p>
+<h2>Comparando git y&nbsp;mercurial</h2>
+<p>Sin entrar en mucho detalle, podemos comparar estos dos sistemas <span class="caps">DCVS</span> populares para hacernos una&nbsp;idea:</p>
+<h3>git</h3>
+<ul>
+<li>Desarrollado en perl y pensado para linux (mal soporte en&nbsp;windows)</li>
+<li>Velocidad: muy&nbsp;r&#225;pido</li>
+<li>Comandos: algo&nbsp;complejo</li>
+<li>Interface gr&#225;fico: no&nbsp;tiene</li>
+<li>Popularidad muy&nbsp;alta</li>
+<li>Repositorio p&#250;blico <em>estrella</em>: <a href="http://github.com">github</a></li>
+</ul>
+<h3>mercurial&nbsp;(hg)</h3>
+<ul>
+<li>Desarrollado en python, con versiones para linux, windows y&nbsp;mac</li>
+<li>Velocidad:&nbsp;r&#225;pido</li>
+<li>Comandos: sencillo (similar a&nbsp;subversion)</li>
+<li>Interface gr&#225;fico: <a href="http://tortoisehg.bitbucket.org/">tortoiseHG</a> para gnome y&nbsp;windows</li>
+<li>Popularidad&nbsp;alta</li>
+<li>Repositorio p&#250;blico <em>estrella</em>: <a href="http://bitbucket.org">bitbucket</a></li>
+</ul>
+<p>&#201;stos son algunos apuntes r&#225;pidos. Evidentemente, hay algunos interfaces gr&#225;ficos para git y es posible emplear git en windows, pero en mi opini&#243;n tiene algunos problemas que necesitan pulirse. Por otro lado, existen varios IDEs como netbeans o eclipse que pueden usar cualquiera de estos <span class="caps">DCVS</span>, abstrayendo su uso interno a trav&#233;s de un interface&nbsp;com&#250;n.</p>
+<p>Para un programador de <strong>python</strong>, la elecci&#243;n deber&#237;a ser clara: <strong>mercurial</strong>. Realizado en python y con numerosas extensiones, tambi&#233;n desarrolladas en python, parece sin duda la mejor elecci&#243;n. Adem&#225;s, es el sistema de control de versiones m&#225;s utilizado en proyectos python, incluyendo el desarrollo del lenguaje en si, por lo que se uso es casi obligado si queremos colaborar con otros desarrolladores&nbsp;python.</p>
+<p>Pero no hace falta renunciar a nada: desde mercurial tambi&#233;n se puede usar repositorios git o subversion. Basta con a&#241;adir la extensi&#243;n&nbsp;adecuada.</p>
+<p>En el resto del articulo, me centrer&#233; s&#243;lo en la extensi&#243;n <a href="http://hg-git.github.com/">hg-git</a>, con la que se posibilita el uso de repositorios git desde mercurial, sin necesidad de instalar ning&#250;n cliente de git adicional (no existen dependecias con ning&#250;n ejecutable <code>git</code>).</p>
+<h2>hg-git</h2>
+<h3>Instalaci&#243;n</h3>
+<p>La &#250;ltima versi&#243;n de mercurial a la hora de escribir este art&#237;culo es la 1.9. Como la versi&#243;n <em>&#8220;estable</em>&#8221; de hg-git tiene problemas con esta versi&#243;n en concreto de mercurial, voy a explicar aqu&#237; lo que ser&#237;a el m&#233;todo <em>manual</em> de instalaci&#243;n, bastante m&#225;s&nbsp;seguro.</p>
+<p>Suponemos que tenemos ya instalado <code>mercurial</code> por lo medios habituales (autoinstalador en windows/instalador de paquetes en linux). Nos ser&#225; de gran ayuda tener instalado <a href="http://tortoisehg.bitbucket.org/">tortoiseHG</a> como interface gr&#225;fico para manejar los repositorios. Para windows, la instalaci&#243;n de <a href="http://tortoisehg.bitbucket.org/">tortoiseHG</a> incluye todo lo necesario al empotrar un int&#233;rprete de python, mercurial y varias extensiones, algunas de ellas necesarias para transformar rutas y nombres de ficheros codificados en <span class="caps">MBCS</span>. Los siguientes pasos a ejecutar con mercurial ser&#225;n m&#225;s f&#225;ciles de aplicar desde la interface de&nbsp;tortoiseHG.</p>
+<p>En el emplazamiento que queramos, empezamos por clonar un repositorio con <strong>hg-git</strong> desde&nbsp;mercurial:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span>hg clone http://bitbucket.org/durin42/hg-git hg-git
+</pre></div>
+</td></tr></table>
+
+<p>Normalmente, yo suelo usar un mismo directorio para agrupas todos los repositorios clonados. &#201;se podr&#237;a ser el lugar adecuado para guardar este&nbsp;repositorio.</p>
+<p>A&#241;adimos esta extensi&#243;n a la configuraci&#243;n de mercurial. Normalmente, se hace en el fichero <code>mercurial.ini</code> (windows) o en <code>~/.hgrc</code> (linux). Si usamos tortoiseHG, desde las <code>"opciones globales"</code> podemos editar directamente este&nbsp;fichero.</p>
+<p>Para a&#241;adir la&nbsp;extensi&#243;n:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre>[extensions]
+hggit = &lt;ruta-al-repositorio&gt;\hg-git\hggit
+</pre></div>
+</td></tr></table>
+
+<p>Como anotaci&#243;n, en alguna documentaci&#243;n se recomienda a&#241;adir tambi&#233;n la extensi&#243;n <em>opcional</em> <code>bookmarks</code> a la configuraci&#243;n; pero a partir de la versi&#243;n 1.8 de mercurial, el comando <code>bookmark</code> es parte propia de los comandos de mercurial, por lo tanto este paso ya no es&nbsp;necesario.</p>
+<p>Como dependencia, hace falta instalar el m&#243;dulo de python <code>dulwich</code> para manejo de repositorios git con python. En windows ya viene inclu&#237;do en tortoiseHG, por lo que no hay que hacer nada m&#225;s. En linux, viene como paquete instalable (<code>python-dulwich</code> en ubuntu), pero tambi&#233;n se podr&#237;a haber instalado mediante <code>easy_install</code> sin mayor problema. Lo que s&#237; hay que tener cuidado es en asegurarnos que no tenemos instalado el paquete <code>python-git</code> para que no interfiera con el m&#243;dulo <code>hg-git</code> que estamos&nbsp;configurando.</p>
+<p>Como lista final, estas ser&#237;an las versiones&nbsp;probadas:</p>
+<ul>
+<li>mercurial (hg) <code>1.9</code></li>
+<li>hg-git <code>0.2.4</code></li>
+<li>dulwich <code>0.6.1</code></li>
+</ul>
+<h2>Utilizaci&#243;n</h2>
+<p>Con hg-git instalado ya podemos acceder, por ejemplo, a los repositorios de github directamente desde mercurial. Basta con especificar que se trata de un repositorio&nbsp;git:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span>hg clone git://github.com/django/django.git django.git
+</pre></div>
+</td></tr></table>
+
+<p>Para realizar un <code>push</code> a github con conexi&#243;n codificada con <span class="caps">SSH</span>:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span>hg push git+ssh://user@github.com/user/myrep.git
+</pre></div>
+</td></tr></table>
+
+<p>As&#237; mismo, si partimos de un repositorio mercurial tambi&#233;n podemos <em>&#8220;convertirlo&#8221;</em> para su uso en git con el siguiente&nbsp;proceso:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>myrep <span class="c"># (dentro del repositorio mercurial)</span>
+<span class="nv">$ </span>hg bookmark -r default master <span class="c"># marcamos 'default' como 'master'</span>
+<span class="nv">$ </span>hg push git+ssh://user@github.com/user/myrep.git
+<span class="nv">$ </span>hg push
+</pre></div>
+</td></tr></table>
+
+<p>Al marcar con el nombre <code>master</code> a <code>default</code> facilitamos la conversi&#243;n de los datos de mercurial a objetos git. Este proceso s&#243;lo es necesario hacerlo la primera&nbsp;vez.</p>
+<h2>github o&nbsp;bitbucket</h2>
+<p>En cuanto a elegir entre github o bitbucket, es m&#225;s una cuesti&#243;n de gustos. <strong>github</strong> se ha posicionado como el sistema predilecto para darse a conocer, sobre todo como referencia en los <em>curriculo</em> a la hora de solicitar empleo. En cambio, <strong>bitbucket</strong> permite el uso de repositorios privados, muy &#250;til para peque&#241;os grupos de trabajo y para colaboraciones en la <em>&#8220;nube&#8221;</em> (dispositivos&nbsp;m&#243;viles).</p>
+<p>Ambos son gratuitos, por lo que no debes dejar de probarlos tan s&#243;lo por lo que haya podido decir aqu&#237;. Es una nueva forma de conocer y darse a conocer entre programadores, algo que sin duda hace de nuestro peque&#241;o mundo algo mucho m&#225;s&nbsp;grande.</p>
+    </div>
+</div></div>
 </div>
 
 </div>
@@ -72,7 +162,7 @@
 <tr class="cal-days">
 <th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
 <tr class="cal-week">
-<td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td></tr>
+<td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day"><a class="cal-link" href="index-2011-08-04.html">04</a></td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td></tr>
 <tr class="cal-week">
 <td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td></tr>
 <tr class="cal-week">
@@ -98,7 +188,7 @@
 <a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">Dead Epsilon</a>
-<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://www.eferro.net/search/label/Python">e-ferro</a>
 <a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
@@ -109,23 +199,26 @@
 <a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
 <a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
 <br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
 <a href="">Frogblog</a>
 <a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
 <br />
-<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
 <a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
-<a href="">Hyperreals *R</a>
-<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">JavAguirre.net</a>
-<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
 <a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://joedicastro.com">joe di castro</a>
-<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
 <a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
@@ -144,9 +237,6 @@
 <br />
 <a href="http://blog-es.python.org/">Python Insider ES</a>
 <a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
-<br />
-<a href="">python majibu</a>
-<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">Read The Fucking Docs</a>
 <a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>

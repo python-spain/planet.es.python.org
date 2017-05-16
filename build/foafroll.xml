@@ -30,6 +30,18 @@
       </foaf:member>
       <foaf:member>
          <foaf:Agent>
+            <foaf:name>Hyperreals *R</foaf:name>
+            <foaf:weblog>
+               <foaf:Document rdf:about="http://blog.ch3m4.org/feeds/python.atom.xml">
+                  <rdfs:seeAlso>
+                     <rss:channel rdf:about=""/>
+                  </rdfs:seeAlso>
+               </foaf:Document>
+            </foaf:weblog>
+         </foaf:Agent>
+      </foaf:member>
+      <foaf:member>
+         <foaf:Agent>
             <foaf:name>La libertad de desarrollar...</foaf:name>
             <foaf:weblog>
                <foaf:Document rdf:about="http://blog.crespo.org.ve/feeds/posts/default/-/python">
@@ -45,18 +57,6 @@
             <foaf:name>Frogblog</foaf:name>
             <foaf:weblog>
                <foaf:Document rdf:about="http://blog.willinux.net/?cat=14&amp;feed=rss2">
-                  <rdfs:seeAlso>
-                     <rss:channel rdf:about=""/>
-                  </rdfs:seeAlso>
-               </foaf:Document>
-            </foaf:weblog>
-         </foaf:Agent>
-      </foaf:member>
-      <foaf:member>
-         <foaf:Agent>
-            <foaf:name>Hyperreals *R</foaf:name>
-            <foaf:weblog>
-               <foaf:Document rdf:about="http://ch3m4.org/blog/category/python/feed/">
                   <rdfs:seeAlso>
                      <rss:channel rdf:about=""/>
                   </rdfs:seeAlso>
@@ -104,19 +104,7 @@
          <foaf:Agent>
             <foaf:name>JavAguirre.net</foaf:name>
             <foaf:weblog>
-               <foaf:Document rdf:about="http://javaguirre.net/python.xml">
-                  <rdfs:seeAlso>
-                     <rss:channel rdf:about=""/>
-                  </rdfs:seeAlso>
-               </foaf:Document>
-            </foaf:weblog>
-         </foaf:Agent>
-      </foaf:member>
-      <foaf:member>
-         <foaf:Agent>
-            <foaf:name>python majibu</foaf:name>
-            <foaf:weblog>
-               <foaf:Document rdf:about="http://joedicastro.com/feeds/rss">
+               <foaf:Document rdf:about="http://javaguirre.me/python.xml">
                   <rdfs:seeAlso>
                      <rss:channel rdf:about=""/>
                   </rdfs:seeAlso>
@@ -128,19 +116,7 @@
          <foaf:Agent>
             <foaf:name>joe di castro</foaf:name>
             <foaf:weblog>
-               <foaf:Document rdf:about="http://joedicastro.com/feeds/tags/python.rss.xml">
-                  <rdfs:seeAlso>
-                     <rss:channel rdf:about=""/>
-                  </rdfs:seeAlso>
-               </foaf:Document>
-            </foaf:weblog>
-         </foaf:Agent>
-      </foaf:member>
-      <foaf:member>
-         <foaf:Agent>
-            <foaf:name>Dead Epsilon</foaf:name>
-            <foaf:weblog>
-               <foaf:Document rdf:about="http://juanlu001.github.io/rss.xml">
+               <foaf:Document rdf:about="http://joedicastro.com/rss.xml">
                   <rdfs:seeAlso>
                      <rss:channel rdf:about=""/>
                   </rdfs:seeAlso>
@@ -246,6 +222,18 @@
       </foaf:member>
       <foaf:member>
          <foaf:Agent>
+            <foaf:name>Dead Epsilon</foaf:name>
+            <foaf:weblog>
+               <foaf:Document rdf:about="https://juanlu001.github.io/rss.xml">
+                  <rdfs:seeAlso>
+                     <rss:channel rdf:about=""/>
+                  </rdfs:seeAlso>
+               </foaf:Document>
+            </foaf:weblog>
+         </foaf:Agent>
+      </foaf:member>
+      <foaf:member>
+         <foaf:Agent>
             <foaf:name>Pybonacci</foaf:name>
             <foaf:weblog>
                <foaf:Document rdf:about="https://pybonacci.wordpress.com/feed/">
@@ -285,6 +273,18 @@
             <foaf:name>oscarmlage</foaf:name>
             <foaf:weblog>
                <foaf:Document rdf:about="https://userlinux.net/tag-python/feed/">
+                  <rdfs:seeAlso>
+                     <rss:channel rdf:about=""/>
+                  </rdfs:seeAlso>
+               </foaf:Document>
+            </foaf:weblog>
+         </foaf:Agent>
+      </foaf:member>
+      <foaf:member>
+         <foaf:Agent>
+            <foaf:name>freakspot</foaf:name>
+            <foaf:weblog>
+               <foaf:Document rdf:about="https://www.freakspot.net/feeds/python.atom.xml">
                   <rdfs:seeAlso>
                      <rss:channel rdf:about=""/>
                   </rdfs:seeAlso>

@@ -312,7 +312,7 @@ statusoutputfile build/log.html
 feed 30m http://monobotblog.alvarezalonso.es/archives/category/python/feed
     define_name Monobot
 
-feed 30m http://joedicastro.com/feeds/tags/python.rss.xml
+feed 30m http://joedicastro.com/rss.xml
     define_name joe di castro
 
 feed 30m http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python
@@ -321,11 +321,8 @@ feed 30m http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python
 feed 30m http://mundo-python.blogspot.com/feeds/posts/default
     define_name Mundo Python
 
-feed 30m http://ch3m4.org/blog/category/python/feed/
+feed 30m http://blog.ch3m4.org/feeds/python.atom.xml
     define_name Hyperreals *R
-
-feed 30m http://joedicastro.com/feeds/rss
-    define_name python majibu
 
 feed 30m http://feeds.feedburner.com/PythonInsiderES
     define_name Python Insider ES
@@ -363,13 +360,13 @@ feed 30m http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/p
 feed 30m http://blog.willinux.net/?cat=14&feed=rss2
     define_name Frogblog
 
-feed 30m http://juanlu001.github.io/rss.xml
+feed 30m https://juanlu001.github.io/rss.xml
     define_name Dead Epsilon
 
 feed 30m http://www.eferro.net/feeds/posts/default/-/Python
     define_name e-ferro
 
-feed 30m http://javaguirre.net/python.xml
+feed 30m http://javaguirre.me/python.xml
     define_name JavAguirre.net
 
 feed 30m https://pybonacci.wordpress.com/feed/
@@ -380,3 +377,6 @@ feed 30m http://blog.crespo.org.ve/feeds/posts/default/-/python
 
 feed 30m https://userlinux.net/tag-python/feed/
     define_name oscarmlage
+
+feed 30m https://www.freakspot.net/feeds/python.atom.xml
+    define_name freakspot

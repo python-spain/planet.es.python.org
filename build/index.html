@@ -30,244 +30,17 @@
 </div>
 <div id="items">
 <div class="day">
-<h2>viernes, 14 octubre</h2>
+<h2>martes, 09 mayo</h2>
 <div class="time">
-<h3>16:47</h3>
-<div class="item feed-3bca88ee feed-{feed_id}" id="item-a0d17bca">
+<h3>05:05</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-8db13f6a">
 <p class="itemheader">
 <span class="itemtitle">
-    oscarmlage:
-<a href="http://www.userlinux.net/moviendo-entornos-virtuales-virtualenv.html">Moviendo entornos virtuales virtualenv</a></span>
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2017/05/calculo-de-pi-por-el-metodo-montecarlo.html">C&#225;lculo de Pi por el m&#233;todo MonteCarlo usando Python.</a></span>
 </p>
     <div class="itemdescription">
-    <p>Una de las ventajas de los entornos virtuales es que los podemos recrear en cualquier m&aacute;quina con muy poco coste de tiempo, siempre que tengamos los requisitos m&aacute;s o menos documentados es tan sencillo como lanzar un comando para volver a construirlo &iquest;o no?. La teor&iacute;a es fant&aacute;stica pero en la pr&aacute;ctica siempre surgen - como no - problemas <em>murphianos</em>.</p>
-<p>En base a una necesidad muy concreta me ha tocado mover <a href="https://github.com/pypa/virtualenv">virtualenvs</a> de ubicaci&oacute;n para reorganizar tanto el c&oacute;digo como los entornos en el maltrecho disco duro de mi port&aacute;til, y por eso he creado esta peque&ntilde;a muestra de script "<em>quick and dirty</em>" (<code>movenv</code>):</p>
-<pre class="bash">#!/bin/bash
-
-VIRTUALENV=`which virtualenv`
-OLD=$1 # /absolute/path/to/old/env
-NEW=$2 # /absolute/path/to/new/env
-
-${VIRTUALENV} --relocatable ${OLD}
-mv ${OLD} ${NEW}
-${SED} -i -e "s#${OLD}#${NEW}#g" ${NEW}/bin/activate
-</pre>
-<p>Ahora s&oacute;lo tenemos que ejecutarlo <code>movenv /path/old/env /path/to/new/env</code> y comprobar que todo sigue en funcionando en la nueva ubicaci&oacute;n. Ni que decir tiene que el script es una peque&ntilde;a prueba de concepto, habr&iacute;a que a&ntilde;adir validaci&oacute;n de existencia de directorios y algunas otras cosas para que fuera plenamente funcional.</p>
-    </div>
-</div><div class="item feed-3bca88ee feed-{feed_id}" id="item-486856d0">
-<p class="itemheader">
-<span class="itemtitle">
-    oscarmlage:
-<a href="http://www.userlinux.net/pycones-2015.html">PyConES 2015</a></span>
-</p>
-    <div class="itemdescription">
-    <p>El pasado fin de semana (20 a 22 noviembre de 2015) se celebr&oacute; en Valencia la <a href="http://2015.es.pycon.org/es/">PyConES 2015</a>, la tercera edici&oacute;n de la conferencia nacional sobre Python m&aacute;s importante de Espa&ntilde;a. As&iacute; que como no pod&iacute;a ser de otra forma, despu&eacute;s de un noviembre at&iacute;pico por un m&aacute;s que intenso e interesante Sprint (materia de otro post), all&aacute; nos fuimos <a href="http://blog.e-shell.org/">Borja</a> y yo a pasar el fin de semana entre amigos a la ciudad del Turia.</p>
-<p>Este a&ntilde;o era especial por varios motivos. En primer lugar porque fuimos (y volvimos) en avi&oacute;n, intentando superar mi ya archiconocida aerofobia, en segundo lugar por el reencuentro con los amigos de <code>#monojimmy</code> (a los que no ve&iacute;a desde el SIMO de 2004). Y, por supuesto, por la propia conferencia y todo lo que conlleva.</p>
-<p>Las charlas como siempre, sublimes, este a&ntilde;o incluso hemos podido asistir a un taller de AsyncIO el viernes y a un par de asambleas de la <a href="http://www.es.python.org/">Asociaci&oacute;n Python Espa&ntilde;a</a> para tomar decisiones sobre la nueva junta y la nueva sede de la PyConES.</p>
-<ul>
-<li>Better async code with Python 3, Anton Caceres</li>
-<li>Charla plenaria, Yamila Moreno</li>
-<li>#!/usr/bin/python (Python para Sysadmins), Andreu Belmonte Pe&ntilde;a</li>
-<li>Escalando una web con python, Jose Ignacio Galarza</li>
-<li>Let's Twisted again!, Israel D. Aguilar</li>
-<li>"Embedding" de Python en otras aplicaciones, Jes&uacute;s Cea</li>
-<li>SQJobs: Sencillo sistema de tareas en segundo plano, Federico Mon</li>
-<li>Learning by Trolling, Jes&uacute;s Espino</li>
-<li>Seguridad y criptograf&iacute;a en Python, Jos&eacute; Manuel Ortega</li>
-<li>Implantaci&oacute;n de ElasticSearch: problemas y soluciones, Miguel S&aacute;nchez Rodr&iacute;guez y Miguel Gonz&aacute;lez Nieto</li>
-<li>Como crear un bot para Telegram, Urtzi Odriozola Lizaso</li>
-<li>El m&oacute;dulo "tracemalloc", Jes&uacute;s Cea</li>
-<li>Comparing Python ORM, Jos&eacute; Manuel Ortega</li>
-<li>Hacking the Taiga, David Barrag&aacute;n Merino</li>
-<li>Agujeros negros y optimizaci&oacute;n de c&oacute;digo en python, Pablo Galindo Salgado</li>
-<li>Charla Plenaria, V&iacute;ctor Terr&oacute;n</li>
-</ul>
-<p>Y con un mont&oacute;n de conocimientos y t&eacute;rminos nuevos, con un mont&oacute;n de networking, horchatas y fart&oacute;ns, un mont&oacute;n de comida en el buche y una nueva cuenta de twitter (<a href="https://twitter.com/python_lugo">@python_lugo</a>), nos hemos vuelto a casa - volando - con las pilas cargadas pensando en el privilegio que es formar parte de esta peque&ntilde;a gran familia. Gracias a los hu&eacute;spedes por tratarnos como en casa, a la organizaci&oacute;n por el magn&iacute;fico trabajo y a toda la comunidad por hacer posible este fenomenal evento.</p>
-<p>Nos vemos en la PyConES 2016.</p>
-<p>gallerystart 0.jpg 1.jpg 2.jpg 3.jpg 4.jpg 5.jpg 6.jpg 7.jpg 8.jpg 9.jpg 10.jpg 11.jpg 12.jpg 13.jpg 14.jpg 15.jpg 16.jpg 17.jpg 18.jpg 19.jpg 20.jpg 21.jpg 22.jpg 23.jpg 24.jpg 25.jpg 26.jpg 27.jpg 28.jpg 29.jpg 30.jpg 31.jpg 32.jpg 33.jpg 34.jpg 35.jpg 36.jpg 37.jpg 38.jpg 39.jpg 40.jpg 41.jpg 42.jpg 43.jpg 44.jpg 45.jpg 46.jpg 47.jpg 48.jpg 49.jpg 50.jpg 51.jpg 52.jpg 53.jpg 54.jpg 55.jpg 56.jpg 57.jpg 58.jpg 59.jpg 60.jpg 61.jpg galleryend</p>
-    </div>
-</div><div class="item feed-3bca88ee feed-{feed_id}" id="item-29f43f49">
-<p class="itemheader">
-<span class="itemtitle">
-    oscarmlage:
-<a href="http://www.userlinux.net/zodb-how-properly-delete-blob-file.html">ZODB, how to properly delete a BLOB file</a></span>
-</p>
-    <div class="itemdescription">
-    <p>Due one of my&nbsp;<a href="http://www.pylonsproject.org/projects/pyramid/about">Pyramid</a>&nbsp;current projects, I was playing a bit with&nbsp;<a href="http://www.zodb.org/en/latest/">ZODB</a>&nbsp;and blob image storing. After reading here and there, I had no idea how to properly delete a filesystem stored image, blob field related. I though best way was to use&nbsp;<a href="http://nullege.com/codes/search/ZODB.blob.remove_committed">remove_committed()</a>&nbsp;<em>ZODB.blob</em>&nbsp;method with something like:</p>
-<pre class="python">def delete_avatar():
-    image = myobj.avatar
-    if isinstance(image, Blob):
-        remove_committed(image.committed())
-        myobj.avatar = None
-</pre>
-<p>But after talking a bit with skilled&nbsp;<em>ZODB</em>&nbsp;people, they said that updating the database value and packing the database was enough to clear all the references in filesystem. First time ever I read something about "<em>packing</em>" a&nbsp;<em>ZODB</em>, so I had to probe it by myself.</p>
-<pre class="python">pshell$ profile.avatar
-(ZODB.blob.Blob object at 0x108167230)
-</pre>
-<p>Once we reached the image we can get it's path and some other interesting data for this test from&nbsp;<code>pshell</code>&nbsp;and shell:</p>
-<pre class="python">pshell$ profile.avatar.committed()
-'/path/to/myproject/var/blobstorage/0x00/0x00/0x00/0x00/0x00/0x02/0xbd/0x68/0x03ab15928a1fb511.blob'
-</pre>
-<pre class="bash">$ ls /path/to/myproject/var/blobstorage/0x00/0x00/0x00/0x00/0x00/0x02/0xbd/0x68/0x03ab15928a1fb511.blob
-/0x03ab15928a1fb511.blob
-$ find . -name *.blob | wc -l
-12
-$ du -s .
-4784	.
-</pre>
-<p>Nice!, if I open the&nbsp;<code>.blob</code>&nbsp;file with whatever image editor I get the proper image, next step is to enter in&nbsp;<code>pshell</code>&nbsp;mode again, update the database code to&nbsp;<code>None</code>,<em>commit</em>&nbsp;the transaction and see what's happening in the filesystem:</p>
-<pre class="python">pshell$ profile.avatar = None
-pshell$ profile.avatar
-pshell$ import transaction
-pshell$ transaction.commit()
-</pre>
-<pre class="bash">$ find . -name *.blob | wc -l
-12
-$ du -s .
-4784	.
-</pre>
-<p>Nothing seems to be happened, after the commit,&nbsp;<code>find</code>&nbsp;and&nbsp;<code>du</code>&nbsp;are showing the same information as before, last step is to&nbsp;<code>pack</code>&nbsp;the database...</p>
-<pre class="python">pshell$ from pyramid_zodbconn import get_connection
-pshell$ conn = get_connection(request)
-pshell$ conn.db().pack()
-</pre>
-<pre class="bash">$ find . -name *.blob | wc -l
-11
-$ du -s .
-4504	.
-$ ls /path/to/myproject/var/blobstorage/0x00/0x00/0x00/0x00/0x00/0x02/0xbd/0x68/0x03ab15928a1fb511.blob
-$
-</pre>
-<p>That's it!, after a couple of seconds "<em>packing</em>", the filesystem seems to be updated, the file was properly deleted and all the information seems to be in a right state.</p>
-<p>In the end seems that the&nbsp;<em>remove_commited()</em>&nbsp;function was not the right way to delete a&nbsp;<strong>BLOB</strong>&nbsp;file from&nbsp;<strong>ZODB</strong>, thumbs up for the packing!.</p>
-    </div>
-</div><div class="item feed-3bca88ee feed-{feed_id}" id="item-462a6f77">
-<p class="itemheader">
-<span class="itemtitle">
-    oscarmlage:
-<a href="http://www.userlinux.net/pyramid-6-forms-simpleform.html">Pyramid: 6 - Forms (simpleform)</a></span>
-</p>
-    <div class="itemdescription">
-    <p>Aunque hasta ahora es cierto que hemos creado un <em>model</em> (bueno, dos), una <em>view</em> y una <em>template</em>, hemos configurado el <em>root context</em> de la aplicaci&oacute;n y sabemos m&aacute;s o menos c&oacute;mo funciona y c&oacute;mo movernos por ella, de momento no hemos interactuado demasiado con el <strong>ZODB</strong>, nos falta agregar datos a ese modelo Twitts que creamos en su d&iacute;a y, obviamente, mostrarlos.</p>
-<p>Para agregar datos necesitamos un formulario que mapee el modelo twitt en html y que el usuario pueda interactuar con &eacute;l. Y aqu&iacute; es donde entra en escena <a href="http://pythonhosted.org/pyramid_simpleform/">pyramid_simpleform</a>. Como su nombre indica, se trata de una librer&iacute;a de validaci&oacute;n y render de formularios que deberemos instalar en nuestro entorno:</p>
-<pre>$ pip install pyramid_simpleform</pre>
-<p>Una vez instalada ya podemos crear los formularios correspondientes. Para ello y por seguir alguna convenci&oacute;n, usaremos el directorio schemas/, as&iacute; que creamos dicho directorio, colocamos en &eacute;l un __init__.py y, en principio, vamos a crear el formulario correspondiente al modelo twitt: twitt.py</p>
-<pre># -*- coding: utf-8 -*-
-
-from formencode import Schema, validators
-
-class TwittSchema(Schema):
-
-    allow_extra_fields = True
-    filter_extra_fields = True
-
-    twitt = validators.UnicodeString(max=140)</pre>
-<p>Definido el <em>schema</em> del <em>form</em>, vamos a usarlo en una view, necesitamos importar las clases correspondientes, crear una instancia de ese formulario en base al esquema y pasarlo a template para renderizarlo en html:</p>
-<pre># views/__init__.py
-from pyramid_simpleform import Form, State
-from pyramid_simpleform.renderers import FormRenderer
-from src.schemas.twitt import TwittSchema
-...
-def homepage(context, request):
-...
-    form = Form(request, schema=TwittSchema, multipart=True)
-    ....
-    return {'form': FormRenderer(form),
-            'title': 'PyTwitter',
-            'description': 'Our twitter clon, with Pyramid'}
-</pre>
-<p>En nuestro index.pt agregamos el formulario propiamente dicho y ya deber&iacute;a aparecer algo parecido a lo siguiente:</p>
-<pre>    # templates/index.pt
-    &lt;title$&gt;{title}&lt;/title&gt;
-    &lt;p&gt;${description}&lt;/p&gt;
-    &lt;hr /&gt;
-    ${form.begin()}
-        ${form.text('twitt')}
-        ${form.errorlist('twitt')}
-        ${form.submit('submit', 'Submit')}
-    ${form.end()}
-</pre>
-<p><img alt="" height="469" src="http://static.userlinux.net/userlinux/pyramid-forms.png" style="display: block; margin-left: auto; margin-right: auto;" width="514" /></p>
-<p>Ahora tan solo nos queda la segunda parte, recoger los datos por POST y agregarlos persistentemente a nuestra ZODB. Para ello comprobamos en view si existe alg&uacute;n dato request.POST y si valida adecuadamente. Finalmente llamaremos al m&eacute;todo add_twitt() del context para que lo agregue a la base de datos:</p>
-<pre>    # views/__init__.py
-    if 'submit' in request.POST and form.validate():
-        twitt = form.bind(Twitt())
-        twitt.published = datetime.today()
-        context.add_twitt(twitt)
-</pre>
-<pre>    # models/rootfolder.py
-    def add_twitt(self, twitt):
-        self.add(str(twitt.tid), twitt)</pre>
-<p>Y por &uacute;ltimo, si queremos sacar todos los twitts que hemos guardado, llamaremos a un m&eacute;todo del model que nos los devuelva y el procedimiento es el mismo siempre, pasarlos a template para pintarlos:</p>
-<pre>    # models/rootfolder.py
-    @property
-    def index(self):
-        return [t for t in self.values() if isinstance(t, Twitt)]
-</pre>
-<pre>    # views/__init__.py
-    ...
-    twitts = context.index
-    ...
-    return {'form': FormRenderer(form),
-            'twitts': twitts,
-            'title': 'PyTwitter',
-            'description': 'Our twitter clon, with Pyramid'}
-</pre>
-<pre>    # templates/index.pt
-    &lt;hr /&gt;
-    &lt;ul&gt;
-        &lt;li tal:repeat="twit twitts"&gt;${twit.twitt} (${twit.published})&lt;/li&gt;
-    &lt;/ul&gt;
-</pre>
-<p><img alt="" height="480" src="http://static.userlinux.net/userlinux/pyramid-forms2.png" style="display: block; margin-left: auto; margin-right: auto;" width="514" /></p>
-<p>Ahora s&iacute; que tenemos nuestra primera interacci&oacute;n con ZODB completa y funcional. Ya podemos agregar nuevos twitts y ver el listado de los mismos. Ahora faltar&iacute;a, de alguna forma, ponerlo un poco m&aacute;s bonito. En la pr&oacute;xima entrada hablaremos de <a href="http://getbootstrap.com/">bootstrap</a>, <a href="http://fortawesome.github.io/Font-Awesome/">fontawesome</a>,&nbsp;<a href="http://bower.io/">bower</a>&nbsp;y&nbsp;<a href="http://webassets.readthedocs.org/en/latest/">webassets</a>.</p>
-    </div>
-</div><div class="item feed-3bca88ee feed-{feed_id}" id="item-a7dd1fe0">
-<p class="itemheader">
-<span class="itemtitle">
-    oscarmlage:
-<a href="http://www.userlinux.net/pyramid-5-views-y-chameleon-templates.html">Pyramid: 5 - Views y Chameleon Templates</a></span>
-</p>
-    <div class="itemdescription">
-    <p>Siguiendo con esta serie de art&iacute;culos sobre Pyramid y ZODB ya hemos escrito nuestros primeros modelos, as&iacute; que ya podemos interactuar con ellos de alguna forma: a trav&eacute;s de las <strong>views</strong>.</p>
-<p>Las views o vistas en el patr&oacute;n MVT (no confundir con el mismo t&eacute;rmino "vista" del patr&oacute;n MVC), son las que albergan la l&oacute;gica de la aplicaci&oacute;n (lo equivalente al "controlador" en MVC). Por un lado conectan con el <em>model</em> y por otro lado con las <em>templates</em>&nbsp;para cerrar el proceso <em>request/response</em>.</p>
-<p>Vamos a ver un ejemplo de view sencilla, que pasa un par de variables a template:</p>
-<pre># -*- coding: utf-8 -*-
-
-from pyramid.view import view_config
-from src.models.rootfolder import RootFolder
-
-BASE_TMPL = 'src:templates/'
-
-@view_config(context=RootFolder, renderer=BASE_TMPL + 'index.pt')
-def homepage(context, request):
-
-    return {'title': 'PyTwitter',
-            'description': 'Our twitter clon, with Pyramid'}
-</pre>
-<p>Definimos este m&eacute;todo en el contexto <em>RootFolder</em>, si recordamos, en la entrada anterior hemos configurado para que el punto de entrada a nuestra aplicaci&oacute;n sea <em>RootFolder</em>, de forma que esta view que hemos escrito ser&aacute; la principal de la aplicaci&oacute;n.</p>
-<p>Adem&aacute;s estamos llamando al template <em>index.pt</em> y le hemos pasado dos variables, <em>title</em> y <em>description</em>. A continuaci&oacute;n creamos el fichero <em>index.pt</em> dentro de nuestro directorio <em>templates/</em> con el siguiente contenido:</p>
-<pre>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
-&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal"&gt;
-&lt;head&gt;
-  &lt;title&gt;${title}&lt;/title&gt;
-  &lt;meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/&gt;
-  &lt;meta name="description" content="${description}" /&gt;&lt;/head&gt;
-    &lt;body&gt;
-      &lt;h1&gt;${title}&lt;/h1&gt;
-      &lt;p&gt;${description}&lt;/p&gt;
-    &lt;/body&gt;
-&lt;/html&gt;
-</pre>
-<p>Vemos como el uso de las variables que se pasan de view a template es muy sencillo. En Pyramid tenemos (por defecto) plantillas basadas en <a href="http://www.makotemplates.org/">Mako</a> o en <a href="https://chameleon.readthedocs.org/en/latest/">Chameleon</a>. A partir de la versi&oacute;n 1.5 debemos configurar en el m&eacute;todo <em>main()</em> cual de los dos vamos a usar.</p>
-<pre>def main(global_config, **settings):
-    config = Configurator(root_factory=root_factory, settings=settings)
-    config.include('pyramid_chameleon')
-    ...
-</pre>
-<p>Personalmente prefiero <em>Mako</em>, que es el que usan sitios como <a href="http://www.python.org">Python.org</a> o <a href="http://www.reddit.com">reddit.com</a>, se parece m&aacute;s a <a href="http://jinja.pocoo.org/">Jiinja</a>, <a href="http://twig.sensiolabs.org">Twig</a> o a las plantillas de Django, que ya conocemos bastante. As&iacute; que por probar algo nuevo vamos a utilizar <strong>Chameleon</strong>.</p>
-<p>Remito, para m&aacute;s informaci&oacute;n, a la <a href="https://chameleon.readthedocs.org/en/latest/">documentaci&oacute;n oficial de Chameleon</a>, pues escapa del objetivo de esta serie de art&iacute;culos hablar de un motor de plantillas u otro.</p>
-<p>Hasta aqu&iacute; hemos creado ya lo que ser&aacute; la base de nuestra aplicaci&oacute;n: <em>model</em>, <em>view</em> y <em>template</em>. A partir de ahora intentaremos introducir m&aacute;s elementos como manejo de formularios, assets, tests y otros peque&ntilde;os trucos que har&aacute;n m&aacute;s sencillo tanto la programaci&oacute;n como el mantenimiento de nuestras aplicaciones.</p>
+    <p>El m&#233;todo MonteCarlo es un m&#233;todo estad&#237;stico num&#233;rico que se usa para aproximar expresiones matem&#225;ticas complejas y costosas de evaluar conexactitud. Para m&#225;s informaci&#243;n pueden revisar <a href="https://es.wikipedia.org/wiki/M%C3%A9todo_de_Montecarlo">wikipedia</a>.<br /><br />La expresi&#243;n matem&#225;tica que se va a resolver es el c&#225;lculo de Pi.<br /><br />En este art&#237;culo mostrar&#233; dos versiones del uso del M&#233;todo MonteCarlo.<br /><br />El primer ejemplo el algoritmo fue tomado de un c&#243;digo en Pascal y llevado a Python. A continuaci&#243;n el c&#243;digo:<br /><br /><code></code><br /><pre><code><i><span style="color: blue;">#!/usr/bin/env python</span></i><br /><br /><i><span style="color: blue;">#Se importa el modulo random</span></i><br /><br /><i><span style="color: blue;">import random</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se define la funcion</span></i><br /><br /><i><span style="color: blue;">def Pi(limite=10000000):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; dentro = 0</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; contador = 0</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se hace un ciclo hasta que contador sea igual al limite</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; while contador &lt; limite:</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; #Se calcula &nbsp;que los puntos esten dentro del radio del circulo</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; #Si es asi se incrementa la variable dentro. y luego se incrementa</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; #contador para pasar al siguiente ciclo.</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; if ((random.random()**2 + random.random()**2) &lt;= 1):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dentro += 1</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; contador += 1</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se retorna el resultado de la cantida de puntos dentro del circulo</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #entre el limite por 4.</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; return 4.0*float(dentro)/limite</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">if __name__ == "__main__":</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; n = (10000, 1000000,100000000)</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; for i in n:</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; print ("El valor de pi es: {0:2.8f} para n {1}".format(Pi(i),i))</span></i><br /><br /><div><br /></div><br /><div><br /></div><br /></code></pre><code></code><br /><div>Al ejecutar el c&#243;digo se tiene:</div><div><br /></div><div><div><b><span style="color: red;">El valor de pi es: 3.14960000 para n 10000</span></b></div><div><b><span style="color: red;">El valor de pi es: 3.14308000 para n 1000000</span></b></div><div><b><span style="color: red;">El valor de pi es: 3.14141900 para n 100000000</span></b></div></div><div><br /></div><div><br /></div><div>Al aumentar el valor de n se logra tener un n&#250;mero m&#225;s preciso del valor de PI, claro tambi&#233;n se llevar&#225; m&#225;s tiempo en calcular.</div><div><br />En el siguiente ejemplo se basa en un articulo en ingl&#233;s publicado en Medium que se llama <a href="https://medium.com/100-days-of-algorithms/day-9-monte-carlo-%CF%80-7ae010743bde">Day 9: Monte Carlo Pi</a>&nbsp;y el c&#243;digo del mismo se encuentra en <a href="https://github.com/coells/100days/blob/master/day%2009%20-%20monte%20carlo%20-%20pi.ipynb">github</a>.<br /><br />El c&#243;digo se muestra a continuaci&#243;n:<br /><br /><code></code><pre><code><i><span style="color: blue;">#!/usr/bin/env python</span></i><br /><br /><i><span style="color: blue;">#Se importa el modulo numpy</span></i><br /><br /><i><span style="color: blue;">import numpy as np</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">def pi(n, batch=1000):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; t = 0</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; for i in range(n // batch):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; p = np.random.rand(batch, 2)</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; p = (p * p).sum(axis=1)</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; t += (p &lt;= 1).sum()</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; return 4 * float(t) / n</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">if __name__ == "__main__":</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; print ("El valor de pi es: {0:2.8f} para n {1}".format(pi(10**8),10**8))</span></i></code></pre></div><div><i><span style="color: blue;"><br /></span></i></div><div><br /></div><div>Al ejecutarlo se obtiene:</div><div><br /></div><div><b><span style="color: red;">El valor de pi es: 3.14146076 para n 100000000</span></b></div><div><br /></div><div><br /></div><div>Como ven la &#250;ltima versi&#243;n es menos la cantidad de l&#237;neas de c&#243;digo y m&#225;s r&#225;pida.&nbsp;</div><div><br /></div><div><br /></div>
     </div>
 </div></div>
 </div>
@@ -292,24 +65,22 @@ def homepage(context, request):
     <div id="archive">
         <table class="calendar">
 <tr class="cal-head">
-<td class="cal-prev"><a href="index-2016-09-30.html">&lt;</a></td>
-<td class="cal-month" colspan="5">octubre 2016</td>
+<td class="cal-prev"><a href="index-2017-03-20.html">&lt;</a></td>
+<td class="cal-month" colspan="5">mayo 2017</td>
 <td class="cal-next"></td>
 </tr>
 <tr class="cal-days">
 <th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
 <tr class="cal-week">
-<td class="cal-day"><em class="cal-othermonth">26</em></td><td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td><td class="cal-day">02</td></tr>
+<td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day"><a class="cal-link" href="index-2017-05-07.html">07</a></td></tr>
 <tr class="cal-week">
-<td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2016-10-05.html">05</a></td><td class="cal-day"><a class="cal-link" href="index-2016-10-06.html">06</a></td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td></tr>
+<td class="cal-day">08</td><td class="cal-day"><strong class="cal-current">09</strong></td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td></tr>
 <tr class="cal-week">
-<td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day"><a class="cal-link" href="index-2016-10-12.html">12</a></td><td class="cal-day">13</td><td class="cal-day"><strong class="cal-current">14</strong></td><td class="cal-day">15</td><td class="cal-day">16</td></tr>
+<td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td></tr>
 <tr class="cal-week">
-<td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td></tr>
+<td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td></tr>
 <tr class="cal-week">
-<td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td></tr>
-<tr class="cal-week">
-<td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td><td class="cal-day"><em class="cal-othermonth">06</em></td></tr>
+<td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td></tr>
 </table>
 
     </div>
@@ -327,7 +98,7 @@ def homepage(context, request):
 <a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">Dead Epsilon</a>
-<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://www.eferro.net/search/label/Python">e-ferro</a>
 <a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
@@ -338,23 +109,26 @@ def homepage(context, request):
 <a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
 <a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
 <br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
 <a href="">Frogblog</a>
 <a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
 <br />
-<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
 <a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
-<a href="">Hyperreals *R</a>
-<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">JavAguirre.net</a>
-<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
 <a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://joedicastro.com">joe di castro</a>
-<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
 <a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
@@ -373,9 +147,6 @@ def homepage(context, request):
 <br />
 <a href="http://blog-es.python.org/">Python Insider ES</a>
 <a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
-<br />
-<a href="">python majibu</a>
-<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">Read The Fucking Docs</a>
 <a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>

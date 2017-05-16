@@ -83,6 +83,106 @@
 
 <p>M&#225;s en Genbeta Dev | <a href="http://www.genbetadev.com/frameworks/introduccion-a-la-programacion-asincrona-con-twisted">Introducci&#243;n a la programaci&#243;n as&#237;ncrona con Twisted</a></p>
     </div>
+</div><div class="item feed-a1322d23 feed-{feed_id}" id="item-39a94de4">
+<p class="itemheader">
+<span class="itemtitle">
+    Genbeta:dev:
+<a href="https://www.genbetadev.com/python/la-nueva-nueva-version-2012-1-0-de-twisted-ya-esta-en-la-calle">La nueva Nueva versi&#243;n 12.1.0 de Twisted ya est&#225; en la calle</a></span>
+</p>
+    <div class="itemdescription">
+    <div class="article-asset-image article-asset-normal"><div class="asset-content"> <img alt="" class="centro_sinmarco" src="https://i.blogs.es/b6f238/twisted_logo_software/650_1200.png" /> </div></div>
+
+<p>Thomas Herv&#233; del <strong>equipo de desarrollo</strong> de Twisted anunciaba ayer por la ma&#241;ana a trav&#233;s de la lista de correo de <strong>Twisted</strong> la release de la <strong>versi&#243;n 12.1</strong> de la popular librer&#237;a de <strong>sockets as&#237;ncronos para Python</strong>.</p>
+
+<p>Era de esperar un update del core desde que el pasado once de febrero liberaran la versi&#243;n 12.0 la cual <strong>no introduc&#237;a demasiados cambios</strong> y algunos eran bastante esperados como por ejemplo la <strong>recuperaci&#243;n del reactor kqueue</strong> para <strong>BSD</strong> y derivados (como <strong>Mac OS X</strong>). En esta release se han cerrado <strong>ciento siete tickets</strong> por lo que algunos de los cambios son importantes</p>
+
+<h2>Twisted Core</h2>
+
+<p>Los cambios m&#225;s <strong>significativos</strong> al core de Twisted son los siguientes:</p>
+
+<ul><li>Se ha recuperado el reactor kqueue para plataformas BSD (incluido Mac OS X)</li><li>epoll es ahora el <strong>reactor por defecto</strong> en Linux</li><li><code>twisted.python.filepath</code> ahora provee <code>IFilePath</code>, una interfaz para objetos de path de archivos</li><li>Los reactores para GTK y glib ahora ejecutan operaciones de E/S y eventos programados con menor prioridad para asegurar que la Interfaz de Usuario sigue respondiendo</li><li><code>IReactorTCP.connectTCP()</code> ahora acepta literales de direccion <strong>IPv6</strong></li><li>Se a&#241;ade la interfaz <code>twisted.internet.interfaces.IReactorSocket</code> que es usada por algunos reactors para escuchar en sockets fijados por herramientas externas como <strong>systemd</strong> o <strong>launchd</strong></li><li><code>twisted.internet.endpoints.clientFromString</code> ahora soporta cadenas con el formato <code>tcp:example.com:80</code> y <code>ssl:example.com:443</code></li><li><code>twisted.python.constants.Flags</code> ahora proveen una manera de definir colecciones de flags para uso de bitvectores</li><li>Ahora podemos usar <code>twisted.python.runtime.platform.isLinux</code> para comprobar si estamos corriendo bajo plataforma Linux</li><li><code>twisted.internet.endpoints.serverFromString</code> ahora reconoce un 'endpoint' tipo <em><strong>systemd</strong></em> para escuchar en un puerto heredado de systemd</li><li>Las conexiones creadas usando <code>twisted.internet.interfaces.IReactorUNix</code> ahora soportan enviar y recibir descriptores de archivo entre procesos diferentes</li><li><code>twisted.internet.endpoints.clientFromString</code> ahora soporta 'endpoints' de tipo UNIX con el argumento de ruta especificado como "<code>unix:/foo/bar</code>, antes era solo con "<code>unix:path=/foo/bar</code>"</li><li><code>twisted.protocols.amp.Descriptor</code> es un nuevo argumento para APM que soporta que se le pasen descriptores de archivo como argumentos de comandos AMP a trav&#233;s de conexiones tipo UNIX</li></ul>
+
+<p>Se han solucionado bugs importantes como <strong>el que afectaba al reactor epoll</strong> en linux por el cual no se pod&#237;an realizar operaciones de entrada/salida a ficheros regulares en stdin/stdout. Ahora el invocar el m&#233;todo <code>.cancel()</code> en un 'endpoint' de cliente funciona tal y como se especifica en la documentaci&#243;n.</p>
+
+<p>Se ha abandonado el soporte para <strong>pyOpenSSL 0.9</strong> y versiones anteriores y se han eliminado bastantes clases que estaban marcadas como "<em>deprecated</em>" en algunos casos desde 
+2006, entre ellas, <code>twisted.python.threadpool.ThradSafeList</code> ojo.</p>
+
+<h2>Twisted Web</h2>
+
+<p>En el m&#243;dulo web nos encontramos con algunas novedades. Por ejemplo se ha a&#241;adido el m&#233;todo <code>renderElement</code> a las plantillas que <strong>renderiza un elemento</strong> para enregarlo en una respuesta y adem&#225;s acepta un argumento tipo doctype que por defecto es el <strong>doctype de HTML5</strong>.</p>
+
+<p>Ahora <code>twisted.web.template.XMLFile</code> soporta objetos de tipo <strong>FilePath</strong> y <code>twisted.web.client.Agent</code> y <code>ProxyAgent</code> soportan <strong>conexiones persistentes</strong>. Asimismo se han solucionado algunos bugs menores.</p>
+
+<p>PHP3Script y PHPScript<strong> han sido eliminados</strong> de <code>twisted.web.twcgi</code>. Como efecto colateral del soporte de XMLFile de objetos FilePath, <strong>deja de soportar</strong> objetos de tipo file y nombres de archivo.</p>
+
+<h2>Twisted Conch</h2>
+
+<p>Los cambios en el m&#243;dulo conch son much&#237;simo m&#225;s escuetos. Ahora <code>twisted.conch.tap</code> soporta <strong>plugins cred</strong> y se ha solucionado un bug que afectaba a <code>twisted.conch.client.knownhosts</code>.</p>
+
+<h2>Twisted Names, News, Runner y Mail</h2>
+
+<p>El m&#243;dulo de DNSs de Twisted tampoco es un c&#250;mulo de nuevas caracter&#237;stica pero si que se han solucionado bastantes <strong>bugs menores</strong> y se ha a&#241;adido soporte para un servidor secundario. Queda obsoleto el uso del atributo <code>Record_mx.exchange</code></p>
+
+<p>Al m&#243;dulo de noticias solo se le han a&#241;adido algunos tests y se ha refactorizado el c&#243;digo de la clase <strong>NNTPServer</strong>. En cuanto al m&#243;dulo runner se han eliminado los m&#233;todos <code>ProcessMonitor.active</code>, <code>consistencyDelay</code> y <code>consistency</code> del m&#243;dulo <code>procmon</code> ya que estaban obsoletos desde la versi&#243;n 10.1</p>
+
+<h2>Conclusi&#243;n</h2>
+
+<p>Esta nueva versi&#243;n de Twisted viene a solucionar algunos de los problemas que no entend&#237;amos por qu&#233; no hab&#237;an solucionado <strong>antes de lanzar la versi&#243;n 12.0</strong>, algunos bastante inc&#243;modos como el problema con los reactores en la plataforma BSD.</p>
+
+<p>No sabemos si la crisis ha afectado mucho a <strong>TwistedMatrix</strong>, la empresa detr&#225;s de Twisted pero desde que lanzaran la version 11.1.0 el quince de noviembre del 2011 no ha habido ning&#250;n update <strong>realmente grande y con caracter&#237;sticas importantes</strong>, esperemos que la cosa mejore y que solo sea un bache.</p>
+
+<p>M&#225;s en Genbeta Dev | <a href="http://www.genbetadev.com/frameworks/introduccion-a-la-programacion-asincrona-con-twisted">Introducci&#243;n a la programaci&#243;n as&#237;ncrona con Twisted</a></p>
+    </div>
+</div><div class="item feed-a1322d23 feed-{feed_id}" id="item-5498ecf9">
+<p class="itemheader">
+<span class="itemtitle">
+    Genbeta:dev:
+<a href="https://www.genbetadev.com/frameworks/la-nueva-nueva-version-2012-1-0-de-twisted-ya-esta-en-la-calle">La nueva Nueva versi&#243;n 12.1.0 de Twisted ya est&#225; en la calle</a></span>
+</p>
+    <div class="itemdescription">
+    <div class="article-asset-image article-asset-normal"><div class="asset-content"> <img alt="" class="centro_sinmarco" src="https://i.blogs.es/b6f238/twisted_logo_software/650_1200.png" /> </div></div>
+
+<p>Thomas Herv&#233; del <strong>equipo de desarrollo</strong> de Twisted anunciaba ayer por la ma&#241;ana a trav&#233;s de la lista de correo de <strong>Twisted</strong> la release de la <strong>versi&#243;n 12.1</strong> de la popular librer&#237;a de <strong>sockets as&#237;ncronos para Python</strong>.</p>
+
+<p>Era de esperar un update del core desde que el pasado once de febrero liberaran la versi&#243;n 12.0 la cual <strong>no introduc&#237;a demasiados cambios</strong> y algunos eran bastante esperados como por ejemplo la <strong>recuperaci&#243;n del reactor kqueue</strong> para <strong>BSD</strong> y derivados (como <strong>Mac OS X</strong>). En esta release se han cerrado <strong>ciento siete tickets</strong> por lo que algunos de los cambios son importantes</p>
+
+<h2>Twisted Core</h2>
+
+<p>Los cambios m&#225;s <strong>significativos</strong> al core de Twisted son los siguientes:</p>
+
+<ul><li>Se ha recuperado el reactor kqueue para plataformas BSD (incluido Mac OS X)</li><li>epoll es ahora el <strong>reactor por defecto</strong> en Linux</li><li><code>twisted.python.filepath</code> ahora provee <code>IFilePath</code>, una interfaz para objetos de path de archivos</li><li>Los reactores para GTK y glib ahora ejecutan operaciones de E/S y eventos programados con menor prioridad para asegurar que la Interfaz de Usuario sigue respondiendo</li><li><code>IReactorTCP.connectTCP()</code> ahora acepta literales de direccion <strong>IPv6</strong></li><li>Se a&#241;ade la interfaz <code>twisted.internet.interfaces.IReactorSocket</code> que es usada por algunos reactors para escuchar en sockets fijados por herramientas externas como <strong>systemd</strong> o <strong>launchd</strong></li><li><code>twisted.internet.endpoints.clientFromString</code> ahora soporta cadenas con el formato <code>tcp:example.com:80</code> y <code>ssl:example.com:443</code></li><li><code>twisted.python.constants.Flags</code> ahora proveen una manera de definir colecciones de flags para uso de bitvectores</li><li>Ahora podemos usar <code>twisted.python.runtime.platform.isLinux</code> para comprobar si estamos corriendo bajo plataforma Linux</li><li><code>twisted.internet.endpoints.serverFromString</code> ahora reconoce un 'endpoint' tipo <em><strong>systemd</strong></em> para escuchar en un puerto heredado de systemd</li><li>Las conexiones creadas usando <code>twisted.internet.interfaces.IReactorUNix</code> ahora soportan enviar y recibir descriptores de archivo entre procesos diferentes</li><li><code>twisted.internet.endpoints.clientFromString</code> ahora soporta 'endpoints' de tipo UNIX con el argumento de ruta especificado como "<code>unix:/foo/bar</code>, antes era solo con "<code>unix:path=/foo/bar</code>"</li><li><code>twisted.protocols.amp.Descriptor</code> es un nuevo argumento para APM que soporta que se le pasen descriptores de archivo como argumentos de comandos AMP a trav&#233;s de conexiones tipo UNIX</li></ul>
+
+<p>Se han solucionado bugs importantes como <strong>el que afectaba al reactor epoll</strong> en linux por el cual no se pod&#237;an realizar operaciones de entrada/salida a ficheros regulares en stdin/stdout. Ahora el invocar el m&#233;todo <code>.cancel()</code> en un 'endpoint' de cliente funciona tal y como se especifica en la documentaci&#243;n.</p>
+
+<p>Se ha abandonado el soporte para <strong>pyOpenSSL 0.9</strong> y versiones anteriores y se han eliminado bastantes clases que estaban marcadas como "<em>deprecated</em>" en algunos casos desde 
+2006, entre ellas, <code>twisted.python.threadpool.ThradSafeList</code> ojo.</p>
+
+<h2>Twisted Web</h2>
+
+<p>En el m&#243;dulo web nos encontramos con algunas novedades. Por ejemplo se ha a&#241;adido el m&#233;todo <code>renderElement</code> a las plantillas que <strong>renderiza un elemento</strong> para enregarlo en una respuesta y adem&#225;s acepta un argumento tipo doctype que por defecto es el <strong>doctype de HTML5</strong>.</p>
+
+<p>Ahora <code>twisted.web.template.XMLFile</code> soporta objetos de tipo <strong>FilePath</strong> y <code>twisted.web.client.Agent</code> y <code>ProxyAgent</code> soportan <strong>conexiones persistentes</strong>. Asimismo se han solucionado algunos bugs menores.</p>
+
+<p>PHP3Script y PHPScript<strong> han sido eliminados</strong> de <code>twisted.web.twcgi</code>. Como efecto colateral del soporte de XMLFile de objetos FilePath, <strong>deja de soportar</strong> objetos de tipo file y nombres de archivo.</p>
+
+<h2>Twisted Conch</h2>
+
+<p>Los cambios en el m&#243;dulo conch son much&#237;simo m&#225;s escuetos. Ahora <code>twisted.conch.tap</code> soporta <strong>plugins cred</strong> y se ha solucionado un bug que afectaba a <code>twisted.conch.client.knownhosts</code>.</p>
+
+<h2>Twisted Names, News, Runner y Mail</h2>
+
+<p>El m&#243;dulo de DNSs de Twisted tampoco es un c&#250;mulo de nuevas caracter&#237;stica pero si que se han solucionado bastantes <strong>bugs menores</strong> y se ha a&#241;adido soporte para un servidor secundario. Queda obsoleto el uso del atributo <code>Record_mx.exchange</code></p>
+
+<p>Al m&#243;dulo de noticias solo se le han a&#241;adido algunos tests y se ha refactorizado el c&#243;digo de la clase <strong>NNTPServer</strong>. En cuanto al m&#243;dulo runner se han eliminado los m&#233;todos <code>ProcessMonitor.active</code>, <code>consistencyDelay</code> y <code>consistency</code> del m&#243;dulo <code>procmon</code> ya que estaban obsoletos desde la versi&#243;n 10.1</p>
+
+<h2>Conclusi&#243;n</h2>
+
+<p>Esta nueva versi&#243;n de Twisted viene a solucionar algunos de los problemas que no entend&#237;amos por qu&#233; no hab&#237;an solucionado <strong>antes de lanzar la versi&#243;n 12.0</strong>, algunos bastante inc&#243;modos como el problema con los reactores en la plataforma BSD.</p>
+
+<p>No sabemos si la crisis ha afectado mucho a <strong>TwistedMatrix</strong>, la empresa detr&#225;s de Twisted pero desde que lanzaran la version 11.1.0 el quince de noviembre del 2011 no ha habido ning&#250;n update <strong>realmente grande y con caracter&#237;sticas importantes</strong>, esperemos que la cosa mejore y que solo sea un bache.</p>
+
+<p>M&#225;s en Genbeta Dev | <a href="http://www.genbetadev.com/frameworks/introduccion-a-la-programacion-asincrona-con-twisted">Introducci&#243;n a la programaci&#243;n as&#237;ncrona con Twisted</a></p>
+    </div>
 </div></div>
 </div>
 
@@ -108,16 +208,16 @@
 <tr class="cal-head">
 <td class="cal-prev"><a href="index-2012-05-10.html">&lt;</a></td>
 <td class="cal-month" colspan="5">junio 2012</td>
-<td class="cal-next"><a href="index-2012-08-01.html">&gt;</a></td>
+<td class="cal-next"><a href="index-2012-07-09.html">&gt;</a></td>
 </tr>
 <tr class="cal-days">
 <th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
 <tr class="cal-week">
 <td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day"><a class="cal-link" href="index-2012-06-01.html">01</a></td><td class="cal-day">02</td><td class="cal-day">03</td></tr>
 <tr class="cal-week">
-<td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day"><strong class="cal-current">06</strong></td><td class="cal-day"><a class="cal-link" href="index-2012-06-07.html">07</a></td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
+<td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2012-06-05.html">05</a></td><td class="cal-day"><strong class="cal-current">06</strong></td><td class="cal-day"><a class="cal-link" href="index-2012-06-07.html">07</a></td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
 <tr class="cal-week">
-<td class="cal-day">11</td><td class="cal-day"><a class="cal-link" href="index-2012-06-12.html">12</a></td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
+<td class="cal-day">11</td><td class="cal-day"><a class="cal-link" href="index-2012-06-12.html">12</a></td><td class="cal-day">13</td><td class="cal-day"><a class="cal-link" href="index-2012-06-14.html">14</a></td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
 <tr class="cal-week">
 <td class="cal-day"><a class="cal-link" href="index-2012-06-18.html">18</a></td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day"><a class="cal-link" href="index-2012-06-21.html">21</a></td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td></tr>
 <tr class="cal-week">
@@ -139,7 +239,7 @@
 <a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">Dead Epsilon</a>
-<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://www.eferro.net/search/label/Python">e-ferro</a>
 <a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
@@ -150,23 +250,26 @@
 <a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
 <a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
 <br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
 <a href="">Frogblog</a>
 <a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
 <br />
-<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
 <a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
-<a href="">Hyperreals *R</a>
-<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">JavAguirre.net</a>
-<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
 <a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://joedicastro.com">joe di castro</a>
-<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
 <a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
@@ -185,9 +288,6 @@
 <br />
 <a href="http://blog-es.python.org/">Python Insider ES</a>
 <a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
-<br />
-<a href="">python majibu</a>
-<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">Read The Fucking Docs</a>
 <a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>

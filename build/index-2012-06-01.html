@@ -33,7 +33,201 @@
 <h2>viernes, 01 junio</h2>
 <div class="time">
 <h3>08:18</h3>
-<div class="item feed-a1322d23 feed-{feed_id}" id="item-1bcc3a58">
+<div class="item feed-a1322d23 feed-{feed_id}" id="item-fd1dbbdb">
+<p class="itemheader">
+<span class="itemtitle">
+    Genbeta:dev:
+<a href="https://www.genbetadev.com/herramientas/descubriendo-libsaas-proyecto-de-codigo-abierto-de-ducksboard">Descubriendo Libsaas, proyecto de c&#243;digo abierto de Ducksboard</a></span>
+</p>
+    <div class="itemdescription">
+    <p><div class="article-asset-image article-asset-normal"><div class="asset-content"> <img alt="Libsaas" class="centro_sinmarco" src="https://i.blogs.es/b99970/libsaas/650_1200.png" /> </div></div></p>
+
+<p>&#218;ltimamente estamos asistiendo al lanzamiento <strong>de muchos productos y servicios "made in Spain"</strong>, ese es el caso del que hoy voy a presentar aqu&#237; en Genbeta Dev. La compa&#241;&#237;a espa&#241;ola <a href="http://ducksboard.com/">Ducksboard</a> (o tambi&#233;n conocidos de forma cari&#241;osa como "<strong>Los Patos</strong>") ha lanzado recientemente una librer&#237;a desarrollada en <strong>Python</strong> que ellos usan en su propio proyecto llamada <strong>libsaas</strong>.</p>
+
+<p>La librer&#237;a ha sido liberada como software de <strong>c&#243;digo abierto</strong> bajo la <strong>licencia MIT</strong> y est&#225; colgado, como no pod&#237;a ser de otra manera, en el servicio de repositorios GitHub del que curiosamente ofrece abstracci&#243;n para trabajar con &#233;l de forma sencilla.</p>
+
+<h2>&#191;Qu&#233; es libsaas?</h2>
+
+<p>Libsaas es un paquete para <strong>Python 2.x</strong> y <strong>Python 3.x</strong> que nos brinda una capa de <strong>abstracci&#243;n sobre las APIs</strong> de diferentes SaaS y nos provee de los mecanismos necesarios para que el uso de dichas APIs por separado o de forma conjunta sea mucho m&#225;s sencillo que beber de sus APIs directamente.</p>
+
+<p>La librer&#237;a se encarga de construir las URLs necesarias para interactuar con la API del servicio as&#237; como de serializar los par&#225;metros de autenticaci&#243;n.</p>
+
+<h2>&#191;C&#243;mo se usa?</h2>
+
+<p>Pr&#225;cticamente <strong>como usar&#237;as cualquier ORM</strong> para bases de datos, invocamos m&#233;todos Python y la librer&#237;a nos devuelve objetos Python, por ejemplo:</p>
+
+<pre class="prettyprint lang-python">from libsaas.services import github<br />
+&#35; autenticaci&#243;n b&#225;sica para generar un token
+pretoken = github.GitHub('micorreo@example.org', 'mi-password-super-secreto')
+&#35; generamos un token registrando la aplicaci&#243;n &amp;quoteLibsaas en GenbetaDev&amp;quote en nuestra cuenta GitHub
+auth = basic.authorizations().create(&#123;'scopes': 'repo,gist', 'note': 'Libsaas en GenbetaDev' &#125;)<br />
+&#35; usamos el token para autenticarnos
+gh = github.GitHub(auth['token'])<br />
+&#35; obtenemos nuestro listado de Gists
+gists = gh.gists().get()
+&#35; obtenemos nuestro listado de p&#250;blicos
+public_gists = gh.gists().public()
+</pre>
+
+<p>El c&#243;digo del ejemplo anterior nos devolver&#237;a dos <strong>objetos JSON</strong> que contendr&#237;an el listado de todos nuestros gist y solo de los p&#250;blicos respectivamente. Como pod&#233;is apreciar, su uso es <strong>muy sencillo</strong>.</p>
+
+<h2>&#191;Qu&#233; servicios soporta libsaas?</h2>
+
+<p>Libsaas es una librer&#237;a joven a&#250;n, su &#250;ltima versi&#243;n estable es la v0.1 y de momento solo soporta <strong>GitHub</strong>, <strong>Zendesk</strong> y <strong>MailChimp</strong>, actualmente se est&#225; trabajando en incluir la API del servicio de repositorios gratuito <strong>BitBucket</strong> de la compa&#241;&#237;a Atlassian.</p>
+
+<p>La extensi&#243;n y adici&#243;n de nuevos servicios es bastante sencilla puesto que la librer&#237;a est&#225; dise&#241;ada para ser enormemente <strong>modular y flexible</strong> permitiendo la extensi&#243;n a trav&#233;s de <strong>herencia simple y decorators</strong> de Python.</p>
+
+<h2>Combinando servicios</h2>
+
+<p>El <strong>punto fuerte</strong> de libsaas radica en la posibilidad de <strong>combinar servicios entre si</strong> en nuestra l&#243;gica de negocio lo cual nos permite crear <strong>mashups</strong> de forma r&#225;pida y sencilla sin preocuparnos de las peculiaridades de cada API.</p>
+
+<p>En la misma documentaci&#243;n del proyecto podemos encontrar este ejemplo de integraci&#243;n entre Zendesk y MailChimp:</p>
+
+<pre class="prettyprint lang-python">fromdatetimeimport datetime, timedelta
+fromlibsaas.servicesimport mailchimp, zendesk<br />
+&#35; create Zendesk and Mailchimp services
+zd = zendesk.Zendesk('mycompany', 'username', 'password')
+mc = mailchimp.Mailchimp('8ac789caf98879caf897a678fa76daf-us2')<br />
+&#35; get tickets solved yesterday
+yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+tickets = zd.search('updated>{0} status:solved type:ticket'.format(yesterday))<br />
+&#35; get emails of users who requested those tickets
+user_ids = &#91;ticket&#91;'requester_id'] for ticket in tickets&#91;'results']]
+emails = &#91;zd.user(user_id).get()&#91;'user']&#91;'email'] for user_id in user_ids]<br />
+&#35; grab the ID of the "Users" list
+lists = mc.lists(filters=&#123;'list_name': 'Users'&#125;)
+list_id = lists&#91;'data']&#91;0]&#91;'id']<br />
+&#35; set the SOLVED variable for those users in Mailchimp to yesterday
+batch = &#91;&#123;'EMAIL': email, 'SOLVED': yesterday&#125; for email in emails] mc.listBatchSubscribe(list_id, batch, double_optin=False, update_existing=True)</pre>
+
+<p>El ejemplo anterior obtiene los tickets resueltos el d&#237;a anterior desde Zendesk para enviar un correo de informaci&#243;n a trav&#233;s de MailChimp a los usuarios que lo reportaron. Las posibilidades son infinitas, sobre todo, si lo utilizamos de forma conjunta a herramientas como <a href="http://docs.fabfile.org/en/1.4.2/index.html">Fabric</a>.</p>
+
+<h2>Ejecutores</h2>
+
+<p>Libsaas usa la librer&#237;a est&#225;ndar de Python <strong><code>urllib2</code></strong> para realizar las consultas HTTP necesarias para interactuar con la API de los servicios pero <strong>puede utilizar otros m&#243;dulos</strong> o bien puedes utilizar un plug-in que t&#250; mismo programes.</p>
+
+<p>Por ejemplo podemos utilizar la recientemente famosa librer&#237;a <strong><a href="http://docs.python-requests.org/&quot;&quot;">Requests</a></strong> e incluso un ejecutor para la librer&#237;a de programaci&#243;n as&#237;ncrona <a href="http://twistedmatrix.com/">Twisted</a> ya que <em>"Los Patos"</em> hacen uso exhaustivo de la misma en su producto Ducksboard.</p>
+
+<h2>Utilidad de l&#237;nea de comandos</h2>
+
+<p>Libsaas viene con una utilidad de l&#237;nea de comandos por si queremos o necesitamos interactuar con una API de alg&#250;n servicio de <strong>forma r&#225;pida</strong> desde la l&#237;nea de comandos. La herramienta puede ejecutar <strong>cualquier m&#233;todo que provee la librer&#237;a</strong> y tiene algunas caracter&#237;sticas limitadas de descubrimiento de servicios.</p>
+
+<p>Utilizarlo es muy sencillo como puede verse en el siguiente ejemplo:</p>
+
+<pre class="rettyprint lang-bash">saas github --token_or_password=mi-super-token gist get</pre>
+
+<p>El ejemplo anterior es equivalente al primer ejemplo utilizado en este art&#237;culo.</p>
+
+<h2>Conclusi&#243;n</h2>
+
+<p>Recomiendo el uso de esta librer&#237;a si tenemos la necesidad de utilizar m&#225;s de un servicio a la vez o incluso si solo queremos utilizar la API de uno de los servicios que soporta, aunque por regla general ya existen librer&#237;as individuales para cada servicio que pueden ser m&#225;s o menos completas que esta librer&#237;a.</p>
+
+<p>El caso es que es realmente interesante que empresas espa&#241;olas que <strong>se benefician</strong> de utilizar herramientas de C&#243;digo Abierto o Software Libre tambi&#233;n participen y <strong>aporten a la Comunidad</strong> estupendas herramientas como es esta librer&#237;a.</p>
+
+<p>Desde aqu&#237; os invito a probarlo y por supuesto <strong>forkearlo y colaborar en el proyecto</strong>.</p>
+
+<p><strong>Happy Hacking!</strong></p>
+
+<p>M&#225;s Informaci&#243;n | <a href="http://libsaas.net/">P&#225;gina del proyecto</a></p>
+    </div>
+</div><div class="item feed-a1322d23 feed-{feed_id}" id="item-fd95fffb">
+<p class="itemheader">
+<span class="itemtitle">
+    Genbeta:dev:
+<a href="https://www.genbetadev.com/python/descubriendo-libsaas-proyecto-de-codigo-abierto-de-ducksboard">Descubriendo Libsaas, proyecto de c&#243;digo abierto de Ducksboard</a></span>
+</p>
+    <div class="itemdescription">
+    <p><div class="article-asset-image article-asset-normal"><div class="asset-content"> <img alt="Libsaas" class="centro_sinmarco" src="https://i.blogs.es/b99970/libsaas/650_1200.png" /> </div></div></p>
+
+<p>&#218;ltimamente estamos asistiendo al lanzamiento <strong>de muchos productos y servicios "made in Spain"</strong>, ese es el caso del que hoy voy a presentar aqu&#237; en Genbeta Dev. La compa&#241;&#237;a espa&#241;ola <a href="http://ducksboard.com/">Ducksboard</a> (o tambi&#233;n conocidos de forma cari&#241;osa como "<strong>Los Patos</strong>") ha lanzado recientemente una librer&#237;a desarrollada en <strong>Python</strong> que ellos usan en su propio proyecto llamada <strong>libsaas</strong>.</p>
+
+<p>La librer&#237;a ha sido liberada como software de <strong>c&#243;digo abierto</strong> bajo la <strong>licencia MIT</strong> y est&#225; colgado, como no pod&#237;a ser de otra manera, en el servicio de repositorios GitHub del que curiosamente ofrece abstracci&#243;n para trabajar con &#233;l de forma sencilla.</p>
+
+<h2>&#191;Qu&#233; es libsaas?</h2>
+
+<p>Libsaas es un paquete para <strong>Python 2.x</strong> y <strong>Python 3.x</strong> que nos brinda una capa de <strong>abstracci&#243;n sobre las APIs</strong> de diferentes SaaS y nos provee de los mecanismos necesarios para que el uso de dichas APIs por separado o de forma conjunta sea mucho m&#225;s sencillo que beber de sus APIs directamente.</p>
+
+<p>La librer&#237;a se encarga de construir las URLs necesarias para interactuar con la API del servicio as&#237; como de serializar los par&#225;metros de autenticaci&#243;n.</p>
+
+<h2>&#191;C&#243;mo se usa?</h2>
+
+<p>Pr&#225;cticamente <strong>como usar&#237;as cualquier ORM</strong> para bases de datos, invocamos m&#233;todos Python y la librer&#237;a nos devuelve objetos Python, por ejemplo:</p>
+
+<pre class="prettyprint lang-python">from libsaas.services import github<br />
+&#35; autenticaci&#243;n b&#225;sica para generar un token
+pretoken = github.GitHub('micorreo@example.org', 'mi-password-super-secreto')
+&#35; generamos un token registrando la aplicaci&#243;n &amp;quoteLibsaas en GenbetaDev&amp;quote en nuestra cuenta GitHub
+auth = basic.authorizations().create(&#123;'scopes': 'repo,gist', 'note': 'Libsaas en GenbetaDev' &#125;)<br />
+&#35; usamos el token para autenticarnos
+gh = github.GitHub(auth['token'])<br />
+&#35; obtenemos nuestro listado de Gists
+gists = gh.gists().get()
+&#35; obtenemos nuestro listado de p&#250;blicos
+public_gists = gh.gists().public()
+</pre>
+
+<p>El c&#243;digo del ejemplo anterior nos devolver&#237;a dos <strong>objetos JSON</strong> que contendr&#237;an el listado de todos nuestros gist y solo de los p&#250;blicos respectivamente. Como pod&#233;is apreciar, su uso es <strong>muy sencillo</strong>.</p>
+
+<h2>&#191;Qu&#233; servicios soporta libsaas?</h2>
+
+<p>Libsaas es una librer&#237;a joven a&#250;n, su &#250;ltima versi&#243;n estable es la v0.1 y de momento solo soporta <strong>GitHub</strong>, <strong>Zendesk</strong> y <strong>MailChimp</strong>, actualmente se est&#225; trabajando en incluir la API del servicio de repositorios gratuito <strong>BitBucket</strong> de la compa&#241;&#237;a Atlassian.</p>
+
+<p>La extensi&#243;n y adici&#243;n de nuevos servicios es bastante sencilla puesto que la librer&#237;a est&#225; dise&#241;ada para ser enormemente <strong>modular y flexible</strong> permitiendo la extensi&#243;n a trav&#233;s de <strong>herencia simple y decorators</strong> de Python.</p>
+
+<h2>Combinando servicios</h2>
+
+<p>El <strong>punto fuerte</strong> de libsaas radica en la posibilidad de <strong>combinar servicios entre si</strong> en nuestra l&#243;gica de negocio lo cual nos permite crear <strong>mashups</strong> de forma r&#225;pida y sencilla sin preocuparnos de las peculiaridades de cada API.</p>
+
+<p>En la misma documentaci&#243;n del proyecto podemos encontrar este ejemplo de integraci&#243;n entre Zendesk y MailChimp:</p>
+
+<pre class="prettyprint lang-python">fromdatetimeimport datetime, timedelta
+fromlibsaas.servicesimport mailchimp, zendesk<br />
+&#35; create Zendesk and Mailchimp services
+zd = zendesk.Zendesk('mycompany', 'username', 'password')
+mc = mailchimp.Mailchimp('8ac789caf98879caf897a678fa76daf-us2')<br />
+&#35; get tickets solved yesterday
+yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+tickets = zd.search('updated>{0} status:solved type:ticket'.format(yesterday))<br />
+&#35; get emails of users who requested those tickets
+user_ids = &#91;ticket&#91;'requester_id'] for ticket in tickets&#91;'results']]
+emails = &#91;zd.user(user_id).get()&#91;'user']&#91;'email'] for user_id in user_ids]<br />
+&#35; grab the ID of the "Users" list
+lists = mc.lists(filters=&#123;'list_name': 'Users'&#125;)
+list_id = lists&#91;'data']&#91;0]&#91;'id']<br />
+&#35; set the SOLVED variable for those users in Mailchimp to yesterday
+batch = &#91;&#123;'EMAIL': email, 'SOLVED': yesterday&#125; for email in emails] mc.listBatchSubscribe(list_id, batch, double_optin=False, update_existing=True)</pre>
+
+<p>El ejemplo anterior obtiene los tickets resueltos el d&#237;a anterior desde Zendesk para enviar un correo de informaci&#243;n a trav&#233;s de MailChimp a los usuarios que lo reportaron. Las posibilidades son infinitas, sobre todo, si lo utilizamos de forma conjunta a herramientas como <a href="http://docs.fabfile.org/en/1.4.2/index.html">Fabric</a>.</p>
+
+<h2>Ejecutores</h2>
+
+<p>Libsaas usa la librer&#237;a est&#225;ndar de Python <strong><code>urllib2</code></strong> para realizar las consultas HTTP necesarias para interactuar con la API de los servicios pero <strong>puede utilizar otros m&#243;dulos</strong> o bien puedes utilizar un plug-in que t&#250; mismo programes.</p>
+
+<p>Por ejemplo podemos utilizar la recientemente famosa librer&#237;a <strong><a href="http://docs.python-requests.org/&quot;&quot;">Requests</a></strong> e incluso un ejecutor para la librer&#237;a de programaci&#243;n as&#237;ncrona <a href="http://twistedmatrix.com/">Twisted</a> ya que <em>"Los Patos"</em> hacen uso exhaustivo de la misma en su producto Ducksboard.</p>
+
+<h2>Utilidad de l&#237;nea de comandos</h2>
+
+<p>Libsaas viene con una utilidad de l&#237;nea de comandos por si queremos o necesitamos interactuar con una API de alg&#250;n servicio de <strong>forma r&#225;pida</strong> desde la l&#237;nea de comandos. La herramienta puede ejecutar <strong>cualquier m&#233;todo que provee la librer&#237;a</strong> y tiene algunas caracter&#237;sticas limitadas de descubrimiento de servicios.</p>
+
+<p>Utilizarlo es muy sencillo como puede verse en el siguiente ejemplo:</p>
+
+<pre class="rettyprint lang-bash">saas github --token_or_password=mi-super-token gist get</pre>
+
+<p>El ejemplo anterior es equivalente al primer ejemplo utilizado en este art&#237;culo.</p>
+
+<h2>Conclusi&#243;n</h2>
+
+<p>Recomiendo el uso de esta librer&#237;a si tenemos la necesidad de utilizar m&#225;s de un servicio a la vez o incluso si solo queremos utilizar la API de uno de los servicios que soporta, aunque por regla general ya existen librer&#237;as individuales para cada servicio que pueden ser m&#225;s o menos completas que esta librer&#237;a.</p>
+
+<p>El caso es que es realmente interesante que empresas espa&#241;olas que <strong>se benefician</strong> de utilizar herramientas de C&#243;digo Abierto o Software Libre tambi&#233;n participen y <strong>aporten a la Comunidad</strong> estupendas herramientas como es esta librer&#237;a.</p>
+
+<p>Desde aqu&#237; os invito a probarlo y por supuesto <strong>forkearlo y colaborar en el proyecto</strong>.</p>
+
+<p><strong>Happy Hacking!</strong></p>
+
+<p>M&#225;s Informaci&#243;n | <a href="http://libsaas.net/">P&#225;gina del proyecto</a></p>
+    </div>
+</div><div class="item feed-a1322d23 feed-{feed_id}" id="item-1bcc3a58">
 <p class="itemheader">
 <span class="itemtitle">
     Genbeta:dev:
@@ -155,16 +349,16 @@ batch = &#91;&#123;'EMAIL': email, 'SOLVED': yesterday&#125; for email in emails
 <tr class="cal-head">
 <td class="cal-prev"><a href="index-2012-05-10.html">&lt;</a></td>
 <td class="cal-month" colspan="5">junio 2012</td>
-<td class="cal-next"><a href="index-2012-08-01.html">&gt;</a></td>
+<td class="cal-next"><a href="index-2012-07-09.html">&gt;</a></td>
 </tr>
 <tr class="cal-days">
 <th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
 <tr class="cal-week">
 <td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day"><strong class="cal-current">01</strong></td><td class="cal-day">02</td><td class="cal-day">03</td></tr>
 <tr class="cal-week">
-<td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day"><a class="cal-link" href="index-2012-06-06.html">06</a></td><td class="cal-day"><a class="cal-link" href="index-2012-06-07.html">07</a></td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
+<td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2012-06-05.html">05</a></td><td class="cal-day"><a class="cal-link" href="index-2012-06-06.html">06</a></td><td class="cal-day"><a class="cal-link" href="index-2012-06-07.html">07</a></td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
 <tr class="cal-week">
-<td class="cal-day">11</td><td class="cal-day"><a class="cal-link" href="index-2012-06-12.html">12</a></td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
+<td class="cal-day">11</td><td class="cal-day"><a class="cal-link" href="index-2012-06-12.html">12</a></td><td class="cal-day">13</td><td class="cal-day"><a class="cal-link" href="index-2012-06-14.html">14</a></td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
 <tr class="cal-week">
 <td class="cal-day"><a class="cal-link" href="index-2012-06-18.html">18</a></td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day"><a class="cal-link" href="index-2012-06-21.html">21</a></td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td></tr>
 <tr class="cal-week">
@@ -186,7 +380,7 @@ batch = &#91;&#123;'EMAIL': email, 'SOLVED': yesterday&#125; for email in emails
 <a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">Dead Epsilon</a>
-<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://www.eferro.net/search/label/Python">e-ferro</a>
 <a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
@@ -197,23 +391,26 @@ batch = &#91;&#123;'EMAIL': email, 'SOLVED': yesterday&#125; for email in emails
 <a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
 <a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
 <br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
 <a href="">Frogblog</a>
 <a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
 <br />
-<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
 <a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
-<a href="">Hyperreals *R</a>
-<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">JavAguirre.net</a>
-<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
 <a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://joedicastro.com">joe di castro</a>
-<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
 <a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
@@ -232,9 +429,6 @@ batch = &#91;&#123;'EMAIL': email, 'SOLVED': yesterday&#125; for email in emails
 <br />
 <a href="http://blog-es.python.org/">Python Insider ES</a>
 <a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
-<br />
-<a href="">python majibu</a>
-<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">Read The Fucking Docs</a>
 <a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>

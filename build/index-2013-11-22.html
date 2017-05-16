@@ -40,7 +40,181 @@
 <a href="https://www.atareao.es/ubuntu/hilos-en-python-y-nautilus-document-convert/">Hilos en Python y nautilus-document-convert</a></span>
 </p>
     <div class="itemdescription">
-    <p>Introducci&#243;n En la &#250;ltima versi&#243;n de nautilus-document-converter he introducido algunos cambios que coment&#233; en el art&#237;culo &#8221;Convetir documentos de LibreOffice con progreso y multitarea&#8221;, pero quer&#237;a entrar mas en profundidad en ellos, con la intenci&#243;n de orientarme a aquellos que quieran programar o que programen en Python. Lo cierto es que, &#250;ltimamente no hab&#237;a escrito [&#8230;]</p>
+    <h2 class="wmd-title" id="introducci&#243;n">Introducci&#243;n</h2>
+<p>En la &#250;ltima versi&#243;n de <strong>nautilus-document-converter</strong> he introducido algunos cambios que coment&#233; en el art&#237;culo &#8221;<a href="http://www.atareao.es/ubuntu/convetir-documentos-de-libreoffice-con-progreso-y-multitarea/">Convetir documentos de LibreOffice con progreso y multitarea</a>&#8221;, pero quer&#237;a entrar mas en profundidad en ellos, con la intenci&#243;n de orientarme a aquellos que quieran programar o que programen en <strong>Python</strong>.</p>
+<p>Lo cierto es que, &#250;ltimamente no hab&#237;a escrito nada sobre desarrollo de aplicaciones, ya sea en este lenguaje o en otro. Sin embargo, y tal y como comentar&#233; mas adelante, quiero dedicarle algo mas de tiempo a estos temas, tanto en lo relacionado con <strong>Python</strong>, <strong>Vala</strong> como <strong>Java</strong>. Los dos primeros relacionados con <strong>Ubuntu</strong> y el segundo en su relaci&#243;n con <strong>Android</strong>. <em>Por supuesto</em> todo desde el punto de vista del software libre.</p>
+<p>En este caso quiero entrar en lo referente al tratamiento de ejecuci&#243;n de varios hilos en paralelo para reducir de esta forma el tiempo de ejecuci&#243;n.</p>
+<p><span id="more-8949"></span></p>
+<h2 id="multitarea">Multitarea</h2>
+<p>Con los equipos actuales con varios procesadores (incluidos los m&#243;viles, quien lo iba a pensar hace pocos a&#241;os), realizar varias tareas de formas simult&#225;nea es una posibilidad a tener en cuenta. Esto, en el caso de procesamiento de archivos por lotes es todav&#237;a mas interesante si cabe. De esta manera, tal y como coment&#233; en el art&#237;culo anterior, he reducido el tiempo de procesado de 60 archivos para cambiarlos de formato, de 60 a 40 segundos, lo cual es para tener en <strong>muy en cuenta</strong>.</p>
+<h3 id="sistemadetrabajo">Sistema de trabajo</h3>
+<p>Para realizar la operaci&#243;n se utilizan un conjunto de <em>trabajadores</em> que est&#225;n siempre en funcionamiento mientras exista trabajo por realizar en la <em>cola</em>.</p>
+<h4 id="worker">Worker</h4>
+<p>Se trata de una <strong>clase</strong> que deriva de <em>Thread</em>, y que procesa las tareas existentes (<em>tasks</em>), de forma que Cada vez que termina con una tarea, solicita una nueva, hasta que se procesan todas.</p>
+<pre><code lang="python">
+class Worker(Thread):
+    """Thread executing tasks from a given tasks queue"""
+    def __init__(self, tasks):
+        Thread.__init__(self)
+        self.tasks = tasks
+        self.daemon = True
+        self.start()
+
+    def run(self):
+        while True:
+            func, args, kargs = self.tasks.get()
+            try:
+                func(*args, **kargs)
+            except Exception, e:
+                print e
+            finally:
+                self.tasks.task_done()
+</code></pre>
+<h4 id="elequipo">El equipo</h4>
+<p>La siguiente clase es <em>ThreadPool</em> que es la encargada de organizar las tareas a realizar por los diferentes trabajadores, iniciar tantos trabajadores como necesitemos y esperar hasta que se hayan completado todas las tareas.</p>
+<pre><code lang="python">
+class ThreadPool:
+    """Pool of threads consuming tasks from a queue"""
+    def __init__(self, num_threads):
+        self.tasks = Queue(num_threads)
+        for _ in range(num_threads): Worker(self.tasks)
+
+    def add_task(self, func, *args, **kargs):
+        """Add a task to the queue"""
+        self.tasks.put((func, args, kargs))
+
+    def wait_completion(self):
+        """Wait for completion of all the tasks in the queue"""
+        self.tasks.join()
+</code></pre>
+<h4 id="elnmerodemiembrosdelequipo">El n&#250;mero de miembros del equipo</h4>
+<p>Para determinar el n&#250;mero de miembros del equipo, lo he realizado en funci&#243;n del n&#250;mero de procesadores que tiene el equipo, pero se deber&#237;a de considerar el n&#250;mero de tareas a realizar, para evitar en cualquier momento lanzar mas trabajadores que tareas a realizar. Esto no debe suponer mucho problema, puesto que en caso de producirse esto el <em>Worker</em> terminar&#225; de inmediato al quedarse sin tareas a realizar.</p>
+<pre><code lang="python">
+try:
+    import multiprocessing
+    WORKERS = multiprocessing.cpu_count()
+except:
+    WORKERS = 1
+</code></pre>
+<h4 id="elindicadordeprogreso">El indicador de progreso</h4>
+<p>Lo siguiente a tener en cuenta es el cuadro de di&#225;logo que muestra la barra de progreso. He incluido un sistema para parar el procesado de archivos. Esto solo funciona para las tareas pendientes de asignar, aquellas que se est&#233;n ejecutando en el momento de parar el procesado continuar&#225;n hasta su conclusi&#243;n.</p>
+<pre><code lang="python">
+class Progreso(Gtk.Dialog):
+    def __init__(self,title,max_value):
+        #
+        Gtk.Dialog.__init__(self,title)
+        self.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
+        self.set_size_request(500, 40)
+        self.set_resizable(False)
+        self.connect('destroy', self.close)
+        #
+        vbox1 = Gtk.VBox(spacing = 5)
+        vbox1.set_border_width(5)
+        self.get_content_area().add(vbox1)
+        #
+        self.label = Gtk.Label(' '*50)
+        vbox1.pack_start(self.label,False,False,0)
+        #
+        hbox1 = Gtk.HBox(spacing = 5)
+        vbox1.pack_start(hbox1,True,True,0)
+        #
+        self.progressbar = Gtk.ProgressBar()
+        self.progressbar.set_text('0%')
+        hbox1.pack_start(self.progressbar,True,True,0)
+        #
+        image = Gtk.Image()
+        image.set_from_stock(Gtk.STOCK_STOP, Gtk.IconSize.BUTTON)
+        self.button = Gtk.Button()
+        self.button.set_image(image)
+        self.button.connect('clicked', self.on_button_clicked)
+        hbox1.pack_start(self.button,False,False,0)
+        #
+        self.show_all()
+        #
+        self.stop = False
+        self.value = 0.0
+        self.max_value = max_value
+
+    def on_button_clicked(self,widget):
+        self.stop = True
+
+    def is_stopped(self):
+        return self.stop
+
+    def set_filename(self,filename):
+        self.label.set_text(filename)
+
+    def close(self,widget=None):
+        self.destroy()
+
+    def increase(self):
+        self.value+=1.0
+        fraction=self.value/self.max_value
+        self.progressbar.set_fraction(fraction)
+        self.progressbar.set_text('%d%%' % (100*fraction))
+</code></pre>
+<h4 id="todojunto">Todo junto</h4>
+<p>En las siguientes l&#237;neas de c&#243;digo se puede ver todo el conjunto, en el que se puede apreciar el cuadro de di&#225;logo que informa del progreso de conversi&#243;n, y el modo en que se asignan tareas <em>al equipo</em>.</p>
+<pre><code lang="python">
+def convert_files(files,extension): 
+    if len(files)&gt;0:
+        ft = time.time()
+        MULTIPROCESSING = (WORKERS&gt;1 and len(files)&gt;1)
+        print('--------------------------------------------------------')
+        print('--------------------------------------------------------')
+        print('--------------------------------------------------------')
+        print(MULTIPROCESSING)
+        print(WORKERS)
+        print(len(files))
+        print('--------------------------------------------------------')
+        print('--------------------------------------------------------')
+        print('--------------------------------------------------------')
+
+        progress_dialog = Progreso(_('Converting files')+'...',len(files))
+        progress_dialog.show()
+        progress_dialog.map()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        the_converter = subprocess.Popen(['/usr/bin/unoconv','--listener'])
+        time.sleep(1)
+        if MULTIPROCESSING:
+            pool = ThreadPool(WORKERS)      
+        for index,afile in enumerate(files):
+            basefile,extile = os.path.splitext(afile)
+            outputfile = os.path.splitext(afile)[0]+'.'+extension
+            print('Init... %s'%index)
+            progress_dialog.set_filename(os.path.basename(afile)[:50])  
+            progress_dialog.increase()
+            progress_dialog.map()
+            while Gtk.events_pending():
+                Gtk.main_iteration()
+            print('Start %s'%index)
+            if MULTIPROCESSING:
+                pool.add_task(convert_file, extension,outputfile,afile)
+            else:
+                convert_file(extension,outputfile,afile)
+            print('End %s'%index)
+            #print(convert_file(extension,outputfile,afile,progress_dialog))
+            if progress_dialog.is_stopped():
+                break
+        if MULTIPROCESSING:
+            pool.wait_completion()
+        the_converter.terminate()
+        progress_dialog.hide()
+        progress_dialog.destroy()
+        print('--------------------------------------------------------')
+        print('--------------------------------------------------------')
+        print('--------------------------------------------------------')
+        print(time.time()-ft)
+        print('--------------------------------------------------------')
+        print('--------------------------------------------------------')
+        print('--------------------------------------------------------')
+</code></pre>
+<h2 id="conclusiones">Conclusiones</h2>
+<p>Como ves se trata de un proceso realmente sencillo, y que se puede aplicar a multitud de operaciones, sobre todo a las relacionadas con el procesamiento de archivos en lote. Actualmente estoy trabajando con este mismo sistema, en otro complemento para Nautilus, pero esta vez relacionado con el procesado de im&#225;genes (girar, invertir, pasar a blanco y negro, a&#241;adir borde, etc), donde esto tiene mas inter&#233;s si cabe, dado el tiempo que puede llevar procesar una &#250;nica foto.</p>
+</div>
+<p><
+</p>
 <p>La entrada <a href="https://www.atareao.es/ubuntu/hilos-en-python-y-nautilus-document-convert/" rel="nofollow">Hilos en Python y nautilus-document-convert</a> aparece primero en <a href="https://www.atareao.es" rel="nofollow">El atareao</a>.</p>
     </div>
 </div></div>
@@ -66,16 +240,16 @@
     <div id="archive">
         <table class="calendar">
 <tr class="cal-head">
-<td class="cal-prev"><a href="index-2013-09-20.html">&lt;</a></td>
+<td class="cal-prev"><a href="index-2013-10-26.html">&lt;</a></td>
 <td class="cal-month" colspan="5">noviembre 2013</td>
-<td class="cal-next"><a href="index-2014-01-21.html">&gt;</a></td>
+<td class="cal-next"><a href="index-2013-12-25.html">&gt;</a></td>
 </tr>
 <tr class="cal-days">
 <th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
 <tr class="cal-week">
 <td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td></tr>
 <tr class="cal-week">
-<td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td></tr>
+<td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day"><a class="cal-link" href="index-2013-11-09.html">09</a></td><td class="cal-day">10</td></tr>
 <tr class="cal-week">
 <td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td></tr>
 <tr class="cal-week">
@@ -99,7 +273,7 @@
 <a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">Dead Epsilon</a>
-<a href="http://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://www.eferro.net/search/label/Python">e-ferro</a>
 <a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
@@ -110,23 +284,26 @@
 <a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
 <a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
 <br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
 <a href="">Frogblog</a>
 <a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
 <br />
-<a href="http://www.genbetadev.com">Genbeta:dev</a>
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
 <a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
-<a href="">Hyperreals *R</a>
-<a href="http://ch3m4.org/blog/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">JavAguirre.net</a>
-<a href="http://javaguirre.net/python.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
 <a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://joedicastro.com">joe di castro</a>
-<a href="http://joedicastro.com/feeds/tags/python.rss.xml"><img src="feed-icon.png" alt=""/></a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
 <a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
@@ -145,9 +322,6 @@
 <br />
 <a href="http://blog-es.python.org/">Python Insider ES</a>
 <a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
-<br />
-<a href="">python majibu</a>
-<a href="http://joedicastro.com/feeds/rss"><img src="feed-icon.png" alt=""/></a>
 <br />
 <a href="">Read The Fucking Docs</a>
 <a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>

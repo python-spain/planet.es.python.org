@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>martes, 10 julio</h2>
+<div class="time">
+<h3>13:32</h3>
+<div class="item feed-b74c3703 feed-{feed_id}" id="item-7f887707">
+<p class="itemheader">
+<span class="itemtitle">
+    Hyperreals *R:
+<a href="http://blog.ch3m4.org/2012/07/10/bom-marcas-de-orden-de-bytes/">BOM - marcas de orden de&#160;bytes</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Los <abbr title="Marca de orden de bytes"><span class="caps">BOM</span></abbr>&#8216;s son marcas que aparecen en ficheros y transmisiones de datos para indicar el <em>&#8220;orden de los bytes&#8221;</em> de la codificaci&#243;n empleada. Si pensamos que el tama&#241;o de cada dato transmitido puede ser 2, 4 u 8 bytes (16bits, 32 bits &#243; 64 bits), el orden de los bytes nos indica c&#243;mo se est&#225;n empaquetando los bytes en cada&nbsp;dato.</p>
+<p>Sin entrar en detalle, cuando usamos las codificaciones para unicode en ficheros, se suele convenir en el uso de una marca <abbr title="Marca de orden de bytes"><span class="caps">BOM</span></abbr> al inicio del fichero para indicar el orden de los bytes del fichero, pero que sirve asimismo para saber la codificaci&#243;n&nbsp;empleada.</p>
+<p>En unicode, el car&#225;cter <abbr title="Marca de orden de bytes"><span class="caps">BOM</span></abbr> se representa por <strong>U+<span class="caps">FEFF</span></strong>. Codificado en los distintos UTFs&nbsp;tenemos:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># UTF-8</span>
+<span class="n">BOM_UTF8</span> <span class="o">=</span> <span class="s">'</span><span class="se">\xef\xbb\xbf</span><span class="s">'</span>
+
+<span class="c"># UTF-16, little endian</span>
+<span class="n">BOM_LE</span> <span class="o">=</span> <span class="n">BOM_UTF16_LE</span> <span class="o">=</span> <span class="s">'</span><span class="se">\xff\xfe</span><span class="s">'</span>
+
+<span class="c"># UTF-16, big endian</span>
+<span class="n">BOM_BE</span> <span class="o">=</span> <span class="n">BOM_UTF16_BE</span> <span class="o">=</span> <span class="s">'</span><span class="se">\xfe\xff</span><span class="s">'</span>
+
+<span class="c"># UTF-32, little endian</span>
+<span class="n">BOM_UTF32_LE</span> <span class="o">=</span> <span class="s">'</span><span class="se">\xff\xfe\x00\x00</span><span class="s">'</span>
+
+<span class="c"># UTF-32, big endian</span>
+<span class="n">BOM_UTF32_BE</span> <span class="o">=</span> <span class="s">'</span><span class="se">\x00\x00\xfe\xff</span><span class="s">'</span>
+</pre></div>
+</td></tr></table>
+
+<p><sub>Extra&#237;do del fichero <code>codecs.py</code> de la librer&#237;a est&#225;ndar de python</sub></p>
+<p>Como la marca <abbr title="Marca de orden de bytes"><span class="caps">BOM</span></abbr> se codifica de manera diferente seg&#250;n el sistema de codificaci&#243;n, podemos deducir qu&#233; codificaci&#243;n esta usando el fichero a partir de los 4 primeros bytes. De esta manera, muchos editores son capaces de emplear la codificaci&#243;n&nbsp;correcta.</p>
+<p>Por otro lado, puede que sepamos qu&#233; codificaci&#243;n usan nuestros ficheros, pero en cambio nos molesta esos caracteres de m&#225;s al inicio del fichero. En este caso, el m&#243;dulo <code>codecs</code> de python nos facilita mucho la tarea. Basta emplear las siguiente codificaciones&nbsp;gen&#233;ricas:</p>
+<ul>
+<li><code>'utf-8-sig'</code> para <span class="caps">UTF</span>-8</li>
+<li><code>'utf-16'</code> para <span class="caps">UTF</span>-<span class="caps">16LE</span> y <span class="caps">UTF</span>-<span class="caps">16BE</span></li>
+<li><code>'utf-32'</code> para <span class="caps">UTF</span>-<span class="caps">32LE</span> y <span class="caps">UTF</span>-<span class="caps">32BE</span></li>
+</ul>
+<p>Se introdujo <code>'utf-8-sig</code><span class="quo">&#8216;</span> para no provocar incompatibilidades con el c&#243;digo existente que ya usaba <code>'utf-8</code><span class="quo">&#8216;</span>. Usando estas codificaciones, el m&#243;dulo <code>'codecs'</code> es suficientemente inteligente para quitar el <abbr title="Marca de orden de bytes"><span class="caps">BOM</span></abbr> al leer el fichero, y para a&#241;adir el <abbr title="Marca de orden de bytes"><span class="caps">BOM</span></abbr> al escribir, de modo completamente&nbsp;transparente.</p>
+<p>Por ejemplo, estos d&#237;as necesitaba pasar un fichero en <code>UTF-16LE</code> a <code>UTF-8</code>. Lo consegu&#237; con el siguiente&nbsp;script:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">codecs</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">=</span><span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;fichero-utf16le.txt&quot;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s">&quot;utf-16&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="o">=</span><span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;fichero-utf8.txt&quot;</span><span class="p">,</span><span class="s">&quot;wb&quot;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s">&quot;utf-8-sig&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+<p>O, completando <a href="http://blog.ch3m4.org/2011/08/04/iconv-en-python/">otro articulo</a>, se podr&#237;a hacer todo en una s&#243;la&nbsp;l&#237;nea:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span>python -c <span class="s2">&quot;import sys,codecs;codecs.EncodedFile(sys.stdout,'utf-16','utf-8-sig').writelines(sys.stdin)&quot;</span> &lt;fichero_entrada.txt &gt;fichero_salida.txt
+</pre></div>
+</td></tr></table>
+
+<p>Hay que tener en cuenta que el comando <code>iconv</code>, normalmente usado para convertir codificaciones de ficheros, no tiene en consideraci&#243;n el <abbr title="Marca de orden de bytes"><span class="caps">BOM</span></abbr>. Con python tenemos una soluci&#243;n&nbsp;perfecta.</p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2012-06-21.html">&lt;</a></td>
+<td class="cal-month" colspan="5">julio 2012</td>
+<td class="cal-next"><a href="index-2012-08-01.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">25</em></td><td class="cal-day"><em class="cal-othermonth">26</em></td><td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td></tr>
+<tr class="cal-week">
+<td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2012-07-09.html">09</a></td><td class="cal-day"><strong class="cal-current">10</strong></td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2012-07-16.html">16</a></td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td></tr>
+<tr class="cal-week">
+<td class="cal-day">23</td><td class="cal-day"><a class="cal-link" href="index-2012-07-24.html">24</a></td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td></tr>
+<tr class="cal-week">
+<td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

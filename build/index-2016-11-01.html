@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>martes, 01 noviembre</h2>
+<div class="time">
+<h3>02:25</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-0f43d2bc">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2016/10/volviendo-lo-basico-poo-en-python-parte.html">Volviendo a lo b&#225;sico, POO en Python (parte 4)</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Los art&#237;culos anteriores sobre Programaci&#243;n Orientada a Objetos los pueden revisar en el <a href="http://blog.crespo.org.ve/search/label/POO">enlace</a>.<br /><br />En este art&#237;culo se tocar&#225; el tema de la herencia, la encapsulaci&#243;n, el uso de getter, setter y deleter, el uso de m&#233;todo est&#225;tico y y classmethod.<br /><br />En el art&#237;culo de la <a href="http://blog.crespo.org.ve/2015/12/volviendo-lo-basico-poo-en-python-parte_31.html">parte 3 de POO</a> se explica el uso de @property y @m&#233;todo.setter, falto explicar el deleter que sirve para borrar atributos del objeto.<br /><br />El @staticmethod se usa cuando no se est&#225; usando el argumento self en un m&#233;todo.<br /><br />El @classmethod define un m&#233;todo que se le pasa entre los argumentos a la clase (por convenci&#243;n se define como cls).<br /><br />Se crear&#225; la clase Punto2D con los siguientes atributos y m&#233;todos:<br /><br /><ul><li>Se define al punto como (x,y), la clase Punto2 tiene los atributos privados (estos atributos no se pueden acceder a ellos desde la instancia de la clase, por esa raz&#243;n se tiene el getter y setter):</li><ul><li>self.__x</li><li>self.__y</li></ul><li>M&#233;todo __init__ que le asigna los valores inciales a la instancia.</li><li>getter, setter y deleter de punto.</li><li>getter, setter y deleter de ValorX y ValorY.</li><li>M&#233;todo mover: Asigna nuevo valor a punto.</li><li>M&#233;todo reset: Asigna el valor (0,0) al punto.&nbsp;</li><li>M&#233;todo&nbsp;distanciaOtroPunto: C&#225;lcula la distancia con otro punto.</li></ul><br /><br /><br />El c&#243;digo de ej12.py se muestra a continuaci&#243;n:<br /><code></code><br /><pre><code><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#!/usr/bin/env python3</span></i><br /><br /><i><span style="color: blue;"># -*- coding: utf-8 -*-</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">from math import sqrt</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">class Punto2D(object):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; """Representacion de un punto en 2 dimensiones"""</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; cont_puntos = 1</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; def __init__(self,punto=(0,0)):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''constructor del punto'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; self.__x,self.__y = punto</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; Punto2D.cont_puntos += 1</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; @property</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; def ValorX(self):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''Devuelve el valor de X'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return self.__x</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; @ValorX.setter</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; def ValorX(self,x):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''Se le asigna un valor &nbsp;a x por medio de setter'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; self.__x = x</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; @property</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; def ValorY(self):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''Devuelve el valor de y'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return self.__y</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; @ValorY.setter</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; def ValorY(self,y):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''Se le asigna un valor a y por medio del setter'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; self.__y = y</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; @property</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; def punto(self):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; """el getter de punto, devuelve el punto"""</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return (self.__x,self.__y)</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; @punto.setter</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; def punto(self,punto):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; ''''el setter de punto'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; self.__x,self.__y = punto</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; @property</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; def cantPuntos(self):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''Devuelve la cantidad de puntos creados'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return Empleado.cont_puntos</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; @punto.deleter</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; def punto(self):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''deleter de punto'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; del self.__x</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; del self.__y</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; cont_puntos = 0</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; def mover(self,x,y):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''mueve el punto a un nuevo punto'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; self.__x, self.__y = x,y</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; def reset(self):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''coloca en el origen al punto'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; self.mover(0,0)</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; def distanciaOtroPunto(self,oPunto):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''devuelve la distancia entre el punto original y un punto dado'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return sqrt((self.__x - oPunto.punto[0])**2 + (self.__y - oPunto.punto[1])**2 )</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; @staticmethod</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; def autor(autor):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''Se define el autor de la clase'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return "El autor de esta clase es: {}".format(autor)</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; @classmethod</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; def cantidadPuntos(cls,cantidad):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''Se cambia la cantidad de puntos'''</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; cls.cont_puntos = cantidad</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">if __name__ == "__main__":</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se crea cordenada de la clase Punto2D donde se le pasa (4,6)</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; cordenada = Punto2D((4,6))</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se muestra el valor del punto.</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; print(cordenada.punto)</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se asigna por setter un nuevo valor</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; cordenada.punto = (10,15)</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se muestra el nuevo valor de cordenada</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; print(cordenada.punto)</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se calcula la distancia con respecto a otro punto.</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; print(cordenada.distanciaOtroPunto(Punto2D((100,100))))</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se fija el punto en un valor (0,0)</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; cordenada.reset()</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se muestra el nuevo valor de la cordenada.</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; print (cordenada.punto)</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se muestra un mensaje pasando el autor de la clase.</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; print (cordenada.autor("Ernesto"))</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Muestra la cantidad de puntos que se han creado.</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; print ('Cantidad de puntos : {0}'.format(cordenada.cont_puntos ))</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se modifica la cantidad de puntos a 1 por medio de setter.</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; Punto2D.cantidadPuntos(1)</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se vuelve a mostrar la cantida de puntos.</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; print ('Cantidad de puntos : {0}'.format(cordenada.cont_puntos ))</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se borra la instancia cordenada.</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; del(cordenada)</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se intenta mostrar el punto pero va a devolver que no se puede</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; try:</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; print (cordenada.punto)</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; except (NameError):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; print ("No existe el objeto cordenada")</span></i><br /><br /><div><br /></div><br /></code></pre><code></code><br /><div><br /></div><div>Al ejecutar ej12.py se tiene lo siguiente:<br /><br /><b><span style="color: red;">python ej12.py</span></b><br /><b><span style="color: red;">(4, 6)</span></b><br /><b><span style="color: red;">(10, 15)</span></b><br /><b><span style="color: red;">123.794184031</span></b><br /><b><span style="color: red;">(0, 0)</span></b><br /><b><span style="color: red;">El autor de esta clase es: Ernesto</span></b><br /><b><span style="color: red;">Cantidad de puntos : 3</span></b><br /><b><span style="color: red;">Cantidad de puntos : 1</span></b><br /><b><span style="color: red;">No existe el objeto cordenada</span></b></div><div><br /></div><div><br /></div><div><br /></div><div>Ahora se va a crear ej12_3d.py que tendr&#225; la clase Punto3D que hereda de Punto2D.</div><div><br /></div><div>La clase Punto3D tiene practicamente los mismos m&#233;todos, lo &#250;nico distinto es que ahora maneja un punto con 3 dimensiones, para ello hereda del punto en 2 dimensiones X y Y y maneja Z.&nbsp;</div><div><br /></div><div>As&#237; que se sobrecarga los m&#233;todos de Punto2D en Punto3D. Para poder acceder al objeto Punto2D se usa super.&nbsp;</div><div><br /></div><div>A continuaci&#243;n el c&#243;digo de ej12_3d.py:</div><div><br /></div><div><br /></div><code></code><br /><pre><div><br /><div><br /><code><i><span style="color: blue;">#!/usr/bin/env python3</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"># -*- coding: utf-8 -*-</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">#Se importa la clase Punto2D de ej12.py</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">from ej12 import Punto2D</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">#Se importa raiz cuadrada</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">from math import sqrt</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">class Punto3D(Punto2D):</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; '''Se define la clase Punto3D'''</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; def __init__(self,punto3d):</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''M&#233;todo init donde se le asigna x y y a Punto2D por medio de super'''</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; super(Punto3D,self).__init__(punto3d[0:-1])</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; self.__z = punto3d[-1]</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; @property</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; def ValorZ(self):</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''devuelve el valor de z por medio de getter'''</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return self.__z</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; @ValorZ.setter</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; def ValorZ(self,z):</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''Se asigna un valor a z por medio de setter'''</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; self.__z = z</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; @ValorZ.deleter</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; def ValorZ(self):</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''se borra el valor de z por medio de deleter'''</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; del (self.__z)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; @property</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; def punto(self):</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''el getter de punto, devuelve el punto'''</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; x,y = super(Punto3D,self).punto</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return (x,y,self.ValorZ)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; @punto.setter</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; def punto(self,punto3d):</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''Se le asigna un valor al punto por medio de setter'''</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; super(Punto3D,self).mover(punto3d[0],punto3d[1])</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; self.__z = punto3d[-1]</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; @punto.deleter</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; def punto(self):</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''Se borra el punto por medio de deleter'''</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; print ("Punto borrado")</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; del Punto2D</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; del self.__z</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; def mover(self,x,y,z):</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''Se asigna un nuevo valor al punto''''</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; super(Punto3D,self).mover(x,y)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; self.__z = z</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; def reset(self):</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''Se fija el punto como (0,0,0)'''</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; super(Punto3D,self).mover(0,0)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; self.__z = 0</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; def distanciaOtroPunto(self,oPunto):</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; '''devuelve la distancia entre el punto original y un punto dado'''</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; x,y = super(Punto3D,self).punto</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; z = self.__z</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return sqrt((x - oPunto.punto[0])**2 + (y - oPunto.punto[1])**2 + (z - oPunto.ValorZ) ** 2 )</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">if __name__ == '__main__':</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se crea la instancia Punto3D con el punto.</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; punto3d = Punto3D((4,6,4))</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se muestra el valor del punto</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; print(punto3d.punto)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se asigna un nuevo valor a punto.</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; punto3d.punto = (3,3,3)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se muestra dicho valor</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; print(punto3d.punto)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se muestra los valores de x,y y z.</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; print(punto3d.ValorX)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; print(punto3d.ValorY)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; print(punto3d.ValorZ)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se asigna el valor (0,0,0)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; punto3d.reset()</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se muestra su valor.</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; print(punto3d.punto)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se calcula la distancia con otro punto.</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; print(punto3d.distanciaOtroPunto(Punto3D((15,45,55))))</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se borra el punto3d.</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; del(punto3d)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; #Se intenta mostrar el valor o devuelve que el objeto no existe.</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; try:</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; print (punto3d.punto)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; except (NameError):</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; print ("No existe el objeto punto3d")</span></i></code></div><br /></div><br /><code><br /></code></pre><code></code><br /><div><br /></div><div><br /></div><div>Al ejecutar ej12_3d.py se obtiene lo siguiente:</div><div><br /><b><span style="color: red;">python ej12_3d.py</span></b><br /><b><span style="color: red;">(4, 6, 4)</span></b><br /><b><span style="color: red;">(3, 3, 3)</span></b><br /><b><span style="color: red;">3</span></b><br /><b><span style="color: red;">3</span></b><br /><b><span style="color: red;">3</span></b><br /><b><span style="color: red;">(0, 0, 0)</span></b><br /><b><span style="color: red;">72.6291952317</span></b><br /><b><span style="color: red;">No existe el objeto punto3d</span></b></div><div><br /></div><div><br /></div><div><br /></div><div>En este art&#237;culo se muestra la encapsulaci&#243;n, la herencia y varios m&#233;todos.<br /><br />Los c&#243;digos lo pueden encontrar en gitlab tanto para <a href="https://gitlab.com/ecrespo/tutorial-poo/blob/master/ej12.py">ej12.py</a> como para <a href="https://gitlab.com/ecrespo/tutorial-poo/blob/master/ej12_3d.py">ej12_3d.py</a>.<br /><br /></div><div><br /></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2016-10-14.html">&lt;</a></td>
+<td class="cal-month" colspan="5">noviembre 2016</td>
+<td class="cal-next"><a href="index-2016-12-31.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day"><strong class="cal-current">01</strong></td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td></tr>
+<tr class="cal-week">
+<td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td></tr>
+<tr class="cal-week">
+<td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td></tr>
+<tr class="cal-week">
+<td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td></tr>
+<tr class="cal-week">
+<td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

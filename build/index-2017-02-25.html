@@ -1,0 +1,1166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>s&#225;bado, 25 febrero</h2>
+<div class="time">
+<h3>20:58</h3>
+<div class="item feed-4fc094b0 feed-{feed_id}" id="item-c75c2e38">
+<p class="itemheader">
+<span class="itemtitle">
+    freakspot:
+<a href="https://www.freakspot.net/creacion-de-un-videojuego-con-pygame/">Creaci&#243;n de un videojuego con pygame</a></span>
+</p>
+    <div class="itemdescription">
+    <p>En esta entrada, vamos a ver c&#243;mo crear un videojuego con Python y
+pygame. El videojuego se llama <em>Bullet dodger.</em> El objetivo es esquivar
+todas las balas que se disparen para conseguir el mayor n&#250;mero de puntos
+posibles. Cada bala disparada aumenta la puntuaci&#243;n en 1. El personaje
+se maneja con el rat&#243;n, y el juego tiene un modo de pantalla completa.</p>
+<p>Antes de comenzar a programar, debes asegurarte de que tienes todos los
+materiales necesarios. Solamente necesitas <a href="http://pygame.org/">pygame</a>,
+<a href="https://www.python.org/">Python</a> y un editor de texto o IDE con el que
+te sientas c&#243;modo. Abajo tienes la bala que utilizaremos para el juego;
+desc&#225;rgala y ub&#237;cala en la carpeta donde vayas a programar.
+<a href="https://www.freakspot.net/wp-content/uploads/2016/09/bullet.png"><img alt="bullet" class="aligncenter size-full wp-image-349" height="13" src="https://www.freakspot.net/wp-content/uploads/2016/09/bullet.png" width="10" /></a></p>
+<h3>Paso 1: Crear ventana b&#225;sica</h3>
+<p>Lo primero que hay que hacer para utilizar pygame, es importarlo.
+Normalmente son necesarias las librer&#237;as <code>pygame</code> y <code>pygame.locals</code>.
+Crea un archivo de llamado <code>main.py</code> e importa dichas librer&#237;as.</p>
+
+
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+</pre></div>
+
+
+<p>Una vez importado todo lo necesario, podemos crear el videojuego. Lo
+primero es hacer la ventana.</p>
+<div class="highlight"><pre><span></span><span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="c1"># Display</span>
+<span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
+<span class="c1"># Window titlebar</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">'Bullet dodger'</span><span class="p">)</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_icon</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'bullet.png'</span><span class="p">))</span>
+</pre></div>
+
+
+<p>Hemos iniciado <code>pygame</code>. Despu&#233;s, hemos establecido la resoluci&#243;n a
+800x600 p&#237;xeles y, por &#250;ltimo, hemos creado el t&#237;tulo de nuestra ventana
+y le hemos asignado como icono la imagen de la bala que hemos
+descargado. Cuando lo ejecutemos, va a aparecer una ventana negra que se
+cerrar&#225; inmediatamente, porque cuando termina la &#250;ltima instrucci&#243;n el
+programa ya no tiene nada m&#225;s que hacer y finaliza.</p>
+<p>Para evitar esto necesitamos que el programa se ejecute hasta que el
+usuario decida cerrarlo. Para ello vamos a crear el bucle del juego.
+Dentro de ese bucle, vamos a comprobar si el usuario ha realizado alguna
+acci&#243;n. Si la acci&#243;n realizada es la de cerrar la ventana
+(<code>event.type == QUIT</code>), pygame parar&#225; y la variable <code>running</code> tendr&#225; el
+valor <code>False</code>; por lo que se saldr&#225; del bucle y se finalizar&#225; el
+programa.</p>
+<div class="highlight"><pre><span></span><span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+            <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+
+
+<p><a href="https://www.freakspot.net/wp-content/uploads/2016/09/Captura-de-pantalla-de-2016-09-11-032822.png"><img alt="Ventana simple en pygame" class="aligncenter size-full wp-image-390" height="708" src="https://www.freakspot.net/wp-content/uploads/2016/09/Captura-de-pantalla-de-2016-09-11-032822.png" width="838" /></a></p>
+<p>A continuaci&#243;n os dejo el c&#243;digo fuente completo.</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+
+<span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="c1"># Display</span>
+<span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
+<span class="c1"># Window titlebar</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">'Bullet dodger'</span><span class="p">)</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_icon</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'bullet.png'</span><span class="p">))</span>
+<span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+            <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+
+
+<h3>Paso 2: Crear la pantalla de inicio</h3>
+<p>Vamos a crear un archivo en el que ubicaremos algunas constantes
+importantes en pygame: los colores y la resoluci&#243;n de la ventana. El
+archivo se llamar&#225; <code>global_constants.py</code>.</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># Resolution</span>
+<span class="n">WIDTH</span> <span class="o">=</span> <span class="mi">800</span>
+<span class="n">HEIGHT</span> <span class="o">=</span> <span class="mi">600</span>
+
+<span class="c1"># Colors</span>
+<span class="n">BLACK</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">GREEN</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">RED</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">YELLOW</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+</pre></div>
+
+
+<p>La anchura (<code>WIDTH</code>) ser&#225; de 800 p&#237;xeles; la altura (<code>HEIGHT</code>), de 600.
+Los colores en pygame son una tupla de tres valores: rojo, verde y
+amarillo (de ah&#237; las siglas
+<acronym title="Red Green Blue">RGB</acronym>). Vamos a crear los
+colores negro, verde, rojo y amarillo.</p>
+<p>Ahora que hemos creado unas variables para la resoluci&#243;n, podemos
+utilizarlas en <code>main.py</code>. Vamos a a&#241;adir tambi&#233;n un tipo de fuente para
+escribir texto normal (un poco m&#225;s adelante veremos c&#243;mo funciona el
+constructor <code>pygame.font.Font</code>).</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+
+<span class="hll"><span class="kn">from</span> <span class="nn">global_constants</span> <span class="k">import</span> <span class="o">*</span>
+</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="c1"># Display</span>
+<span class="hll"><span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">))</span>
+</span><span class="n">fullscreen</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># Window titlebar</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">'Bullet dodger'</span><span class="p">)</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_icon</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'bullet.png'</span><span class="p">))</span>
+
+<span class="hll"><span class="n">default_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+</span></pre></div>
+
+
+<p>Ahora vamos a crear una funci&#243;n para escribir texto en pygame.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">main_color</span><span class="p">,</span> <span class="n">background_color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">textobj</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">main_color</span><span class="p">,</span> <span class="n">background_color</span><span class="p">)</span>
+    <span class="n">textrect</span> <span class="o">=</span> <span class="n">textobj</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+    <span class="n">textrect</span><span class="o">.</span><span class="n">centerx</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">textrect</span><span class="o">.</span><span class="n">centery</span> <span class="o">=</span> <span class="n">y</span>
+    <span class="n">surface</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">textobj</span><span class="p">,</span> <span class="n">textrect</span><span class="p">)</span>
+</pre></div>
+
+
+<p>La funci&#243;n la hemos llamado <code>draw_text</code>. Tiene como par&#225;metros el texto
+que queramos escribir, el tipo de fuente, la superficie donde queremos
+que se escriba el texto, las coordenadas (<code>x</code> y <code>y</code>), el color de las
+letras y el color de fondo tras las letras (<code>background_color=None</code>,
+opcional).</p>
+<p>Dentro de la funci&#243;n hemos creado el objeto de texto, con la funci&#243;n
+<code>font.render</code> utilizando los par&#225;metros. Con el objeto de texto, hemos
+accedido a las coordenadas rectangulares y las hemos modificado con los
+valores de <code>y</code> y <code>x</code>. Una vez hecho esto, podemos dibujar el texto en la
+superficie (<code>surface.blit(textobj, textrect)</code>).</p>
+<p>Ahora crearemos la funci&#243;n de la pantalla de inicio del juego en
+<code>main.py</code>.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">start_screen</span><span class="p">():</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="o">*</span><span class="n">pygame</span><span class="o">.</span><span class="n">cursors</span><span class="o">.</span><span class="n">diamond</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">title_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="s1">'freesansbold.ttf'</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>
+        <span class="n">big_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">36</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'BULLET DODGER'</span><span class="p">,</span> <span class="n">title_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="n">RED</span><span class="p">,</span> <span class="n">YELLOW</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Use the mouse to dodge the bullets'</span><span class="p">,</span> <span class="n">big_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Press any mouse button or S when you</span><span class="se">\'</span><span class="s1">re ready'</span><span class="p">,</span>
+                  <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">1.7</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Press F11 to toggle full screen'</span><span class="p">,</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">MOUSEBUTTONDOWN</span><span class="p">:</span>
+                <span class="n">main_loop</span><span class="p">()</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_s</span><span class="p">:</span>
+                    <span class="n">main_loop</span><span class="p">()</span>
+                    <span class="k">return</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+                <span class="k">return</span>
+</pre></div>
+
+
+<p>Con <code>pygame.mouse.set_cursor(*pygame.cursors.diamond)</code>, hacemos que el
+rat&#243;n tenga forma de diamante cuando pasas el rat&#243;n por la ventana del
+juego. Despu&#233;s creamos otros dos tipos de fuentes, con diferentes
+tama&#241;os. El tipo de fuente es <code>freesansbold.ttf</code>, que es la fuente
+predeterminada de pygame. Pasar <code>None</code> como primer par&#225;metro del
+constructor <code>Font</code> tiene es equivalente a pasar <code>'freesansbold.ttf'</code>; el
+segundo par&#225;metro hace referencia al tama&#241;o de la fuente. La funci&#243;n
+<code>draw_text</code> que creamos anteriormente permite crear varios textos
+f&#225;cilmente. Para que se muestren los textos, debemos ejecutar
+<code>pygame.display.update()</code>. Despu&#233;s creamos un bucle para capturar los
+eventos. Si el usuario pulsa cualquier bot&#243;n del rat&#243;n o la tecla S se
+ejecutar&#225; la funci&#243;n <code>main_loop()</code>, que a&#250;n no hemos creado. Si el
+usuario cierra la ventana, Python saldr&#225; de la funci&#243;n.</p>
+<p>Creemos la funci&#243;n <code>main_loop</code>. Simplemente mete el bucle del juego que
+creamos anteriormente dentro de la funci&#243;n tal que quede como abajo.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main_loop</span><span class="p">():</span>
+    <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+                <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+
+
+<p>Ahora solo a&#241;ade al debajo de todas las funciones creadas una llamada a
+<code>start_screen()</code> y otra llamada a <code>pygame.quit()</code> (sirve para cerrar el
+motor de pygame). El archivo <code>main.py</code> debe haberte quedado como lo
+muestro continuaci&#243;n.</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+
+<span class="kn">from</span> <span class="nn">global_constants</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="c1"># Display</span>
+<span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">))</span>
+<span class="c1"># Window titlebar</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">'Bullet dodger'</span><span class="p">)</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_icon</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'bullet.png'</span><span class="p">))</span>
+
+<span class="n">default_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">draw_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">main_color</span><span class="p">,</span> <span class="n">background_color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">textobj</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">main_color</span><span class="p">,</span> <span class="n">background_color</span><span class="p">)</span>
+    <span class="n">textrect</span> <span class="o">=</span> <span class="n">textobj</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+    <span class="n">textrect</span><span class="o">.</span><span class="n">centerx</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">textrect</span><span class="o">.</span><span class="n">centery</span> <span class="o">=</span> <span class="n">y</span>
+    <span class="n">surface</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">textobj</span><span class="p">,</span> <span class="n">textrect</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">start_screen</span><span class="p">():</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="o">*</span><span class="n">pygame</span><span class="o">.</span><span class="n">cursors</span><span class="o">.</span><span class="n">diamond</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">title_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="s1">'freesansbold.ttf'</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>
+        <span class="n">big_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">36</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'BULLET DODGER'</span><span class="p">,</span> <span class="n">title_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="n">RED</span><span class="p">,</span> <span class="n">YELLOW</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Use the mouse to dodge the bullets'</span><span class="p">,</span> <span class="n">big_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Press any mouse button or S when you</span><span class="se">\'</span><span class="s1">re ready'</span><span class="p">,</span>
+                  <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">1.7</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Press F11 to toggle full screen'</span><span class="p">,</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">MOUSEBUTTONDOWN</span><span class="p">:</span>
+                <span class="n">main_loop</span><span class="p">()</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_s</span><span class="p">:</span>
+                    <span class="n">main_loop</span><span class="p">()</span>
+                    <span class="k">return</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+                <span class="k">return</span>
+
+
+<span class="k">def</span> <span class="nf">main_loop</span><span class="p">():</span>
+    <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+                <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">start_screen</span><span class="p">()</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+
+
+<p><a href="https://www.freakspot.net/wp-content/uploads/2016/09/Captura-de-pantalla-de-2016-09-11-033008.png"><img alt="captura-de-pantalla-de-2016-09-11-033008" class="aligncenter size-full wp-image-391" height="626" src="https://www.freakspot.net/wp-content/uploads/2016/09/Captura-de-pantalla-de-2016-09-11-033008.png" width="808" /></a></p>
+<h3>Paso 3: Crear el modo de pantalla completa</h3>
+<p>En el men&#250; principal del juego vamos a permitir cambiar a un modo de
+pantalla completa pulsando F11. Para ello tenemos que crear la funci&#243;n
+<code>toggle_fullscreen()</code>. Antes vamos a crear una variable llamada
+fullscreen y vamos a darle el valor <code>False</code>.</p>
+<div class="highlight"><pre><span></span><span class="c1"># Display</span>
+<span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">))</span>
+<span class="hll"><span class="n">fullscreen</span> <span class="o">=</span> <span class="kc">False</span>
+</span></pre></div>
+
+
+<p>Creemos ya la funci&#243;n <code>toggle_fullscreen()</code>.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">toggle_fullscreen</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_driver</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'x11'</span><span class="p">:</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">toggle_fullscreen</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">screen</span><span class="p">,</span> <span class="n">fullscreen</span>
+        <span class="n">screen_copy</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">fullscreen</span><span class="p">:</span>
+            <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">),</span> <span class="n">pygame</span><span class="o">.</span><span class="n">FULLSCREEN</span><span class="p">)</span>
+        <span class="n">fullscreen</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">fullscreen</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">screen_copy</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+
+
+<p>Si el ordenador del usuario tiene el controlador de v&#237;deo x11, ejecutar&#225;
+la funci&#243;n <code>pygame.display.toggle_fullscreen()</code>. Si no dispone de ese
+driver la anterior funci&#243;n no fuencionar&#225;, as&#237; que utilizamos otro
+m&#233;todo. En este, tenemos que hacer globales las variables screen y
+fullscreen para poder cambiar sus valores. Hacemos una copia de la
+variable screen, si el valor de la variable fullscreen es False,
+cambiaremos a pantalla completa con screen =
+pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN); en caso
+contrario, volveremos al modo normal. Cambiamos el valor de la variable
+fullscreen (si es <code>True</code> pasar&#225; a <code>False</code>; si es <code>False</code>, a <code>True</code>). La
+copia de la variable <code>screen</code>, debemos dibujarla en screen, ya que al
+cambiar el modo de muestra (<code>display.set_mode</code>) se perder&#225;n los valores
+antiguos.</p>
+<p>Dememos permitir llamar a esta funci&#243;n pulsando la tecla F11 en la
+funci&#243;n <code>start_screen()</code>.</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">MOUSEBUTTONDOWN</span><span class="p">:</span>
+        <span class="n">main_loop</span><span class="p">()</span>
+        <span class="k">return</span>
+    <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_s</span><span class="p">:</span>
+            <span class="n">main_loop</span><span class="p">()</span>
+            <span class="k">return</span>
+<span class="hll">        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_F11</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">toggle_fullscreen</span><span class="p">()</span>
+</span>    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+        <span class="k">return</span>
+</pre></div>
+
+
+<h3>Paso 4: Crear las balas</h3>
+<p>Crea un archivo llamado <code>bullet.py</code>.</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+
+<span class="kn">from</span> <span class="nn">global_constants</span> <span class="k">import</span> <span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span>
+
+
+<span class="k">def</span> <span class="nf">random_bullet</span><span class="p">(</span><span class="n">speed</span><span class="p">):</span>
+    <span class="n">random_or</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">random_or</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Up -&gt; Down</span>
+        <span class="k">return</span> <span class="n">Bullet</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">WIDTH</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">speed</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">random_or</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Right -&gt; Left</span>
+        <span class="k">return</span> <span class="n">Bullet</span><span class="p">(</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">),</span> <span class="o">-</span><span class="n">speed</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">random_or</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># Down -&gt; Up</span>
+        <span class="k">return</span> <span class="n">Bullet</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">WIDTH</span><span class="p">),</span> <span class="n">HEIGHT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">speed</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">random_or</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>  <span class="c1"># Left -&gt; Right</span>
+        <span class="k">return</span> <span class="n">Bullet</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">),</span> <span class="n">speed</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Bullet</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpos</span><span class="p">,</span> <span class="n">ypos</span><span class="p">,</span> <span class="n">hspeed</span><span class="p">,</span> <span class="n">vspeed</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Bullet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'bullet.png'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">xpos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">ypos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hspeed</span> <span class="o">=</span> <span class="n">hspeed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vspeed</span> <span class="o">=</span> <span class="n">vspeed</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_direction</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hspeed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vspeed</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collide</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">collide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">right</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">WIDTH</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">right</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;</span> <span class="n">HEIGHT</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">set_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hspeed</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="mi">270</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">hspeed</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">vspeed</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Este es el c&#243;digo que necesitamos para crear balas. La funci&#243;n
+<code>random_bullet.py</code> sirve para crear una bala con una direcci&#243;n aleatoria
+(hay cuatro: de arriba abajo, de derecha a izquierda, de abajo arriba y
+de izquierda a derecha). Podemos controlar la velocidad a trav&#233;s del
+par&#225;metro <code>speed</code>. En esta funci&#243;n utilizamos las variables <code>WIDTH</code> y
+<code>HEIGHT</code> para que las balas se creen justo en el borde fuera de la
+ventana del juego.</p>
+<p>M&#225;s abajo creamos la clase Bullet, que hereda de <code>pygame.sprite.Sprite</code>.
+En el constructor (<code>__init__</code>) llamamos al constructor de la clase
+padre, establecemos la imagen de la bala, las coordenadas rectangulares
+y la velocidad horizontal (<code>hspeed</code>) y vertical (<code>vspeed</code>). Finalmente
+llamamos a la funci&#243;n <code>set_direction()</code>.</p>
+<p>La funci&#243;n <code>set_direction()</code>, simplemente gira la imagen para que la
+imagen de la bala no de una apariencia de movimiento equivocada. Es
+decir, si la bala se mueve hacia abajo, se gira la imagen 180&#186;, puesto
+que la imagen de la bala est&#225; mirando hacia arriba.</p>
+<p>La funci&#243;n <code>collide()</code>, devuelve True si la bala ha salido de la
+pantalla.</p>
+<p>La funci&#243;n update() simplemente actualiza la posici&#243;n de la bala y la
+destruye si ha salido de la pantalla.</p>
+<p>Vamos a crear en el archivo <code>main.py</code> las balas para comprobar que
+funciona el c&#243;digo escrito. Pero antes tenemos que controlar los
+fotogramas por segundos, sino el juego correr&#225; a una velocidad diferente
+dependiendo de la potencia del ordenador que lo arranque. Escribe en la
+parte superior del archivo</p>
+<div class="highlight"><pre><span></span><span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">'Bullet dodger'</span><span class="p">)</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_icon</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'bullet.png'</span><span class="p">))</span>
+<span class="hll"><span class="c1"># Timing</span>
+</span><span class="hll"><span class="n">fps_clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
+</span><span class="hll"><span class="n">FPS</span> <span class="o">=</span> <span class="mi">60</span>
+</span>
+<span class="n">default_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+</pre></div>
+
+
+<p>En el bucle del juego, escribe lo siguiente.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main_loop</span><span class="p">():</span>
+<span class="hll">    <span class="n">bullets</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+</span>    <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="hll">    <span class="n">points</span> <span class="o">=</span> <span class="mi">0</span>
+</span>    <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+<span class="hll">        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</span><span class="hll">        <span class="n">fps_clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">FPS</span><span class="p">)</span>
+</span><span class="hll">        <span class="n">screen</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">BLACK</span><span class="p">)</span>
+</span><span class="hll">
+</span><span class="hll">        <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">bullets</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">random_bullet</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+</span><span class="hll">            <span class="n">points</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class="hll">        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'</span><span class="si">{}</span><span class="s1"> points'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">points</span><span class="p">),</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+</span><span class="hll">            <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">)</span>
+</span><span class="hll">        <span class="n">bullets</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</span>        <span class="n">bullets</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Primero, hemos creado un grupo de sprites llamado bullets para organizar
+m&#225;s f&#225;cilmente las balas. Hemos creado una variable llamada <code>points</code> que
+vale 0 al inicio de la partida. Actualizamos la pantalla con
+<code>pygame.display.update()</code>. Ejecutamos la funci&#243;n <code>tick()</code> para que el
+juego no pase de los
+<acronym title="fotogramas por segundo">FPS</acronym> que hemos
+especificado antes. Despu&#233;s llenamos la pantalla de negro (si no hacemos
+esto las balas se dibujar&#225;n y no se borrar&#225;n de su posici&#243;n antigua).
+Para que no salgan demasiadas balas de golpe creamos una condici&#243;n, con
+<code>if random.randint(1, 5) == 1</code> hay un 20% de posibilidades de que se
+dispare una bala y aumente la puntuaci&#243;n en 1 en cada iteraci&#243;n. Fuera
+de ese <code>if</code>, dibujamos la puntuaci&#243;n actual, actualizamos las balas y
+las dibujamos en la pantalla.</p>
+<p>Para que el c&#243;digo funcione deber&#225;s importar el m&#243;dulo random y todo lo
+del archivo <code>bullet.py</code> (<code>from bullet import *</code>). As&#237; deber&#225; quedar el
+c&#243;digo del archivo <code>main.py</code></p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+
+<span class="kn">from</span> <span class="nn">bullet</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">global_constants</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="c1"># Display</span>
+<span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">))</span>
+<span class="n">fullscreen</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># Window titlebar</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">'Bullet dodger'</span><span class="p">)</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_icon</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'bullet.png'</span><span class="p">))</span>
+<span class="c1"># Timing</span>
+<span class="n">fps_clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
+<span class="n">FPS</span> <span class="o">=</span> <span class="mi">60</span>
+
+<span class="n">default_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">draw_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">main_color</span><span class="p">,</span> <span class="n">background_color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">textobj</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">main_color</span><span class="p">,</span> <span class="n">background_color</span><span class="p">)</span>
+    <span class="n">textrect</span> <span class="o">=</span> <span class="n">textobj</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+    <span class="n">textrect</span><span class="o">.</span><span class="n">centerx</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">textrect</span><span class="o">.</span><span class="n">centery</span> <span class="o">=</span> <span class="n">y</span>
+    <span class="n">surface</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">textobj</span><span class="p">,</span> <span class="n">textrect</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">toggle_fullscreen</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_driver</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'x11'</span><span class="p">:</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">toggle_fullscreen</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">screen</span><span class="p">,</span> <span class="n">fullscreen</span>
+        <span class="n">screen_copy</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">fullscreen</span><span class="p">:</span>
+            <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">),</span> <span class="n">pygame</span><span class="o">.</span><span class="n">FULLSCREEN</span><span class="p">)</span>
+        <span class="n">fullscreen</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">fullscreen</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">screen_copy</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">start_screen</span><span class="p">():</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="o">*</span><span class="n">pygame</span><span class="o">.</span><span class="n">cursors</span><span class="o">.</span><span class="n">diamond</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">title_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="s1">'freesansbold.ttf'</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>
+        <span class="n">big_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">36</span><span class="p">)</span>
+        <span class="n">default_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'BULLET DODGER'</span><span class="p">,</span> <span class="n">title_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="n">RED</span><span class="p">,</span> <span class="n">YELLOW</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Use the mouse to dodge the bullets'</span><span class="p">,</span> <span class="n">big_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Press any mouse button or S when you</span><span class="se">\'</span><span class="s1">re ready'</span><span class="p">,</span>
+                  <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">1.7</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Press F11 to toggle full screen'</span><span class="p">,</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">MOUSEBUTTONDOWN</span><span class="p">:</span>
+                <span class="n">main_loop</span><span class="p">()</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_s</span><span class="p">:</span>
+                    <span class="n">main_loop</span><span class="p">()</span>
+                    <span class="k">return</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_F11</span><span class="p">:</span>
+                    <span class="n">toggle_fullscreen</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+                <span class="k">return</span>
+
+
+<span class="k">def</span> <span class="nf">main_loop</span><span class="p">():</span>
+    <span class="n">bullets</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+    <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">fps_clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">FPS</span><span class="p">)</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">BLACK</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">bullets</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">random_bullet</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+            <span class="n">points</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'</span><span class="si">{}</span><span class="s1"> points'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">points</span><span class="p">),</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+            <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">)</span>
+        <span class="n">bullets</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">bullets</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+                <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">start_screen</span><span class="p">()</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+
+
+<p><a href="https://www.freakspot.net/wp-content/uploads/2016/09/Captura-de-pantalla-de-2016-09-11-052228.png"><img alt="captura-de-pantalla-de-2016-09-11-052228" class="aligncenter size-full wp-image-400" height="626" src="https://www.freakspot.net/wp-content/uploads/2016/09/Captura-de-pantalla-de-2016-09-11-052228.png" width="808" /></a></p>
+<h3>Paso 5: Crear el personaje</h3>
+<p>Crea un archivo llamado <code>block.py</code> con el c&#243;digo que aparece a
+continuaci&#243;n.</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">global_constants</span> <span class="k">import</span> <span class="n">YELLOW</span>
+
+
+<span class="k">class</span> <span class="nc">Block</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Sprite</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Block</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">YELLOW</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centerx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">centerx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centery</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">centery</span>
+
+    <span class="k">def</span> <span class="nf">set_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="s1">'Positions the block center in x and y location'</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">centerx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">centery</span>
+
+    <span class="k">def</span> <span class="nf">collide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sprites</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">sprite</span> <span class="ow">in</span> <span class="n">sprites</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">collide_rect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sprite</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+
+
+<p>Para crear el personaje no nos hemos complicado mucho: simplemente hemos
+creado un cuadrado amarillo.</p>
+<p>Aparte de importar lo t&#237;pico en pygame (l&#237;neas 3 y 4), importamos de
+global_constants.py la variable YELLOW para el color del cuadrado.
+Hemos creado una clase llamada <code>Block</code>, que como <code>Bullet</code>, hereda de
+<code>pygame.sprite.Sprite</code>. En el constructor, ejecutamos el constructor de
+la clase padre, creamos una superficie de 30x30 p&#237;xeles, la coloreamos
+de amarillo y obtenemos y guardamos el centro de la coordenadas del
+cuadrado. Nos interesa el centro, porque cuando creemos movamos el
+cuadrado con el rat&#243;n, el rat&#243;n siempre estar&#225; en el centro del cuadrado
+para hacer que el movimiento sea natural (si no, nos mover&#237;amos a partir
+de la esquina superior izquierda del cuadrado).</p>
+<p>El m&#233;todo <code>set_pos</code>, nos permitir&#225; ubicar el cuadrado a partir de las
+coordenadas que le pasemos como par&#225;metro. El centro del cuadrado estar&#225;
+en las coordenadas <code>x</code> y <code>y</code>.</p>
+<p>El m&#233;todo <code>collide</code> devuelve True si el cuadrado colisiona con uno de
+los sprites del grupo de sprites pasado como par&#225;metro. La colisi&#243;n se
+calcula a partir de las coordenadas rectangulares
+(<code>pygame.sprite.collide_rect(self, sprite)</code>), as&#237; que se detecta una
+colisi&#243;n cuando se produce una intersecci&#243;n entre los cuadrados de las
+imagenes sin importar que una parte sea transparente.</p>
+<p>En <code>main.py</code>, vamos a importar ahora lo que hemos creado en <code>block.py</code>.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">block</span> <span class="k">import</span> <span class="o">*</span>
+<span class="hll"><span class="kn">from</span> <span class="nn">bullet</span> <span class="k">import</span> <span class="o">*</span>
+</span><span class="kn">from</span> <span class="nn">global_constants</span> <span class="k">import</span> <span class="o">*</span>
+</pre></div>
+
+
+<p>En el archivo <code>main.py</code> ya podemos crear el cuadrado y lo ubicarlo
+inicialmente a partir de las coordenadas del rat&#243;n. Tambi&#233;n vamos a
+hacer que el rat&#243;n sea invisible durante la partida y vamos a crear la
+variable <code>game_over</code> con el valor <code>False</code> (nos servir&#225; m&#225;s adelante para
+detectar el fin del juego).</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main_loop</span><span class="p">():</span>
+<span class="hll">    <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</span>
+<span class="hll">    <span class="n">square</span> <span class="o">=</span> <span class="n">Block</span><span class="p">()</span>
+</span><span class="hll">    <span class="n">square</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="o">*</span><span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">())</span>
+</span>    <span class="n">bullets</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+    <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="hll">    <span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
+</span></pre></div>
+
+
+<p>Despu&#233;s comprobamos si ha colisionado con alguna bala, si lo ha hecho
+hacemos que la variable <code>game_over</code> sea <code>True</code>. Dibujamos el cuadrado
+con <code>screen.blit(square.img, square.rect)</code> y actualizamos la posici&#243;n
+del rat&#243;n cada vez que se mueve el rat&#243;n dentro del bucle for que
+recorre los eventos de pygame.</p>
+<div class="highlight"><pre><span></span><span class="hll">    <span class="k">if</span> <span class="n">square</span><span class="o">.</span><span class="n">collide</span><span class="p">(</span><span class="n">bullets</span><span class="p">):</span>
+</span><span class="hll">        <span class="n">game_over</span> <span class="o">=</span> <span class="kc">True</span>
+</span>
+<span class="hll">    <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">square</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="n">square</span><span class="o">.</span><span class="n">rect</span><span class="p">)</span>
+</span>    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+<span class="hll">        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">MOUSEMOTION</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">mouse_pos</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()</span>
+</span><span class="hll">            <span class="n">square</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="o">*</span><span class="n">mouse_pos</span><span class="p">)</span>
+</span>        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+            <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+
+
+<p>Cuando hayamos terminado, podremos mover el cuadrado amarillo, pero no
+sabremos si ha colisionado. Si quieres probar si funciona la detecci&#243;n
+de colisiones antes de seguir, muestra algo por pantalla si se cumple la
+condici&#243;n
+<code>if square.collide(bullets):</code>.</p>
+<p><a href="https://www.freakspot.net/wp-content/uploads/2016/09/Captura-de-pantalla-de-2016-09-11-085128.png"><img alt="captura-de-pantalla-de-2016-09-11-085128" class="aligncenter size-full wp-image-415" height="626" src="https://www.freakspot.net/wp-content/uploads/2016/09/Captura-de-pantalla-de-2016-09-11-085128.png" width="808" /></a></p>
+<h3>Paso 6: Crear la pantalla de fin del juego</h3>
+<p>Dentro del bucle del juego, detr&#225;s del bucle for donde detectamos antes
+los movimientos del rat&#243;n, vamos a a&#241;adir un bucle que se va a ejecutar
+mientras la variable <code>game_over</code> sea <code>True</code>.</p>
+<div class="highlight"><pre><span></span><span class="k">while</span> <span class="n">game_over</span><span class="p">:</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Text</span>
+    <span class="n">draw_text</span><span class="p">(</span><span class="s1">'</span><span class="si">{}</span><span class="s1">  points'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">points</span><span class="p">),</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+              <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">)</span>
+    <span class="c1"># Transparent surface</span>
+    <span class="n">transp_surf</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">))</span>
+    <span class="n">transp_surf</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">transp_surf</span><span class="p">,</span> <span class="n">transp_surf</span><span class="o">.</span><span class="n">get_rect</span><span class="p">())</span>
+
+    <span class="n">draw_text</span><span class="p">(</span><span class="s1">'You lose'</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="n">screen</span><span class="p">,</span>
+              <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="n">RED</span><span class="p">)</span>
+    <span class="n">draw_text</span><span class="p">(</span><span class="s1">'To play again press C or any mouse button'</span><span class="p">,</span>
+              <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">2.1</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">)</span>
+    <span class="n">draw_text</span><span class="p">(</span><span class="s1">'To quit the game press Q'</span><span class="p">,</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+              <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">1.9</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">)</span>
+    <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Press F11 to toggle full screen'</span><span class="p">,</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+              <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+
+    <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_F11</span><span class="p">:</span>
+                <span class="n">toggle_fullscreen</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_q</span><span class="p">:</span>
+                <span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_c</span><span class="p">:</span>
+                <span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">main_loop</span><span class="p">()</span>
+                <span class="k">return</span>  <span class="c1"># Avoids recursion</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">MOUSEBUTTONDOWN</span><span class="p">:</span>
+            <span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">main_loop</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+            <span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+
+
+<p>Dentro del bucle hemos hecho visible de nuevo el rat&#243;n y hemos a&#241;adido
+textos que le indican al usuario lo que puede hacer en este men&#250;. El
+texto de la puntuaci&#243;n lo hemos puesto tras una superficie transparente
+(<code>transp_surf</code>). Para que lo que hemos dibujado sea visible ejecutamos
+el m&#233;todo <code>pygame.display.update()</code>.</p>
+<p>Despu&#233;s, hemos creado un bucle for para comprobar las acciones del
+usuario. Si el usuario pulsa F11, se cambiar&#225; el juego a modo de
+pantalla completa; si pulsa la tecla Q o cierra la ventana, la variable
+game_over ser&#225; False, por lo que se saldr&#225; de este bucle y del juego;
+si pulsa la tecla C o pulsa un bot&#243;n del rat&#243;n, el usuario podr&#225; jugar
+otra partida.</p>
+<p><a href="https://www.freakspot.net/wp-content/uploads/2016/09/Captura-de-pantalla-de-2016-09-11-093528.png"><img alt="captura-de-pantalla-de-2016-09-11-093528" class="aligncenter size-full wp-image-420" height="626" src="https://www.freakspot.net/wp-content/uploads/2016/09/Captura-de-pantalla-de-2016-09-11-093528.png" width="808" /></a></p>
+<h3>Paso 7: Aumentar la dificultad a medida que se consiguen m&#225;s puntos</h3>
+<p>Escribid lo siguiente en el archivo <code>main.py</code></p>
+<div class="highlight"><pre><span></span><span class="n">points</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="hll"><span class="n">min_bullet_speed</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="hll"><span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="hll"><span class="n">bullets_per_gust</span> <span class="o">=</span> <span class="mi">1</span>
+</span>
+    <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">fps_clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">FPS</span><span class="p">)</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">BLACK</span><span class="p">)</span>
+
+<span class="hll">        <span class="k">if</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">2000</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">bullets_per_gust</span> <span class="o">=</span> <span class="mi">3000</span>
+</span><span class="hll">            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">80</span>
+</span><span class="hll">        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">1000</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">bullets_per_gust</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span class="hll">            <span class="n">min_bullet_speed</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span class="hll">            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">15</span>
+</span><span class="hll">        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">800</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">20</span>
+</span><span class="hll">        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">600</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">bullets_per_gust</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class="hll">            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span class="hll">        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">500</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">min_bullet_speed</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class="hll">        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">400</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">8</span>
+</span><span class="hll">        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">200</span><span class="p">:</span>
+</span><span class="hll">            <span class="c1"># The smaller this number is, the probability for a bullet</span>
+</span><span class="hll">            <span class="c1"># to be shot is higher</span>
+</span><span class="hll">            <span class="n">odds</span> <span class="o">=</span> <span class="mi">8</span>
+</span><span class="hll">            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">5</span>
+</span><span class="hll">        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">odds</span> <span class="o">=</span> <span class="mi">9</span>
+</span><span class="hll">            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">4</span>
+</span><span class="hll">        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">60</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">odds</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span class="hll">            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span class="hll">        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">30</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">odds</span> <span class="o">=</span> <span class="mi">11</span>
+</span><span class="hll">            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class="hll">        <span class="k">elif</span> <span class="n">points</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+</span><span class="hll">            <span class="n">odds</span> <span class="o">=</span> <span class="mi">12</span>
+</span><span class="hll">
+</span><span class="hll">        <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">odds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span><span class="hll">            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">bullets_per_gust</span><span class="p">):</span>
+</span><span class="hll">                <span class="n">bullets</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">random_bullet</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">min_bullet_speed</span><span class="p">,</span>
+</span>                                                         <span class="n">max_bullet_speed</span><span class="p">)))</span>
+                <span class="n">points</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'</span><span class="si">{}</span><span class="s1">  points'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">points</span><span class="p">),</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Las dificultad la controlamos con el n&#250;mero de balas por r&#225;faga
+(<code>bullets_per_gust</code>), la velocidad m&#225;xima (<code>max_bullet_speed</code>) y m&#237;nima
+(<code>min_bullet_speed</code>) de las balas y las probabilidades (<code>odds</code> de que se
+dispare una r&#225;faga en cada iteraci&#243;n del bucle del juego. Dependiendo de
+la puntuaci&#243;n, est&#225;s variables toman un valor distinto. Cuantos m&#225;s
+puntos tienes, m&#225;s dif&#237;cil se vuelve el juego.</p>
+<p>A continuaci&#243;n os dejo el c&#243;digo definitivo del archivo <code>main.py</code>.</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">import</span> <span class="nn">pygame</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">block</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">bullet</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">global_constants</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="c1"># Display</span>
+<span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">))</span>
+<span class="n">fullscreen</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># Window titlebar</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">'Bullet dodger'</span><span class="p">)</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_icon</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'bullet.png'</span><span class="p">))</span>
+<span class="c1"># Timing</span>
+<span class="n">fps_clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
+<span class="n">FPS</span> <span class="o">=</span> <span class="mi">60</span>
+
+<span class="n">default_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">draw_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">main_color</span><span class="p">,</span> <span class="n">background_color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">textobj</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">main_color</span><span class="p">,</span> <span class="n">background_color</span><span class="p">)</span>
+    <span class="n">textrect</span> <span class="o">=</span> <span class="n">textobj</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+    <span class="n">textrect</span><span class="o">.</span><span class="n">centerx</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">textrect</span><span class="o">.</span><span class="n">centery</span> <span class="o">=</span> <span class="n">y</span>
+    <span class="n">surface</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">textobj</span><span class="p">,</span> <span class="n">textrect</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">toggle_fullscreen</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_driver</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'x11'</span><span class="p">:</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">toggle_fullscreen</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">screen</span><span class="p">,</span> <span class="n">fullscreen</span>
+        <span class="n">screen_copy</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">fullscreen</span><span class="p">:</span>
+            <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">),</span> <span class="n">pygame</span><span class="o">.</span><span class="n">FULLSCREEN</span><span class="p">)</span>
+        <span class="n">fullscreen</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">fullscreen</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">screen_copy</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">start_screen</span><span class="p">():</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="o">*</span><span class="n">pygame</span><span class="o">.</span><span class="n">cursors</span><span class="o">.</span><span class="n">diamond</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">title_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="s1">'freesansbold.ttf'</span><span class="p">,</span> <span class="mi">65</span><span class="p">)</span>
+        <span class="n">big_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">36</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'BULLET DODGER'</span><span class="p">,</span> <span class="n">title_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="n">RED</span><span class="p">,</span> <span class="n">YELLOW</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Use the mouse to dodge the bullets'</span><span class="p">,</span> <span class="n">big_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Press any mouse button or S when you</span><span class="se">\'</span><span class="s1">re ready'</span><span class="p">,</span>
+                  <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">1.7</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Press F11 to toggle full screen'</span><span class="p">,</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">MOUSEBUTTONDOWN</span><span class="p">:</span>
+                <span class="n">main_loop</span><span class="p">()</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_s</span><span class="p">:</span>
+                    <span class="n">main_loop</span><span class="p">()</span>
+                    <span class="k">return</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_F11</span><span class="p">:</span>
+                    <span class="n">toggle_fullscreen</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+                <span class="k">return</span>
+
+
+<span class="k">def</span> <span class="nf">main_loop</span><span class="p">():</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">square</span> <span class="o">=</span> <span class="n">Block</span><span class="p">()</span>
+    <span class="n">square</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="o">*</span><span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">())</span>
+    <span class="n">bullets</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+    <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">min_bullet_speed</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">bullets_per_gust</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">fps_clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">FPS</span><span class="p">)</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">BLACK</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">2000</span><span class="p">:</span>
+            <span class="n">bullets_per_gust</span> <span class="o">=</span> <span class="mi">3000</span>
+            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">80</span>
+        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">1000</span><span class="p">:</span>
+            <span class="n">bullets_per_gust</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="n">min_bullet_speed</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">15</span>
+        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">800</span><span class="p">:</span>
+            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">600</span><span class="p">:</span>
+            <span class="n">bullets_per_gust</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">500</span><span class="p">:</span>
+            <span class="n">min_bullet_speed</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">400</span><span class="p">:</span>
+            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">8</span>
+        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="c1"># The smaller this number is, the probability for a bullet</span>
+            <span class="c1"># to be shot is higher</span>
+            <span class="n">odds</span> <span class="o">=</span> <span class="mi">8</span>
+            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="n">odds</span> <span class="o">=</span> <span class="mi">9</span>
+            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">60</span><span class="p">:</span>
+            <span class="n">odds</span> <span class="o">=</span> <span class="mi">10</span>
+            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">elif</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">30</span><span class="p">:</span>
+            <span class="n">odds</span> <span class="o">=</span> <span class="mi">11</span>
+            <span class="n">max_bullet_speed</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">points</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+            <span class="n">odds</span> <span class="o">=</span> <span class="mi">12</span>
+
+        <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">odds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">bullets_per_gust</span><span class="p">):</span>
+                <span class="n">bullets</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">random_bullet</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">min_bullet_speed</span><span class="p">,</span>
+                                                         <span class="n">max_bullet_speed</span><span class="p">)))</span>
+                <span class="n">points</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">draw_text</span><span class="p">(</span><span class="s1">'</span><span class="si">{}</span><span class="s1">  points'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">points</span><span class="p">),</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                  <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">)</span>
+        <span class="n">bullets</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">bullets</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">square</span><span class="o">.</span><span class="n">collide</span><span class="p">(</span><span class="n">bullets</span><span class="p">):</span>
+            <span class="n">game_over</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">square</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="n">square</span><span class="o">.</span><span class="n">rect</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">MOUSEMOTION</span><span class="p">:</span>
+                <span class="n">mouse_pos</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()</span>
+                <span class="n">square</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="o">*</span><span class="n">mouse_pos</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+                <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">while</span> <span class="n">game_over</span><span class="p">:</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># Text</span>
+            <span class="n">draw_text</span><span class="p">(</span><span class="s1">'</span><span class="si">{}</span><span class="s1">  points'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">points</span><span class="p">),</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                      <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">)</span>
+            <span class="c1"># Transparent surface</span>
+            <span class="n">transp_surf</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">))</span>
+            <span class="n">transp_surf</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">transp_surf</span><span class="p">,</span> <span class="n">transp_surf</span><span class="o">.</span><span class="n">get_rect</span><span class="p">())</span>
+
+            <span class="n">draw_text</span><span class="p">(</span><span class="s1">'You lose'</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="n">screen</span><span class="p">,</span>
+                      <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="n">RED</span><span class="p">)</span>
+            <span class="n">draw_text</span><span class="p">(</span><span class="s1">'To play again press C or any mouse button'</span><span class="p">,</span>
+                      <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">2.1</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">)</span>
+            <span class="n">draw_text</span><span class="p">(</span><span class="s1">'To quit the game press Q'</span><span class="p">,</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                      <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">1.9</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">)</span>
+            <span class="n">draw_text</span><span class="p">(</span><span class="s1">'Press F11 to toggle full screen'</span><span class="p">,</span> <span class="n">default_font</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+                      <span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">/</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">BLACK</span><span class="p">)</span>
+
+            <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_F11</span><span class="p">:</span>
+                        <span class="n">toggle_fullscreen</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_q</span><span class="p">:</span>
+                        <span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_c</span><span class="p">:</span>
+                        <span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="n">main_loop</span><span class="p">()</span>
+                        <span class="k">return</span>  <span class="c1"># Avoids recursion</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">MOUSEBUTTONDOWN</span><span class="p">:</span>
+                    <span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">main_loop</span><span class="p">()</span>
+                    <span class="k">return</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
+                    <span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">start_screen</span><span class="p">()</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+
+
+<h3>Hemos terminado</h3>
+<p>Si has logrado hacer funcionar el juego, &#161;enhorabuena! Si te ha quedado
+alguna duda, hay algo que no entiendas o crees que he cometido un error,
+por favor, deja un comentario. El c&#243;digo fuente completo de este juego
+lo he incluido en un repositorio llamado <code>pygame_stuff</code>. El repositorio
+tambi&#233;n contiene otros juegos y plantillas de c&#243;digo para facilitar la
+tarea de programar usando pygame. Con la direcci&#243;n
+<a href="https://notabug.org/jorgesumle/pygame_stuff">https://notabug.org/jorgesumle/pygame_stuff</a> puedes acceder al c&#243;digo y
+clonar el repositorio
+(<code>git clone https://notabug.org/jorgesumle/pygame_stuff</code>).</p>
+    </div>
+</div></div>
+<div class="time">
+<h3>00:03</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-040601f3">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2017/02/de-vuelta-lo-basico-como-manejar-colas.html">De vuelta a lo b&#225;sico, como manejar colas en python.</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Las estructuras de datos tipo cola son tipo FIFO (primero que entra, primero que sale).<br /><br />El art&#237;culo se basa de la <a href="https://docs.python.org/3/tutorial/datastructures.html#using-lists-as-queues">documentaci&#243;n oficial de Python en ingl&#233;s</a>.<br />Se puede usar las listas como una cola.<br /><br />Las listas soportan las siguientes m&#233;todos:<br /><br /><ul><li>list.append(x): agrega un elemento al final de la lista, equivalente a a[len(a):] =[x].</li><li>list.extend(L): extiende una lista al agregar todos los elementos de una lista, equivalente a a[len(a):] = L.</li><li>list.insert(i,x): Inserta un elemento en la lista en una posici&#243;n dada.&nbsp;</li><li>list.remove(x): Elimina el primer item x de la lista.</li><li>list.pop([i]):Elimina el item en la posici&#243;n dada de la lista, y lo devuelve.</li><li>list.clear(): Elimina todos los elementos de la lista.</li><li>list.count(x): Retorna el n&#250;mero de veces que x aparece en la lista.</li><li>list.sort(key=None,reverse=False): Ordena los elementos de la lista.</li><li>list.reverse(): Invierte el orden de la lista.</li><li>list.index(x): Devuelve el indice del primer elemento de la lista que sea x.</li><li>list.copy(): Devuelve una copia de la lista.</li></ul><br />Para emular una cola con una lista se tiene el siguiente ejemplo:<br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola = [3,5,6]</i></span><br /><code></code><pre><code><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.append(8)</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola</i></span><br /><br /><span style="color: blue;"><i>[3, 5, 6, 8]</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.pop()</i></span><br /><br /><span style="color: blue;"><i>8</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.append(8)</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.pop(0)</i></span><br /><br /><span style="color: blue;"><i>3</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.append(9)</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.pop(0)</i></span><br /><br /><span style="color: blue;"><i>5</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.pop(0)</i></span><br /><br /><span style="color: blue;"><i>6</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola = [3,5,6]</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola</i></span><br /><br /><span style="color: blue;"><i>[3, 5, 6]</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.append(9)</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola</i></span><br /><br /><span style="color: blue;"><i>[3, 5, 6, 9]</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.append(19)</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola</i></span><br /><br /><span style="color: blue;"><i>[3, 5, 6, 9, 19]</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.pop(0)</i></span><br /><br /><span style="color: blue;"><i>3</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.pop(0)</i></span><br /><br /><span style="color: blue;"><i>5</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola</i></span><br /><br /><span style="color: blue;"><i>[6, 9, 19]</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.pop(0)</i></span><br /><br /><span style="color: blue;"><i>6</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola</i></span><br /><br /><span style="color: blue;"><i>[9, 19]</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.pop(0)</i></span><br /><br /><span style="color: blue;"><i>9</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola</i></span><br /><br /><span style="color: blue;"><i>[19]</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola.pop(0)</i></span><br /><br /><span style="color: blue;"><i>19</i></span><br /><br /><span style="color: blue;"><i>&gt;&gt;&gt; cola</i></span><br /><br /><span style="color: blue;"><i>[]</i></span><br /><br /><div><br /></div><br /><div><br /></div><br /></code></pre><code></code><br /><div>Se usa el m&#233;todo pop diciendo que tome siempre el primer elemento de la lista.</div><div><br /></div><div>Esto no es eficiente as&#237; que la mejor opci&#243;n es implementar una cola con collection.deque:</div><div><br /></div><code></code><pre><div><br /><code><br /></code></div><br /><code><br /><div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; from collections import deque</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola = deque([1,2,3,4,5])</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola</span></i></div><br /><div><br /><i><span style="color: blue;">deque([1, 2, 3, 4, 5])</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola.append(19) #Llega 19</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola</span></i></div><br /><div><br /><i><span style="color: blue;">deque([1, 2, 3, 4, 5, 19])</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola.append(39) #Llega 39</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola</span></i></div><br /><div><br /><i><span style="color: blue;">deque([1, 2, 3, 4, 5, 19, 39])</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola.popleft() #Sale 1</span></i></div><br /><div><br /><i><span style="color: blue;">1</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola.popleft() #Sale 2</span></i></div><br /><div><br /><i><span style="color: blue;">2</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola</span></i></div><br /><div><br /><i><span style="color: blue;">deque([3, 4, 5, 19, 39])</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola.append(51) #Llega 51</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola</span></i></div><br /><div><br /><i><span style="color: blue;">deque([3, 4, 5, 19, 39, 51])</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola.popleft() #Sale 3</span></i></div><br /><div><br /><i><span style="color: blue;">3</span></i></div><br /><div><br /><i><span style="color: blue;">&gt;&gt;&gt; cola</span></i></div><br /><div><br /><i><span style="color: blue;">deque([4, 5, 19, 39, 51])</span></i></div><br /></div><br /></code></pre><code></code><br /><div><br /></div><div><br /></div><div>En este art&#237;culo se demostr&#243; como manejar colas s&#243;lo con listas o con collections.deque.</div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2016-12-31.html">&lt;</a></td>
+<td class="cal-month" colspan="5">febrero 2017</td>
+<td class="cal-next"><a href="index-2017-03-09.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day"><a class="cal-link" href="index-2017-02-05.html">05</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td></tr>
+<tr class="cal-week">
+<td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2017-02-20.html">20</a></td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day"><strong class="cal-current">25</strong></td><td class="cal-day">26</td></tr>
+<tr class="cal-week">
+<td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

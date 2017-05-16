@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>mi&#233;rcoles, 04 abril</h2>
+<div class="time">
+<h3>13:07</h3>
+<div class="item feed-b74c3703 feed-{feed_id}" id="item-a0386446">
+<p class="itemheader">
+<span class="itemtitle">
+    Hyperreals *R:
+<a href="http://blog.ch3m4.org/2012/04/04/problemas-con-los-nombres-largos-en-ntfs/">Problemas con los nombres largos en NTFS</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Un buen d&#237;a coment&#233; a un compa&#241;ero de trabajo que en su carpeta compartida del servidor de ficheros pronto iba a tener problemas al usar nombres de carpetas demasiado largos. El explorador de ficheros ya se negaba a listas algunas carpetas y el problema iba a m&#225;s con algunas herramientas (backups,&nbsp;antivirus,&#8230;).</p>
+<p>La respuesta fue una pregunta: <em>&#191;Ser&#237;a posible sacar un listado de todos los ficheros con ruta absoluta demasiado&nbsp;larga?</em></p>
+<p>Despu&#233;s de dudar un rato (y comprobar que el comando <code>dir</code> no era v&#225;lido para esta labor) , me decid&#237; a averiguar si python ser&#237;a capaza de realizar dicha tarea. &#201;ste es el resultado de &#233;se&nbsp;estudio.</p>
+<h2>Problema con los nombres&nbsp;largos</h2>
+<p>Resulta bastante chocante que la <span class="caps">API</span> de windows limite la m&#225;xima longitud para una ruta al valor de <strong>MAX_PATH</strong>, definido como 260 caracteres. Se trata &#250;nicamente de una limitaci&#243;n en la <span class="caps">API</span>, ya que el kernel de windows est&#225; preparado para manejar rutas much&#237;simo m&#225;s largas. Como consecuencia, muchas aplicaciones fallan con rutas largas, desde los comandos de terminal hasta las utilidades gr&#225;ficas del&nbsp;sistema.</p>
+<p>Para evitar en parte este problema, podemos usar en nuestras aplicaciones las versiones <em>unicode</em> de las funciones <em><span class="caps">ANSI</span></em> de la <span class="caps">API</span>. Estas versiones unicode admiten como par&#225;metros rutas de hasta 32.767 caracteres, suficientemente largas para un uso&nbsp;normal.</p>
+<p>En en caso de la librer&#237;a est&#225;ndar de python, el m&#243;dulo <code>os.path</code> (sin&#243;nimo de <code>os.ntpath</code> en windows) tiene buena cuenta de qu&#233; <span class="caps">API</span> invocar, seg&#250;n sea el caso. De un modo transparente, <strong>con s&#243;lo codificar las rutas en unicode evitaremos la limitaci&#243;n <code>MAX_PATH</code> en la longitud de las rutas</strong>.</p>
+<h2>Codificaci&#243;n de rutas&nbsp;extendida</h2>
+<p>Adem&#225;s de codificar las rutas en unicode, tenemos que indicar que se trata de una <em>ruta extendida</em> a&#241;adiendo el prefijo <code>'\\?\'</code> a una ruta absoluta. Por ejemplo, <code>"\\?\D:\ruta\muy\muy\larga"</code>. Como gran limitaci&#243;n, no se puede usar esta nomenclatura con rutas relativas, por lo que las rutas relativas siempre estar&#225;n limitadas a <code>MAX_PATH</code> como m&#225;xima&nbsp;longitud.</p>
+<p>Es posible, tambi&#233;n, indicar una ruta <abbr title="Universal Naming Convention"><span class="caps">UNC</span></abbr> (<em>Universal Naming Convention</em>) como <em>ruta extendida</em> como <code>\\?\server\share</code>, donde <code>server</code> ser&#237;a el nombre del servidor y <code>share</code> el nombre de la carpeta&nbsp;compartida.</p>
+<p>Para m&#225;s informaci&#243;n sobre las rutas extendidas, visitar la p&#225;gina web <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx" title="Naming Files, Paths, and Namespaces">Naming Files, Paths, and Namespaces</a> de <span class="caps">MSDN</span>.</p>
+<h2>Script para listar ficheros de nombres muy&nbsp;largos</h2>
+<p>Por &#250;ltimo, s&#243;lo queda lo m&#225;s f&#225;cil: codificar el script&nbsp;;-)</p>
+<p>Es com&#250;n que la codificaci&#243;n que lleva por defecto la c&#243;nsola de comandos falle con las cadenas unicode. Si pensamos sacar por c&#243;nsola los nombres de ficheros, lo recomendable es cambiar la codificaci&#243;n por una m&#225;s apropiada, como la <code>cp1252</code>, lo m&#225;s aproximado a <code>utf-8</code> que podemos&nbsp;encontrar:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>    C:\&gt; chcp 1252
+</pre></div>
+</td></tr></table>
+
+<p>Para hacer nuestro script, podr&#237;amos haber usado cualquiera de las funciones <code>os.walk</code> de la librer&#237;a est&#225;ndar; pero, no s&#233; porqu&#233;, fallan a crear la lista de directorios. &#201;sto nos obliga a crear nuestro propio m&#233;todo para recorrer la jerarqu&#237;a de&nbsp;directorios.</p>
+<p>Por comodidad, voy a lanzar el script en una m&#225;quina distinta de la que hace de servidor de ficheros ya que no dispongo de python en los servidores. Usar&#233; la nomenclatura <abbr title="Universal Naming Convention"><span class="caps">UNC</span></abbr> para identificar los recursos&nbsp;compartidos.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#-*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">MAX_PATH</span><span class="o">=</span><span class="mi">260</span>
+
+<span class="k">def</span> <span class="nf">longnames</span><span class="p">(</span><span class="n">dirpath</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterador que devuelve las rutas largas (&gt;=MAX_PATH)&quot;&quot;&quot;</span>
+
+    <span class="c">#Hay que forzar unicode para evitar el l&#237;mite MAX_PATH</span>
+    <span class="n">dirpath</span><span class="o">=</span><span class="nb">unicode</span><span class="p">(</span><span class="n">dirpath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dirpath</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\\</span><span class="s">&quot;</span><span class="p">):</span>
+        <span class="n">dirpath</span><span class="o">+=</span><span class="s">&quot;</span><span class="se">\\</span><span class="s">&quot;</span>
+
+    <span class="n">dirs</span><span class="o">=</span><span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dirpath</span><span class="p">):</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="n">dirpath</span><span class="o">+</span><span class="n">f</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">&gt;=</span><span class="n">MAX_PATH</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">name</span>
+
+        <span class="c">#poblar la lista de directorios</span>
+        <span class="c">#para recorrer en orden</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="n">dirs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">longnames</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">f</span>
+
+<span class="k">def</span> <span class="nf">listshare</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">share</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Crea un UNC para el recurso compartido.</span>
+<span class="sd">       Devuelve un iterador para las rutas largas (&gt;=MAX_PATH)</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">dirpath</span><span class="o">=</span><span class="s">r&quot;</span><span class="se">\\</span><span class="s">?\UNC\</span><span class="si">%s</span><span class="s">\</span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">share</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">longnames</span><span class="p">(</span><span class="n">dirpath</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>Su uso simple pod&#237;a&nbsp;ser:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#-*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">codecs</span>
+
+<span class="c">#PAR&#193;METROS</span>
+<span class="n">SERVER</span><span class="o">=</span><span class="s">&quot;MiServidor&quot;</span>
+<span class="n">SHARE</span><span class="o">=</span><span class="s">r&quot;Usuario\dir1&quot;</span>
+
+<span class="n">fOut</span><span class="o">=</span><span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;longnames.txt&quot;</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">listshare</span><span class="p">(</span><span class="n">SERVER</span><span class="p">,</span><span class="n">SHARE</span><span class="p">):</span>
+
+    <span class="k">print</span> <span class="n">name</span>
+    <span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">fOut</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">DIRPATH</span><span class="p">,</span><span class="s">&quot;.</span><span class="se">\\</span><span class="s">&quot;</span><span class="p">)</span>
+
+<span class="n">fOut</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2012-03-31.html">&lt;</a></td>
+<td class="cal-month" colspan="5">abril 2012</td>
+<td class="cal-next"><a href="index-2012-05-10.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">26</em></td><td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td></tr>
+<tr class="cal-week">
+<td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day"><strong class="cal-current">04</strong></td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td></tr>
+<tr class="cal-week">
+<td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td></tr>
+<tr class="cal-week">
+<td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td></tr>
+<tr class="cal-week">
+<td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td></tr>
+<tr class="cal-week">
+<td class="cal-day">30</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td><td class="cal-day"><em class="cal-othermonth">06</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

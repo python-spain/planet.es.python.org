@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>viernes, 17 marzo</h2>
+<div class="time">
+<h3>18:51</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-ddce8546">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2017/03/estructura-de-datos-en-python-grafos.html">Estructura de datos en python (Grafos)</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Continuando con la serie&nbsp;de art&#237;culos sobre estructuras de datos&nbsp;en python. En este caso se tocar&#225; el tema de grafos con dos ejemplos, uno con listas y otro con matrices.<br /><br />Los art&#237;culos anteriores son:<br /><br /><ul><li><a href="http://blog.crespo.org.ve/2017/03/estructura-de-datos-en-python-nodo.html">Nodos</a></li><li><a href="http://blog.crespo.org.ve/2017/03/estructura-de-datos-en-python-lista.html">Listas enlazadas</a></li></ul>Este art&#237;culo se basa en los c&#243;digos en github&nbsp;<a href="https://github.com/joeyajames/Python/blob/master/graph_adjacency-list.py">Grafos con listas adyacentes</a>&nbsp;y&nbsp;<a href="">Grafos con matriz adyacente</a>&nbsp;y del v&#237;deo en youtube&nbsp;<a href="https://www.youtube.com/watch?v=HDUzBEG1GlA">Grafos en Python</a>.<br /><br />De ejemplo de grafo se usar&#225; un modelo de procesos de colas, a continuaci&#243;n la imagen:<br /><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-9HvWgCHuwD0/WMXvjDFdxZI/AAAAAAAAO-Q/369heyYyTMk56GvHYfSM-0qRKsFY_qmyQCLcB/s1600/Captura%2Bde%2Bpantalla%2Bde%2B2017-03-12%2B20%253A18%253A45.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="168" src="https://2.bp.blogspot.com/-9HvWgCHuwD0/WMXvjDFdxZI/AAAAAAAAO-Q/369heyYyTMk56GvHYfSM-0qRKsFY_qmyQCLcB/s320/Captura%2Bde%2Bpantalla%2Bde%2B2017-03-12%2B20%253A18%253A45.png" width="320" /></a></div><br /><br />A continuaci&#243;n el c&#243;digo manejando el grafo como una lista:<br /><br /><code></code><br /><pre><code><i><span style="color: blue;">#!/usr/bin/env python</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">class Vertice(object):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>def __init__(self, n):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>#Se define el nombre del vertice y la lista de vecinos</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>self.nombre = n</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>self.vecinos = list()</span></i><br /><br /><span class="Apple-tab-span" style="white-space: pre;"><i><span style="color: blue;"> </span></i></span><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>def agregarVecino(self, v):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>if v not in self.vecinos:</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>self.vecinos.append(v)</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>self.vecinos.sort()</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">class Grafo(object):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>#Se crea un diccionario de vertices.</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>vertices = {}</span></i><br /><br /><span class="Apple-tab-span" style="white-space: pre;"><i><span style="color: blue;"> </span></i></span><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>def agregarVertice(self, vertice):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>#Se pregunta si vertice es una instancia de Vertice y si el nombre no esta en la lista de vertices.</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>#Si se cumple se agrega el vertice al diccionario de vertices.</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>if isinstance(vertice, Vertice) and vertice.nombre not in self.vertices:</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>self.vertices[vertice.nombre] = vertice</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>return True</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>else:</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>return False</span></i><br /><br /><span class="Apple-tab-span" style="white-space: pre;"><i><span style="color: blue;"> </span></i></span><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>def agregarBorde(self, u, v):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>#Si u y v estan en vertices. se agregan como vecinos.</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>if u in self.vertices and v in self.vertices:</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>self.vertices[u].agregarVecino(v)</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>self.vertices[v].agregarVecino(u)</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>return True</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>else:</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>return False</span></i><br /><br /><span class="Apple-tab-span" style="white-space: pre;"><i><span style="color: blue;">   </span></i></span><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>def printGrafo(self):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>#Se muestra el grafo.</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>for key in sorted(list(self.vertices.keys())):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>print(key + str(self.vertices[key].vecinos))</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">if __name__ == '__main__':</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>g = Grafo()</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>cinco = Vertice('5')</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>tres = Vertice('3')</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>cuatro = Vertice('4')</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>uno = Vertice('1')</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>dos = Vertice('2')</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>for i in range(ord('1'), ord('6')):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>g.agregarVertice(Vertice(chr(i)))</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>bordes = ['53','54','31','35','41','42','45','12','13','14','21','24']</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>for borde in bordes:</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>g.agregarBorde(borde[:1],borde[1:])</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>g.</span></i><i><span style="color: blue;">p</span></i><i><span style="color: blue;">rintGrafo</span></i><i><span style="color: blue;">()</span></i><br /><br /><div><br /></div><br /><div><br /></div><br /><div><br /></div><br /></code></pre><code></code>Al ejecutar&nbsp;el script se tiene:<br /><b><span style="color: red;">python grafo-listas.py</span></b><br /><b><span style="color: red;">1['2', '3', '4']</span></b><br /><b><span style="color: red;">2['1', '4']</span></b><br /><b><span style="color: red;">3['1', '5']</span></b><br /><b><span style="color: red;">4['1', '2', '5']</span></b><br /><b><span style="color: red;">5['3', '4'] </span></b><br /><div><br /></div><div><br /></div><div>Como se ve, los vertices relacionados, el 1 se conecta con 2,3 y 4, el 2 con 1 y 4, el 3 con 1 y 5, el 4 con 1,2 y 5; y el 5 con 3 y 4.</div><div><br />El siguiente c&#243;digo muestra otra manera de crear el grafo, en este caso se puede manejar el peso de los bordes (aunque no se usa en el ejemplo). &nbsp;A continuaci&#243;n el c&#243;digo:<br /><br /><code></code><br /><pre><code><i><span style="color: blue;">#!/usr/bin/env python3</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se importa nuevas caracteristicas de print</span></i><br /><br /><i><span style="color: blue;">from __future__ import print_function</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se crea la clace vertice que solo tiene como argumento su nombre.</span></i><br /><br /><i><span style="color: blue;">class Vertice(object):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>def __init__(self, n):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>self.nombre = n</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se crea la clase grafo con vertices e indices de bordes como diccionarios</span></i><br /><br /><i><span style="color: blue;">#y bordes como una lista.</span></i><br /><br /><i><span style="color: blue;">class Grafo(object):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>vertices = {}</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>bordes = []</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>indices_bordes = {}</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>def agregarVertice(self,vertice):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>#Si vertice es una instancia de su clase y su nombre no esta en el&nbsp;</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>#diccionario de vertices se agrega.</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>if isinstance(vertice, Vertice) and vertice.nombre not in self.vertices:</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>self.vertices[vertice.nombre] = vertice</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>#Se recorre los bordes y se agregan.</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>for fila in self.bordes:</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">    </span>fila.append(0)</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>self.bordes.append([0] * (len(self.bordes)+1))</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>self.indices_bordes[vertice.nombre] = len(self.indices_bordes)</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>return True</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>else:</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>return False</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>def agregarBorde(self,u,v, peso=1):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>#Se agrega el borde.</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>if u in self.vertices and v in self.vertices:</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>self.bordes[self.indices_bordes[u]][self.indices_bordes[v]] = peso</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>self.bordes[self.indices_bordes[v]][self.indices_bordes[u]] = peso</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>return True</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>else:</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>return False</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>def printGrafo(self):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>#Se muestra el grafo</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>for v, i in sorted(self.indices_bordes.items()):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>print(v + ' ', end='')</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>for j in range(len(self.bordes)):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">    </span>print(self.bordes[i][j], end='')</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">   </span>print(' ') &nbsp; &nbsp;</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">if __name__ == '__main__':</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>g = Grafo()</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>cinco = Vertice('5')</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>tres = Vertice('3')</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>cuatro = Vertice('4')</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>uno = Vertice('1')</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>dos = Vertice('2')</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>for i in range(ord('1'), ord('6')):</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>g.agregarVertice(Vertice(chr(i)))</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>bordes = ['53','54','31','35','41','42','45','12','13','14','21','24']</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>for borde in bordes:</span></i><br /><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;">  </span>g.agregarBorde(borde[:1],borde[1:])</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;"><span class="Apple-tab-span" style="white-space: pre;"> </span>g.p</span></i><br /><br /><i><span style="color: blue;">rintGrafo()</span></i><br /><br /><br /><br /><br /><br /></code></pre><code></code>Al&nbsp;ejecutar&nbsp;el script se tiene lo siguiente:</div><div><div><b><span style="color: red;">python grafo-matrix-adyacente.py&nbsp;</span></b></div><div><b><span style="color: red;">1 01110&nbsp;</span></b></div><div><b><span style="color: red;">2 10010&nbsp;</span></b></div><div><b><span style="color: red;">3 10001&nbsp;</span></b></div><div><b><span style="color: red;">4 11001&nbsp;</span></b></div><div><b><span style="color: red;">5 00110&nbsp;</span></b></div></div><div><br /></div><div>Como en el caso anterior, el vertice 1 se conecta con 2,3 y 4, el vertice 2 se conecta con 1 y 4, el vertice 3 conecta a 1 y 5, el vertice 4 conecta a 1,2 y 5; y el vertice 5 conecta con 3 y 4.<br /><br /></div><div><br /></div><br /><div>Se tienen dos formas de representar un grafo, puede usar el que prefiera, dependiendo de la complejida, si se necesita manejar pesos, la opci&#243;n es el de la matriz.</div><div><br /></div><div><br /></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2017-02-25.html">&lt;</a></td>
+<td class="cal-month" colspan="5">marzo 2017</td>
+<td class="cal-next"><a href="index-2017-05-07.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td></tr>
+<tr class="cal-week">
+<td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day"><a class="cal-link" href="index-2017-03-09.html">09</a></td><td class="cal-day">10</td><td class="cal-day"><a class="cal-link" href="index-2017-03-11.html">11</a></td><td class="cal-day"><a class="cal-link" href="index-2017-03-12.html">12</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day"><strong class="cal-current">17</strong></td><td class="cal-day">18</td><td class="cal-day">19</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2017-03-20.html">20</a></td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td></tr>
+<tr class="cal-week">
+<td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

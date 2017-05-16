@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>martes, 24 julio</h2>
+<div class="time">
+<h3>22:02</h3>
+<div class="item feed-b74c3703 feed-{feed_id}" id="item-9bd1cb2c">
+<p class="itemheader">
+<span class="itemtitle">
+    Hyperreals *R:
+<a href="http://blog.ch3m4.org/2012/07/24/instalacion-de-modulos/">Instalaci&#243;n de&#160;m&#243;dulos</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Resulta habitual la instalaci&#243;n de nuevos m&#243;dulos o paquetes en nuestra instalaci&#243;n de python, para lo que basta con introducir en el directorio <code>site-packages</code> el fichero del m&#243;dulo o, en caso de paquetes, el directorio con el paquete. Algunas veces, la instalaci&#243;n requiere compilar e instalar librer&#237;as en el sistema, por lo que la instalaci&#243;n se complica&nbsp;bastante.</p>
+<p>Para hacer m&#225;s sencillo la b&#250;squeda e instalaci&#243;n de m&#243;dulos, podemos elegir entre varias utilidades que, frecuentemente, se ven mezcladas en las documentaciones que podamos consultar, sin quedar claro cu&#225;l deber&#237;amos utilizar en nuestro d&#237;a a&nbsp;d&#237;a.</p>
+<p>En este art&#237;culo voy a aclarar estas utilidades, as&#237; como algunos trucos que podemos usar para crear entornos de trabajo aislados del&nbsp;resto.</p>
+<h2>Instaladores de&nbsp;paquetes</h2>
+<ul>
+<li>
+<p><strong>Distutils</strong> era la herramienta est&#225;ndar para empaquetar paquetes&nbsp;python.</p>
+<p><code>python setup.py install</code></p>
+<p>Funciona bien, pero con algunas limitaciones que no eran f&#225;cil de arreglar. Viene de serie con la instalaci&#243;n de python y se puede reconocer por existir un fichero llamado <code>setup.py</code> que configura la creaci&#243;n del paquete listo para su distribuci&#243;n, pudiendo generar ficheros <code>.deb</code>  o <code>.rpm</code> para las distribuciones linux m&#225;s populares, o los habituales instaladores para windows o mac a trav&#233;s de complementos. La&nbsp;instalaci&#243;n </p>
+</li>
+<li>
+<p><a href="http://pypi.python.org/pypi/setuptools" title="Setuptools (con instrucciones de instalaci&#243;n)"><strong>Setuptools</strong></a> era un proyecto que pretend&#237;a mejorar <code>distutils</code> a&#241;adiendo m&#225;s&nbsp;funcionalidades.</p>
+<p><code>easy_install &lt;module&gt;</code></p>
+<p>En muchos sentidos, se considera un <em>&#8220;est&#225;ndar de facto&#8221;</em> gracias al comando <a href="http://packages.python.org/distribute/easy_install.html" title="Easy_install"><code>easy_install</code></a>; pero deja de funcionar en python3. Introdujeron el <strong>egg</strong> (huevo) como formato de los ficheros para distribuir m&#243;dulos, as&#237; como un repositorio central llamado <em>&#8220;CheeseShop&#8221;</em> donde buscar los m&#243;dulos a instalar que fue el germen de lo que ahora es el directorio <a href="http://pypi.python.org/pypi" title="the Python Package Index">PyPi</a>. Estos ficheros <em>eggs</em> suelen ser ficheros comprimidos que se instalan simplemente al ejecutarlos python como si fueran un&nbsp;programa.</p>
+</li>
+<li>
+<p><a href="http://pypi.python.org/pypi/distribute" title="Distribute (con instrucciones de instalaci&#243;n)"><strong>Distribute</strong></a> es un <em>fork</em> de <em>setuptools</em> que pretend&#237;a acelerar su desarrollo y que lo ha suplantado en muchos casos. Su desarrollo ha quedado algo parado al salir <em>distutils2</em>.</p>
+</li>
+<li>
+<p>Instalador <a href="http://www.pip-installer.org/en/latest/index.html" title="Instalador pip"><strong>pip</strong></a>: es un popular instalador de uso similar a los instaladores de paquetes de las distribuciones&nbsp;linux.</p>
+<p><code>pip install &lt;paquete&gt;</code></p>
+<p>A&#241;ade muchas funcionalidades como son las b&#250;squedas de paquetes o la descarga de dependencias. Puede funcionar sobre setuptools, aunque lo normal es usarlo con&nbsp;distribute.</p>
+</li>
+<li>
+<p><strong>Distutils2</strong> (renombrado como <strong><code>packaging</code></strong> en python3.3+) es un fork de <em>distutils</em> que incorpora ideas tra&#237;das de <em>setuptools</em> y <em>distribute</em> y que se discuten mediante los PEPs habituales. Su instalador est&#225; inspirado por &#8220;pip&#8221; y ser&#225; est&#225;ndar para&nbsp;python3.</p>
+</li>
+</ul>
+<h2>Instalador <span class="caps">PIP</span></h2>
+<p>Centr&#233;monos en la utilidad de instalaci&#243;n <a href="http://www.pip-installer.org/en/latest/index.html" title="Instalador pip"><code>pip</code></a>. Se trata de una herramienta que puede buscar, instalar/desinstalar, reempaquetar,&#8230; y muchas m&#225;s cosas que nos va a facilitar la vida a la hora de realizar instalaciones distribuidas como veremos a&nbsp;continuaci&#243;n.</p>
+<p>Caracter&#237;sticas de&nbsp;pip:</p>
+<ul>
+<li>
+<p>B&#250;squedas en el repositorio <a href="http://pypi.python.org/pypi" title="the Python Package Index">PyPi</a></p>
+</li>
+<li>
+<p>Descarga de todas las dependencias antes de la instalaci&#243;n. Muy importante para mantener la fidelidad de la instalaci&#243;n en despliegues&nbsp;remotos.</p>
+</li>
+<li>
+<p>Puede instalar directamente de una direcci&#243;n de internet, o directamente desde sistemas de control de versiones como git, mercurial, subversion o&nbsp;bazaar.</p>
+</li>
+<li>
+<p>Con el comando <code>freeze</code> podemos crear un fichero de requisitos con la lista de los paquetes y su versi&#243;n exacta que actualmente tenemos&nbsp;instalados.</p>
+</li>
+<li>
+<p>Con el comando <code>bundle</code> podemos crear <em>pybundles</em>, archivos que contienen m&#250;ltiples&nbsp;paquetes.</p>
+</li>
+</ul>
+<h2>Virtualenv</h2>
+<p>Otra gran caracter&#237;stica de <strong>pip</strong> es que funciona tremendamente bien con <a href="http://www.virtualenv.org" title="Virtuaenv">virtualenv</a>. No en vano, son del mismo autor, <a href="http://blog.ianbicking.org/" title="blog de Ian Bicking">Ian Bicking</a>. Virtualenv nos permitir&#225; crear entornos de desarrollo aislados del resto de instalaciones python, controlando tanto las versiones de los m&#243;dulos instalados como la versi&#243;n de python que usaremos en&nbsp;&#233;l.</p>
+<p>Pero creo que ser&#225; mejor poner algunos ejemplos de las aplicaciones de&nbsp;virtualenv:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span>virtualenv --no-site-packages --python<span class="o">=</span>/usr/bin/python3 py3
+<span class="nv">$ </span><span class="nb">cd </span>py3
+<span class="nv">$ </span><span class="nb">source </span>bin/activate
+<span class="o">(</span>py3<span class="o">)</span><span class="nv">$ </span>pip install markdown
+</pre></div>
+</td></tr></table>
+
+<p>Con estas l&#237;neas hemos conseguido instalar el m&#243;dulo <code>markdown</code> en un entorno python3. El int&#233;rprete de python3 que ejecutaremos desde aqu&#237; estar&#225; instalado en la ruta <code>py3/bin/python</code> y el m&#243;dulo m&#225;rkdown en <code>py3/lib/python-3.2/site-packages</code>. Tambi&#233;n se ha instalado en <code>py3/bin/python</code> el script <code>markdown_py</code> que ejecutar&#225; el comando. En resumen, de una manera simple tenemos un entorno con lo m&#237;nimo donde hacer nuestras pruebas sin trastocar nada del&nbsp;sistema.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span>virtualenv --python<span class="o">=</span>/usr/local/bin/jython jydjango
+<span class="nv">$ </span><span class="nb">cd </span>jydjango
+<span class="nv">$ </span><span class="nb">source </span>bin/activate
+<span class="o">(</span>jydjango<span class="o">)</span><span class="nv">$ </span>pip install django
+<span class="o">(</span>jydjango<span class="o">)</span><span class="nv">$ </span>django-admin.py startproject djython
+<span class="o">(</span>jydjango<span class="o">)</span><span class="nv">$ </span><span class="nb">cd </span>djython/
+<span class="o">(</span>jydjango<span class="o">)</span><span class="nv">$ </span>jython manage.py runserver
+Validating models...
+
+<span class="m">0</span> errors found
+Django version 1.4, using settings <span class="s1">'djython.settings'</span>
+Development server is running at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+</pre></div>
+</td></tr></table>
+
+<p>En este caso, a partir de una instalaci&#243;n local de jython hemos creado un entorno virtual, en el que hemos instalado <code>django</code> y lo hemos ejecutado con jython. De este modo podemos experimentar con django y jython sin que afecte a cualquier otra instalaci&#243;n de django que&nbsp;tengamos.</p>
+<p>A partir de aqu&#237;, la imaginaci&#243;n es el&nbsp;l&#237;mite.</p>
+<p>Como recomendaci&#243;n, instala <a href="http://www.doughellmann.com/projects/virtualenvwrapper/">virtualenvwrapper</a>, una colecci&#243;n de comandos para bash que hace m&#225;s sencillo el uso de virtualenv, adem&#225;s de gestionar todos los entornos virtuales  desde un &#250;nico directorio (<code>$HOME/.virtualenv</code>). Tambi&#233;n existe una <a href="https://bitbucket.org/guillermooo/virtualenvwrapper-powershell">versi&#243;n para PowerShell</a> para&nbsp;windows.</p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2012-06-21.html">&lt;</a></td>
+<td class="cal-month" colspan="5">julio 2012</td>
+<td class="cal-next"><a href="index-2012-08-01.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">25</em></td><td class="cal-day"><em class="cal-othermonth">26</em></td><td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day">01</td></tr>
+<tr class="cal-week">
+<td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2012-07-09.html">09</a></td><td class="cal-day"><a class="cal-link" href="index-2012-07-10.html">10</a></td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2012-07-16.html">16</a></td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td></tr>
+<tr class="cal-week">
+<td class="cal-day">23</td><td class="cal-day"><strong class="cal-current">24</strong></td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td></tr>
+<tr class="cal-week">
+<td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td><td class="cal-day"><em class="cal-othermonth">05</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

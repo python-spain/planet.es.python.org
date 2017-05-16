@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>domingo, 26 junio</h2>
+<div class="time">
+<h3>18:59</h3>
+<div class="item feed-b74c3703 feed-{feed_id}" id="item-7efc7283">
+<p class="itemheader">
+<span class="itemtitle">
+    Hyperreals *R:
+<a href="http://blog.ch3m4.org/2011/06/26/metodo-__getattribute__/">M&#233;todo&#160;__getattribute__</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Si has seguido hasta ahora la serie de <a href="http://blog.ch3m4.org/tag/descriptor/" title="Art&#237;culos sobre descriptores">art&#237;culos sobre descriptores</a>, habr&#225;s visto que buena parte de la <em>magia</em> de los objetos en python se debe al m&#233;todo <code>__getattribute__</code> que todo objeto adquiere de su antecesor com&#250;n, la clase <code>object</code>.</p>
+<p>En el &#250;ltimo art&#237;culo, donde hablaba de las <a href="http://blog.ch3m4.org/2011/06/24/optimizaciones-con-los-metodos-especiales/" title="Optimizaciones con los M&#233;todos Especiales">optimizaciones de los m&#233;todos especiales</a>, tambi&#233;n comentaba algunas optimizaciones que ten&#237;an qu&#233; ver con el m&#233;todo <code>__getattribute__</code> y propon&#237;a un&nbsp;ejercicio:</p>
+<blockquote>
+<p>&#191;Sabr&#237;as qu&#233; es lo que pasa en el siguiente caso? &#191;Se invoca el m&#233;todo <strong>getattribute</strong> en alg&#250;n momento? &#191;Ser&#237;a una llamada impl&#237;cita o&nbsp;expl&#237;cita?</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>   obj.__getattribute__(&quot;__getattribute__&quot;)
+</pre></div>
+</td></tr></table>
+
+</blockquote>
+<p>Quien se enfrenta a este c&#243;digo por primera vez, lo primero que piensa es que se va a producir una <em>autorecursividad</em> puesto que en el acceso al m&#233;todo <code>__getattribute__</code> se deber&#237;a invocar el propio m&#233;todo <code>__getattribute__</code> y as&#237;&nbsp;indefinidamente.</p>
+<p>Si embargo, cuando se prueba se ve que funciona tal y como se espera. Entonces, &#191;c&#243;mo se evita la&nbsp;recursividad?</p>
+<p>En el art&#237;culo de <a href="http://blog.ch3m4.org/2011/06/24/optimizaciones-con-los-metodos-especiales/" title="Optimizaciones con los M&#233;todos Especiales">optimizaciones de los m&#233;todos especiales</a> habl&#225;bamos de dos optimizaciones (<em>atajos</em>) de las llamadas <em>impl&#237;citas</em> a m&#233;todos&nbsp;especiales:</p>
+<ol>
+<li>
+<p>Impl&#237;citamente, s&#243;lo se buscar&#225; m&#233;todos especiales en la clase, <strong><em>nunca</em></strong> en el diccionario del&nbsp;objeto.</p>
+</li>
+<li>
+<p>Impl&#237;citamente, <strong><em>nunca</em></strong> se acceder&#225; a un m&#233;todo especial a trav&#233;s de <code>__getattribute__</code></p>
+</li>
+</ol>
+<p>La intuici&#243;n nos dice que aqu&#237; est&#225; la respuesta de que no tengamos <em>autorecursividad</em>.</p>
+<p>Antes de analizar lo que est&#225; pasando, se&#241;alar que en el acceso a atributos se usa el operador &#8216;<code>.</code><span class="quo">&#8216;</span> (<em>punto</em>) que, como cualquier otro operador, est&#225; sujeto a las mismas optimizaciones que hemos apuntado. Para su labor, el operador <code>.</code> emplear&#225; el m&#233;todo especial <code>__getattribute__</code>.</p>
+<p>La invocaci&#243;n <code>obj.__getattribute__("atributo")</code> se produce en dos&nbsp;pasos:</p>
+<ol>
+<li><em>Impl&#237;citamente</em>, el operador &#8216;<code>.</code><span class="quo">&#8216;</span> accede directamente al m&#233;todo <code>__getattribute__</code>, aplicando las&nbsp;optimizaciones.</li>
+<li>Se invoca <em>expl&#237;citamente</em> a <code>__getattribute__</code> para que retorne el valor del <code>"atributo"</code></li>
+</ol>
+<p>As&#237; pues, el resultado final consiste en la combinaci&#243;n de una llamada impl&#237;cita y otra&nbsp;expl&#237;cita.</p>
+<p>Como corolario, se puede afirmar que &#8220;Nunca se invocar&#225; a <code>__getattribute__</code> para acceder a <code>__getattribute__</code><span class="dquo">&#8220;</span>. No ser&#225; la primera vez que alguien lo haya&nbsp;intentado.</p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-05-30.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2011</td>
+<td class="cal-next"><a href="index-2011-07-06.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day"><a class="cal-link" href="index-2011-06-04.html">04</a></td><td class="cal-day">05</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-06-06.html">06</a></td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-06-13.html">13</a></td><td class="cal-day"><a class="cal-link" href="index-2011-06-14.html">14</a></td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day"><a class="cal-link" href="index-2011-06-19.html">19</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">20</td><td class="cal-day"><a class="cal-link" href="index-2011-06-21.html">21</a></td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day"><a class="cal-link" href="index-2011-06-24.html">24</a></td><td class="cal-day">25</td><td class="cal-day"><strong class="cal-current">26</strong></td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-06-27.html">27</a></td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day"><a class="cal-link" href="index-2011-06-30.html">30</a></td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

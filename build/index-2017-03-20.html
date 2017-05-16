@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>lunes, 20 marzo</h2>
+<div class="time">
+<h3>18:00</h3>
+<div class="item feed-240db477 feed-{feed_id}" id="item-afd3ffad">
+<p class="itemheader">
+<span class="itemtitle">
+    El Atareao:
+<a href="https://www.atareao.es/apps/como-ubicar-fotografias-en-un-plano/">Como ubicar fotograf&#237;as en un plano con Nautilus, Nemo o Caja en Ubuntu</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Hace unos d&#237;as tuve que hacer un informe sobre una <strong>superficie</strong> de unos 3.000 m2. Este trabajo deb&#237;a estar documentado gr&#225;ficamente. Como te puedes hacer una idea, para esa superficie, era necesario una <strong>gran cantidad de im&#225;genes</strong> (al final fueron casi 900). Me plante&#233; inicialmente la posibilidad de identificar las fotograf&#237;as en un plano. Sin embargo, hacerlo as&#237; me hubiera llevado mucho tiempo. Finalmente, decid&#237; hacer las <strong>fotograf&#237;as</strong> con el <strong>m&#243;vil</strong> y utilizando el <strong>GPS</strong> <strong>georreferenciarlas</strong>. De esta forma solo queda <strong>ubicar fotograf&#237;as</strong>.</p>
+<p>&#191;A que me refiero con ubicar fotograf&#237;as? Pues simplemente a que aparezcan en un plano (o en varios), indicando donde se tom&#243; cada una de ellas.</p>
+<p>Al final, pens&#233; que era algo que pod&#237;a ser de utilidad, y me decid&#237; a crear un complemento para Nautilus (disponible tambi&#233;n para Nemo y Caja). Este complemento nos permite seleccionar las im&#225;genes y crear un <strong>plano</strong> con formato <strong>dxf</strong> donde figura un c&#237;rculo y el nombre de la fotograf&#237;a.</p>
+<p><a class="highslide" href="https://www.atareao.es/wp-content/uploads/2017/03/nautilus-image2dxf.jpg"><img alt="Como ubicar fotograf&#237;as en un plano con Nautilus, Nemo o Caja en Ubuntu. Portada." class="aligncenter wp-image-10126 size-medium" height="150" src="https://www.atareao.es/wp-content/uploads/2017/03/nautilus-image2dxf-300x150.jpg" title="Como ubicar fotograf&#237;as en un plano con Nautilus, Nemo o Caja en Ubuntu. Portada." width="300" /></a></p>
+<p><span id="more-10125"></span></p>
+<h2 id="del-mundo-real-a-un-plano-o-como-ubicar-fotografias">Del mundo real a un plano o como ubicar fotograf&#237;as</h2>
+<p>La principal ventaja de los m&#243;viles, sobre una c&#225;mara convencional, es que siempre lo llevamos encima. En cualquier momento nos puede sacar de un apuro. Pero adem&#225;s nos permite aprovechar todas las posibilidades que nos ofrece el <strong>m&#243;vil</strong>, como es que disponemos de las <strong>coordenadas geogr&#225;ficas</strong> donde se tom&#243; la <strong>fotograf&#237;a</strong>.</p>
+<p>De cada fotograf&#237;a que realizamos se guardan (adem&#225;s de la propia fotograf&#237;a) una serie de datos (medatadatos). La informaci&#243;n contenida en el est&#225;ndar <a href="http://feeds.feedburner.com/Exchangeable_image_file_format">Exif</a>, es verdaderamente brutal. Nos da informaci&#243;n de lo mas diversa,</p>
+<ul>
+<li>fecha y hora</li>
+<li>configuraci&#243;n de la c&#225;mara</li>
+<li>apertura, velocidad del obturador, distancia focal, medidor de exposici&#243;n</li>
+<li><strong>informaci&#243;n sobre localizaci&#243;n</strong> (que es lo que nos interesa).</li>
+</ul>
+<h3 id="ubicar-fotografias-con-nautilus-nemo-y-caja">Ubicar fotograf&#237;as con Nautilus (Nemo y Caja)</h3>
+<p>Llegados a este punto, la operaci&#243;n es sencilla. Tenemos que coger cada una de esas 900 fotograf&#237;as, y realizar los siguientes pasos,</p>
+<ul>
+<li>extraer las coordenadas geogr&#225;ficas de la fotograf&#237;a (latitud y longitud)</li>
+<li>convertir esas coordenadas geogr&#225;ficas a coordenadas utm para poder dibujarlas sobre un plano</li>
+<li>en un plano escribir el nombre del archivo en las coordenadas calculadas anteriormente.</li>
+<li><strong>&#8230;</strong></li>
+</ul>
+<p>Al ver la magnitud del asunto, la soluci&#243;n es sencilla implementar un <strong>complemento para Nautilus</strong> (<strong>Nemo</strong> y <strong>Caja</strong>).</p>
+<p>Este complemento, adem&#225;s a&#241;ade un c&#237;rculo cuyo centro es exactamente las coordenadas donde se tomaron las fotograf&#237;as.</p>
+<p>Y de ah&#237; nace <strong>nautilus-images2dxf</strong>&#8230;</p>
+<h3 id="uso-y-funcionamiento-de-nautilus-images2dxf">Uso y funcionamiento de nautilus-images2dxf</h3>
+<p>Para ubicar fotograf&#237;as con nautilus-images2dxf es tan sencillo como <strong>seleccionar todas las im&#225;genes</strong> que queremos ubicar en un mismo plano y seleccionar la opci&#243;n de <strong>crear</strong> plano.</p>
+<p><a class="highslide" href="https://www.atareao.es/wp-content/uploads/2017/03/20170313-0001-FOTOS2.jpg"><img alt="Como ubicar fotograf&#237;as en un plano con Nautilus, Nemo o Caja en Ubuntu. Crear." class="aligncenter wp-image-10128 size-medium" height="300" src="https://www.atareao.es/wp-content/uploads/2017/03/20170313-0001-FOTOS2-266x300.jpg" title="Como ubicar fotograf&#237;as en un plano con Nautilus, Nemo o Caja en Ubuntu. Crear." width="266" /></a></p>
+<p>A continuaci&#243;n, nos aparecer&#225; un <strong>cuadro de di&#225;logo</strong> donde debemos indicar donde guardaremos nuestro plano y con que nombre.</p>
+<p><a class="highslide" href="https://www.atareao.es/wp-content/uploads/2017/03/20170313-0002-Select-dxf-output-file.jpg"><img alt="Como ubicar fotograf&#237;as en un plano con Nautilus, Nemo o Caja en Ubuntu. Seleccionar." class="aligncenter wp-image-10127 size-medium" height="179" src="https://www.atareao.es/wp-content/uploads/2017/03/20170313-0002-Select-dxf-output-file-300x179.jpg" title="Como ubicar fotograf&#237;as en un plano con Nautilus, Nemo o Caja en Ubuntu. Seleccionar." width="300" /></a></p>
+<p>&nbsp;</p>
+<p>A partir de aqu&#237;, veremos un cuadro de di&#225;logo donde se muestra una barra de progreso con el avance de la creaci&#243;n, y una vez terminado ya tenemos nuestro trabajo concluido.</p>
+<h3 id="instalar-nautilus-images2dxf">Instalar nautilus-images2dxf</h3>
+<p>Como te puedes imaginar este complemento no est&#225; disponible en los repositorios oficiales de Ubuntu (ya quisiera yo). As&#237;, si quieres instalarlo, y dependiendo del explorador de archivos que utilices, tendr&#225;s que ejecutar las siguientes &#243;rdenes,</p>
+<ul>
+<li><strong>Nautilus</strong>:</li>
+</ul>
+<div class="codehilite">
+<pre>sudo add-apt-repository ppa:atareao/nautilus-extensions
+sudo apt update
+sudo apt install nautilus-images2dxf
+</pre>
+</div>
+<ul>
+<li><strong>Nemo</strong>:</li>
+</ul>
+<div class="codehilite">
+<pre>sudo add-apt-repository ppa:atareao/nemo-extensions
+sudo apt update
+sudo apt install nemo-images2dxf
+</pre>
+</div>
+<ul>
+<li><strong>Caja</strong>:</li>
+</ul>
+<div class="codehilite">
+<pre>sudo add-apt-repository ppa:atareao/caja-extensions
+sudo apt update
+sudo apt install caja-images2dxf
+</pre>
+</div>
+<p>Una vez instalado el complemento, tenemos que reiniciar el explorador de archivos. Para ello, de nuevo, dependiendo el explorador de archivos que utilices, deber&#225;s ejecutar la siguiente orden</p>
+<ul>
+<li><strong>Nautilus</strong>,</li>
+</ul>
+<div class="codehilite">
+<pre>killall nautilus
+</pre>
+</div>
+<ul>
+<li><strong>Nemo</strong>,</li>
+</ul>
+<div class="codehilite">
+<pre>killall nemo
+</pre>
+</div>
+<ul>
+<li><strong>Caja</strong>,</li>
+</ul>
+<div class="codehilite">
+<pre>killall caja
+</pre>
+</div>
+<h3 id="y-el-informe">&#191;Y el informe?</h3>
+<p>Una vez ya hemos resuelto el problema de ubicar las fotograf&#237;as, queda hacer un informe donde est&#233;n todas las im&#225;genes tomadas. Pero, hacer un documento con casi 900 fotograf&#237;as no es algo trivial. Esto no se puede gestionar de forma sencilla.</p>
+<p>La soluci&#243;n la encontr&#233; en <strong>latex</strong>. En otras ocasiones ya hab&#237;a hecho informes similares utilizando latex, pero hasta el momento no hab&#237;a tenido la ocasi&#243;n de hacer algo con tantas im&#225;genes.</p>
+<p>As&#237;, de nuevo implement&#233; un sencillo <em>script</em> en <strong>Python3</strong>, que creara el documento que necesito. Este <em>script</em> es el siguiente,</p>
+<div class="codehilite">
+<pre><span class="s s-Atom">import</span> <span class="s s-Atom">os</span>
+<span class="s s-Atom">import</span> <span class="s s-Atom">glob</span>
+<span class="s s-Atom">from</span> <span class="nv">PIL</span> <span class="s s-Atom">import</span> <span class="nv">Image</span>
+<span class="s s-Atom">if</span> <span class="k">__</span><span class="s s-Atom">name__</span> <span class="o">==</span> <span class="s s-Atom">'__main__':</span>
+    <span class="nf">print</span><span class="p">(</span><span class="k">__</span><span class="s s-Atom">file__</span><span class="p">)</span>
+    <span class="s s-Atom">output_filename</span> <span class="o">=</span> <span class="s s-Atom">'salida.tex'</span>
+    <span class="s s-Atom">output</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="s s-Atom">output_filename</span><span class="p">,</span> <span class="s s-Atom">'w'</span><span class="p">)</span>
+    <span class="s s-Atom">txt_begin</span> <span class="o">=</span> <span class="s2">""</span><span class="err">"</span><span class="s s-Atom">\\documentclass</span><span class="p">[</span><span class="s s-Atom">a3paper</span><span class="p">,</span><span class="s s-Atom">landscape</span><span class="p">]{</span><span class="s s-Atom">scrartcl</span><span class="p">}</span>
+<span class="s s-Atom">\\usepackage</span><span class="p">[</span><span class="s s-Atom">utf8</span><span class="p">]{</span><span class="s s-Atom">inputenc</span><span class="p">}</span>
+<span class="s s-Atom">\\usepackage</span><span class="p">{</span><span class="s s-Atom">graphicx</span><span class="p">}</span>
+<span class="s s-Atom">\\usepackage</span><span class="p">[</span><span class="s s-Atom">spanish</span><span class="p">]{</span><span class="s s-Atom">babel</span><span class="p">}</span>
+<span class="s s-Atom">\\usepackage</span><span class="p">{</span><span class="s s-Atom">fancyhdr</span><span class="p">}</span>
+<span class="s s-Atom">\\usepackage</span><span class="p">{</span><span class="s s-Atom">geometry</span><span class="p">}</span>
+<span class="s s-Atom">\\geometry</span><span class="p">{</span>
+    <span class="s s-Atom">a3paper</span><span class="p">,</span>
+    <span class="s s-Atom">total=</span><span class="p">{</span><span class="mi">420</span><span class="s s-Atom">mm</span><span class="p">,</span><span class="mi">297</span><span class="s s-Atom">mm</span><span class="p">},</span>
+    <span class="s s-Atom">left</span><span class="o">=</span><span class="mi">10</span><span class="s s-Atom">mm</span><span class="p">,</span>
+    <span class="s s-Atom">top</span><span class="o">=</span><span class="mi">10</span><span class="s s-Atom">mm</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="s s-Atom">\\title</span><span class="p">{</span><span class="s s-Atom">\\vspace</span><span class="p">{</span><span class="s s-Atom">\\fill</span><span class="p">}</span><span class="s s-Atom">\\textbf</span><span class="p">{</span><span class="nv">T&#237;tulo</span><span class="p">}}</span>
+<span class="s s-Atom">\\subtitle</span><span class="p">{</span><span class="s s-Atom">\\textbf</span><span class="p">{</span><span class="nv">Subt&#237;tulo</span><span class="p">}}</span>
+<span class="s s-Atom">\\date</span><span class="p">{</span><span class="mi">27</span><span class="o">/</span><span class="mi">02</span><span class="o">/</span><span class="mi">2017</span><span class="s s-Atom">\\vspace</span><span class="p">{</span><span class="s s-Atom">\\fill</span><span class="p">}}</span>
+<span class="s s-Atom">\\begin</span><span class="p">{</span><span class="s s-Atom">document</span><span class="p">}</span>
+    <span class="s s-Atom">\\maketitle</span>
+    <span class="s s-Atom">\\newpage</span>
+<span class="s2">""</span><span class="err">"</span>
+    <span class="s s-Atom">txt_end</span> <span class="o">=</span> <span class="s s-Atom">'\\end{document}'</span>
+    <span class="s s-Atom">txt_image</span> <span class="o">=</span> <span class="s2">""</span><span class="err">"</span>
+    <span class="s s-Atom">\\clearpage</span>
+    <span class="s s-Atom">\\begin</span><span class="p">{</span><span class="s s-Atom">figure</span><span class="p">}</span>
+        <span class="s s-Atom">\\centering</span>
+        <span class="s s-Atom">\\includegraphics</span><span class="p">[</span><span class="s s-Atom">width</span><span class="o">=</span><span class="mi">40</span><span class="s s-Atom">cm</span><span class="p">,</span><span class="s s-Atom">height</span><span class="o">=</span><span class="mi">25</span><span class="s s-Atom">cm</span><span class="p">,</span><span class="s s-Atom">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="s s-Atom">keepaspectratio</span><span class="p">]{</span><span class="c1">%s}</span>
+        <span class="s s-Atom">\\caption</span><span class="p">{</span><span class="c1">%s}</span>
+    <span class="s s-Atom">\\end</span><span class="p">{</span><span class="s s-Atom">figure</span><span class="p">}</span>
+    <span class="s s-Atom">\\newpage</span>
+<span class="s2">"""</span>
+<span class="s2">    txt_image2 = """</span>
+    <span class="s s-Atom">\\clearpage</span>
+    <span class="s s-Atom">\\begin</span><span class="p">{</span><span class="s s-Atom">figure</span><span class="p">}</span>
+        <span class="s s-Atom">\\centering</span>
+        <span class="s s-Atom">\\includegraphics</span><span class="p">[</span><span class="s s-Atom">width</span><span class="o">=</span><span class="mi">25</span><span class="s s-Atom">cm</span><span class="p">,</span><span class="s s-Atom">height</span><span class="o">=</span><span class="mi">40</span><span class="s s-Atom">cm</span><span class="p">,</span><span class="s s-Atom">angle</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span><span class="s s-Atom">keepaspectratio</span><span class="p">]{</span><span class="c1">%s}</span>
+        <span class="s s-Atom">\\caption</span><span class="p">{</span><span class="c1">%s}</span>
+    <span class="s s-Atom">\\end</span><span class="p">{</span><span class="s s-Atom">figure</span><span class="p">}</span>
+    <span class="s s-Atom">\\newpage</span>
+<span class="s2">""</span><span class="err">"</span>
+    <span class="s s-Atom">output</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="s s-Atom">txt_begin</span><span class="p">)</span>
+    <span class="s s-Atom">files</span> <span class="o">=</span> <span class="s s-Atom">glob</span><span class="p">.</span><span class="nf">glob</span><span class="p">(</span><span class="s s-Atom">'*_resize.jpg'</span><span class="p">)</span>
+    <span class="s s-Atom">files</span><span class="p">.</span><span class="nf">sort</span><span class="p">()</span>
+    <span class="s s-Atom">for</span> <span class="s s-Atom">afile</span> <span class="s s-Atom">in</span> <span class="nn">files</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s s-Atom">afile</span><span class="p">)</span>
+        <span class="s s-Atom">with</span> <span class="nv">Image</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="s s-Atom">afile</span><span class="p">)</span> <span class="s s-Atom">as</span> <span class="nn">img</span><span class="p">:</span>
+            <span class="s s-Atom">width</span><span class="p">,</span> <span class="s s-Atom">height</span> <span class="o">=</span> <span class="s s-Atom">img</span><span class="p">.</span><span class="s s-Atom">size</span>
+        <span class="s s-Atom">filename</span> <span class="o">=</span> <span class="s s-Atom">os</span><span class="p">.</span><span class="s s-Atom">path</span><span class="p">.</span><span class="nf">basename</span><span class="p">(</span><span class="s s-Atom">afile</span><span class="p">)[:-</span><span class="mi">11</span><span class="p">].</span><span class="nf">replace</span><span class="p">(</span><span class="s s-Atom">'_'</span><span class="p">,</span> <span class="s s-Atom">'\\_'</span><span class="p">)</span>
+        <span class="s s-Atom">if</span> <span class="s s-Atom">width</span> <span class="o">&gt;</span> <span class="nn">height</span><span class="p">:</span>
+            <span class="s s-Atom">output</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="s s-Atom">txt_image</span> <span class="c1">% (afile, filename))</span>
+        <span class="nn">else</span><span class="p">:</span>
+            <span class="s s-Atom">output</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="s s-Atom">txt_image2</span> <span class="c1">% (afile, filename))</span>
+    <span class="s s-Atom">output</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="s s-Atom">txt_end</span><span class="p">)</span>
+    <span class="s s-Atom">output</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+</pre>
+</div>
+<h2 id="conclusiones">Conclusiones</h2>
+<p>Como ya coment&#233; en otro art&#237;culo &#8220;<a href="https://www.atareao.es/ubuntu/todo-el-mundo-deberia-saber-programar/">Todo el mundo deber&#237;a saber programar</a>&#8221;, y me remito a una cita atribuida a <strong>Steve Jobs</strong>, &#8220;<em>Everybody in this country should learn how to program a computer&#8230; becouse it teaches you how to think.</em>&#8221; (Todo el mundo en este pa&#237;s deber&#237;a aprender a programar un odernador&#8230;, porque te ense&#241;a a pensar).</p>
+<p>Lo cierto, es que lo que pod&#237;a haber sido una labor <strong>de varios d&#237;as</strong>, <strong>apenas</strong> me ha llevado <strong>un d&#237;a</strong> de trabajo. Adem&#225;s de que he disfrutado implementando una soluci&#243;n como esta, para luego compartirla.</p>
+<p>Lo que sigue siendo una tarea pendiente para mi es la de aprender <strong>latex</strong>. Me parece una herramienta con un <strong>potencial brutal</strong>. Lo que ha quedado evidentemente demostrado con el ejemplo que he puesto hoy.</p>
+<p>La entrada <a href="https://www.atareao.es/apps/como-ubicar-fotografias-en-un-plano/" rel="nofollow">Como ubicar fotograf&#237;as en un plano con Nautilus, Nemo o Caja en Ubuntu</a> aparece primero en <a href="https://www.atareao.es" rel="nofollow">El atareao</a>.</p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2017-02-25.html">&lt;</a></td>
+<td class="cal-month" colspan="5">marzo 2017</td>
+<td class="cal-next"><a href="index-2017-05-07.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td></tr>
+<tr class="cal-week">
+<td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day"><a class="cal-link" href="index-2017-03-09.html">09</a></td><td class="cal-day">10</td><td class="cal-day"><a class="cal-link" href="index-2017-03-11.html">11</a></td><td class="cal-day"><a class="cal-link" href="index-2017-03-12.html">12</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day"><a class="cal-link" href="index-2017-03-17.html">17</a></td><td class="cal-day">18</td><td class="cal-day">19</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><strong class="cal-current">20</strong></td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td></tr>
+<tr class="cal-week">
+<td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

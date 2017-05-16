@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>lunes, 06 junio</h2>
+<div class="time">
+<h3>11:36</h3>
+<div class="item feed-b74c3703 feed-{feed_id}" id="item-25ed8d11">
+<p class="itemheader">
+<span class="itemtitle">
+    Hyperreals *R:
+<a href="http://blog.ch3m4.org/2011/06/06/ultimo-item-de-un-iterable/">&#218;ltimo item de un&#160;iterable</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Algunas veces necesitamos obtener el &#250;ltimo item de un iterador. Para
+ello se suele iterar hasta agotar el&nbsp;iterador:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">iterador</span><span class="p">:</span>
+     <span class="k">pass</span>
+
+<span class="n">last_item</span> <span class="o">=</span> <span class="n">it</span>  
+</pre></div>
+</td></tr></table>
+
+<p>Una alternativa que se ve bastante es convertir previamente el iterable
+en una&nbsp;lista:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">last_item</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterador</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</td></tr></table>
+
+<p>Tiene el incoveniente de gastar recursos inultilmente al crear una lista
+de la que s&#243;lo nos interesa su &#250;ltimo&nbsp;elemento.</p>
+<p>En <em><a href="http://stackoverflow.com">stackoverflow</a></em> se pueden ver algunas <a href="http://stackoverflow.com/questions/2138873/cleanest-way-to-get-last-item-from-python-iterator" title="Cleanest way to get last item from Python iterator">respuestas</a> a este
+problema, pero ninguna me convence lo&nbsp;suficiente.</p>
+<p>Aqu&#237; pongo mi soluci&#243;n, simple y elegante donde las&nbsp;haya:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">last_item</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">iterador</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</td></tr></table>
+    </div>
+</div></div>
+<div class="time">
+<h3>01:22</h3>
+<div class="item feed-b74c3703 feed-{feed_id}" id="item-a6bb90a8">
+<p class="itemheader">
+<span class="itemtitle">
+    Hyperreals *R:
+<a href="http://blog.ch3m4.org/2011/06/06/estudio-funcion-factorial/">Estudio funci&#243;n&#160;factorial</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Hace un tiempo me di&#243; por recopilar distintas funciones en python para calcular el <a href="http://es.wikipedia.org/wiki/Factorial">factorial</a>. Aqu&#237; van todas, algunas bastante curiosas. Si conoces alg&#250;n tipo m&#225;s, no dejes de a&#241;adirla en los&nbsp;comentarios.</p>
+<h1>Versi&#243;n&nbsp;recursiva</h1>
+<p>Todo programador ha tenido que ver esta definici&#243;n como ejemplo de funciones recursivas&nbsp;:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">fact</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span><span class="o">*</span><span class="n">fact</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>Se podr&#237;a hacer algo m&#225;s compacta usando el operador&nbsp;ternario:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">fact</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">n</span><span class="o">==</span><span class="mi">0</span> <span class="k">else</span> <span class="n">n</span><span class="o">*</span><span class="n">fact</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>Como toda funci&#243;n recursiva en python, existe el peligro de que nunca termine la funci&#243;n. Es el motivo por el que python tiene fijado un l&#237;mite de recursividad dado por <code>sys.getrecursionlimit()</code>, que por defecto es de <code>1000</code> invocaciones recursivas o, lo que es lo mismo, que no podamos calcular factoriales mayores de&nbsp;1000.</p>
+<p>Podemos incrementar el l&#237;mite con <code>sys.setrecursionlimit(n)</code>, pero seguir&#225; siendo una soluci&#243;n provisional. Lo mejor es pasarnos a una soluci&#243;n <em>&#8220;iterativa&#8221;</em>.</p>
+<h1>Versi&#243;n&nbsp;iterativa</h1>
+<p>Tambi&#233;n es una de la funciones m&#225;s conocidas por todo&nbsp;programador:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">fact</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">res</span><span class="o">=</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">res</span><span class="o">*=</span><span class="n">n</span>
+    <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+</td></tr></table>
+
+<p>Normalmente, todo lenguaje tiene un l&#237;mite en el tama&#241;o de un entero que hace que esta funci&#243;n no pueda calcular factoriales muy grandes. Pero python tiene la caracter&#237;stica de pasar de <em>entero</em> a <em>entero largo</em> cuando as&#237; lo requiera la operaci&#243;n, lo que hace que se puede calcular cualquier n&#250;mero factorial, con el &#250;nico l&#237;mite de tiempo para calcularlo. Por lo general, con n&#250;mero grandes cuesta menos calcular el factorial que imprimirlos en&nbsp;pantalla.</p>
+<h1>Versi&#243;n aproximada (funci&#243;n de&nbsp;Stirling)</h1>
+<p>Para n&#250;mero muy grandes, existe una aproximaci&#243;n llamada <a href="http://es.wikipedia.org/wiki/F%C3%B3rmula_de_Stirling">&#8220;Aproximaci&#243;n de Stirling&#8221;</a> que se suele usar en <em>mec&#225;nica estad&#237;stica</em>.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">math</span>
+<span class="k">def</span> <span class="nf">fact</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">e</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>Lamentablemente, los n&#250;meros reales (tipo <code>double</code>) son aqu&#237; una limitaci&#243;n de tama&#241;o, por lo que no podemos hacer c&#225;lculos para n&#250;meros altos (precisamente, para los que te&#243;ricamente iba mejor esta&nbsp;funci&#243;n).</p>
+<h1>Versiones&nbsp;one-line</h1>
+<p>Muchas veces, los programadores se toman como reto poder expresar una f&#243;rmula compleja en una s&#243;la l&#237;nea, de modo que se pueda sustituir la llamada a la funci&#243;n por la definici&#243;n de esta directamente. Son las llamadas <em>funciones &#8220;oneline&#8221;</em>.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span><span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">,</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>Podemos aprovechar que tenemos el operador multiplicaci&#243;n y con ello evitar la funci&#243;n <code>lambda</code> (&#250;ltimamente, en&nbsp;desuso):</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">operator</span>
+<span class="nb">reduce</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">mul</span><span class="p">,</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>Algo m&#225;s bizarro, evitando <code>lambda</code> y <code>reduce</code>:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">i</span><span class="p">]][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</td></tr></table>
+
+<p>Esta versi&#243;n es en realidad un <em>&#8220;reduce sin usar reduce&#8221;</em>. Para entender c&#243;mo funciona, lo mejor es verlo como varios <code>fors</code> anidados:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">fact</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">i</span><span class="p">]:</span>
+                <span class="k">yield</span> <span class="n">j</span>
+
+<span class="n">res</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">fact</span><span class="p">(</span><span class="n">n</span><span class="p">))[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</td></tr></table>
+
+<p>El primer <code>for</code> tan s&#243;lo sirve para dar una valor inicial a la variable <code>j</code>, y el tercer <code>for</code> ser&#237;a el equivalente <em>&#8220;oneline&#8221;</em> de <code>j=j*i</code>.</p>
+<p>En realidad, esta funci&#243;n no est&#225; muy optimizada ya que mantiene en memoria la lista completa de todos los resultados intermedios. Un modo m&#225;s inteligente de usar esta expresi&#243;n ser&#237;a como un iterador, donde los resultados intermedios ya no son&nbsp;almacenados:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="p">(</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">i</span><span class="p">]):</span>
+    <span class="k">pass</span>
+</pre></div>
+</td></tr></table>
+
+<p>Aunque funciona perfectamente, no se puede considerar como funci&#243;n de una s&#243;la l&#237;nea. Para conseguirlo, tenemos que ir a algo totalmente cr&#237;ptico, incluyendo <code>reduce</code> y <code>lambda</code>, que acabar&#237;a siendo el siguiente&nbsp;engendro:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span><span class="n">y</span><span class="p">,(</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="n">i</span><span class="p">]))</span>
+</pre></div>
+</td></tr></table>
+
+<p>&#191;Se os ocurren otras formas de expresar el factorial en una s&#243;la&nbsp;l&#237;nea?</p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-05-30.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2011</td>
+<td class="cal-next"><a href="index-2011-07-06.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day"><a class="cal-link" href="index-2011-06-04.html">04</a></td><td class="cal-day">05</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><strong class="cal-current">06</strong></td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-06-13.html">13</a></td><td class="cal-day"><a class="cal-link" href="index-2011-06-14.html">14</a></td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day"><a class="cal-link" href="index-2011-06-19.html">19</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">20</td><td class="cal-day"><a class="cal-link" href="index-2011-06-21.html">21</a></td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day"><a class="cal-link" href="index-2011-06-24.html">24</a></td><td class="cal-day">25</td><td class="cal-day"><a class="cal-link" href="index-2011-06-26.html">26</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-06-27.html">27</a></td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day"><a class="cal-link" href="index-2011-06-30.html">30</a></td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

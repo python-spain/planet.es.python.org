@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>s&#225;bado, 11 marzo</h2>
+<div class="time">
+<h3>05:16</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-db33ddf4">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2017/03/pruebas-unitarias-en-python-usando.html">Pruebas unitarias en Python usando mocking y docker</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Hace un tiempo&nbsp;escrib&#237; un&nbsp;art&#237;culo de <a href="http://blog.crespo.org.ve/2016/10/pruebas-unitarias-con-unitest-en-python.html">pruebas unitarias&nbsp;con python usando&nbsp;Docker</a>. &nbsp;En ese art&#237;culo se muestras las distintas opciones de m&#233;todos para hacer pruebas&nbsp;unitarias, este caso se enfoca en hacer un&nbsp;mocking de&nbsp;datos (simulaci&#243;n de&nbsp;datos).<br /><br />Este art&#237;culo se basa en el art&#237;culo del sitio <a href="http://semaphoreci.com/">semaphoreci</a>, el art&#237;culo se llama&nbsp;<a href="https://semaphoreci.com/community/tutorials/getting-started-with-mocking-in-python">Getting Started with Mocking in Python</a>.<br /><br />A continuaci&#243;n dejo el c&#243;digo inicial del Dockerfile, de&nbsp;la calculadora.py y de&nbsp;la prueba:<br /><br />Archivo Dockerfile:<br /><br /><br /><pre style="white-space: pre-wrap;"><span style="color: blue;"><i>FROM python<br />WORKDIR /code/<br /><br />RUN pip3 install --upgrade pip<br />RUN pip3 install nose<br />RUN pip3 install nose-cov<br />RUN pip3 install rednose<br />RUN pip3 install pytest<br />RUN pip3 install pytest-cov<br />RUN pip3 install mock<br /><br /><br />#EXPOSE 5000<br /><br />ADD . /code/<br />COPY . /code/<br /><br /><br />#CMD nosetests  --with-coverage<br />#CMD nosetests -sv --rednose<br />CMD python -m unittest</i></span></pre><pre style="white-space: pre-wrap;"><br /></pre><pre style="white-space: pre-wrap;"><br /></pre><br /><br />Archivo docker-compose.yml:<br /><br /><i><span style="color: blue;">pruebas:</span></i><br /><i><span style="color: blue;">&nbsp; build: .</span></i><br /><i><span style="color: blue;"><br /></span></i><i><span style="color: blue;">&nbsp; volumes:</span></i><br /><i><span style="color: blue;">&nbsp; &nbsp; - ".:/code"</span></i><br /><br /><br />Archivo calculadora.py:<br /><pre style="white-space: pre-wrap;"><i><span style="color: blue;">#!/usr/bin/env python<br />#Se importa sqrt de math<br />from math import sqrt<br /><br /><br />#Clase calculadora<br />class Calculadora:<br />    #Metodo suma de x y y, se evalua si son enteros si no, devuelve error.<br />    def suma(self,x,y):<br />        if type(x) == int and type(y) == int:<br />            return x + y<br />        else:<br />            raise TypeError("Invalid type: {} and {}".format(type(x),type(y)))</span></i></pre><pre style="white-space: pre-wrap;"><br /></pre><pre style="white-space: pre-wrap;"><br /></pre><pre style="white-space: pre-wrap;"><br /></pre><pre style="white-space: pre-wrap;">Archivo calculadora_test.py:</pre><pre style="white-space: pre-wrap;"><br /></pre><pre style="white-space: pre-wrap;"><br /></pre><pre style="white-space: pre-wrap;"><i><span style="color: blue;">#!/usr/bin/env python3<br /><br />from unittest import TestCase<br />from app.calculadora import Calculadora<br /><br /><br /><br /><br /><br />class TestCalculadora(TestCase):<br />    def setUp(self):<br />        self.calc = Calculadora()<br /><br />    def test_suma_retorna_resultado_correcto(self):<br />        ##Asegura que sea igual la operacion de suma 2+2 a 4<br />        respuesta = self.calc.suma(2,4)<br />        self.assertEqual(respuesta, 6)</span></i></pre><br /><br /><br />Al ejecutar&nbsp;docker-compose up se tiene:<br /><br /><b><span style="color: red;">docker-compose up&nbsp;</span></b><br /><b><span style="color: red;">Starting tutorialespruebas_pruebas_1</span></b><br /><b><span style="color: red;">Attaching to tutorialespruebas_pruebas_1</span></b><br /><b><span style="color: red;">pruebas_1 | .</span></b><br /><b><span style="color: red;">pruebas_1 | Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Stmts &nbsp; Miss &nbsp;Cover</span></b><br /><b><span style="color: red;">pruebas_1 | ----------------------------------------</span></b><br /><b><span style="color: red;">pruebas_1 | app.py &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp;0 &nbsp; 100%</span></b><br /><b><span style="color: red;">pruebas_1 | app/calculadora.py &nbsp; &nbsp; &nbsp; 6 &nbsp; &nbsp; &nbsp;0 &nbsp; 100%</span></b><br /><b><span style="color: red;">pruebas_1 | unit.py &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp;0 &nbsp; 100%</span></b><br /><b><span style="color: red;">pruebas_1 | ----------------------------------------</span></b><br /><b><span style="color: red;">pruebas_1 | TOTAL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;6 &nbsp; &nbsp; &nbsp;0 &nbsp; 100%</span></b><br /><b><span style="color: red;">pruebas_1 | ----------------------------------------------------------------------</span></b><br /><b><span style="color: red;">pruebas_1 | Ran 1 test in 0.022s</span></b><br /><b><span style="color: red;">pruebas_1 |&nbsp;</span></b><br /><b><span style="color: red;">pruebas_1 | OK</span></b><br /><b><span style="color: red;">tutorialespruebas_pruebas_1 exited with code 0</span></b><br /><div><br /></div><div>Ahora se har&#225; un&nbsp;cambio. En vez de&nbsp;llamar a suma&nbsp;a partir de&nbsp;la calculadora se har&#225; una simulaci&#243;n del resultado usando&nbsp;mocking. Para ello el &#250;nico cambio que&nbsp;se har&#225; es el de calculadora_test.py.</div><div><br /></div><div>A continuaci&#243;n el c&#243;digo del archivo:</div><div><br /></div><div><div><i><span style="color: blue;">#!/usr/bin/env python3</span></i></div><div><i><span style="color: blue;"><br /></span></i></div><div><i><span style="color: blue;">from unittest import TestCase</span></i></div><div><i><span style="color: blue;">from app.calculadora import Calculadora</span></i></div><div><i><span style="color: blue;">from unittest.mock import patch</span></i></div><div><i><span style="color: blue;"><br /></span></i></div><div><i><span style="color: blue;"><br /></span></i></div><div><i><span style="color: blue;"><br /></span></i></div><div><i><span style="color: blue;">class TestCalculadora(TestCase):</span></i></div><div><i><span style="color: blue;">&nbsp; &nbsp;&nbsp;</span></i></div><div><i><span style="color: blue;"><br /></span></i></div><div><i><span style="color: blue;">&nbsp; &nbsp; @patch('app.calculadora.Calculadora.suma', return_value=9)</span></i></div><div><i><span style="color: blue;">&nbsp; &nbsp; def test_suma_retorna_resultado_correcto(self,suma):</span></i></div><div><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; self.assertEqual(suma(2,3), 9)</span></i></div><div><br /></div></div><div><br /></div><div><br /></div><div><br /></div><div>Se importa patch a partir&nbsp;de&nbsp;mock, y se llama al decorador patch &nbsp;pasando&nbsp;como argumento el m&#233;todo suma&nbsp;de&nbsp;calculadora, donde se le define que&nbsp;va a devolver el valor de&nbsp;9 sin importar los argumentos de&nbsp;entrada de&nbsp;dicho m&#233;todo. &nbsp;Luego se ejecuta el m&#233;todo test_suma_retorna_resultado_correcto donde se le pasa suma&nbsp;y se asegura que&nbsp;la suma&nbsp;de 2 y 3 da&nbsp;9.&nbsp;</div><div><br /></div><div><br /></div><br />Al ejecutar&nbsp;docker-compose up se tiene el siguiente resultado:<br /><br /><b><span style="color: red;">docker-compose up&nbsp;</span></b><br /><b><span style="color: red;">Starting tutorialespruebas_pruebas_1</span></b><br /><b><span style="color: red;">Attaching to tutorialespruebas_pruebas_1</span></b><br /><b><span style="color: red;">pruebas_1 | .</span></b><br /><b><span style="color: red;">pruebas_1 | Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Stmts &nbsp; Miss &nbsp;Cover</span></b><br /><b><span style="color: red;">pruebas_1 | ----------------------------------------</span></b><br /><b><span style="color: red;">pruebas_1 | app.py &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp;0 &nbsp; 100%</span></b><br /><b><span style="color: red;">pruebas_1 | app/calculadora.py &nbsp; &nbsp; &nbsp; 7 &nbsp; &nbsp; &nbsp;0 &nbsp; 100%</span></b><br /><b><span style="color: red;">pruebas_1 | unit.py &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp;0 &nbsp; 100%</span></b><br /><b><span style="color: red;">pruebas_1 | unittest/mock.py &nbsp; &nbsp; &nbsp;1278 &nbsp; 1278 &nbsp; &nbsp; 0%</span></b><br /><b><span style="color: red;">pruebas_1 | ----------------------------------------</span></b><br /><b><span style="color: red;">pruebas_1 | TOTAL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1285 &nbsp; 1278 &nbsp; &nbsp; 1%</span></b><br /><b><span style="color: red;">pruebas_1 | ----------------------------------------------------------------------</span></b><br /><b><span style="color: red;">pruebas_1 | Ran 1 test in 0.100s</span></b><br /><b><span style="color: red;">pruebas_1 |&nbsp;</span></b><br /><b><span style="color: red;">pruebas_1 | OK</span></b><br /><div><br /></div><div><br /></div><div>Como e muestra, la prueba pasa sin probemas, la raz&#243;n es que&nbsp;se est&#225; pasando&nbsp;v&#237;a mocking el valor que&nbsp;tiene&nbsp;que&nbsp;devolver la suma&nbsp;sin importar la entrada de datos del m&#233;todo a ejecutar.</div><div><br /></div><div>El c&#243;digo de&nbsp;los distintos archivos se pueden ver en el <a href="https://gitlab.com/ecrespo/tutoriales-pruebas/tree/mocking">repositorio de&nbsp;gitlab en la rama mocking</a>.</div><div><br /></div><div><br /></div><div><br /></div><div><br /></div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2017-02-25.html">&lt;</a></td>
+<td class="cal-month" colspan="5">marzo 2017</td>
+<td class="cal-next"><a href="index-2017-05-07.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">27</em></td><td class="cal-day"><em class="cal-othermonth">28</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td></tr>
+<tr class="cal-week">
+<td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day"><a class="cal-link" href="index-2017-03-09.html">09</a></td><td class="cal-day">10</td><td class="cal-day"><strong class="cal-current">11</strong></td><td class="cal-day"><a class="cal-link" href="index-2017-03-12.html">12</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day"><a class="cal-link" href="index-2017-03-17.html">17</a></td><td class="cal-day">18</td><td class="cal-day">19</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2017-03-20.html">20</a></td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td></tr>
+<tr class="cal-week">
+<td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

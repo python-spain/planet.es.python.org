@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>viernes, 19 octubre</h2>
+<div class="time">
+<h3>22:40</h3>
+<div class="item feed-1c65f96d feed-{feed_id}" id="item-550ef115">
+<p class="itemheader">
+<span class="itemtitle">
+    joe di castro:
+<a href="http://joedicastro.com/productividad-linux-ncdu.html">Productividad &amp; Linux: Ncdu</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Esta es una peque&#241;a aplicaci&#243;n que sigue la m&#225;xima de <a href="http://es.wikipedia.org/wiki/Douglas_McIlroy">Doug Mcllroy</a> que
+acabar&#237;a resumiendo la filosof&#237;a Unix <em>"Escribe programas que hagan una sola
+cosa y que la hagan bien"</em>. Y siguiendo la l&#237;nea de los programas que engloban
+esta serie de productividad sobre Linux, es un programa de consola que se maneja
+&#237;ntegramente con el teclado, y donde adem&#225;s los atajos est&#225;n inspirados en los
+de <a href="http://www.vim.org/">Vim</a>.</p>
+<h2 id="ncdu">Ncdu</h2>
+<p><a href="http://dev.yorhel.nl/ncdu">Ncdu</a> es un acr&#243;nimo para "NCurses Disk Usage", es decir, "Uso de disco
+con interfaz ncurses". Lo que pretend&#237;a <a href="https://github.com/yorhel">Yoran Heling</a>, su autor, cuando
+creo <strong>ncdu</strong>, era obtener un analizador de uso de disco en consola que fuera lo
+suficientemente ligero para poder emplearlo en un servidor remoto a trav&#233;s de
+<a href="https://es.wikipedia.org/wiki/Ssh">ssh</a>. El gran acierto fue emplear la interfaz <a href="https://es.wikipedia.org/wiki/Ncurses">ncurses</a> para
+poder navegar por los directorios con extrema facilidad al mismo tiempo que se
+presentaba la informaci&#243;n en un formato legible y amigable. El segundo y no
+menos importante acierto, es emplear los conocidos atajos de teclado de Vim para
+navegar entre los directorios.</p>
+<p>El resultado es un analizador de ocupaci&#243;n de disco que es realmente &#250;til, 
+agradable de utilizar y que es tan r&#225;pido y ligero que se puede emplear sin
+interfaz gr&#225;fica y en maquinas remotas. Es una gran ayuda para los
+administradores de sistemas, que hasta ahora nos ten&#237;amos que pelear con otras
+herramientas bastante menos agradables. Es la t&#237;pica herramienta que cuando la
+utilizas por primera vez piensas &#191;Por qu&#233; demonios no la habr&#237;a encontrado
+antes?</p>
+<p style="text-align: center;"><img alt="ncdu" height="559" src="http://joedicastro.com/pictures/ncdu.png" width="700" /></p>
+
+<p>Como se puede ver la interfaz es muy limpia y carece de elementos superfluos que
+nos distraigan de lo importante, un pecado que cometen algunas de las
+aplicaciones gr&#225;ficas m&#225;s famosas, que cuentan con unos gr&#225;ficos muy bonitos,
+pero realmente no demasiado &#250;tiles. Es sencillisima de emplear una vez que
+conoces los atajos y cuenta con ayuda integrada a la que se accede pulsando
+<strong><code>?</code></strong>. Incluso para aquellos que no est&#225;n acostumbrados a navegar empleando
+las t&#237;picas teclas de vim (<strong>h</strong>, <strong>j</strong>, <strong>k</strong>, <strong>l</strong>), se pueden utilizar las
+teclas de direcci&#243;n.</p>
+<h3 id="caracter+sticas">Caracter&#237;sticas</h3>
+<p>Un programa de este tipo no necesita una funcionalidad muy elevada, pero
+destacare aqu&#237; algunas de las posibilidades que nos ofrece:</p>
+<ul>
+<li>Podemos ordenar los directorios/ficheros en funci&#243;n de su nombre o de su
+  tama&#241;o y en orden ascendente o descendente </li>
+<li>Se pueden eliminar directamente ficheros o directorios desde la aplicaci&#243;n,
+  aunque tambi&#233;n podemos iniciarla en modo solo lectura para prevenir borrados
+  accidentales</li>
+<li>Se muestra o no, el porcentaje de espacio ocupado de forma gr&#225;fica y/o num&#233;rica</li>
+<li>El espacio empleado en disco puede hacer referencia al real o al aparente</li>
+<li>Los directorios y ficheros ocultos pueden ser o no mostrados</li>
+<li>Nos permite recalcular el espacio ocupado de un directorio concreto sin
+  necesidad de volver a recalcular todo </li>
+<li>Tenemos la posibilidad de volcar la informaci&#243;n a un archivo, que puede
+  tambi&#233;n ser le&#237;do por el mismo programa</li>
+<li>Es posible mostrar la informaci&#243;n de un elemento individual en un cuadro
+  emergente</li>
+</ul>
+<p>La verdad es que lo &#250;nico que hecho en falta en el programa es quiz&#225;s un poco de
+color para distinguir entre ficheros y directorios de forma m&#225;s visual. Por lo
+dem&#225;s, es muy r&#225;pido calculando el espacio, no he hecho una comparaci&#243;n directa,
+pero me parece ligeramente m&#225;s r&#225;pido que Baobab.</p>
+<h3 id="alternativas">Alternativas</h3>
+<p>Existen varias alternativas decentes como aplicaciones gr&#225;ficas, como los
+conocidos <a href="http://www.marzocca.net/linux/baobab/">Baobab</a> (que viene con las herramientas de Gnome) o
+<a href="http://www.jgoodies.com/freeware/jdiskreport/">JDiskReport</a>. Despu&#233;s existen m&#250;ltiples alternativas tanto en modo
+gr&#225;fico como en modo consola que, sinceramente, no puedo recomendar a nadie,
+bien porque son m&#225;s vistosos que pr&#225;cticos o bien porque son directamente
+insufribles. Existe una alternativa en modo texto que algunos prefieren a ncdu
+que es <a href="http://gt5.sourceforge.net/">gt5</a>.</p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2012-08-13.html">&lt;</a></td>
+<td class="cal-month" colspan="5">octubre 2012</td>
+<td class="cal-next"><a href="index-2012-11-06.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td></tr>
+<tr class="cal-week">
+<td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td></tr>
+<tr class="cal-week">
+<td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day"><a class="cal-link" href="index-2012-10-17.html">17</a></td><td class="cal-day"><a class="cal-link" href="index-2012-10-18.html">18</a></td><td class="cal-day"><strong class="cal-current">19</strong></td><td class="cal-day">20</td><td class="cal-day">21</td></tr>
+<tr class="cal-week">
+<td class="cal-day">22</td><td class="cal-day"><a class="cal-link" href="index-2012-10-23.html">23</a></td><td class="cal-day">24</td><td class="cal-day"><a class="cal-link" href="index-2012-10-25.html">25</a></td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td></tr>
+<tr class="cal-week">
+<td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

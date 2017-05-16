@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>martes, 21 junio</h2>
+<div class="time">
+<h3>01:26</h3>
+<div class="item feed-b74c3703 feed-{feed_id}" id="item-f125885b">
+<p class="itemheader">
+<span class="itemtitle">
+    Hyperreals *R:
+<a href="http://blog.ch3m4.org/2011/06/21/descriptores-parte-2/">Descriptores - Parte&#160;2</a></span>
+</p>
+    <div class="itemdescription">
+    <h1>&#191;C&#243;mo funciona un&nbsp;descriptor?</h1>
+<p>Todos los objetos y todas las clases que derivan de <code>object</code><sup id="fnref:1"><a class="footnote-ref" href="http://blog.ch3m4.org/feeds/python.atom.xml#fn:1" rel="footnote">1</a></sup> adquieren de &#233;l un m&#233;todo llamado <code>__getattribute__</code>. Siempre a trav&#233;s de este m&#233;todo se accede a los atributos, y es en este m&#233;todo donde se hace toda la <em>magia</em> de los descriptores, de modo que un acceso al atributo <code>obj.x</code> se transformar&#225; en una llamada a <code>type(obj).__dict__['x'].__get__(obj, type(obj))</code> si el atributo se trate de un descriptor. Una expresi&#243;n casi ininteligible que va a requerir alguna que otra explicaci&#243;n. Lo importante es saber que al sobrecargar el m&#233;todo <code>__getattribute__</code> deberemos cuidarnos de invocar al m&#233;todo de la clase padre si queremos que los descriptores sigan funcionando con&nbsp;normalidad.</p>
+<h1>Atributos de un&nbsp;objeto</h1>
+<p>De todos los atributos que tiene un objeto python, algunos son <strong>&#8220;Atributos especiales&#8221;</strong> que aporta python para su funcionamiento interno como son <code>__class__</code> o <code>__bases__</code>. Estos atributos son bastante antip&#225;ticos de manejar ya que, o bien no son reportados por la funci&#243;n <code>dir()</code>, o bien tienen restricciones para ser&nbsp;modificados.</p>
+<p>Por otro lado, est&#225;n los atributos definidos <em>din&#225;micamente</em> por el programa que forman lo que se conoce como <strong>&#8220;diccionario del objeto&#8221;</strong>. Estos atributos se guandan en el (<em>tambi&#233;n</em>) atributo <code>__dict__</code>.</p>
+<p>Los <strong>&#8220;atributos de tipo&#8221;</strong> son los atributos asociados a un objeto por pertenencia a una clase. Estos atributos pueden estar enmascarados por los atributos del diccionario del objeto, algo muy &#250;til cuando se aplican <em>&#8220;t&#233;cnicas din&#225;micas&#8221;</em> de&nbsp;parcheo.</p>
+<p>Hay que tener en cuenta que algunos de los <em>tipos est&#225;ndar</em> como <code>list</code>,<code>tuple</code>,<code>dict</code>,&#8230; no tienen atributo <code>__dict__</code> con lo que no tienen diccionario donde a&#241;adir o suplantar atributos din&#225;micamente. La &#250;nica opci&#243;n pasa por derivar clases a partir de ellos para a&#241;adir all&#237; los atributos&nbsp;deseados.</p>
+<h1>B&#250;squeda de&nbsp;atributos</h1>
+<p>Al buscar un atributo <code>obj.attr</code>, se sigue un orden determinado de prioridad seg&#250;n el tipo de atributo que se est&#233;&nbsp;buscando:</p>
+<ol>
+<li>
+<p><strong>Atributos especiales</strong>: son los que tienen mayor&nbsp;prioridad.</p>
+</li>
+<li>
+<p><strong>Descriptores de datos</strong>: se buscan en el diccionario de la clase (<code>obj.__class__.__dict__</code>) y en todos los diccionarios de las clases padre. Si se encuentra, se retorna el resultado del descriptor (la expresi&#243;n tan chula que puse al principio del art&#237;culo). Si no es un descriptor de datos, entonces se ignora y se sigue&nbsp;buscando.</p>
+</li>
+<li>
+<p>Atributos del <strong>diccionario del objeto</strong>: se busca el atributo en el diccionario del objeto (<code>obj.__dict__</code>). Si <code>obj</code> fuera una clase (<code>==isinstance(obj,type)</code>), entonces tambi&#233;n se buscar&#237;a en los diccionarios de las clases padre (<code>obj.__bases__</code>) y, de ser un descriptor de datos, se devolver&#225; el resultado del descriptor en su&nbsp;lugar.</p>
+</li>
+<li>
+<p><strong>Descriptores de no-datos</strong>: se repite el paso 2, pero esta vez se buscan descriptores de&nbsp;no-datos.</p>
+</li>
+<li>
+<p><strong>M&#233;todo <code>__getattr__</code></strong>: por &#250;ltimo, si no ha habido &#233;xito en la b&#250;squeda del atributo, se intenta invocar el m&#233;todo <code>__getattr__</code>, de existir, para delegar en&nbsp;&#233;l.</p>
+</li>
+<li>
+<p>Si todo ha fallado, se termina la b&#250;squeda retornando un error <code>AttributeError</code>.</p>
+</li>
+</ol>
+<p>En resumidas cuentas, se priorizan los descriptores de datos a las variables de instancia, las variables de instancia a los descriptores de no-datos y, con la m&#225;s baja prioridad, se invocar&#237;a el m&#233;todo <code>__getattr__</code>.</p>
+<p>Remarcar la diferencia que hay entre un descriptor de datos y uno de no-datos en el orden de b&#250;squeda. Por el simple hecho de a&#241;adir un m&#233;todo <code>__get__</code>, un descriptor se pondr&#237;a por delante de los atributos del diccionario del objeto en el orden de b&#250;squeda. Tambi&#233;n apuntar que s&#243;lo se buscan descriptores entre los atributos de clase, por lo que no tendr&#225; sentido asignar descriptores en otro&nbsp;atributos.</p>
+<p>En el caso de la asignaci&#243;n de atributos, se seguir&#237;an estos&nbsp;pasos:</p>
+<ol>
+<li>
+<p>Se busca descriptores de datos en el diccionario de la clase (<code>obj.__class__.__dict__</code>) y todos los diccionarios de las clases padre. Si se encuentra un descriptor de datos, entonces se invoca el m&#233;todo <code>__set__</code> del&nbsp;descriptor.</p>
+</li>
+<li>
+<p>Se invoca el m&#233;todo <code>__setattr__</code>, si existe, para delegar en&nbsp;&#233;l.</p>
+</li>
+<li>
+<p>Como &#250;ltima prioridad, se inserta el atributo en el diccionario del&nbsp;objeto.</p>
+</li>
+</ol>
+<p>En estos pasos no aparecen los descriptores de no-datos. Si realizamos una asignaci&#243;n sobre un descriptor de no-datos, acabar&#237;a siendo reemplazado como cualquier atributo&nbsp;normal.</p>
+<h1>&#191;Se puede saltar un descriptor de&nbsp;datos?</h1>
+<p>La prioridad de los descriptores de datos frente al resto de atributos hace pr&#225;cticamente imposible <em>salt&#225;rselos</em> para acceder directamente a un atributo. Todo acceso al atributo pasa por sus manos, regla que se aplica tambi&#233;n con el propio descriptor y que da origen a bastantes recursividades sin fin. Por ello es habitual que el descriptor mantenga un atributo auxiliar <em>&#8220;privado&#8221;</em>, ya que de otro modo no tendr&#225; otra forma de acceso&nbsp;directo.</p>
+<p>Algo que s&#237; podemos hacer es cambiar las prioridades con la definici&#243;n de un m&#233;todo <code>__getattribute__</code> propio. Como ejemplo, se podr&#237;a priorizar los atributos del diccionario frente a los descriptores de esta&nbsp;manera:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Descrip</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mul</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mul</span><span class="o">=</span><span class="n">mul</span>
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">cls</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mul</span>
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span>
+    <span class="k">def</span> <span class="nf">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">del</span> <span class="bp">self</span>
+
+<span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">a12</span><span class="o">=</span><span class="n">Descrip</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">a200</span><span class="o">=</span><span class="n">Descrip</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">=</span><span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="n">dic</span><span class="o">=</span><span class="nb">super</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="s">&quot;__dict__&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">dic</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">dic</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+
+<span class="n">c</span><span class="o">=</span><span class="n">C</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">c</span><span class="o">.</span><span class="n">a12</span>  <span class="c">#--&gt; 24  (valor del descriptor)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&quot;a12&quot;</span><span class="p">]</span><span class="o">=</span><span class="mi">100</span>
+<span class="k">print</span> <span class="n">c</span><span class="o">.</span><span class="n">a12</span>  <span class="c">#--&gt; 100 (valor del diccionario)</span>
+</pre></div>
+</td></tr></table>
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>En python 2.x, a las clases que derivan de <code>object</code> se las denomina <em>&#8220;nuevas clases&#8221;</em> por contraste con las clases que hab&#237;a hasta ese momento. En python 3.x, todas las clases derivar&#225;n por defecto de <code>object</code>.&#160;<a class="footnote-backref" href="http://blog.ch3m4.org/feeds/python.atom.xml#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2011-05-30.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2011</td>
+<td class="cal-next"><a href="index-2011-07-06.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day"><a class="cal-link" href="index-2011-06-04.html">04</a></td><td class="cal-day">05</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-06-06.html">06</a></td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-06-13.html">13</a></td><td class="cal-day"><a class="cal-link" href="index-2011-06-14.html">14</a></td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day"><a class="cal-link" href="index-2011-06-19.html">19</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">20</td><td class="cal-day"><strong class="cal-current">21</strong></td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day"><a class="cal-link" href="index-2011-06-24.html">24</a></td><td class="cal-day">25</td><td class="cal-day"><a class="cal-link" href="index-2011-06-26.html">26</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day"><a class="cal-link" href="index-2011-06-27.html">27</a></td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day"><a class="cal-link" href="index-2011-06-30.html">30</a></td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">freakspot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="http://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://saforas.wordpress.com">The::Beastieux</a>
+<a href="https://saforas.wordpress.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

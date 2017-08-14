@@ -339,10 +339,10 @@ feed 30m http://simelo-es.blogspot.com/feeds/posts/default/-/python
 feed 30m http://alfffa.net/blog/category/informatica/programacion/python/feed/
     define_name Alfffa Solutions
 
-feed 30m http://www.genbetadev.com/categoria/python/rss2.xml
+feed 30m https://www.genbetadev.com/categoria/python/rss2.xml
     define_name Genbeta:dev
 
-feed 30m https://saforas.wordpress.com/category/python/feed/
+feed 30m https://beastieux.com/category/python/feed/
     define_name The::Beastieux
 
 feed 30m https://unoyunodiez.com/tag/python-2/feed/

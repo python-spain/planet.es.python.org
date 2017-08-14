@@ -210,9 +210,9 @@
       </foaf:member>
       <foaf:member>
          <foaf:Agent>
-            <foaf:name>Genbeta:dev</foaf:name>
+            <foaf:name>The::Beastieux</foaf:name>
             <foaf:weblog>
-               <foaf:Document rdf:about="http://www.genbetadev.com/categoria/python/rss2.xml">
+               <foaf:Document rdf:about="https://beastieux.com/category/python/feed/">
                   <rdfs:seeAlso>
                      <rss:channel rdf:about=""/>
                   </rdfs:seeAlso>
@@ -246,18 +246,6 @@
       </foaf:member>
       <foaf:member>
          <foaf:Agent>
-            <foaf:name>The::Beastieux</foaf:name>
-            <foaf:weblog>
-               <foaf:Document rdf:about="https://saforas.wordpress.com/category/python/feed/">
-                  <rdfs:seeAlso>
-                     <rss:channel rdf:about=""/>
-                  </rdfs:seeAlso>
-               </foaf:Document>
-            </foaf:weblog>
-         </foaf:Agent>
-      </foaf:member>
-      <foaf:member>
-         <foaf:Agent>
             <foaf:name>Uno y uno = diez</foaf:name>
             <foaf:weblog>
                <foaf:Document rdf:about="https://unoyunodiez.com/tag/python-2/feed/">
@@ -282,9 +270,21 @@
       </foaf:member>
       <foaf:member>
          <foaf:Agent>
-            <foaf:name>freakspot</foaf:name>
+            <foaf:name>Freak Spot</foaf:name>
             <foaf:weblog>
                <foaf:Document rdf:about="https://www.freakspot.net/feeds/python.atom.xml">
+                  <rdfs:seeAlso>
+                     <rss:channel rdf:about=""/>
+                  </rdfs:seeAlso>
+               </foaf:Document>
+            </foaf:weblog>
+         </foaf:Agent>
+      </foaf:member>
+      <foaf:member>
+         <foaf:Agent>
+            <foaf:name>Genbeta:dev</foaf:name>
+            <foaf:weblog>
+               <foaf:Document rdf:about="https://www.genbetadev.com/categoria/python/rss2.xml">
                   <rdfs:seeAlso>
                      <rss:channel rdf:about=""/>
                   </rdfs:seeAlso>

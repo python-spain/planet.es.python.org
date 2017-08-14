@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>s&#225;bado, 24 junio</h2>
+<div class="time">
+<h3>22:32</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-0d1fc74e">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2017/06/obtener-datos-de-eventos-sismologicos.html">Obtener datos de eventos sismol&#243;gicos de Funvisis con Python3 (segunda versi&#243;n)</a></span>
+</p>
+    <div class="itemdescription">
+    <p>El primer art&#237;culo sobre <a href="http://blog.crespo.org.ve/2017/05/obtener-datos-de-eventos-sismologicos.html">obtener los datos&nbsp;sismol&#243;gicos de&nbsp;Funvisis con Python</a>, se us&#243; la librer&#237;a python-mechanize, en este caso se usar&#225; la librer&#237;a request y Python 3.* .<br /><br /><br /><br />El c&#243;digo se&nbsp;muestra a continuaci&#243;n:<br /><i><span style="color: blue;"><br /></span></i><code><i><span style="color: blue;"></span></i></code><br /><pre><code><i><span style="color: blue;">#!/usr/bin/env python3<br /><br /><br /><br /><br /><br />#Se importa beautifulSoup<br /><br />from bs4 import BeautifulSoup<br /><br />#Se importa la fecha<br /><br />from datetime import datetime<br /><br />import requests<br /><br />import sys<br /><br />import json<br /><br /><br /><br />class Sismo(object):<br /><br />&nbsp; &nbsp; def __init__(self,url="http://www.funvisis.gob.ve/",home="index.php",referer='http://www.cantv.com.ve'):<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; headers = {'User-agent': 'Mozilla/5.0',\<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'SSL_VERIFYHOST': 'False',\<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'FRESH_CONNECT':'True',\<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'RETURNTRANSFER':'True',\<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'SSL_VERIFYPEER': 'False',\<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 'Referer': referer<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; self.__url = url<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; self.__home = home<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; self.__urlhome = self.__url + self.__home<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; self.__session = requests.Session()<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; self.__session.headers.update(headers)<br /><br /><br /><br />&nbsp; &nbsp; def GetData(self):<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; #Se &nbsp;obtiene la pagina por medio de session.<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; try:<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; self.__r = self.__session.get(self.__urlhome)<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; self.__page = self.__r.content<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; except (requests.exceptions.SSLError):<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print("SSL Error")<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sys.exit(0)<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; except (requests.exceptions.ConnectionError):<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print("Connection Error")<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sys.exit(0)<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; #Se le pasa la pagina a beautifulsoup usando lxml de parser.<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; self.__soup = BeautifulSoup(self.__page,"lxml")<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; #Se crea el diccionario que almacena los datos<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; self.__sismo = {}<br /><br /><br /><br />&nbsp; &nbsp; &nbsp; &nbsp; #SE obtiene el primer &nbsp;div que tengan class module<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; for row in self.__soup('div', {'class': 'module'})[0]:<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #Se obtiene el tag a para luego obtener el href y tener el url<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #del gif del sitio de funvisis que tiene la imagen del sitio donde<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #fue el sismo.<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; trs = row.find('a')<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if trs == -1:<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; continue<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; self.__sismo['urlref'] = self.__url &nbsp;+ trs.get('href',None)<br /><br /><br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; trs = row.find('tr')<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if trs == -1:<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; continue<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #Obtiene los datos del sismo del sitio de funvisis<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; datos = trs.find('td').getText().split('&amp;nbsp;')<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; self.__sismo['fecha'] = datos[0].split('\n\t')[0].split('\xa0')[1]<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; self.__sismo['hora'] = datos[0].split('\n\t')[2].split(" ")[-2]<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; self.__sismo['magnitud'] = datos[0].split('\n\t')[4].split(" ")[-1]<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; mag = datos[0].split('\n\t')[6].split(" ")[-1].split('\xa0')<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; self.__sismo['profundidad'] = mag[0] + " "+ mag[1]<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; lat = datos[0].split('\n\t')[8].split(" ")<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; self.__sismo["latitud"] = lat[-2] + " " + lat[-1]<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; lon = &nbsp;datos[0].split('\n\t')[10].split(" ")<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; self.__sismo['longitud'] = lon[-2] + " "+ lon[-1]<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; self.__sismo['epicentro'] = datos[0].split('\n\t')[11].split(":")[1].split('\xa0')[-1]<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; return self.__sismo<br /><br /><br /><br /><br /><br /><br /><br />&nbsp; <br /><br /><br /><br />&nbsp; def ToJSON(self):<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; self.__sismojson = json.dumps(self.GetData())<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; return self.__sismojson<br /><br /><br /><br /><br /><br />if __name__ == '__main__':</span></i></code></pre><pre><i><span style="color: blue;">sismo = Sismo(</span></i></pre><pre><i><span style="color: blue;">)</span></i></pre><pre><i><span style="color: blue;"></span></i></pre><pre><i><span style="color: blue;"></span></i></pre><pre><i><span style="color: blue;"> </span></i></pre><pre><i><span style="color: blue;"></span></i></pre><pre><i><span style="color: blue;"></span></i></pre><pre><i><span style="color: blue;">&nbsp; </span></i></pre><pre></pre><pre></pre><pre><code><i><span style="color: blue;"><br /></span></i></code></pre><pre><code><i><span style="color: blue;"></span></i></code></pre><pre><code><i><span style="color: blue;"></span></i></code></pre><pre><code><i><span style="color: blue;"></span></i></code></pre><pre><code><i><span style="color: blue;"></span></i></code></pre><pre><code><i><span style="color: blue;"></span></i></code></pre><pre><code><i><span style="color: blue;"></span></i></code></pre><pre><i><span style="color: blue;"><code></code></span></i></pre><pre><code><i><span style="color: blue;">p</span></i></code></pre><pre><code><i><span style="color: blue;"></span></i></code></pre><pre><code><i><span style="color: blue;">r</span></i></code></pre><pre><code><i><span style="color: blue;"></span></i></code></pre><pre><code><i><span style="color: blue;">int</span></i></code></pre><pre><i><span style="color: blue;"><code></code></span></i></pre><pre><i><span style="color: blue;"> </span></i></pre><pre><i><span style="color: blue;"></span></i></pre><pre><i><span style="color: blue;">(</span></i></pre><pre><i><span style="color: blue;"></span></i></pre><pre><i><span style="color: blue;">sismo.ToJSON())</span></i></pre><pre><code><br /><div><br /></div><br /></code></pre>Al ejecutar el script se tiene de resultado:<br /><div><br /></div><div><b><span style="color: red;">{"epicentro": "30 Km al sur de Guiria", "hora": "07:51", "latitud": "10.39 \u00baN", "longitud": "-62.32 \u00baO", "fecha": "24/06/2017", "magnitud": "2.8", "urlref": "http://www.funvisis.gob.ve/images/reportes/2017/06/reporte_7489.gif", "profundidad": "9.1 km"}</span></b></div><div><br /></div><div><br /></div><div>El c&#243;digo se puede ver en el <a href="https://gitlab.com/mangoosta/sismux/blob/master/sismux_getdata.py">repositorio en gitlab</a>.</div>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2017-05-22.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2017</td>
+<td class="cal-next"><a href="index-2017-07-16.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td></tr>
+<tr class="cal-week">
+<td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td></tr>
+<tr class="cal-week">
+<td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td></tr>
+<tr class="cal-week">
+<td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day"><strong class="cal-current">24</strong></td><td class="cal-day"><a class="cal-link" href="index-2017-06-25.html">25</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">Freak Spot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="https://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://beastieux.com">The::Beastieux</a>
+<a href="https://beastieux.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

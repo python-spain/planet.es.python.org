@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>domingo, 25 junio</h2>
+<div class="time">
+<h3>22:07</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-3af993de">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2017/06/desarrollar-un-api-con-graphql-en-flask.html">Desarrollar un API con GraphQL en Flask</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Continuando con los art&#237;culos sobre <a href="http://blog.crespo.org.ve/search/label/flask">Flask</a>, donde&nbsp;el &#250;ltimo art&#237;culo fue de como <a href="http://blog.crespo.org.ve/2016/10/api-rest-ful-con-flask-y-mongodb-flask_12.html">crear un&nbsp;API Restful con Flask y MongoDB</a>.<br /><br />En este art&#237;culo se toca el uso de GraphQL para crear un&nbsp;API. GraphQL es un&nbsp;lenguaje de consulta de datos desarrollado por Facebook, es una alternativa a Rest (m&#225;s informaci&#243;n en <a href="https://en.wikipedia.org/wiki/GraphQL">wikipedia</a>).<br /><br />La librer&#237;a para Flask de GraphQL lo pueden&nbsp;ver&nbsp;en el siguiente <a href="https://pypi.python.org/pypi/Flask-GraphQL">enlace</a>. El art&#237;culo explicar&#225; el ejemplo que aparece en la <a href="https://bcb.github.io/graphql/flask">p&#225;gina oficial de graphQL para Flask</a>.<br /><br />Instalaci&#243;n:<br />#pip3 install flask graphene flask-graphql<br /><br /><br />Script servidor (server.py):<br /><br /><code></code><br /><pre><code><i><span style="color: blue;">#!/usr/bin/env python3</span></i><br /><br /><i><span style="color: blue;">#Se importa flask, graphene y graphql.</span></i><br /><br /><i><span style="color: blue;">from flask import Flask</span></i><br /><br /><i><span style="color: blue;">from graphene import ObjectType, String, Schema</span></i><br /><br /><i><span style="color: blue;">from flask_graphql import GraphQLView</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se crea la clase Query que hereda de graphene ObjectType.</span></i><br /><br /><i><span style="color: blue;">class Query(ObjectType):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se define la descripcion</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; hello = String(description='Hello')</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se define la funcion resolve_hello, se le pasa args, context e info.</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; def resolve_hello(self, args, context, info):</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; return 'World'</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se define la funcion de la vista.</span></i><br /><br /><i><span style="color: blue;">#que se le pasa el esquema con la clase Query.</span></i><br /><br /><i><span style="color: blue;">view_func = GraphQLView.as_view('graphql', schema=Schema(query=Query))</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se crea la app como instancia de la clase Flask.</span></i><br /><br /><i><span style="color: blue;">app = Flask(__name__)</span></i><br /><br /><i><span style="color: blue;">#Se define el url donde se le pasa la funcion de la vista</span></i><br /><br /><i><span style="color: blue;">app.add_url_rule('/', view_func=view_func)</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">if __name__ == '__main__':</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; #Se ejecuta flask.</span></i><br /><br /><i><span style="color: blue;">&nbsp; &nbsp; app.run()</span></i><br /><br /><div><br /></div><br /></code></pre><code></code><br /><div><br /></div><div>Al ejecutar el script:<br /><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-VF_ScdWYWKI/WVALoUDGhnI/AAAAAAAAQbs/35-BgGr1tSoYrO41Y18j7Z31xzU3zz8XACLcBGAs/s1600/ejecucion-flask-server.png" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="19" src="https://4.bp.blogspot.com/-VF_ScdWYWKI/WVALoUDGhnI/AAAAAAAAQbs/35-BgGr1tSoYrO41Y18j7Z31xzU3zz8XACLcBGAs/s320/ejecucion-flask-server.png" width="320" /></a></div><br /><br />Se consulta usando curl:<br /><b><span style="color: red;">curl -H 'Content-type: application/graphql' -d '{hello}' http://localhost:5000/</span></b><br /><br />Y este devuelve:<br /><br /><b><span style="color: red;">{"data":{"hello":"World"}}</span></b><br /><br /><br /><br /><code></code><br /><pre><code>Desde un&nbsp;script en python:<br /><br /><br /><br />Instalaci&#243;n de librer&#237;as necesarias:<br /><br />#pip3 install gql requests<br /><br /><br /><br />El script cliente.py&nbsp;:<br /><br /><br /><br /><i><span style="color: blue;">#!/usr/bin/env python3</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se importa json</span></i><br /><br /><i><span style="color: blue;">import json</span></i><br /><br /><i><span style="color: blue;">#se importa ggl</span></i><br /><br /><i><span style="color: blue;">from gql import gql, Client</span></i><br /><br /><i><span style="color: blue;">from gql.transport.requests import RequestsHTTPTransport</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#Se define el transport, se conecta el cliente.</span></i><br /><br /><i><span style="color: blue;">transport = RequestsHTTPTransport('http://localhost:5000/')</span></i><br /><br /><i><span style="color: blue;">client = Client(transport=transport)</span></i><br /><br /><i><span style="color: blue;">#Se realiza una consulta buscando la &nbsp;variable hello</span></i><br /><br /><i><span style="color: blue;">response = client.execute(gql('{hello}'))</span></i><br /><br /><i><span style="color: blue;"><br /></span></i><br /><i><span style="color: blue;">#muestra en pantalla la respuesta como un json.</span></i><br /><br /><i><span style="color: blue;">print(json.dumps(response))</span></i><br /><br /><br /><br /></code></pre><code></code>Se ejecuta el script:<br /><br /><b><span style="color: red;">python3 cliente.py&nbsp;</span></b><br /><b><span style="color: red;">{"hello": "World"}</span></b></div><div><br /></div>En un <a href="https://www.genbetadev.com/desarrollo-aplicaciones-moviles/por-que-deberiamos-abandonar-rest-y-empezar-a-usar-graphql-en-nuestras-apis">art&#237;culo en genbetadev comparan API Restful con GraphQL y por que es necesario dejar de usar API Restful</a>.<br />En futuros&nbsp;art&#237;culos se&nbsp;ampliar&#225; el uso&nbsp;de GraphQL.<br /><br />
+    </div>
+</div></div>
+<div class="time">
+<h3>00:45</h3>
+<div class="item feed-93a685d2 feed-{feed_id}" id="item-5f695a2b">
+<p class="itemheader">
+<span class="itemtitle">
+    La libertad de desarrollar...:
+<a href="http://blog.crespo.org.ve/2017/06/base-de-datos-influxdb-en-debian-stretch.html">Base de datos InfluxDB en Debian Stretch</a></span>
+</p>
+    <div class="itemdescription">
+    <p>InfluxDB es una base de&nbsp;datos&nbsp;opensource de&nbsp;series de&nbsp;tiempo, para manejo de eventos,monitoreo, m&#233;tricas, Internet de&nbsp;las cosas y Anal&#237;tica en tiempo real. Desarrollada por <a href="https://www.influxdata.com/">InfluxData</a>&nbsp;en Lenguaje Go.&nbsp;Pueden ver m&#225;s informaci&#243;n en <a href="https://en.wikipedia.org/wiki/InfluxDB">wikipedia</a>.<br /><br />Para instalar en Debian simplemente se usa apt-get:<br /><br /><b><span style="color: red;"># apt-cache search influxdb&nbsp;</span></b><br /><b><span style="color: red;">golang-github-influxdb-enterprise-client-dev - Golang client for speaking to the InfluxDB Enterprise application</span></b><br /><b><span style="color: red;">golang-github-influxdb-usage-client-dev - library for speaking to the InfluxDB Anonymous Usage Reporting API</span></b><br /><b><span style="color: red;">golang-gopkg-alexcesaro-statsd.v1-dev - simple and efficient Golang StatsD client</span></b><br /><b><span style="color: red;">golang-github-influxdb-influxdb-dev - Scalable datastore for metrics, events, and real-time analytics. Dev package</span></b><br /><b><span style="color: red;">influxdb - Scalable datastore for metrics, events, and real-time analytics</span></b><br /><b><span style="color: red;">influxdb-client - command line interface for InfluxDB</span></b><br /><b><span style="color: red;">influxdb-dev - Transitional package for golang-github-influxdb-influxdb-dev</span></b><br /><b><span style="color: red;">ruby-influxdb - library for InfluxDB</span></b><br /><br /><br />Para instalar:<br /><br /><b><span style="color: red;"># apt-get install influxdb influxdb-client</span></b><br /><br />Para probar que est&#225; en funcionamiento:<br /><br /><b><span style="color: red;"># influx</span></b><br /><b><span style="color: red;">Visit https://enterprise.influxdata.com to register for updates, InfluxDB server management, and monitoring.</span></b><br /><b><span style="color: red;">Connected to http://localhost:8086 version 1.0.2</span></b><br /><b><span style="color: red;">InfluxDB shell version: 1.0.2</span></b><br /><b><span style="color: red;">&gt;&nbsp;</span></b><br /><div><br /></div><div><br /></div><div><br /></div><div>Para crear una&nbsp;base de&nbsp;datos&nbsp;llamada mydb:</div><div><b><span style="color: red;"><br /></span></b></div><div><b><span style="color: red;">&gt; create database mydb</span></b></div><div><br /></div><div>Listar las bases de&nbsp;datos:</div><div><br /></div><div><div><b><span style="color: red;">&gt; show databases</span></b></div><div><b><span style="color: red;">name: databases</span></b></div><div><b><span style="color: red;">---------------</span></b></div><div><b><span style="color: red;">name</span></b></div><div><b><span style="color: red;">_internal</span></b></div><div><b><span style="color: red;">mydb</span></b></div></div><div><br /></div><div><br /></div><div><br /></div><div>Insertar datos&nbsp;y consultarlos en la base de&nbsp;datos&nbsp;mydb:</div><div><br /></div><div><div><b><span style="color: red;">&gt; use mydb</span></b></div><div><b><span style="color: red;">Using database mydb</span></b></div><div><b><span style="color: red;">&gt; INSERT cpu,host=ServerA,region=us_west value=0.64</span></b></div><div><b><span style="color: red;">&gt; SELECT host, region, value FROM cpu</span></b></div><div><b><span style="color: red;">name: cpu</span></b></div><div><b><span style="color: red;">---------</span></b></div><div><b><span style="color: red;">time<span class="Apple-tab-span" style="white-space: pre;">   </span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; host<span class="Apple-tab-span" style="white-space: pre;"> </span>&nbsp; &nbsp; &nbsp; &nbsp; region<span class="Apple-tab-span" style="white-space: pre;"> </span>value</span></b></div><div><b><span style="color: red;">1498340879346347895<span class="Apple-tab-span" style="white-space: pre;"> </span>ServerA<span class="Apple-tab-span" style="white-space: pre;"> </span>us_west<span class="Apple-tab-span" style="white-space: pre;"> </span>0.64</span></b></div></div><div><b><span style="color: red;"><br /></span></b></div><div>Por lo que&nbsp;se&nbsp;ve, la clave primaria de&nbsp;los datos&nbsp;siempre es el tiempo.&nbsp;</div><div><br /></div><div>Ahora una&nbsp;peque&#241;a prueba&nbsp;con Python.</div><div><br /></div><div>Para instalar la librer&#237;a en Python:</div><div><b><span style="color: red;"># pip3 install influxdb</span></b></div><div><br /></div><div><br /></div><div><br /></div><div>Se tiene el siguiente script:</div><div><br /></div><code></code><br /><pre><div><br /><div><br /><code><i><span style="color: blue;">#!/usr/bin/env python3</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">#Se importa influxdb</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">from influxdb import InfluxDBClient</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">#Se define un json con los datos a insertar</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">json_body = [</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; {</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; "measurement": "cpu_load_short",</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; "tags": {</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "host": "server01",</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "region": "us-west"</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; },</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; "time": "2009-11-10T23:00:00Z",</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; "fields": {</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "value": 0.64</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; }</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; },</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; {</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; "measurement": "cpu_load_short",</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; "tags": {</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "host": "server02",</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "region": "us-west"</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; },</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; "time": "2009-12-10T23:00:00Z",</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; "fields": {</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "value": 0.65</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; &nbsp; &nbsp; }</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">&nbsp; &nbsp; }</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">]</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">#Se conecta a la base de datos</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">client = InfluxDBClient('localhost', 8086, 'root', 'root', 'mydb')</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">#Se crea la base de datos mydb</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">client.create_database('mydb')</span></i></code></div><br /><div><br /><code><i><span style="color: blue;"><br /></span></i></code></div><br /><div><br /><code><i><span style="color: blue;">#Se inserta los datos</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">client.write_points(json_body)</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">#Se consulta y se muestra en pantalla</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">result = client.query('select value from cpu_load_short;')</span></i></code></div><br /><div><br /><code><i><span style="color: blue;">print("Result: {0}".format(result))</span></i></code></div><br /></div><br /><code><br /><div><br /></div><br /><div><br /></div><br /></code></pre><code></code><br /><div>Al ejecutar el script, este devuelve lo siguiente:</div><div><br /></div><div><div><b><span style="color: red;">./prueba-influxdb.py&nbsp;</span></b></div><div><b><span style="color: red;">Result: ResultSet({'('cpu_load_short', None)': [{'value': 0.64, 'time': '2009-11-10T23:00:00Z'}, {'value': 0.65, 'time': '2009-12-10T23:00:00Z'}]})</span></b></div></div><div><br /></div><div><br /></div><div>O desde el cliente de&nbsp;influxdb:</div><div><br /></div><div><div><b><span style="color: red;">&gt; use mydb</span></b></div><div><b><span style="color: red;">Using database mydb</span></b></div><div><b><span style="color: red;">&gt; select value from cpu_load_short;</span></b></div><div><b><span style="color: red;">name: cpu_load_short</span></b></div><div><b><span style="color: red;">--------------------</span></b></div><div><b><span style="color: red;">time<span class="Apple-tab-span" style="white-space: pre;">   </span>value</span></b></div><div><b><span style="color: red;">1257894000000000000<span class="Apple-tab-span" style="white-space: pre;"> </span>0.64</span></b></div><div><b><span style="color: red;">1260486000000000000<span class="Apple-tab-span" style="white-space: pre;"> </span>0.65</span></b></div><div><br /></div></div><div>Como se&nbsp;muestra, la clave que&nbsp;maneja las consultas es&nbsp;el tiempo.<br /><br /></div><div>Para m&#225;s informaci&#243;n se&nbsp;tiene los siguientes enlaces:</div><div><br /></div><div><ul><li><a href="http://coendegroot.com/grafana-influxdb-and-python-simple-sample/">Grafana, influxdb&nbsp;y python</a>.</li><li><a href="https://github.com/influxdata/influxdb-python">influxdb-python</a>&nbsp;y su <a href="https://influxdb-python.readthedocs.io/en/latest/examples.html">documentaci&#243;n</a>.</li><li><a href="https://docs.influxdata.com/influxdb/v1.2/guides/">Documentaci&#243;n de&nbsp;influxdata</a>.</li><li><a href="https://www.influxdata.com/time-series-platform/influxdb/">Plataforma de Influxdata</a></li></ul></div><br /><br />
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2017-05-22.html">&lt;</a></td>
+<td class="cal-month" colspan="5">junio 2017</td>
+<td class="cal-next"><a href="index-2017-07-16.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day"><em class="cal-othermonth">29</em></td><td class="cal-day"><em class="cal-othermonth">30</em></td><td class="cal-day"><em class="cal-othermonth">31</em></td><td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td></tr>
+<tr class="cal-week">
+<td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day">07</td><td class="cal-day">08</td><td class="cal-day">09</td><td class="cal-day">10</td><td class="cal-day">11</td></tr>
+<tr class="cal-week">
+<td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td><td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td></tr>
+<tr class="cal-week">
+<td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td><td class="cal-day">22</td><td class="cal-day">23</td><td class="cal-day"><a class="cal-link" href="index-2017-06-24.html">24</a></td><td class="cal-day"><strong class="cal-current">25</strong></td></tr>
+<tr class="cal-week">
+<td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td><td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">Freak Spot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="https://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://beastieux.com">The::Beastieux</a>
+<a href="https://beastieux.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

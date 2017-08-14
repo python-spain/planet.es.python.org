@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+
+
+
+
+
+
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="noarchive" />
+    <meta http-equiv="Refresh" content="1800" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="
+    planet.es.python.org
+" href="/rss.xml" />
+    <title>
+    planet.es.python.org
+</title>
+</head>
+<body id="rawdog">
+<div id="header">
+    <h1><a href="/" style="color: black;">planet.<span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h1>
+</div>
+<div id="items">
+<div class="day">
+<h2>lunes, 22 mayo</h2>
+<div class="time">
+<h3>18:00</h3>
+<div class="item feed-240db477 feed-{feed_id}" id="item-43570a1d">
+<p class="itemheader">
+<span class="itemtitle">
+    El Atareao:
+<a href="https://www.atareao.es/ubuntu/hacer-una-foto-con-la-webcam-en-ubuntu/">Como hacer una foto con la webcam de forma programada en Ubuntu</a></span>
+</p>
+    <div class="itemdescription">
+    <p>Continuando con el art&#237;culo que escrib&#237; hace unos d&#237;as sobre <a href="https://www.atareao.es/software-linux/un-sustituto-para-xbacklight/">xbacklight</a> y <a href="https://www.atareao.es/apps/ajustar-automaticamente-la-iluminacion-de-la-pantalla/">backlight-indicator</a>, hoy le toca a como hacer una <strong>foto con la webcam</strong>.</p>
+<p>El funcionamiento de <strong>backlight-indicator</strong> es muy sencillo. Esta aplicaci&#243;n hace una foto con la webcam y la procesa para calcular el brillo. Una vez calculado el brillo lo configura para tu pantalla.</p>
+<p>Ahora bien, &#191;C&#243;mo podemos hacer una foto con la webcam?&#8230;</p>
+<p><a class="highslide" href="https://www.atareao.es/wp-content/uploads/2017/05/foto-con-webcam.jpg"><img alt="Como hacer de forma programada una foto con la webcam en Ubuntu" class="aligncenter wp-image-10223 size-medium" height="150" src="https://www.atareao.es/wp-content/uploads/2017/05/foto-con-webcam-300x150.jpg" title="Como hacer de forma programada una foto con la webcam en Ubuntu" width="300" /></a></p>
+<p><span id="more-10222"></span></p>
+<h2 id="hacer-una-foto-con-la-webcam">Hacer una foto con la webcam</h2>
+<p>Hasta la fecha, en <strong>backlight-indicator</strong> utilizaba <a href="https://gstreamer.freedesktop.org/">GStreamer</a>, para tomar una foto con la webcam. Esto ten&#237;a un problema, y es que necesitaba guardar la imagen en el disco duro para luego procesarla.</p>
+<p>Hace poco, me top&#233; con <a href="https://github.com/gebart/python-v4l2capture">python-v4l2capture</a>, un proyecto en <strong>GitHub</strong> que se dedicaba &#250;nica y exclusivamente a esto. Es decir, a capturar v&#237;deo con <a href="https://es.wikipedia.org/wiki/Video4Linux">video4linux2</a>, una API de captura de v&#237;deo en Linux.</p>
+<p>El uso y funcionamiento es muy sencillo, y permite integrarlo f&#225;cilmente con cualquier aplicaci&#243;n en Python. Y aqu&#237; es donde puedes sacarle un importante partido&#8230;</p>
+<h3 id="automatizacion-de-fotografias">Automatizaci&#243;n de fotograf&#237;as</h3>
+<p>Un uso muy interesante de esta sencilla utilidad es el de una foto con la webcam&#8230; (evidentemente), pero esto lo puedes automatizar por ejemplo para que se tome una foto cada vez que se inicie una sesi&#243;n en tu equipo, de forma que puedes rastrear quien lo utiliza. Es decir, tendr&#237;as claras pruebas&#8230;</p>
+<p>Vamos a ello&#8230;</p>
+<p>Primero realizaremos un sencillo script en Python, que puedes descargar desde la propia p&#225;gina de <strong>GitHub</strong>, <a href="https://github.com/atareao/python3-v4l2capture/blob/master/take_photo.py">captura una foto</a></p>
+<div class="codehilite">
+<pre>#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+
+from PIL import Image
+import select
+import time
+import datetime
+import v4l2capture
+
+video = v4l2capture.Video_device("/dev/video0")
+size_x, size_y = video.set_format(1280, 1024)
+video.create_buffers(1)
+video.start()
+time.sleep(2)
+video.queue_all_buffers()
+select.select((video,), (), ())
+image_data = video.read()
+video.close()
+image = Image.frombytes("RGB", (size_x, size_y), image_data)
+image.save('/tmp/{0}.jpg'.format(
+    datetime.datetime.now().strftime('%Y%m%dT%H%M%S')))
+</pre>
+</div>
+<p>Lo primero es darle permisos de ejecuci&#243;n. Para ello, ejecutaremos la siguiente orden,</p>
+<div class="codehilite">
+<pre>chmod +x take_photo.py
+</pre>
+</div>
+<p>Luego lo pondremos en el alg&#250;n sitio accesible, por ejemplo,</p>
+<div class="codehilite">
+<pre>cp take_photo.py /usr/local/bin
+</pre>
+</div>
+<p>Ahora vamos a realizar un sencillo lanzador que colocaremos en el lugar adecuado, de forma que cada vez que alguien inicie nuestro equipo, realice la captura con la webcam. Para ello crearemos el siguiente lanzador <code>~/.config/autostart/takephoto.desktop</code>,</p>
+<div class="codehilite">
+<pre>    [Desktop Entry]
+    Type=Application
+    Exec=/usr/local/bin/take_photo.py
+    Hidden=true
+    NoDisplay=true
+    X-GNOME-Autostart-enabled=true
+    X-GNOME-Autostart-Delay=2
+</pre>
+</div>
+<p>De esta manera, cada vez que se inicie tue equipo y transcurridos 2 segundos se realizar&#225; una captura de pantalla&#8230; guardando una prueba de quien estaba utilizando el equipo. Evidentemente, puedes modificar el momento en el que se realiza la captura</p>
+<p>La imagen la guarda en <code>/tmp</code> con el formato <code>YYYMMDDThhmmss.jpg</code></p>
+<h3 id="otras-interesantes-utilidades">Otras interesantes utilidades</h3>
+<p>Adem&#225;s de esto, puedes darle mas utilidades a esta aplicaci&#243;n. Por ejemplo si tienes una segunda webcam y quieres que tome una imagen cada cierto tiempo, o cualquier otra idea similar. Son utilidades muy sencillas pero que pueden ahorrarte mucho trabajo.</p>
+<h3 id="instalacion">Instalaci&#243;n</h3>
+<p>Antes de poder utilizar esta aplicaci&#243;n, necesitaremos instalar la biblioteca que nos da acceso a su uso. Esta biblioteca no se encuentra en los repositorios oficiales de Ubuntu, pero la puedes instalar f&#225;cilmente ejecutando las siguientes &#243;rdenes en un terminal,</p>
+<div class="codehilite">
+<pre>sudo add-apt-repository atareao/atareao
+sudo apt update
+sudo apt install python3-v4l2capture
+</pre>
+</div>
+<p>La entrada <a href="https://www.atareao.es/ubuntu/hacer-una-foto-con-la-webcam-en-ubuntu/" rel="nofollow">Como hacer una foto con la webcam de forma programada en Ubuntu</a> aparece primero en <a href="https://www.atareao.es" rel="nofollow">El atareao</a>.</p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<div id="feedstats">
+    <div id="xmls">
+        
+    <a href="foafroll.xml"><img src="foaf.png" title="FOAF" alt="FOAF" /></a>
+    <a href="opml.xml"><img src="opml.png" title="OPML" alt="OPML" /></a>
+    <a href="rss.xml"><img src="rss.png" title="RSS" alt="RSS" /></a>
+
+    </div>
+    <h2 id="feedmain"><a href="http://es.python.org" style="color: black; font-size: 20px; text-decoration: none;"><span style="color:#d40000">e</span><span style="color:#f3b52c">s</span>.<span style="color:#43648b">pyt</span><span style="color:#f3b52c">hon</span>.org</a></h2>
+    <h2 id="feedlaststatus">Estado</h2>
+    <div id="log">
+        
+    <a href="log.html">Estado de fuentes</a>
+
+    </div>
+    <h2 id="feedsarchive">Archivo</h2>
+    <div id="archive">
+        <table class="calendar">
+<tr class="cal-head">
+<td class="cal-prev"><a href="index-2017-03-20.html">&lt;</a></td>
+<td class="cal-month" colspan="5">mayo 2017</td>
+<td class="cal-next"><a href="index-2017-06-24.html">&gt;</a></td>
+</tr>
+<tr class="cal-days">
+<th>lun</th><th>mar</th><th>mi&#233;</th><th>jue</th><th>vie</th><th>s&#225;b</th><th>dom</th></tr>
+<tr class="cal-week">
+<td class="cal-day">01</td><td class="cal-day">02</td><td class="cal-day">03</td><td class="cal-day">04</td><td class="cal-day">05</td><td class="cal-day">06</td><td class="cal-day"><a class="cal-link" href="index-2017-05-07.html">07</a></td></tr>
+<tr class="cal-week">
+<td class="cal-day">08</td><td class="cal-day"><a class="cal-link" href="index-2017-05-09.html">09</a></td><td class="cal-day">10</td><td class="cal-day">11</td><td class="cal-day">12</td><td class="cal-day">13</td><td class="cal-day">14</td></tr>
+<tr class="cal-week">
+<td class="cal-day">15</td><td class="cal-day">16</td><td class="cal-day">17</td><td class="cal-day">18</td><td class="cal-day">19</td><td class="cal-day">20</td><td class="cal-day">21</td></tr>
+<tr class="cal-week">
+<td class="cal-day"><strong class="cal-current">22</strong></td><td class="cal-day">23</td><td class="cal-day">24</td><td class="cal-day">25</td><td class="cal-day">26</td><td class="cal-day">27</td><td class="cal-day">28</td></tr>
+<tr class="cal-week">
+<td class="cal-day">29</td><td class="cal-day">30</td><td class="cal-day">31</td><td class="cal-day"><em class="cal-othermonth">01</em></td><td class="cal-day"><em class="cal-othermonth">02</em></td><td class="cal-day"><em class="cal-othermonth">03</em></td><td class="cal-day"><em class="cal-othermonth">04</em></td></tr>
+</table>
+
+    </div>
+    <h2 id="feedsblogs">Blogs</h2>
+    <div id="feedlist">
+        
+    
+<a href="http://maengora.blogspot.com/search/label/python">Actualidad Informatica</a>
+<a href="http://maengora.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Alfffa Solutions</a>
+<a href="http://alfffa.net/blog/category/informatica/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">codeplasticlesthack</a>
+<a href="http://lesthack.com.mx/category/programacion/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Dead Epsilon</a>
+<a href="https://juanlu001.github.io/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.eferro.net/search/label/Python">e-ferro</a>
+<a href="http://www.eferro.net/feeds/posts/default/-/Python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.atareao.es">El Atareao</a>
+<a href="http://feeds.feedburner.com/ElAtareao_python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://elviajedelnavegante.blogspot.com/search/label/python">El viaje del navegante</a>
+<a href="http://elviajedelnavegante.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.freakspot.net/">Freak Spot</a>
+<a href="https://www.freakspot.net/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Frogblog</a>
+<a href="http://blog.willinux.net/?cat=14&feed=rss2"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://www.genbetadev.com">Genbeta:dev</a>
+<a href="https://www.genbetadev.com/categoria/python/rss2.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.ch3m4.org/">Hyperreals *R</a>
+<a href="http://blog.ch3m4.org/feeds/python.atom.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">JavAguirre.net</a>
+<a href="http://javaguirre.me/python.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blep.blogspot.com/search/label/python">Javier Santana</a>
+<a href="http://blep.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://joedicastro.com">joe di castro</a>
+<a href="http://joedicastro.com/rss.xml"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog.crespo.org.ve/search/label/python">La libertad de desarrollar...</a>
+<a href="http://blog.crespo.org.ve/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Monobot</a>
+<a href="http://monobotblog.alvarezalonso.es/archives/category/python/feed"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://mundo-python.blogspot.com/">Mundo Python</a>
+<a href="http://mundo-python.blogspot.com/feeds/posts/default"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://www.userlinux.net">oscarmlage</a>
+<a href="https://userlinux.net/tag-python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://pybonacci.wordpress.com">Pybonacci</a>
+<a href="https://pybonacci.wordpress.com/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://blog-es.python.org/">Python Insider ES</a>
+<a href="http://feeds.feedburner.com/PythonInsiderES"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="">Read The Fucking Docs</a>
+<a href="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="http://simelo-es.blogspot.com/search/label/python">Simelo pides...</a>
+<a href="http://simelo-es.blogspot.com/feeds/posts/default/-/python"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://beastieux.com">The::Beastieux</a>
+<a href="https://beastieux.com/category/python/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+<a href="https://unoyunodiez.com">Uno y uno = diez</a>
+<a href="https://unoyunodiez.com/tag/python-2/feed/"><img src="feed-icon.png" alt=""/></a>
+<br />
+
+    </div>
+</div>
+<div id="footer">
+<p id="aboutrawdog">Generado por
+<a href="http://offog.org/code/rawdog.html">rawdog</a>
+version 2.22rc1
+by <a href="mailto:ats@offog.org">Adam Sampson</a>.</p>
+<p>Theme por <a href="http://code.joedicastro.com/my-rawdog-planet">joe di castro</a>. Basado en el <a href="http://github.com/ralsina/planeta-pyar/tree/master">trabajo de Roberto Alsina</a> para PyAr</p>
+<p>
+
+
+</p>
+</div>
+</body>
+</html>

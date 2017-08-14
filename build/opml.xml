@@ -2,8 +2,8 @@
 <opml encoding="utf-8" version="1.1">
    <head>
       <title>Python Hispano</title>
-      <dateCreated>Tue, 16 May 2017 08:30:06 GMT</dateCreated>
-      <dateModified>Tue, 16 May 2017 08:30:06 GMT</dateModified>
+      <dateCreated>Mon, 14 Aug 2017 08:31:19 GMT</dateCreated>
+      <dateModified>Mon, 14 Aug 2017 08:31:19 GMT</dateModified>
       <ownerName>joe di castro</ownerName>
       <ownerEmail>joe@joedicastro.com</ownerEmail>
    </head>
@@ -25,12 +25,12 @@
       <outline htmlUrl="" text="Read The Fucking Docs" title="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python" type="rss" xmlUrl="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"/>
       <outline htmlUrl="http://simelo-es.blogspot.com/search/label/python" text="Simelo pides..." title="Simelo pides ... a bloguear !" type="rss" xmlUrl="http://simelo-es.blogspot.com/feeds/posts/default/-/python"/>
       <outline htmlUrl="http://www.eferro.net/search/label/Python" text="e-ferro" title="eferro's random stuff" type="rss" xmlUrl="http://www.eferro.net/feeds/posts/default/-/Python"/>
-      <outline htmlUrl="https://www.genbetadev.com" text="Genbeta:dev" title="Magazine - python" type="rss" xmlUrl="http://www.genbetadev.com/categoria/python/rss2.xml"/>
+      <outline htmlUrl="https://beastieux.com" text="The::Beastieux" title="Python &amp;#8211; Beastieux" type="rss" xmlUrl="https://beastieux.com/category/python/feed/"/>
       <outline htmlUrl="" text="Dead Epsilon" title="https://juanlu001.github.io/rss.xml" type="rss" xmlUrl="https://juanlu001.github.io/rss.xml"/>
       <outline htmlUrl="https://pybonacci.wordpress.com" text="Pybonacci" title="Pybonacci" type="rss" xmlUrl="https://pybonacci.wordpress.com/feed/"/>
-      <outline htmlUrl="https://saforas.wordpress.com" text="The::Beastieux" title="Python &amp;#8211; The::Beastieux" type="rss" xmlUrl="https://saforas.wordpress.com/category/python/feed/"/>
       <outline htmlUrl="https://unoyunodiez.com" text="Uno y uno = diez" title="python &amp;#8211; Uno + uno = diez" type="rss" xmlUrl="https://unoyunodiez.com/tag/python-2/feed/"/>
       <outline htmlUrl="http://www.userlinux.net" text="oscarmlage" title="userlinux.net" type="rss" xmlUrl="https://userlinux.net/tag-python/feed/"/>
-      <outline htmlUrl="https://www.freakspot.net/" text="freakspot" title="Freak Spot - Python" type="rss" xmlUrl="https://www.freakspot.net/feeds/python.atom.xml"/>
+      <outline htmlUrl="https://www.freakspot.net/" text="Freak Spot" title="Freak Spot - Python" type="rss" xmlUrl="https://www.freakspot.net/feeds/python.atom.xml"/>
+      <outline htmlUrl="https://www.genbetadev.com" text="Genbeta:dev" title="Magazine - python" type="rss" xmlUrl="https://www.genbetadev.com/categoria/python/rss2.xml"/>
    </body>
 </opml>

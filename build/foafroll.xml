@@ -210,6 +210,18 @@
       </foaf:member>
       <foaf:member>
          <foaf:Agent>
+            <foaf:name>El Ornitorrinco Enmascarado</foaf:name>
+            <foaf:weblog>
+               <foaf:Document rdf:about="http://www.elornitorrincoenmascarado.com/feeds/posts/default/-/python/?alt=rss">
+                  <rdfs:seeAlso>
+                     <rss:channel rdf:about=""/>
+                  </rdfs:seeAlso>
+               </foaf:Document>
+            </foaf:weblog>
+         </foaf:Agent>
+      </foaf:member>
+      <foaf:member>
+         <foaf:Agent>
             <foaf:name>The::Beastieux</foaf:name>
             <foaf:weblog>
                <foaf:Document rdf:about="https://beastieux.com/category/python/feed/">

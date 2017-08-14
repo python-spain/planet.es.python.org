@@ -2,8 +2,8 @@
 <opml encoding="utf-8" version="1.1">
    <head>
       <title>Python Hispano</title>
-      <dateCreated>Mon, 14 Aug 2017 08:31:19 GMT</dateCreated>
-      <dateModified>Mon, 14 Aug 2017 08:31:19 GMT</dateModified>
+      <dateCreated>Mon, 14 Aug 2017 09:00:03 GMT</dateCreated>
+      <dateModified>Mon, 14 Aug 2017 09:00:03 GMT</dateModified>
       <ownerName>joe di castro</ownerName>
       <ownerEmail>joe@joedicastro.com</ownerEmail>
    </head>
@@ -25,6 +25,7 @@
       <outline htmlUrl="" text="Read The Fucking Docs" title="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python" type="rss" xmlUrl="http://readthefuckingdocumentation.blogspot.com/feeds/posts/default/-/python"/>
       <outline htmlUrl="http://simelo-es.blogspot.com/search/label/python" text="Simelo pides..." title="Simelo pides ... a bloguear !" type="rss" xmlUrl="http://simelo-es.blogspot.com/feeds/posts/default/-/python"/>
       <outline htmlUrl="http://www.eferro.net/search/label/Python" text="e-ferro" title="eferro's random stuff" type="rss" xmlUrl="http://www.eferro.net/feeds/posts/default/-/Python"/>
+      <outline htmlUrl="http://www.elornitorrincoenmascarado.com/search/label/python" text="El Ornitorrinco Enmascarado" title="El Ornitorrinco Enmascarado" type="rss" xmlUrl="http://www.elornitorrincoenmascarado.com/feeds/posts/default/-/python/?alt=rss"/>
       <outline htmlUrl="https://beastieux.com" text="The::Beastieux" title="Python &amp;#8211; Beastieux" type="rss" xmlUrl="https://beastieux.com/category/python/feed/"/>
       <outline htmlUrl="" text="Dead Epsilon" title="https://juanlu001.github.io/rss.xml" type="rss" xmlUrl="https://juanlu001.github.io/rss.xml"/>
       <outline htmlUrl="https://pybonacci.wordpress.com" text="Pybonacci" title="Pybonacci" type="rss" xmlUrl="https://pybonacci.wordpress.com/feed/"/>

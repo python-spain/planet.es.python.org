@@ -383,3 +383,6 @@ feed 30m https://www.freakspot.net/feeds/python.atom.xml
 
 feed 24h http://www.elornitorrincoenmascarado.com/feeds/posts/default/-/python/?alt=rss
     define_name El Ornitorrinco Enmascarado 
+    
+feed 24h https://programadorwebvalencia.com/feed/
+    define_name Programador Web Valencia
